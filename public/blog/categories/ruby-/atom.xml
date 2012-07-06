@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ruby, | Documenting all this...]]></title>
+  <link href="http://ajonas.heroku.com/blog/categories/ruby-/atom.xml" rel="self"/>
+  <link href="http://ajonas.heroku.com/"/>
+  <updated>2012-07-06T11:08:15-04:00</updated>
+  <id>http://ajonas.heroku.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Procs and lambdas]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/03/procs-and-lambdas/"/>
+    <updated>2012-07-03T10:53:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/03/procs-and-lambdas</id>
+    <content type="html"><![CDATA[<p>You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...
+PROCS:</p>
+
+<p>Very standard to pass along a code block to the each method</p>
+
+<p>block_given? --> method to check whether a block was given to a method or not</p>
+
+<p>A proc --> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
+
+<p>E.G.--></p>
+
+<p>class Array</p>
+
+<p>def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.</p>
+
+<p>shuffle.each do |el|</p>
+
+<p>b.call el  #=> b is a proc</p>
+
+<p>end</p>
+
+<p>end</p>
+
+<p>end</p>
+
+<p>[1,2,3,4,5].random_each do |el|</p>
+
+<p>puts |el|</p>
+
+<p>end</p>
+
+<p>You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
+
+<p>E.G.</p>
+
+<p>Def run_two_procs (a, b)</p>
+
+<p>a.call</p>
+
+<p>b.call</p>
+
+<p>end</p>
+
+<p>proc1 = Proc.new do</p>
+
+<p>puts "This is proc1"</p>
+
+<p>end</p>
+
+<p>proc2 = Proc.new do</p>
+
+<p>puts "This is proc2"</p>
+
+<p>end</p>
+
+<p>run_two_procs proc1, proc2</p>
+
+<p>If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
+
+<p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that --> it will do it all implicitly, you don't need to specify anything here. If it can't find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
+
+<p>Def run_block</p>
+
+<p>p = Proc.new # **</p>
+
+<p>p.call</p>
+
+<p>end</p>
+
+<p>run_block do</p>
+
+<p>puts "Hello World'</p>
+
+<p>end</p>
+
+<p>In Ruby 1.9 there are 4 main ways to run or call a block:</p>
+
+<p>my_proc = Proc.new do |a|</p>
+
+<p>puts "This is a proc and #{a} was passed along to me"</p>
+
+<p>my_proc.call(10) #call method that passes in 10</p>
+
+<p>my_proc.(20) #this isn't a typo, gets converted to a call</p>
+
+<p>my_proc[30] #</p>
+
+<p>my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
+
+<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }</p>
+
+<p>none = Proc.new { |number| number == 0 }</p>
+
+<p>case number</p>
+
+<p>when several</p>
+
+<p>puts "several"</p>
+
+<p>when none</p>
+
+<p>puts "none"</p>
+
+<p>end</p>
+
+<h1>In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</h1>
+
+<p>Lambdas</p>
+
+<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
+Closures</p>
+
+<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.</p>
+
+<p>def run_proc(p)</p>
+
+<p>p.call</p>
+
+<p>end</p>
+
+<p>name = "Fred"</p>
+
+<p>print_a_name = proc { puts name } # this name doesn't exist in the definition above. This magic is called a closure. (23 Min)</p>
+
+<p>run_proc print_a_name</p>
+
+<p>ALSO:</p>
+
+<p>def run_proc(p)</p>
+
+<p>p.call</p>
+
+<p>end</p>
+
+<p>name = "Fred"</p>
+
+<p>print_a_name = proc { puts name }</p>
+
+<p>name = "John"</p>
+
+<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.</p>
+
+<p>Video:</p>
+
+<p>http://www.youtube.com/watch?v=VBC-G6hahWA</p>
+
+<p>DOCUMENTATION:</p>
+
+<p>http://www.ruby-doc.org/core-1.9.3/Proc.html</p>
+
+<p>SOME MORE READING:</p>
+
+<p>http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</p>
+
+<p>http://pine.fm/LearnToProgram/?Chapter=10</p>
+
+<p>http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</p>
+
+<p>http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The tap method]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/02/the-tap-method/"/>
+    <updated>2012-07-02T10:52:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/02/the-tap-method</id>
+    <content type="html"><![CDATA[<p>I haven't found great explanations for this yet but there is a video below...</p>
+
+<p>The tap method is available to all Ruby objects and serves as a way to have a block "act on" the method's caller and return the object called. Per the Ruby docs, "the primary purpose of this method is to 'tap into' a method chain, in order to perform operations on intermediate results within the chain". For some examples on using tap see MenTaLguY's post on Eavesdropping on Expressions. As he says in his post, "you can insert your code just about anywhere without disturbing the flow of data."</p>
+
+<p>I'm having some trouble following all this... Matt Stopa has a video below that is more for a beginner.</p>
+
+<p>[youtube http://www.youtube.com/watch?v=QAJMxBkYaUQ]</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stack Level Too Deep Error]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/02/stack-level-too-deep-error/"/>
+    <updated>2012-07-02T10:52:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/02/stack-level-too-deep-error</id>
+    <content type="html"><![CDATA[<p>This error generally happens when you accidentally recursively changing an attribute. If you have a username attribute in User model, and a virtual attribute named username, that is directly changing the username, you end up calling the virtual, the virtual calls the virtual again and so on.. Therefore, take a look on whether something like that happens somewhere in your code.</p>
+
+<p>SEE: http://stackoverflow.com/questions/5446055/stack-level-too-deep-error</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Collections and Enumerators – David Black]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/06/26/ruby-collections-and-enumerators-david-black/"/>
+    <updated>2012-06-26T10:49:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/06/26/ruby-collections-and-enumerators-david-black</id>
+    <content type="html"><![CDATA[<p>Ruby Collections and Enumerators
+David Black
+June 26, 2012</p>
+
+<p>Enumerators
+- what is an enum?
+- an instance of class Enum
+-external iterator
+-iterates via a specific method on an underlying object</p>
+
+<p>??next method- walk through the iteration and give you the next value</p>
+
+<p>the default bound is the each method
+%w --> converst to enum</p>
+
+<p>loop resuces the stop Iteration error
+??each_cons method
+if you run each on enum = array.map # => it behaves like map
+same with array.select and array.each_cons</p>
+
+<p>Can also chain enumerators:</p>
+
+<p>array.each.with_index #=> will yield the index
+array.map.with_index</p>
+
+<p>String Enumerables
+-bytes (aka each_byte)
+-chars (aka each_char)
+-lines (aka each_line)</p>
+
+<p>count takes a block (how many is this true for...)</p>
+
+<p>?? diff between take and select
+ENUM METHODS:
+.extend(Enumerable) #=> extends the Enum functionality if operating on a single object</p>
+
+<p>each_slice doesn't overlap like each_cons</p>
+
+<p>There is a Prime class (require 'prime')</p>
+
+<p>array.any? --> is there anything True in this array?
+array.none?
+array.one? (just one-- will exit after it's first hit)
+array.all?</p>
+
+<p>array = [a,3,2,4,5,6,7]
+array.partition {block that calls the even method} #=> wtih divide the result into two arrays a true an other
+array.slice_before #=> [[1,3], [2], [4,5,7], [6]]
+chunk discards results for which the block evaluates to nil #=> not useful- obscure method
+array.take
+array.drop</p>
+
+<p>take_while #=> e.g. while true execute below
+drop_while</p>
+
+<p>array = [1,2,3]
+array.permutation.to_a # => yields all the permuatations of the array [[1,2,3], [1,3,2], [2,1,3]]
+array.combination(2).to_a #=> yields the combinations (in this case 2 at a time [1,2], [1,3], [2,3])</p>
+
+<p>array.sample #=> pulls a random sample from the array
+array.shuffle # => will randomize the sample</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sinatra]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/06/26/sinatra/"/>
+    <updated>2012-06-26T10:48:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/06/26/sinatra</id>
+    <content type="html"><![CDATA[<p>Sinatra Book, it's a quick read: http://sinatra-book.gittr.com/</p>
+
+<p>Seem like a really simple version of Rails-- A rack based application with lots of common features in terms of routing, filters, ERB...</p>
+
+<p>Here's a screencast on Sinatra: http://screencasts.org/episodes/introduction-to-sinatra (free)</p>
+
+<p>There is a peepcode on Sinatra: https://peepcode.com/products/sinatra ($)</p>
+
+<p>Another paid one here: http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra ($)</p>
+]]></content>
+  </entry>
+  
+</feed>

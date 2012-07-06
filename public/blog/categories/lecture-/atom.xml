@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: lecture, | Documenting all this...]]></title>
+  <link href="http://ajonas.heroku.com/blog/categories/lecture-/atom.xml" rel="self"/>
+  <link href="http://ajonas.heroku.com/"/>
+  <updated>2012-07-06T11:08:15-04:00</updated>
+  <id>http://ajonas.heroku.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 1st Lecture]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/02/rails-1st-lecture/"/>
+    <updated>2012-07-02T10:53:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/02/rails-1st-lecture</id>
+    <content type="html"><![CDATA[<p>Rails Lecture I - July 2</p>
+
+<p>How the web works:
+-the requests we send to other servers have headers with info about the request
+-you get the response with a header and the body
+-the body is just text and data with HTML
+-the communication happens over TCP/IP, namely HTTP
+- the browser renders the HTML by making it pretty
+-we use GET, POST, PUT, and DELETE -</p>
+
+<p>4 imporotant HTTP Verbs-->
+GET- retrieve representation of content
+POST- Submits data
+PUT- Update
+Delete- Deletes a specific resource</p>
+
+<p>Convention over configuration
+-we wants defaults</p>
+
+<p>There are naming schemes such as:
+all tables pl
+all models are sigular
+controller songs_controller.rb
+views songs/</p>
+
+<p>Gem:
+pre-packaged piece of software that ruby uses</p>
+
+<p>Config Folder--> where the configuration of our app lives
+-Database.yaml- this is how we communicate the database</p>
+
+<p>App Folder: spend most of our time in the app directory</p>
+
+<p>MVC: (7:42 pm)
+Models: define how data is created, retrieved, updated and deleted--> the only code that defined these 4 actions are in the model</p>
+
+<p>Controllers: where to send the data to
+business logic</p>
+
+<p>Views: display logic</p>
+
+<p>Helpers: helper functions for your views
+db: stores your database and all the instructions for your database</p>
+
+<p>lib: code that you app needs but isn't part of the request cycle
+-tasks- background tasks</p>
+
+<p>public dir:
+any code that doesn't require the rails stack to run</p>
+
+<p>vendor: any 3rd party library that you didn't write
+-- similar to the lib directory that you didn't write</p>
+
+<p>REST:
+-Representational State Transfer
+-URL: unifeied resources locators
+- there should be a unified way to expose resources to the world
+-1st concept: the things we get online are resources-- what the server is going to respond with is a representation of the real thing (since it can't deliver the real thing)
+-there should be consistency and predictability-</p>
+
+<p>rails generate resource song title:string duration:integer #always singular
+rails generate scaffold song title:string #in the beginning the first few resources are created by scaffolds</p>
+
+<p>MIGRATION: defines a db strcuture
+every resource has it's own table</p>
+
+<p>SQL: server query language or standard query language</p>
+
+<p>SCHEMA- describes the structure of the DB</p>
+
+<p>RAKE: a ruby library to run background tasks
+rake stats-- gives me stats on the app
+rake about--> outputs info about the environment, etc
+rake -T --> outputs provides commands</p>
+
+<p>VIDEO 2...</p>
+
+<p>migrations are iterative by nature
+every migration should one and only one thing</p>
+
+<p>rake db:migrae runs the migration
+rake db:rollback rolls back the migration</p>
+
+<p>OBJECT ORIENTATION
+-what to create metaphors in our code to representations of the real world</p>
+
+<p>Song.find(2) #=> finds the object of id 2
+Song.all #=> returns all the instances of the class</p>
+
+<p>ORM: object relational mappers
+- a class is to a table : an instance of a class is to a row of a table
+-every instance is going to wrap a row of a table
+-one to one relationship between an instance and a row
+-the library, the ORM, allows you to relate to the objects with knowing how the objects are related</p>
+
+<p>Programming is just codifying procedural knowledge</p>
+
+<p>DOCUMENTATION:
+Rails Guides: more like how-tos
+Rails API: the more technical version</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lecture 6 Ruby- Class Methods]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/06/25/lecture-6-ruby-class-methods/"/>
+    <updated>2012-06-25T10:48:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/06/25/lecture-6-ruby-class-methods</id>
+    <content type="html"><![CDATA[<p>Strategy...</p>
+
+<h1>look for nouns to start</h1>
+
+<p>url- unified resource locator
+map and collect --> returns the results of the operation--> so it uts it into a new array</p>
+
+<p>select when you are trying to match something, cannot collect things conditionally</p>
+
+<h1>=> library.songs.select{|s| s.name ==song_name}</h1>
+
+<p>is_a? --> is this an array, this is a validator</p>
+
+<p>HOW TO BUILD CLASS METHODS
+methods that don't apply to the instance of the class but the class itself
+you can tell if it's a class method if self is the receiver</p>
+
+<p>class Artist
+puts self</p>
+
+<p>def self.top_5
+end</p>
+
+<p>end</p>
+
+<p>def self.top_5
+self.all.sort_by{|a| a.rank}
+end
+end</p>
+
+<h6>#</h6>
+
+<p>class Artist
+@@all = []
+attr_accessor :name, :songs, :artists</p>
+
+<p>def initialize
+@@all &lt;&lt; self</p>
+
+<h1>@songs = []</h1>
+
+<h1>@artists = []</h1>
+
+<p>end</p>
+
+<h1>important pattern of observing intialization and making classes intelligent</h1>
+
+<h1>def songs</h1>
+
+<h1>artists.collect{|artist| artist.song}</h1>
+
+<h1>end</h1>
+
+<p>def self.all
+@@all #return all the artists ever created
+end
+3:30 PM
+MODULES - for creating all sort of shared behavior
+- modules don't have instances--> the difference between modules and classes</p>
+
+<p>two keywords to include behavior--> include and extend
+diff between include and extend --> trying to describe the scope of the module behavior</p>
+
+<p>extending- makes it a class methods
+include --> methods in that module are instance methods
+?? how does require fit into this??</p>
+
+<p>3:38
+?? order of attr_accessor and @@all? does it matter?</p>
+
+<p>INHERITANCE -- a pattern that we don't like as much as modules
+we'd rather think of things in the builder pattern using include and extend</p>
+
+<p>2nd HALF</p>
+
+<p>File Systems:</p>
+
+<p>Dir documentation (4:10)
+foreach and Dir.entries</p>
+
+<p>ERB templates (4:23):
+we care about the result method for templating</p>
+
+<p>PRIVATE AND PUBLIC METHODS (4:41)</p>
+
+<h2>-a private method cannot be called with an explicit receiever, only implicit receivers-- means they can only be called in the class</h2>
+
+<p>GEMS:
+-a pre-built package or functionality</p>
+
+<p>ruby-toolbox.com</p>
+
+<p>SINATRA (4:44):
+-based on rack (the first )
+RACK - create a class that responds to a method called 'call'
+- the response must return 3 three things- a status code, the header, the body of the response</p>
+
+<p>ruby -rubygems sinatra.rb</p>
+
+<p>SCRAPERS:
+nokogiri gem will
+xpath-- path to an element or you can use an CSS adjustment
+nokogiri comes with a method called content
+rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
+
+<p>httparty-
+some reading: http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/
+http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/</p>
+
+<p>open data:
+freebase.com</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Enumerables and OO- Class Notes for Lecture 5]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/06/17/enumerables-and-oo-class-notes-for-lecture-5/"/>
+    <updated>2012-06-17T10:40:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/06/17/enumerables-and-oo-class-notes-for-lecture-5</id>
+    <content type="html"><![CDATA[<p>(FROM THE VIDEO)</p>
+
+<p>diff between each and map (map reduce)- 12min:30</p>
+
+<p>while each will only return to you the array
+map will return a modified version of the array's element based on the operation-- will save the result in a new array
+each will simply execute the block</p>
+
+<p>another syntax for blocks:
+do / end (better for multi line) as well as curly braces {}- better for single line</p>
+
+<p>how map works with a block 19min:19</p>
+
+<p>Iterators (AKA finder methods) and blocks:
+detect- (also works like find)
+when you want to find the first of something in an enumerable
+after it finds an element that makes the block true is stops iterating</p>
+
+<p>select is like detect but wont stop</p>
+
+<p>reject returns an array for items in self for which the block is NOT TRUE.</p>
+
+<p>all will return true as long as all the element pass what's in the block</p>
+
+<p>any- like all but less specific</p>
+
+<p>none is the opposite of all</p>
+
+<p>Sort and Sort By: (34 min)</p>
+
+<p>REG EX PATTERNS- /w+/ - not space characters
+(/a|e|i|o|u/) - vowels</p>
+
+<p>&lt;=> spaceship operator</p>
+
+<p>(42MIN) return values-- it's the last expression evaluated
+but there is an explicit return keyword
+?? can the return keyword go on a diferent line rather than the last line?</p>
+
+<p>46 min 30 Object Orientation</p>
+
+<p>prime method 51 min
+completed at 57 min
+Big O notation is used to compare the efficiency of algorithms
+See: http://en.wikipedia.org/wiki/Big_O_notation and
+http://blogs.msdn.com/b/alfredth/archive/2006/08/24/717085.aspx</p>
+
+<p>Ranges:
+a..c --> a, b, c
+a...c --> a, b</p>
+
+<p>equal? method works by comparing object ids</p>
+
+<p>an instance is an occurance, a member of the species</p>
+
+<p>setter methods (1 hr 8 Min)</p>
+
+<p>instance variable (1 hr 10 min)
+local to the instance they are created in</p>
+
+<p>initialization --> def initialize (1 hr 20min)</p>
+
+<p>Constants - have a more global scope-- either one letter capital or all capitals
+shouldn't reassign constants once they have been assigned
+we use upper case letters for class names, because it is a constants
+ALL UPPERCASE are reserved for global variables</p>
+
+<p>:: Ruby syntax for name spacing</p>
+
+<p>Global variables begin with $, but you should never use them... they aren't neccessary</p>
+
+<p>For further reading on Variable Scope see:
+http://www.techotopia.com/index.php/Ruby_Variable_Scope (1 hr 30 min)</p>
+
+<p>puts- what is the receiver of puts?
+- the implicit receiever of puts is self (1 hr 32 min)</p>
+
+<p>accessor_writer
+accessor_reader
+accessor_attr (1 hr 36)</p>
+
+<p>E.G. teaching dogs how to compare to other dogs (1hr 37)</p>
+
+<p>E.G. can make strings case insensitve (1 hr 39)</p>
+
+<p>Rebuilding the Jukebox (1 hr 40)
+send method (1 hr 46)
+Avi's solution (1 hr 49)</p>
+]]></content>
+  </entry>
+  
+</feed>

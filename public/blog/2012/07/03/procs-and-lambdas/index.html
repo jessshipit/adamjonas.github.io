@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Procs and lambdas - Documenting all this...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="You know how everything in Ruby is an object, well, as it turns out that&#8217;s not quite true. Ruby blocks are not objects! So, blocks are not &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ajonas.heroku.com/blog/2012/07/03/procs-and-lambdas/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Documenting all this..." type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Documenting all this...</a></h1>
+  
+    <h2>A Hacking Journey</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ajonas.heroku.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Procs and Lambdas</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-03T10:53:00-04:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>You know how everything in Ruby is an object, well, as it turns out that&#8217;s not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class&#8230;
+PROCS:</p>
+
+<p>Very standard to pass along a code block to the each method</p>
+
+<p>block_given? &#8211;> method to check whether a block was given to a method or not</p>
+
+<p>A proc &#8211;> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
+
+<p>E.G.&#8211;></p>
+
+<p>class Array</p>
+
+<p>def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.</p>
+
+<p>shuffle.each do |el|</p>
+
+<p>b.call el  #=> b is a proc</p>
+
+<p>end</p>
+
+<p>end</p>
+
+<p>end</p>
+
+<p>[1,2,3,4,5].random_each do |el|</p>
+
+<p>puts |el|</p>
+
+<p>end</p>
+
+<p>You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
+
+<p>E.G.</p>
+
+<p>Def run_two_procs (a, b)</p>
+
+<p>a.call</p>
+
+<p>b.call</p>
+
+<p>end</p>
+
+<p>proc1 = Proc.new do</p>
+
+<p>puts &#8220;This is proc1&#8221;</p>
+
+<p>end</p>
+
+<p>proc2 = Proc.new do</p>
+
+<p>puts &#8220;This is proc2&#8221;</p>
+
+<p>end</p>
+
+<p>run_two_procs proc1, proc2</p>
+
+<p>If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
+
+<p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that &#8211;> it will do it all implicitly, you don&#8217;t need to specify anything here. If it can&#8217;t find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
+
+<p>Def run_block</p>
+
+<p>p = Proc.new # **</p>
+
+<p>p.call</p>
+
+<p>end</p>
+
+<p>run_block do</p>
+
+<p>puts &#8220;Hello World&#8217;</p>
+
+<p>end</p>
+
+<p>In Ruby 1.9 there are 4 main ways to run or call a block:</p>
+
+<p>my_proc = Proc.new do |a|</p>
+
+<p>puts &#8220;This is a proc and #{a} was passed along to me&#8221;</p>
+
+<p>my_proc.call(10) #call method that passes in 10</p>
+
+<p>my_proc.(20) #this isn&#8217;t a typo, gets converted to a call</p>
+
+<p>my_proc[30] #</p>
+
+<p>my_proc === 40 # triple equal is called the case equality operator, it&#8217;s primary function is used in case statements</p>
+
+<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }</p>
+
+<p>none = Proc.new { |number| number == 0 }</p>
+
+<p>case number</p>
+
+<p>when several</p>
+
+<p>puts &#8220;several&#8221;</p>
+
+<p>when none</p>
+
+<p>puts &#8220;none&#8221;</p>
+
+<p>end</p>
+
+<h1>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</h1>
+
+<p>Lambdas</p>
+
+<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
+Closures</p>
+
+<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.</p>
+
+<p>def run_proc(p)</p>
+
+<p>p.call</p>
+
+<p>end</p>
+
+<p>name = &#8220;Fred&#8221;</p>
+
+<p>print_a_name = proc { puts name } # this name doesn&#8217;t exist in the definition above. This magic is called a closure. (23 Min)</p>
+
+<p>run_proc print_a_name</p>
+
+<p>ALSO:</p>
+
+<p>def run_proc(p)</p>
+
+<p>p.call</p>
+
+<p>end</p>
+
+<p>name = &#8220;Fred&#8221;</p>
+
+<p>print_a_name = proc { puts name }</p>
+
+<p>name = &#8220;John&#8221;</p>
+
+<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.</p>
+
+<p>Video:</p>
+
+<p>http://www.youtube.com/watch?v=VBC-G6hahWA</p>
+
+<p>DOCUMENTATION:</p>
+
+<p>http://www.ruby-doc.org/core-1.9.3/Proc.html</p>
+
+<p>SOME MORE READING:</p>
+
+<p>http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</p>
+
+<p>http://pine.fm/LearnToProgram/?Chapter=10</p>
+
+<p>http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</p>
+
+<p>http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-03T10:53:00-04:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/about/'>about</a>, <a class='category' href='/blog/categories/learn/'>learn</a>, <a class='category' href='/blog/categories/more/'>more</a>, <a class='category' href='/blog/categories/notes-/'>notes,</a>, <a class='category' href='/blog/categories/ruby-/'>ruby,</a>, <a class='category' href='/blog/categories/things/'>things</a>, <a class='category' href='/blog/categories/to/'>to</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ajonas.heroku.com/blog/2012/07/03/procs-and-lambdas/" data-via="" data-counturl="http://ajonas.heroku.com/blog/2012/07/03/procs-and-lambdas/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/03/equals-equals-equals-case-equality-operator/" title="Previous Post: === case equality operator">&laquo; === case equality operator</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/07/05/octopress/" title="Next Post: Octopress">Octopress &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/05/octopress/">Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/03/procs-and-lambdas/">Procs and lambdas</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/03/equals-equals-equals-case-equality-operator/">=== case equality operator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/02/rails-1st-lecture/">Rails 1st Lecture</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/02/the-tap-method/">The tap method</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
