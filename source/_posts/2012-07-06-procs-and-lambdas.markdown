@@ -111,7 +111,7 @@ puts "none"
 
 end
 
-#In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
+-->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
 Lambdas
 
 Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.

@@ -8,12 +8,12 @@ categories: ruby, lecture, notes
 
 Strategy...
 
-#look for nouns to start
+-->look for nouns to start
 url- unified resource locator
 map and collect --> returns the results of the operation--> so it uts it into a new array
 
 select when you are trying to match something, cannot collect things conditionally
-# => library.songs.select{|s| s.name ==song_name}
+(#) => library.songs.select{|s| s.name ==song_name}
 
 is_a? --> is this an array, this is a validator
 
@@ -34,7 +34,7 @@ self.all.sort_by{|a| a.rank}
 end
 end
 
-#######
+###Another way...
 
 class Artist
 @@all = []
@@ -42,14 +42,14 @@ attr_accessor :name, :songs, :artists
 
 def initialize
 @@all << self
-# @songs = []
-# @artists = []
+(#) @songs = []
+(#) @artists = []
 end
-#important pattern of observing intialization and making classes intelligent
+(#)important pattern of observing intialization and making classes intelligent
 
-# def songs
-# artists.collect{|artist| artist.song}
-# end
+(# def songs
+(# artists.collect{|artist| artist.song}
+(# end
 
 def self.all
 @@all #return all the artists ever created

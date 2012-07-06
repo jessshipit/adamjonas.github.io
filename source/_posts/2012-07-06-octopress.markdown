@@ -16,6 +16,20 @@ Had one hiccup in my system didn't have Ruby 1.9.2 which .rvmrc file requires (h
 
 Deploying on Heroku:
 
+To see on localhost:4000
+rake preview 
+
+###To pushL:
+rake generate
+git add .
+git commit -m 'site updated'
+git push heroku master
+
+
 http://octopress.org/docs/deploying/heroku/
 
 That all went fairly well... though I didn't understand all the intermediate steps. I'll have to take closer look.
+
+Markdown language cheat sheet: http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/
+
+

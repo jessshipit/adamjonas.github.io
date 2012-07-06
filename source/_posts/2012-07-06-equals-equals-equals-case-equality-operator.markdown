@@ -6,21 +6,21 @@ comments: true
 categories: 
 ---
 
-In a case statement...
+##In a case statement...
 
 case number
 
 when 5
 
-#some code
+(#)some code
 
 when 3
 
-#more code
+(#)more code
 
 else
 
-#something else
+(#)something else
 
 end
 
@@ -42,4 +42,4 @@ puts "none"
 
 end
 
-#In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
+(#)In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
