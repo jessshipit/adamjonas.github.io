@@ -4,7 +4,7 @@
   <title><![CDATA[Category: notes | Documenting all this...]]></title>
   <link href="http://ajonas.heroku.com/blog/categories/notes/atom.xml" rel="self"/>
   <link href="http://ajonas.heroku.com/"/>
-  <updated>2012-07-06T15:23:05-04:00</updated>
+  <updated>2012-07-08T18:08:58-04:00</updated>
   <id>http://ajonas.heroku.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -14,13 +14,189 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Lecture 2 Rails]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/08/lecture-2-rails/"/>
+    <updated>2012-07-08T14:21:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/08/lecture-2-rails</id>
+    <content type="html"><![CDATA[<p><strong><em>Lecture 2</em></strong></p>
+
+<p>BASH
+<code>
+cd .. # change to up a directory
+cd . # change to current directory
+ls # list
+cd ~ #home directory
+</code></p>
+
+<p><strong><em>Resources</em></strong>
+- the thing you want to let users manipulate
+<code>
+rails generate resource Mixtape nae:string
+</code></p>
+
+<p>Rake-
+a ruby language for running scripts</p>
+
+<p>Models-
+main component of your application, they represent the resources of your application
+every model is just a ruby class definition located in the model</p>
+
+<p>so the mixtape model defines a class Mixtape that is the object that will allow our app to CRUD mixtapes</p>
+
+<p>If we a Users model we have a users table</p>
+
+<p>Goal for today is to understand the request cycle</p>
+
+<p><strong><em>Routes</em></strong></p>
+
+<p><strong><em>DSL- Domain Specific Language</em></strong> (3:08PM)
+``` ruby
+match '/foo' => 'songs#foo' # this needs to be sent to a controller</p>
+
+<h1>a songs controller with the foo action</h1>
+
+<p>```
+we need to find something that can handle the route--> we want to send it to a waiter, like ordering an A7 at a chinese resturant</p>
+
+<p><strong>an ACTION is just a method defined in the class!!</strong>
+a Controller is just a class --> a grouping that relates to songs</p>
+
+<p>if it can't find a page it is 404</p>
+
+<p>every action in the app needs to be defined</p>
+
+<p>5 keywords available...
+MATCH
+GET
+POST
+PUT
+DELETE</p>
+
+<p>cmd T --> opens a window for you to access files</p>
+
+<p><strong><em>rake routes:</em></strong>
+first column is the request
+second is http verb
+third is url or pattern
+fourth is the contoller#action</p>
+
+<p>resources macro- defines all the restful actions for the resource</p>
+
+<p>?? so what was the main problem with the post request?</p>
+
+<p><strong><em>Controllers &amp; #actions </em></strong></p>
+
+<p>``` ruby e.g. of actions in the Songs controller
+def name
+  render :template => 'songs/name' #explicit template rendering
+end</p>
+
+<h1>exactly the same as this...</h1>
+
+<p>def name
+end
+```</p>
+
+<p><code>ruby Renders
+render :action =&gt; "name" # in the views folder named after the controller
+render :template =&gt; 'songs/name' # need to specify the full path
+render :xml
+render :json
+</code></p>
+
+<p>Video 2 starts 4PM
+diff between &lt;% and =&lt;%
+&lt;% will get executed, but will not show in the html
+&lt;%= will get executed and will also show in the html</p>
+
+<p><strong><em> Instance variables </em></strong>
+Instance variables are the only thing passed from the controller to the views
+??? do class variables get passed as well?</p>
+
+<p><strong>link_to</strong>
+<code>ruby
+&lt;%= link_to 'Search', 'http://google.com' %&gt;
+</code>
+we have two methods <em>path and </em>url</p>
+
+<p><code>ruby e.g. of link_to
+&lt;%= link_to 'Show', 'song' %&gt; #polymorphic interface
+</code></p>
+
+<p>3 pars of rails (4:10 PM)
+ORM- active record
+Action controller
+Action view</p>
+
+<p>LEARN MORE: there are lots of polymorphic interfaces play nicely with active record</p>
+
+<p><code>ruby automatic routing with namespacing with_options
+with_options :controller =&gt; 'site' do |s|
+  s.get 'about'
+  s.get 'home'
+end
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[=== case equality operator]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/03/equals-equals-equals-case-equality-operator/"/>
+    <updated>2012-07-03T10:53:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/03/equals-equals-equals-case-equality-operator</id>
+    <content type="html"><![CDATA[<h3>In a case statement...</h3>
+
+<p>``` ruby</p>
+
+<p>case number
+  when 5</p>
+
+<pre><code>#some code
+</code></pre>
+
+<p>  when 3</p>
+
+<pre><code>#more code
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>#something else
+</code></pre>
+
+<p>end
+```</p>
+
+<p>Behind the scenes 5 is being compared to number with the === operator, so 5 === number, 3 === number, etc
+``` ruby
+several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }
+none = Proc.new { |number| number == 0 }</p>
+
+<p>case number
+  when several</p>
+
+<pre><code>puts "several"
+</code></pre>
+
+<p>  when none</p>
+
+<pre><code>puts "none"
+</code></pre>
+
+<p>end
+```
+In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Rails 1st Lecture]]></title>
     <link href="http://ajonas.heroku.com/blog/2012/07/02/rails-1st-lecture/"/>
     <updated>2012-07-02T10:53:00-04:00</updated>
     <id>http://ajonas.heroku.com/blog/2012/07/02/rails-1st-lecture</id>
     <content type="html"><![CDATA[<p>Rails Lecture I - July 2</p>
 
-<p>How the web works:
+<p><strong><em>How the web works:</em></strong>
 -the requests we send to other servers have headers with info about the request
 -you get the response with a header and the body
 -the body is just text and data with HTML
@@ -43,7 +219,7 @@ all models are sigular
 controller songs_controller.rb
 views songs/</p>
 
-<p>Gem:
+<p><strong><em>Gems:</em></strong>
 pre-packaged piece of software that ruby uses</p>
 
 <p>Config Folder--> where the configuration of our app lives
@@ -51,7 +227,7 @@ pre-packaged piece of software that ruby uses</p>
 
 <p>App Folder: spend most of our time in the app directory</p>
 
-<p>MVC: (7:42 pm)
+<p><strong><em>MVC:</em></strong> (7:42 pm)
 Models: define how data is created, retrieved, updated and deleted--> the only code that defined these 4 actions are in the model</p>
 
 <p>Controllers: where to send the data to
@@ -71,7 +247,7 @@ any code that doesn't require the rails stack to run</p>
 <p>vendor: any 3rd party library that you didn't write
 -- similar to the lib directory that you didn't write</p>
 
-<p>REST:
+<p><strong><em>REST:</em></strong>
 -Representational State Transfer
 -URL: unifeied resources locators
 - there should be a unified way to expose resources to the world
@@ -81,17 +257,19 @@ any code that doesn't require the rails stack to run</p>
 <p>rails generate resource song title:string duration:integer #always singular
 rails generate scaffold song title:string #in the beginning the first few resources are created by scaffolds</p>
 
-<p>MIGRATION: defines a db strcuture
+<p><strong><em>MIGRATIONS:</em></strong> defines a db strcuture
 every resource has it's own table</p>
 
-<p>SQL: server query language or standard query language</p>
+<p><strong><em>SQL:</em></strong> server query language or standard query language</p>
 
-<p>SCHEMA- describes the structure of the DB</p>
+<p><strong><em>SCHEMA-</em></strong> describes the structure of the DB</p>
 
-<p>RAKE: a ruby library to run background tasks
+<p><strong><em>RAKE:</em></strong> a ruby library to run background tasks
+<code>
 rake stats-- gives me stats on the app
-rake about--> outputs info about the environment, etc
-rake -T --> outputs provides commands</p>
+rake about--&gt; outputs info about the environment, etc
+rake -T --&gt; outputs provides commands
+</code></p>
 
 <p>VIDEO 2...</p>
 
@@ -101,13 +279,13 @@ every migration should one and only one thing</p>
 <p>rake db:migrae runs the migration
 rake db:rollback rolls back the migration</p>
 
-<p>OBJECT ORIENTATION
--what to create metaphors in our code to representations of the real world</p>
-
-<p>Song.find(2) #=> finds the object of id 2
-Song.all #=> returns all the instances of the class</p>
-
-<p>ORM: object relational mappers
+<p><strong><em>OBJECT ORIENTATION</em></strong>
+-what to create metaphors in our code to representations of the real world
+<code>ruby
+Song.find(2) #=&gt; finds the object of id 2
+Song.all #=&gt; returns all the instances of the class
+</code>
+<strong><em>ORM: object relational mappers</em></strong>
 - a class is to a table : an instance of a class is to a row of a table
 -every instance is going to wrap a row of a table
 -one to one relationship between an instance and a row
@@ -115,7 +293,7 @@ Song.all #=> returns all the instances of the class</p>
 
 <p>Programming is just codifying procedural knowledge</p>
 
-<p>DOCUMENTATION:
+<p><strong><em>DOCUMENTATION:</em></strong>
 Rails Guides: more like how-tos
 Rails API: the more technical version</p>
 ]]></content>
@@ -126,15 +304,15 @@ Rails API: the more technical version</p>
     <link href="http://ajonas.heroku.com/blog/2012/06/26/sinatra/"/>
     <updated>2012-06-26T10:48:00-04:00</updated>
     <id>http://ajonas.heroku.com/blog/2012/06/26/sinatra</id>
-    <content type="html"><![CDATA[<p>Sinatra Book, it's a quick read: http://sinatra-book.gittr.com/</p>
+    <content type="html"><![CDATA[<p>Sinatra Book, it's a quick read: <a href="http://sinatra-book.gittr.com/">http://sinatra-book.gittr.com/</a></p>
 
 <p>Seem like a really simple version of Rails-- A rack based application with lots of common features in terms of routing, filters, ERB...</p>
 
-<p>Here's a screencast on Sinatra: http://screencasts.org/episodes/introduction-to-sinatra (free)</p>
+<p>Here's a screencast on Sinatra: <a href="http://screencasts.org/episodes/introduction-to-sinatra">http://screencasts.org/episodes/introduction-to-sinatra</a> (free)</p>
 
-<p>There is a peepcode on Sinatra: https://peepcode.com/products/sinatra ($)</p>
+<p>There is a peepcode on Sinatra: <a href="https://peepcode.com/products/sinatra">https://peepcode.com/products/sinatra</a> ($)</p>
 
-<p>Another paid one here: http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra ($)</p>
+<p>Another paid one here: <a href="http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra">http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra</a> ($)</p>
 ]]></content>
   </entry>
   
@@ -154,11 +332,12 @@ map and collect --> returns the results of the operation--> so it uts it into a 
 
 <p>is_a? --> is this an array, this is a validator</p>
 
-<p>HOW TO BUILD CLASS METHODS
+<p><strong><em>HOW TO BUILD CLASS METHODS</em></strong>
 methods that don't apply to the instance of the class but the class itself
 you can tell if it's a class method if self is the receiver</p>
 
-<p>class Artist
+<p>``` ruby
+class Artist
 puts self</p>
 
 <p>def self.top_5
@@ -167,32 +346,35 @@ end</p>
 <p>end</p>
 
 <p>def self.top_5
-self.all.sort_by{|a| a.rank}
+  self.all.sort_by{|a| a.rank}
 end
 end</p>
 
-<h3>Another way...</h3>
+<h1>Another way...</h1>
 
 <p>class Artist
 @@all = []
 attr_accessor :name, :songs, :artists</p>
 
 <p>def initialize
-@@all &lt;&lt; self
-(#) @songs = []
-(#) @artists = []
-end
-(#)important pattern of observing intialization and making classes intelligent</p>
+  @@all &lt;&lt; self
+  @songs = []
+  @artists = []
+end</p>
 
-<p>(# def songs
-(# artists.collect{|artist| artist.song}
-(# end</p>
+<h1>important pattern of observing intialization and making classes intelligent</h1>
+
+<p>def songs
+  artists.collect{|artist| artist.song}
+end</p>
 
 <p>def self.all
-@@all #return all the artists ever created
+  @@all #return all the artists ever created
 end
-3:30 PM
-MODULES - for creating all sort of shared behavior
+```</p>
+
+<p>3:30 PM
+<strong><em>MODULES</em></strong> - for creating all sort of shared behavior
 - modules don't have instances--> the difference between modules and classes</p>
 
 <p>two keywords to include behavior--> include and extend
@@ -205,199 +387,44 @@ include --> methods in that module are instance methods
 <p>3:38
 ?? order of attr_accessor and @@all? does it matter?</p>
 
-<p>INHERITANCE -- a pattern that we don't like as much as modules
+<p><strong><em>INHERITANCE</em></strong> -- a pattern that we don't like as much as modules
 we'd rather think of things in the builder pattern using include and extend</p>
 
 <p>2nd HALF</p>
 
-<p>File Systems:</p>
-
-<p>Dir documentation (4:10)
+<p><strong><em>File Systems:</em></strong>
+Dir documentation (4:10)
 foreach and Dir.entries</p>
 
-<p>ERB templates (4:23):
+<p><strong><em>ERB templates</em></strong> (4:23):
 we care about the result method for templating</p>
 
-<p>PRIVATE AND PUBLIC METHODS (4:41)</p>
+<p><strong><em>PRIVATE AND PUBLIC METHODS</em></strong> (4:41)
+->a private method cannot be called with an explicit receiever, only implicit receivers-- means they can only be called in the class</p>
 
-<h2>-a private method cannot be called with an explicit receiever, only implicit receivers-- means they can only be called in the class</h2>
+<p><strong><em>GEMS:</em></strong>
+-a pre-built package or functionality
+<a href="http://ruby-toolbox.com">See the Ruby Toolbox</a></p>
 
-<p>GEMS:
--a pre-built package or functionality</p>
-
-<p>ruby-toolbox.com</p>
-
-<p>SINATRA (4:44):
+<p><strong><em>SINATRA</em></strong> (4:44):
 -based on rack (the first )
 RACK - create a class that responds to a method called 'call'
-- the response must return 3 three things- a status code, the header, the body of the response</p>
-
-<p>ruby -rubygems sinatra.rb</p>
-
-<p>SCRAPERS:
+- the response must return 3 three things- a status code, the header, the body of the response
+<code>
+ruby -rubygems sinatra.rb
+</code>
+<strong><em>SCRAPERS:</em></strong>
 nokogiri gem will
 xpath-- path to an element or you can use an CSS adjustment
 nokogiri comes with a method called content
 rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
 
 <p>httparty-
-some reading: http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/
-http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/</p>
+<a href="http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/">some reading on httparty</a>
+<a href="http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">there is more reading here</a></p>
 
 <p>open data:
-freebase.com</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Loading up a new Macbook Air]]></title>
-    <link href="http://ajonas.heroku.com/blog/2012/06/19/loading-up-a-new-macbook-air/"/>
-    <updated>2012-06-19T10:45:00-04:00</updated>
-    <id>http://ajonas.heroku.com/blog/2012/06/19/loading-up-a-new-macbook-air</id>
-    <content type="html"><![CDATA[<p>Avi helped me get my new Macbook Air rolling this afternoon...</p>
-
-<p>Ruby 1.8.7 is the standard version that's loaded on the OS X Lion</p>
-
-<p>Some lessons-- Xcode did not come loaded with the GNU Compiler Collection out of the box (AKA out of app store). (-bash: gcc: command not found) See: https://github.com/kennethreitz/osx-gcc-installer/</p>
-
-<p>Anyways this had to be loaded to run anything like Homebrew.</p>
-
-<ul>
-<li>All OSs except for window are a NIX: A Unix-like (sometimes referred to as UN<em>X or </em>nix) operating system is one that behaves in a manner similar to a Unix system, while not necessarily conforming to or being certified to any version of the Single UNIX Specification. (http://en.wikipedia.org/wiki/Unix-like)</li>
-</ul>
-
-
-<p>Once it was installed we got the result: i686-apple-darwin11-llvm-gcc-4.2: no input files from the gcc command. (read more about gcc here: http://gcc.gnu.org/)</p>
-
-<p>Homebrew was installed from: https://github.com/mxcl/homebrew/wiki/installation</p>
-
-<p>-Homebrew replaced the old style of loading software which required configuring the config file since all OSs are customized with different versions. This is frustrating as hell. Jewelry box, RVM, and homebrew are powerful enough to take the grunt work out of the environment set-up, but can't the community find a way to wrap this in an app in the app store? Is this feasible?</p>
-
-<p>Jewelry Box was installed from http://jewelrybox.unfiniti.com/</p>
-
-<p>wget was installed from: http://ftp.gnu.org/gnu/wget/</p>
-
-<p>Alfred was installed from: http://www.alfredapp.com/</p>
-
-<p>We also modfiied the bash profile or dot files from Avi's github repository.</p>
-
-<ul>
-<li><p>He mentioned that in the future I should choose a user name with all lower case letters rather than the capitalized name that I chose.</p></li>
-<li><p>I also needed to create a symbolic link for my sublime text editor so that I can call it from the command line (this is something I never figured out on my Fedora 15 system)</p></li>
-</ul>
-
-
-<p>So for those keeping track at home:</p>
-
-<pre><code>GCC
-Homebrew
-Jewelry box
-RVM
-Ruby Update
-Rails
-</code></pre>
-
-<p>No MySQL or anything like that... until I need it.</p>
-
-<p>This is a good post on what to load up:</p>
-
-<p>http://tech.xtremelabs.com/how-to-setup-your-mac-for-rails-development/</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Enumerables and OO- Class Notes for Lecture 5]]></title>
-    <link href="http://ajonas.heroku.com/blog/2012/06/17/enumerables-and-oo-class-notes-for-lecture-5/"/>
-    <updated>2012-06-17T10:40:00-04:00</updated>
-    <id>http://ajonas.heroku.com/blog/2012/06/17/enumerables-and-oo-class-notes-for-lecture-5</id>
-    <content type="html"><![CDATA[<p>(FROM THE VIDEO)</p>
-
-<p>diff between each and map (map reduce)- 12min:30</p>
-
-<p>while each will only return to you the array
-map will return a modified version of the array's element based on the operation-- will save the result in a new array
-each will simply execute the block</p>
-
-<p>another syntax for blocks:
-do / end (better for multi line) as well as curly braces {}- better for single line</p>
-
-<p>how map works with a block 19min:19</p>
-
-<p>Iterators (AKA finder methods) and blocks:
-detect- (also works like find)
-when you want to find the first of something in an enumerable
-after it finds an element that makes the block true is stops iterating</p>
-
-<p>select is like detect but wont stop</p>
-
-<p>reject returns an array for items in self for which the block is NOT TRUE.</p>
-
-<p>all will return true as long as all the element pass what's in the block</p>
-
-<p>any- like all but less specific</p>
-
-<p>none is the opposite of all</p>
-
-<p>Sort and Sort By: (34 min)</p>
-
-<p>REG EX PATTERNS- /w+/ - not space characters
-(/a|e|i|o|u/) - vowels</p>
-
-<p>&lt;=> spaceship operator</p>
-
-<p>(42MIN) return values-- it's the last expression evaluated
-but there is an explicit return keyword
-?? can the return keyword go on a diferent line rather than the last line?</p>
-
-<p>46 min 30 Object Orientation</p>
-
-<p>prime method 51 min
-completed at 57 min
-Big O notation is used to compare the efficiency of algorithms
-See: http://en.wikipedia.org/wiki/Big_O_notation and
-http://blogs.msdn.com/b/alfredth/archive/2006/08/24/717085.aspx</p>
-
-<p>Ranges:
-a..c --> a, b, c
-a...c --> a, b</p>
-
-<p>equal? method works by comparing object ids</p>
-
-<p>an instance is an occurance, a member of the species</p>
-
-<p>setter methods (1 hr 8 Min)</p>
-
-<p>instance variable (1 hr 10 min)
-local to the instance they are created in</p>
-
-<p>initialization --> def initialize (1 hr 20min)</p>
-
-<p>Constants - have a more global scope-- either one letter capital or all capitals
-shouldn't reassign constants once they have been assigned
-we use upper case letters for class names, because it is a constants
-ALL UPPERCASE are reserved for global variables</p>
-
-<p>:: Ruby syntax for name spacing</p>
-
-<p>Global variables begin with $, but you should never use them... they aren't neccessary</p>
-
-<p>For further reading on Variable Scope see:
-http://www.techotopia.com/index.php/Ruby_Variable_Scope (1 hr 30 min)</p>
-
-<p>puts- what is the receiver of puts?
-- the implicit receiever of puts is self (1 hr 32 min)</p>
-
-<p>accessor_writer
-accessor_reader
-accessor_attr (1 hr 36)</p>
-
-<p>E.G. teaching dogs how to compare to other dogs (1hr 37)</p>
-
-<p>E.G. can make strings case insensitve (1 hr 39)</p>
-
-<p>Rebuilding the Jukebox (1 hr 40)
-send method (1 hr 46)
-Avi's solution (1 hr 49)</p>
+<a href="freebase.com">freebase</a></p>
 ]]></content>
   </entry>
   

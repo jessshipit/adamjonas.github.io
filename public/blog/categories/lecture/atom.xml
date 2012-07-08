@@ -4,7 +4,7 @@
   <title><![CDATA[Category: lecture | Documenting all this...]]></title>
   <link href="http://ajonas.heroku.com/blog/categories/lecture/atom.xml" rel="self"/>
   <link href="http://ajonas.heroku.com/"/>
-  <updated>2012-07-06T15:23:05-04:00</updated>
+  <updated>2012-07-08T18:08:58-04:00</updated>
   <id>http://ajonas.heroku.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,132 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lecture 2 Rails]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/08/lecture-2-rails/"/>
+    <updated>2012-07-08T14:21:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/08/lecture-2-rails</id>
+    <content type="html"><![CDATA[<p><strong><em>Lecture 2</em></strong></p>
+
+<p>BASH
+<code>
+cd .. # change to up a directory
+cd . # change to current directory
+ls # list
+cd ~ #home directory
+</code></p>
+
+<p><strong><em>Resources</em></strong>
+- the thing you want to let users manipulate
+<code>
+rails generate resource Mixtape nae:string
+</code></p>
+
+<p>Rake-
+a ruby language for running scripts</p>
+
+<p>Models-
+main component of your application, they represent the resources of your application
+every model is just a ruby class definition located in the model</p>
+
+<p>so the mixtape model defines a class Mixtape that is the object that will allow our app to CRUD mixtapes</p>
+
+<p>If we a Users model we have a users table</p>
+
+<p>Goal for today is to understand the request cycle</p>
+
+<p><strong><em>Routes</em></strong></p>
+
+<p><strong><em>DSL- Domain Specific Language</em></strong> (3:08PM)
+``` ruby
+match '/foo' => 'songs#foo' # this needs to be sent to a controller</p>
+
+<h1>a songs controller with the foo action</h1>
+
+<p>```
+we need to find something that can handle the route--> we want to send it to a waiter, like ordering an A7 at a chinese resturant</p>
+
+<p><strong>an ACTION is just a method defined in the class!!</strong>
+a Controller is just a class --> a grouping that relates to songs</p>
+
+<p>if it can't find a page it is 404</p>
+
+<p>every action in the app needs to be defined</p>
+
+<p>5 keywords available...
+MATCH
+GET
+POST
+PUT
+DELETE</p>
+
+<p>cmd T --> opens a window for you to access files</p>
+
+<p><strong><em>rake routes:</em></strong>
+first column is the request
+second is http verb
+third is url or pattern
+fourth is the contoller#action</p>
+
+<p>resources macro- defines all the restful actions for the resource</p>
+
+<p>?? so what was the main problem with the post request?</p>
+
+<p><strong><em>Controllers &amp; #actions </em></strong></p>
+
+<p>``` ruby e.g. of actions in the Songs controller
+def name
+  render :template => 'songs/name' #explicit template rendering
+end</p>
+
+<h1>exactly the same as this...</h1>
+
+<p>def name
+end
+```</p>
+
+<p><code>ruby Renders
+render :action =&gt; "name" # in the views folder named after the controller
+render :template =&gt; 'songs/name' # need to specify the full path
+render :xml
+render :json
+</code></p>
+
+<p>Video 2 starts 4PM
+diff between &lt;% and =&lt;%
+&lt;% will get executed, but will not show in the html
+&lt;%= will get executed and will also show in the html</p>
+
+<p><strong><em> Instance variables </em></strong>
+Instance variables are the only thing passed from the controller to the views
+??? do class variables get passed as well?</p>
+
+<p><strong>link_to</strong>
+<code>ruby
+&lt;%= link_to 'Search', 'http://google.com' %&gt;
+</code>
+we have two methods <em>path and </em>url</p>
+
+<p><code>ruby e.g. of link_to
+&lt;%= link_to 'Show', 'song' %&gt; #polymorphic interface
+</code></p>
+
+<p>3 pars of rails (4:10 PM)
+ORM- active record
+Action controller
+Action view</p>
+
+<p>LEARN MORE: there are lots of polymorphic interfaces play nicely with active record</p>
+
+<p><code>ruby automatic routing with namespacing with_options
+with_options :controller =&gt; 'site' do |s|
+  s.get 'about'
+  s.get 'home'
+end
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby Collections and Enumerators – David Black]]></title>
@@ -51,16 +177,16 @@ array.map.with_index</p>
 <p>count takes a block (how many is this true for...)</p>
 
 <p>?? diff between take and select
-ENUM METHODS:
+``` ruby Some Enum methods
 .extend(Enumerable) #=> extends the Enum functionality if operating on a single object</p>
 
-<p>each_slice doesn't overlap like each_cons</p>
+<p>each_slice # doesn't overlap like each_cons</p>
 
-<p>There is a Prime class (require 'prime')</p>
+<p>require 'prime' #there is a Prime class</p>
 
-<p>array.any? --> is there anything True in this array?
+<p>array.any? # --> is there anything True in this array?
 array.none?
-array.one? (just one-- will exit after it's first hit)
+array.one? # (just one-- will exit after it's first hit)
 array.all?</p>
 
 <p>array = [a,3,2,4,5,6,7]
@@ -78,7 +204,8 @@ array.permutation.to_a # => yields all the permuatations of the array [[1,2,3], 
 array.combination(2).to_a #=> yields the combinations (in this case 2 at a time [1,2], [1,3], [2,3])</p>
 
 <p>array.sample #=> pulls a random sample from the array
-array.shuffle # => will randomize the sample</p>
+array.shuffle # => will randomize the sample
+```</p>
 ]]></content>
   </entry>
   
@@ -94,7 +221,7 @@ array.shuffle # => will randomize the sample</p>
 -Code is composed of the language, the name that you give things
 -The language is just a bunch of keywords that have reserved meaning (10 min)- you can't use them for anything else</p>
 
-<p>-Names
+<p>Names
 -Varaiables- store references to things. (they are lowercase and are previously undefined)- they are pointers/make references to data
 "The beginning of wisdom is calling things by its right name"
 Data- literals
@@ -132,7 +259,7 @@ Comparisons (28 min):</p>
 \"In the beginning.."
 "</p>
 
-<p>Branching (38 min)
+<p><strong><em>Branching</em></strong> (38 min)
 if, else, end branch (39 min)
 - the moment it encounters a truth, it is going to stop running the branches
 every if statement does not require an else clause</p>
@@ -147,26 +274,29 @@ every branch of an if statement operates independently of the other branches. th
 
 <p>-also have the unless keyword -- which is the converse of the if keyword-- this isn't preferred-- prefer the negation usually</p>
 
-<p>Logic (50 min)
+<p><strong><em>Logic</em></strong> (50 min)
 - once we have true and false, and we have expressions (like 1 &lt; 2), and we have if statments then we have all the ingredients for logical equations</p>
 
-<p>the OR operator ||
+<p><strong><em>the OR operator ||</em></strong>
+<code>ruby
 x = 2
-if (x/2 == 1) || (x == 1) -- as long as one of the expressions evaluates to true, then it passes</p>
+if (x/2 == 1) || (x == 1) # as long as one of the expressions evaluates to true, it passes
+</code></p>
 
 <p>The only thing that evaluates to false is nil (absence of expression) and false</p>
 
 <p>0 is true, 4 is true, "string" is true
 x = false || 4 --> this will return 4 -->> this will assign x to 4</p>
 
-<p>x = 1 || 2 --> x will equal one because the moment it encounters a true statement it stops executing the rest of the code</p>
+<p>x = 1 || 2 #--> x will equal one because the moment it encounters a true statement it stops executing the rest of the code</p>
 
-<p>the AND operator &amp;&amp;
+<p><strong><em>the AND operator &amp;&amp;</em></strong>
 for an AND operator to be true, both sides of the equation must be true
 so y = false &amp;&amp; puts 'hello' --> it will not even get to the puts statement because once it encounters the false it stops evaluating the expressions</p>
 
 <p>negation operator !
-SWITCHING (1 hr 4min)- switching between conditions
+<strong><em>SWITCHING</em></strong>
+(1 hr 4min)- switching between conditions
 if statement can get verbose and confusing and sometimes they aren't good for checking multiple related conditions</p>
 
 <p>case x
@@ -176,35 +306,41 @@ e.g. case x
 x == 1
 y == 4 #this will be compared to x</p>
 
-<p>you can combine &amp;&amp; and || operators.</p>
-
-<p>x = 1 if 1 &lt; 2 #=> x = 1
-x = 1 if 2 &lt; 1 #=> nil (1 hr 16 min)</p>
-
-<p>PART 2 Video
+<p>you can combine &amp;&amp; and || operators.
+<code>ruby
+x = 1 if 1 &lt; 2 #=&gt; x = 1
+x = 1 if 2 &lt; 1 #=&gt; nil (1 hr 16 min)
+</code>
+PART 2 Video
 Running through the exercises</p>
 
 <p>(10 min)
+``` ruby
 q = "a"
 when q.downcase == "a" #=> this is eval as false.
 puts "its a vowel"</p>
 
 <p>q = "a"
 when "a"
-puts "it's a vowel" #=> this is the way to do it</p>
+puts "it's a vowel" #=> this is the way to do it
+```</p>
 
-<p>LOOPING (12min 30 sec)
+<p><strong><em>LOOPING</em></strong> (12min 30 sec)
 if statements and case statements area how we control flow so that the program is not just stupidly linear - we can have conditions and ambiguity
 another way to do this with loops
 -the simpliest loop is with the while keyword
 - it is check a condition or expression and until that expression evaluates to true it will run that code</p>
 
-<p>x = 1
-while x &lt; 10
-puts x
-x += 1 #=> will increment x by 1. just like x = x + 1
+<p>``` ruby
+x = 1</p>
+
+<p>while x &lt; 10
+  puts x
+  x += 1 #=> will increment x by 1. just like x = x + 1
 end
-the break keyword will exit the current loop --> 23 min</p>
+```</p>
+
+<p>the break keyword will exit the current loop --> 23 min</p>
 
 <p>if I have an unexpected end -- you have a dangling end, but you often don't know where... this is why indentation is so important</p>
 
@@ -216,7 +352,7 @@ the break keyword will exit the current loop --> 23 min</p>
 
 <p>->encountered 5 types thus far--> strings, intergers, floats, nil and false</p>
 
-<p>ARRAYS- (26min)-- an indexed collection of objects-- a type to hold other values
+<p><strong><em>ARRAYS</em></strong>- (26min)-- an indexed collection of objects-- a type to hold other values
 the literal for an array is []
 - if you miss a comma [1, 2 3]--> you will get a syntax error
 - for array [1, 2, 3][0]--> this indexes the first slot. Remember that it states counting at the zero element
@@ -225,13 +361,13 @@ the literal for an array is []
 <p>puts days_of_the_week[(days_of_the_week.size-1)] #=> will return the 6th element
 weekdays = days_of_the_week[1, 5] --> this is a range of position one to five</p>
 
-<p>arrays in Ruby are elastic (52 min)</p>
-
-<p>a = [[1, 2], "a"]
-a[0] # => [1,2]
-a[0][1] => 2</p>
-
-<p>RECEIVERS (55 min)
+<p>arrays in Ruby are elastic (52 min)
+<code>ruby
+a = [[1, 2], "a"]
+a[0] # =&gt; [1,2]
+a[0][1] =&gt; 2
+</code>
+<strong><em>RECEIVERS</em></strong> (55 min)
 -Ruby is an object oriented language so that means that everything is an object. We interact with objects by sending them methods using methods</p>
 
 <p>slice(0,2) # => this slices out the first 3 elements
@@ -239,7 +375,7 @@ concat("uth") # => this appends "uth" to the end</p>
 
 <p>chomp and slice are out periodic elements (1hr 8 min)</p>
 
-<p>STRING METHODS:
+<p><strong><em>STRING METHODS:</em></strong>
 strip gets rid of both leading and trailing spaces
 lstrip - rid of leading spaces
 tstrip - trailing spaces</p>
@@ -248,13 +384,13 @@ tstrip - trailing spaces</p>
 
 <p>gsub (1hr 16min)- global substitution - takes two arguments (the pattern, the replacement value)</p>
 
-<p>Booleans-
+<p><strong><em>Booleans-</em></strong>
 puts"".empty? #=> true
 put " ".empty? #=> false</p>
 
 <p>eql?, starts_with?, include?</p>
 
-<p>Return Methods (1hr 18min)-
+<p><strong><em>Return Methods</em></strong> (1hr 18min)-
 to_i
 size
 next --> next thing in a sequence. puts "a".next # => "b"</p>

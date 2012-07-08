@@ -4,7 +4,7 @@
   <title><![CDATA[Category: notes, | Documenting all this...]]></title>
   <link href="http://ajonas.heroku.com/blog/categories/notes-/atom.xml" rel="self"/>
   <link href="http://ajonas.heroku.com/"/>
-  <updated>2012-07-06T15:23:05-04:00</updated>
+  <updated>2012-07-08T18:08:58-04:00</updated>
   <id>http://ajonas.heroku.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -22,7 +22,7 @@
 
 <p>Setting Up Octopress</p>
 
-<p>http://octopress.org/docs/setup/</p>
+<p><a href="http://octopress.org/docs/setup/">http://octopress.org/docs/setup/</a></p>
 
 <p>Had one hiccup in my system didn't have Ruby 1.9.2 which .rvmrc file requires (https://rvm.io//workflow/rvmrc/). I had to go ahead and install it.</p>
 
@@ -31,18 +31,19 @@
 <p>To see on localhost:4000
 rake preview</p>
 
-<h3>To pushL:</h3>
-
-<p>rake generate
+<p><strong>To push:</strong>
+<code>
+rake generate
 git add .
 git commit -m 'site updated'
-git push heroku master</p>
+git push heroku master
+</code></p>
 
-<p>http://octopress.org/docs/deploying/heroku/</p>
+<p><a href="http://octopress.org/docs/deploying/heroku/">Octopress delpoy instructons</a></p>
 
 <p>That all went fairly well... though I didn't understand all the intermediate steps. I'll have to take closer look.</p>
 
-<p>Markdown language cheat sheet: http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/</p>
+<p><a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/">Markdown language cheat sheet</a></p>
 ]]></content>
   </entry>
   
@@ -60,155 +61,121 @@ PROCS:</p>
 
 <p>A proc --> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
 
-<p>E.G.--></p>
+<p>``` ruby E.G.
+class Array
+def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.
+  shuffle.each do |el|</p>
 
-<p>class Array</p>
+<pre><code>b.call el  #=&gt; b is a proc
+end
+</code></pre>
 
-<p>def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.</p>
+<p>  end
+end</p>
 
-<p>shuffle.each do |el|</p>
+<p>[1,2,3,4,5].random_each do |el|
+puts |el|</p>
 
-<p>b.call el  #=> b is a proc</p>
+<p>end
+```
+You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
 
-<p>end</p>
+<p>``` ruby E.G.
+Def run_two_procs (a, b)
+  a.call
+  b.call
+end</p>
 
-<p>end</p>
+<p>proc1 = Proc.new do
+puts "This is proc1"
+end</p>
 
-<p>end</p>
+<p>proc2 = Proc.new do
+puts "This is proc2"
+end</p>
 
-<p>[1,2,3,4,5].random_each do |el|</p>
-
-<p>puts |el|</p>
-
-<p>end</p>
-
-<p>You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
-
-<p>E.G.</p>
-
-<p>Def run_two_procs (a, b)</p>
-
-<p>a.call</p>
-
-<p>b.call</p>
-
-<p>end</p>
-
-<p>proc1 = Proc.new do</p>
-
-<p>puts "This is proc1"</p>
-
-<p>end</p>
-
-<p>proc2 = Proc.new do</p>
-
-<p>puts "This is proc2"</p>
-
-<p>end</p>
-
-<p>run_two_procs proc1, proc2</p>
-
-<p>If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
+<p>run_two_procs proc1, proc2
+```
+If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
 
 <p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that --> it will do it all implicitly, you don't need to specify anything here. If it can't find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
 
-<p>Def run_block</p>
+<p>``` ruby
+Def run_block
+  p = Proc.new # **see above
+  p.call
+end</p>
 
-<p>p = Proc.new # **</p>
+<p>run_block do
+puts "Hello World'</p>
 
-<p>p.call</p>
+<p>end
+```</p>
 
-<p>end</p>
+<p>In Ruby 1.9 there are 4 main ways to run or call a block:
+``` ruby Proc e.g.
+my_proc = Proc.new do |a|
+  puts "This is a proc and #{a} was passed along to me"
+my_proc.call(10) #call method that passes in 10
+my_proc.(20) #this isn't a typo, gets converted to a call
+my_proc[30] #
+my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
 
-<p>run_block do</p>
+<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }
+none = Proc.new { |number| number == 0 }</p>
 
-<p>puts "Hello World'</p>
+<p>case number
+when several
+  puts "several"
+when none
+  puts "none"
+end
+```
+-->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
 
-<p>end</p>
-
-<p>In Ruby 1.9 there are 4 main ways to run or call a block:</p>
-
-<p>my_proc = Proc.new do |a|</p>
-
-<p>puts "This is a proc and #{a} was passed along to me"</p>
-
-<p>my_proc.call(10) #call method that passes in 10</p>
-
-<p>my_proc.(20) #this isn't a typo, gets converted to a call</p>
-
-<p>my_proc[30] #</p>
-
-<p>my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
-
-<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }</p>
-
-<p>none = Proc.new { |number| number == 0 }</p>
-
-<p>case number</p>
-
-<p>when several</p>
-
-<p>puts "several"</p>
-
-<p>when none</p>
-
-<p>puts "none"</p>
-
-<p>end</p>
-
-<p>-->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
-Lambdas</p>
+<p><strong><em>Lambdas</em></strong></p>
 
 <p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
 Closures</p>
 
-<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.</p>
-
-<p>def run_proc(p)</p>
-
-<p>p.call</p>
-
-<p>end</p>
+<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.
+``` ruby
+def run_proc(p)
+  p.call
+end</p>
 
 <p>name = "Fred"</p>
 
 <p>print_a_name = proc { puts name } # this name doesn't exist in the definition above. This magic is called a closure. (23 Min)</p>
 
-<p>run_proc print_a_name</p>
+<p>run_proc print_a_name
+```</p>
 
-<p>ALSO:</p>
+<p>ALSO:
+``` ruby
+def run_proc(p)
+  p.call
+end</p>
 
-<p>def run_proc(p)</p>
+<p>name = "Fred"
+print_a_name = proc { puts name }
+name = "John"</p>
 
-<p>p.call</p>
+<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.
+```
+<a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></p>
 
-<p>end</p>
-
-<p>name = "Fred"</p>
-
-<p>print_a_name = proc { puts name }</p>
-
-<p>name = "John"</p>
-
-<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.</p>
-
-<p>Video:</p>
-
-<p>http://www.youtube.com/watch?v=VBC-G6hahWA</p>
-
-<p>DOCUMENTATION:</p>
-
-<p>http://www.ruby-doc.org/core-1.9.3/Proc.html</p>
+<p><a href="http://www.ruby-doc.org/core-1.9.3/Proc.html">DOCUMENTATION</a></p>
 
 <p>SOME MORE READING:</p>
 
-<p>http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</p>
+<p><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</a></p>
 
-<p>http://pine.fm/LearnToProgram/?Chapter=10</p>
+<p><a href="http://pine.fm/LearnToProgram/?Chapter=10">http://pine.fm/LearnToProgram/?Chapter=10</a></p>
 
-<p>http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</p>
+<p><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</a></p>
 
-<p>http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</p>
+<p><a href="http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html">http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</a></p>
 ]]></content>
   </entry>
   
@@ -217,13 +184,13 @@ Closures</p>
     <link href="http://ajonas.heroku.com/blog/2012/07/02/the-tap-method/"/>
     <updated>2012-07-02T10:52:00-04:00</updated>
     <id>http://ajonas.heroku.com/blog/2012/07/02/the-tap-method</id>
-    <content type="html"><![CDATA[<p>I haven't found great explanations for this yet but there is a video below...</p>
+    <content type="html"><![CDATA[<p>I haven't found great explanations for this yet but there is a video below... prety much the tap method allows you to initialize methods right off the bat.</p>
 
 <p>The tap method is available to all Ruby objects and serves as a way to have a block "act on" the method's caller and return the object called. Per the Ruby docs, "the primary purpose of this method is to 'tap into' a method chain, in order to perform operations on intermediate results within the chain". For some examples on using tap see MenTaLguY's post on Eavesdropping on Expressions. As he says in his post, "you can insert your code just about anywhere without disturbing the flow of data."</p>
 
 <p>I'm having some trouble following all this... Matt Stopa has a video below that is more for a beginner.</p>
 
-<p>[youtube http://www.youtube.com/watch?v=QAJMxBkYaUQ]</p>
+<p><a href="http://www.youtube.com/watch?v=QAJMxBkYaUQ">The video is here</a></p>
 ]]></content>
   </entry>
   
@@ -239,7 +206,7 @@ Closures</p>
 -Code is composed of the language, the name that you give things
 -The language is just a bunch of keywords that have reserved meaning (10 min)- you can't use them for anything else</p>
 
-<p>-Names
+<p>Names
 -Varaiables- store references to things. (they are lowercase and are previously undefined)- they are pointers/make references to data
 "The beginning of wisdom is calling things by its right name"
 Data- literals
@@ -277,7 +244,7 @@ Comparisons (28 min):</p>
 \"In the beginning.."
 "</p>
 
-<p>Branching (38 min)
+<p><strong><em>Branching</em></strong> (38 min)
 if, else, end branch (39 min)
 - the moment it encounters a truth, it is going to stop running the branches
 every if statement does not require an else clause</p>
@@ -292,26 +259,29 @@ every branch of an if statement operates independently of the other branches. th
 
 <p>-also have the unless keyword -- which is the converse of the if keyword-- this isn't preferred-- prefer the negation usually</p>
 
-<p>Logic (50 min)
+<p><strong><em>Logic</em></strong> (50 min)
 - once we have true and false, and we have expressions (like 1 &lt; 2), and we have if statments then we have all the ingredients for logical equations</p>
 
-<p>the OR operator ||
+<p><strong><em>the OR operator ||</em></strong>
+<code>ruby
 x = 2
-if (x/2 == 1) || (x == 1) -- as long as one of the expressions evaluates to true, then it passes</p>
+if (x/2 == 1) || (x == 1) # as long as one of the expressions evaluates to true, it passes
+</code></p>
 
 <p>The only thing that evaluates to false is nil (absence of expression) and false</p>
 
 <p>0 is true, 4 is true, "string" is true
 x = false || 4 --> this will return 4 -->> this will assign x to 4</p>
 
-<p>x = 1 || 2 --> x will equal one because the moment it encounters a true statement it stops executing the rest of the code</p>
+<p>x = 1 || 2 #--> x will equal one because the moment it encounters a true statement it stops executing the rest of the code</p>
 
-<p>the AND operator &amp;&amp;
+<p><strong><em>the AND operator &amp;&amp;</em></strong>
 for an AND operator to be true, both sides of the equation must be true
 so y = false &amp;&amp; puts 'hello' --> it will not even get to the puts statement because once it encounters the false it stops evaluating the expressions</p>
 
 <p>negation operator !
-SWITCHING (1 hr 4min)- switching between conditions
+<strong><em>SWITCHING</em></strong>
+(1 hr 4min)- switching between conditions
 if statement can get verbose and confusing and sometimes they aren't good for checking multiple related conditions</p>
 
 <p>case x
@@ -321,35 +291,41 @@ e.g. case x
 x == 1
 y == 4 #this will be compared to x</p>
 
-<p>you can combine &amp;&amp; and || operators.</p>
-
-<p>x = 1 if 1 &lt; 2 #=> x = 1
-x = 1 if 2 &lt; 1 #=> nil (1 hr 16 min)</p>
-
-<p>PART 2 Video
+<p>you can combine &amp;&amp; and || operators.
+<code>ruby
+x = 1 if 1 &lt; 2 #=&gt; x = 1
+x = 1 if 2 &lt; 1 #=&gt; nil (1 hr 16 min)
+</code>
+PART 2 Video
 Running through the exercises</p>
 
 <p>(10 min)
+``` ruby
 q = "a"
 when q.downcase == "a" #=> this is eval as false.
 puts "its a vowel"</p>
 
 <p>q = "a"
 when "a"
-puts "it's a vowel" #=> this is the way to do it</p>
+puts "it's a vowel" #=> this is the way to do it
+```</p>
 
-<p>LOOPING (12min 30 sec)
+<p><strong><em>LOOPING</em></strong> (12min 30 sec)
 if statements and case statements area how we control flow so that the program is not just stupidly linear - we can have conditions and ambiguity
 another way to do this with loops
 -the simpliest loop is with the while keyword
 - it is check a condition or expression and until that expression evaluates to true it will run that code</p>
 
-<p>x = 1
-while x &lt; 10
-puts x
-x += 1 #=> will increment x by 1. just like x = x + 1
+<p>``` ruby
+x = 1</p>
+
+<p>while x &lt; 10
+  puts x
+  x += 1 #=> will increment x by 1. just like x = x + 1
 end
-the break keyword will exit the current loop --> 23 min</p>
+```</p>
+
+<p>the break keyword will exit the current loop --> 23 min</p>
 
 <p>if I have an unexpected end -- you have a dangling end, but you often don't know where... this is why indentation is so important</p>
 
@@ -361,7 +337,7 @@ the break keyword will exit the current loop --> 23 min</p>
 
 <p>->encountered 5 types thus far--> strings, intergers, floats, nil and false</p>
 
-<p>ARRAYS- (26min)-- an indexed collection of objects-- a type to hold other values
+<p><strong><em>ARRAYS</em></strong>- (26min)-- an indexed collection of objects-- a type to hold other values
 the literal for an array is []
 - if you miss a comma [1, 2 3]--> you will get a syntax error
 - for array [1, 2, 3][0]--> this indexes the first slot. Remember that it states counting at the zero element
@@ -370,13 +346,13 @@ the literal for an array is []
 <p>puts days_of_the_week[(days_of_the_week.size-1)] #=> will return the 6th element
 weekdays = days_of_the_week[1, 5] --> this is a range of position one to five</p>
 
-<p>arrays in Ruby are elastic (52 min)</p>
-
-<p>a = [[1, 2], "a"]
-a[0] # => [1,2]
-a[0][1] => 2</p>
-
-<p>RECEIVERS (55 min)
+<p>arrays in Ruby are elastic (52 min)
+<code>ruby
+a = [[1, 2], "a"]
+a[0] # =&gt; [1,2]
+a[0][1] =&gt; 2
+</code>
+<strong><em>RECEIVERS</em></strong> (55 min)
 -Ruby is an object oriented language so that means that everything is an object. We interact with objects by sending them methods using methods</p>
 
 <p>slice(0,2) # => this slices out the first 3 elements
@@ -384,7 +360,7 @@ concat("uth") # => this appends "uth" to the end</p>
 
 <p>chomp and slice are out periodic elements (1hr 8 min)</p>
 
-<p>STRING METHODS:
+<p><strong><em>STRING METHODS:</em></strong>
 strip gets rid of both leading and trailing spaces
 lstrip - rid of leading spaces
 tstrip - trailing spaces</p>
@@ -393,13 +369,13 @@ tstrip - trailing spaces</p>
 
 <p>gsub (1hr 16min)- global substitution - takes two arguments (the pattern, the replacement value)</p>
 
-<p>Booleans-
+<p><strong><em>Booleans-</em></strong>
 puts"".empty? #=> true
 put " ".empty? #=> false</p>
 
 <p>eql?, starts_with?, include?</p>
 
-<p>Return Methods (1hr 18min)-
+<p><strong><em>Return Methods</em></strong> (1hr 18min)-
 to_i
 size
 next --> next thing in a sequence. puts "a".next # => "b"</p>

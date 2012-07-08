@@ -8,7 +8,7 @@ categories: rails, lecture, notes
 
 Rails Lecture I - July 2
 
-How the web works:
+***How the web works:***
 -the requests we send to other servers have headers with info about the request
 -you get the response with a header and the body
 -the body is just text and data with HTML
@@ -31,7 +31,7 @@ all models are sigular
 controller songs_controller.rb
 views songs/
 
-Gem:
+***Gems:***
 pre-packaged piece of software that ruby uses
 
 Config Folder--> where the configuration of our app lives
@@ -39,7 +39,7 @@ Config Folder--> where the configuration of our app lives
 
 App Folder: spend most of our time in the app directory
 
-MVC: (7:42 pm)
+***MVC:*** (7:42 pm)
 Models: define how data is created, retrieved, updated and deleted--> the only code that defined these 4 actions are in the model
 
 Controllers: where to send the data to
@@ -59,7 +59,7 @@ any code that doesn't require the rails stack to run
 vendor: any 3rd party library that you didn't write
 -- similar to the lib directory that you didn't write
 
-REST:
+***REST:***
 -Representational State Transfer
 -URL: unifeied resources locators
 - there should be a unified way to expose resources to the world
@@ -69,17 +69,19 @@ REST:
 rails generate resource song title:string duration:integer #always singular
 rails generate scaffold song title:string #in the beginning the first few resources are created by scaffolds
 
-MIGRATION: defines a db strcuture
+***MIGRATIONS:*** defines a db strcuture
 every resource has it's own table
 
-SQL: server query language or standard query language
+***SQL:*** server query language or standard query language
 
-SCHEMA- describes the structure of the DB
+***SCHEMA-*** describes the structure of the DB
 
-RAKE: a ruby library to run background tasks
+***RAKE:*** a ruby library to run background tasks
+```
 rake stats-- gives me stats on the app
 rake about--> outputs info about the environment, etc
 rake -T --> outputs provides commands
+```
 
 VIDEO 2...
 
@@ -89,13 +91,13 @@ every migration should one and only one thing
 rake db:migrae runs the migration
 rake db:rollback rolls back the migration
 
-OBJECT ORIENTATION
+***OBJECT ORIENTATION***
 -what to create metaphors in our code to representations of the real world
-
+``` ruby
 Song.find(2) #=> finds the object of id 2
 Song.all #=> returns all the instances of the class
-
-ORM: object relational mappers
+```
+***ORM: object relational mappers***
 - a class is to a table : an instance of a class is to a row of a table
 -every instance is going to wrap a row of a table
 -one to one relationship between an instance and a row
@@ -103,6 +105,6 @@ ORM: object relational mappers
 
 Programming is just codifying procedural knowledge
 
-DOCUMENTATION:
+***DOCUMENTATION:***
 Rails Guides: more like how-tos
 Rails API: the more technical version

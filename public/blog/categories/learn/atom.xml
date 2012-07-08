@@ -4,7 +4,7 @@
   <title><![CDATA[Category: learn | Documenting all this...]]></title>
   <link href="http://ajonas.heroku.com/blog/categories/learn/atom.xml" rel="self"/>
   <link href="http://ajonas.heroku.com/"/>
-  <updated>2012-07-06T15:23:05-04:00</updated>
+  <updated>2012-07-08T18:08:58-04:00</updated>
   <id>http://ajonas.heroku.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -27,155 +27,121 @@ PROCS:</p>
 
 <p>A proc --> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
 
-<p>E.G.--></p>
+<p>``` ruby E.G.
+class Array
+def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.
+  shuffle.each do |el|</p>
 
-<p>class Array</p>
+<pre><code>b.call el  #=&gt; b is a proc
+end
+</code></pre>
 
-<p>def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.</p>
+<p>  end
+end</p>
 
-<p>shuffle.each do |el|</p>
+<p>[1,2,3,4,5].random_each do |el|
+puts |el|</p>
 
-<p>b.call el  #=> b is a proc</p>
+<p>end
+```
+You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
 
-<p>end</p>
+<p>``` ruby E.G.
+Def run_two_procs (a, b)
+  a.call
+  b.call
+end</p>
 
-<p>end</p>
+<p>proc1 = Proc.new do
+puts "This is proc1"
+end</p>
 
-<p>end</p>
+<p>proc2 = Proc.new do
+puts "This is proc2"
+end</p>
 
-<p>[1,2,3,4,5].random_each do |el|</p>
-
-<p>puts |el|</p>
-
-<p>end</p>
-
-<p>You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
-
-<p>E.G.</p>
-
-<p>Def run_two_procs (a, b)</p>
-
-<p>a.call</p>
-
-<p>b.call</p>
-
-<p>end</p>
-
-<p>proc1 = Proc.new do</p>
-
-<p>puts "This is proc1"</p>
-
-<p>end</p>
-
-<p>proc2 = Proc.new do</p>
-
-<p>puts "This is proc2"</p>
-
-<p>end</p>
-
-<p>run_two_procs proc1, proc2</p>
-
-<p>If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
+<p>run_two_procs proc1, proc2
+```
+If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
 
 <p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that --> it will do it all implicitly, you don't need to specify anything here. If it can't find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
 
-<p>Def run_block</p>
+<p>``` ruby
+Def run_block
+  p = Proc.new # **see above
+  p.call
+end</p>
 
-<p>p = Proc.new # **</p>
+<p>run_block do
+puts "Hello World'</p>
 
-<p>p.call</p>
+<p>end
+```</p>
 
-<p>end</p>
+<p>In Ruby 1.9 there are 4 main ways to run or call a block:
+``` ruby Proc e.g.
+my_proc = Proc.new do |a|
+  puts "This is a proc and #{a} was passed along to me"
+my_proc.call(10) #call method that passes in 10
+my_proc.(20) #this isn't a typo, gets converted to a call
+my_proc[30] #
+my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
 
-<p>run_block do</p>
+<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }
+none = Proc.new { |number| number == 0 }</p>
 
-<p>puts "Hello World'</p>
+<p>case number
+when several
+  puts "several"
+when none
+  puts "none"
+end
+```
+-->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
 
-<p>end</p>
-
-<p>In Ruby 1.9 there are 4 main ways to run or call a block:</p>
-
-<p>my_proc = Proc.new do |a|</p>
-
-<p>puts "This is a proc and #{a} was passed along to me"</p>
-
-<p>my_proc.call(10) #call method that passes in 10</p>
-
-<p>my_proc.(20) #this isn't a typo, gets converted to a call</p>
-
-<p>my_proc[30] #</p>
-
-<p>my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
-
-<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }</p>
-
-<p>none = Proc.new { |number| number == 0 }</p>
-
-<p>case number</p>
-
-<p>when several</p>
-
-<p>puts "several"</p>
-
-<p>when none</p>
-
-<p>puts "none"</p>
-
-<p>end</p>
-
-<p>-->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
-Lambdas</p>
+<p><strong><em>Lambdas</em></strong></p>
 
 <p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
 Closures</p>
 
-<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.</p>
-
-<p>def run_proc(p)</p>
-
-<p>p.call</p>
-
-<p>end</p>
+<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.
+``` ruby
+def run_proc(p)
+  p.call
+end</p>
 
 <p>name = "Fred"</p>
 
 <p>print_a_name = proc { puts name } # this name doesn't exist in the definition above. This magic is called a closure. (23 Min)</p>
 
-<p>run_proc print_a_name</p>
+<p>run_proc print_a_name
+```</p>
 
-<p>ALSO:</p>
+<p>ALSO:
+``` ruby
+def run_proc(p)
+  p.call
+end</p>
 
-<p>def run_proc(p)</p>
+<p>name = "Fred"
+print_a_name = proc { puts name }
+name = "John"</p>
 
-<p>p.call</p>
+<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.
+```
+<a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></p>
 
-<p>end</p>
-
-<p>name = "Fred"</p>
-
-<p>print_a_name = proc { puts name }</p>
-
-<p>name = "John"</p>
-
-<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.</p>
-
-<p>Video:</p>
-
-<p>http://www.youtube.com/watch?v=VBC-G6hahWA</p>
-
-<p>DOCUMENTATION:</p>
-
-<p>http://www.ruby-doc.org/core-1.9.3/Proc.html</p>
+<p><a href="http://www.ruby-doc.org/core-1.9.3/Proc.html">DOCUMENTATION</a></p>
 
 <p>SOME MORE READING:</p>
 
-<p>http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</p>
+<p><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</a></p>
 
-<p>http://pine.fm/LearnToProgram/?Chapter=10</p>
+<p><a href="http://pine.fm/LearnToProgram/?Chapter=10">http://pine.fm/LearnToProgram/?Chapter=10</a></p>
 
-<p>http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</p>
+<p><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</a></p>
 
-<p>http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</p>
+<p><a href="http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html">http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</a></p>
 ]]></content>
   </entry>
   

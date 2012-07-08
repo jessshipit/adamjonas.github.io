@@ -9,7 +9,15 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Follow directions here&#8230; Setting Up Octopress http://octopress.org/docs/setup/ Had one hiccup in my system didn&#8217;t have Ruby 1.9.2 which . &hellip;">
+  <meta name="description" content="Lecture 2 BASH 1
+2
+3
+4
+cd .. # change to up a directory
+cd . # change to current directory
+ls # list
+cd ~ #home directory Resources
+- the thing you &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +78,186 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/07/08/lecture-2-rails/">Lecture 2 Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-08T14:21:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong><em>Lecture 2</em></strong></p>
+
+<p>BASH</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd .. # change to up a directory
+</span><span class='line'>cd . # change to current directory
+</span><span class='line'>ls # list
+</span><span class='line'>cd ~ #home directory</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>Resources</em></strong>
+- the thing you want to let users manipulate</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rails generate resource Mixtape nae:string</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rake-
+a ruby language for running scripts</p>
+
+<p>Models-
+main component of your application, they represent the resources of your application
+every model is just a ruby class definition located in the model</p>
+
+<p>so the mixtape model defines a class Mixtape that is the object that will allow our app to CRUD mixtapes</p>
+
+<p>If we a Users model we have a users table</p>
+
+<p>Goal for today is to understand the request cycle</p>
+
+<p><strong><em>Routes</em></strong></p>
+
+<p><strong><em>DSL- Domain Specific Language</em></strong> (3:08PM)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">match</span> <span class="s1">&#39;/foo&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs#foo&#39;</span> <span class="c1"># this needs to be sent to a controller</span>
+</span><span class='line'><span class="c1"># a songs controller with the foo action</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>we need to find something that can handle the route&#8211;> we want to send it to a waiter, like ordering an A7 at a chinese resturant</p>
+
+<p><strong>an ACTION is just a method defined in the class!!</strong>
+a Controller is just a class &#8211;> a grouping that relates to songs</p>
+
+<p>if it can&#8217;t find a page it is 404</p>
+
+<p>every action in the app needs to be defined</p>
+
+<p>5 keywords available&#8230;
+MATCH
+GET
+POST
+PUT
+DELETE</p>
+
+<p>cmd T &#8211;> opens a window for you to access files</p>
+
+<p><strong><em>rake routes:</em></strong>
+first column is the request
+second is http verb
+third is url or pattern
+fourth is the contoller#action</p>
+
+<p>resources macro- defines all the restful actions for the resource</p>
+
+<p>?? so what was the main problem with the post request?</p>
+
+<p><strong><em>Controllers &amp; #actions </em></strong></p>
+
+<figure class='code'><figcaption><span>e.g. of actions in the Songs controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">name</span>
+</span><span class='line'>  <span class="n">render</span> <span class="ss">:template</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs/name&#39;</span> <span class="c1">#explicit template rendering</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># exactly the same as this...</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">name</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Renders</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">render</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s2">&quot;name&quot;</span> <span class="c1"># in the views folder named after the controller</span>
+</span><span class='line'><span class="n">render</span> <span class="ss">:template</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs/name&#39;</span> <span class="c1"># need to specify the full path</span>
+</span><span class='line'><span class="n">render</span> <span class="ss">:xml</span>
+</span><span class='line'><span class="n">render</span> <span class="ss">:json</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Video 2 starts 4PM
+diff between &lt;% and =&lt;%
+&lt;% will get executed, but will not show in the html
+&lt;%= will get executed and will also show in the html</p>
+
+<p><strong><em> Instance variables </em></strong>
+Instance variables are the only thing passed from the controller to the views
+??? do class variables get passed as well?</p>
+
+<p><strong>link_to</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s1">&#39;Search&#39;</span><span class="p">,</span> <span class="s1">&#39;http://google.com&#39;</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>we have two methods <em>path and </em>url</p>
+
+<figure class='code'><figcaption><span>e.g. of link_to</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s1">&#39;Show&#39;</span><span class="p">,</span> <span class="s1">&#39;song&#39;</span> <span class="o">%&gt;</span> <span class="c1">#polymorphic interface </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3 pars of rails (4:10 PM)
+ORM- active record
+Action controller
+Action view</p>
+
+<p>LEARN MORE: there are lots of polymorphic interfaces play nicely with active record</p>
+
+<figure class='code'><figcaption><span>automatic routing with namespacing with_options</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">with_options</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="s1">&#39;site&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">get</span> <span class="s1">&#39;about&#39;</span>
+</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">get</span> <span class="s1">&#39;home&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/07/05/octopress/">Octopress</a></h1>
     
     
@@ -97,7 +285,7 @@
 
 <p>Setting Up Octopress</p>
 
-<p>http://octopress.org/docs/setup/</p>
+<p><a href="http://octopress.org/docs/setup/">http://octopress.org/docs/setup/</a></p>
 
 <p>Had one hiccup in my system didn&#8217;t have Ruby 1.9.2 which .rvmrc file requires (https://rvm.io//workflow/rvmrc/). I had to go ahead and install it.</p>
 
@@ -106,18 +294,23 @@
 <p>To see on localhost:4000
 rake preview</p>
 
-<h3>To pushL:</h3>
+<p><strong>To push:</strong></p>
 
-<p>rake generate
-git add .
-git commit -m &#8216;site updated&#8217;
-git push heroku master</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>git add .
+</span><span class='line'>git commit -m 'site updated'
+</span><span class='line'>git push heroku master</span></code></pre></td></tr></table></div></figure>
 
-<p>http://octopress.org/docs/deploying/heroku/</p>
+
+<p><a href="http://octopress.org/docs/deploying/heroku/">Octopress delpoy instructons</a></p>
 
 <p>That all went fairly well&#8230; though I didn&#8217;t understand all the intermediate steps. I&#8217;ll have to take closer look.</p>
 
-<p>Markdown language cheat sheet: http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/</p>
+<p><a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/">Markdown language cheat sheet</a></p>
 </div>
   
   
@@ -162,155 +355,194 @@ PROCS:</p>
 
 <p>A proc &#8211;> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
 
-<p>E.G.&#8211;></p>
+<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Array</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">random_each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>  <span class="c1"># =&gt; with the ampersand, b essentially becomes a reference to the code block below.</span>
+</span><span class='line'>  <span class="n">shuffle</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">el</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">b</span><span class="o">.</span><span class="n">call</span> <span class="n">el</span>  <span class="c1">#=&gt; b is a proc</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">random_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">el</span><span class="o">|</span>
+</span><span class='line'><span class="nb">puts</span> <span class="o">|</span><span class="n">el</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>class Array</p>
-
-<p>def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.</p>
-
-<p>shuffle.each do |el|</p>
-
-<p>b.call el  #=> b is a proc</p>
-
-<p>end</p>
-
-<p>end</p>
-
-<p>end</p>
-
-<p>[1,2,3,4,5].random_each do |el|</p>
-
-<p>puts |el|</p>
-
-<p>end</p>
 
 <p>You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
 
-<p>E.G.</p>
+<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Def</span> <span class="n">run_two_procs</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">a</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>  <span class="n">b</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">proc1</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;This is proc1&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">proc2</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;This is proc2&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">run_two_procs</span> <span class="n">proc1</span><span class="p">,</span> <span class="n">proc2</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Def run_two_procs (a, b)</p>
-
-<p>a.call</p>
-
-<p>b.call</p>
-
-<p>end</p>
-
-<p>proc1 = Proc.new do</p>
-
-<p>puts &#8220;This is proc1&#8221;</p>
-
-<p>end</p>
-
-<p>proc2 = Proc.new do</p>
-
-<p>puts &#8220;This is proc2&#8221;</p>
-
-<p>end</p>
-
-<p>run_two_procs proc1, proc2</p>
 
 <p>If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
 
 <p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that &#8211;> it will do it all implicitly, you don&#8217;t need to specify anything here. If it can&#8217;t find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
 
-<p>Def run_block</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Def</span> <span class="n">run_block</span>
+</span><span class='line'>  <span class="nb">p</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="c1"># **see above</span>
+</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">run_block</span> <span class="k">do</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Hello World&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>p = Proc.new # **</p>
-
-<p>p.call</p>
-
-<p>end</p>
-
-<p>run_block do</p>
-
-<p>puts &#8220;Hello World&#8217;</p>
-
-<p>end</p>
 
 <p>In Ruby 1.9 there are 4 main ways to run or call a block:</p>
 
-<p>my_proc = Proc.new do |a|</p>
+<figure class='code'><figcaption><span>Proc e.g.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">my_proc</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;This is a proc and </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2"> was passed along to me&quot;</span>
+</span><span class='line'><span class="n">my_proc</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1">#call method that passes in 10</span>
+</span><span class='line'><span class="n">my_proc</span><span class="o">.</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="c1">#this isn&#39;t a typo, gets converted to a call</span>
+</span><span class='line'><span class="n">my_proc</span><span class="o">[</span><span class="mi">30</span><span class="o">]</span> <span class="c1">#</span>
+</span><span class='line'><span class="n">my_proc</span> <span class="o">===</span> <span class="mi">40</span> <span class="c1"># triple equal is called the case equality operator, it&#39;s primary function is used in case statements</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">several</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="p">}</span>
+</span><span class='line'><span class="n">none</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="n">number</span>
+</span><span class='line'><span class="k">when</span> <span class="n">several</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;several&quot;</span>
+</span><span class='line'><span class="k">when</span> <span class="n">none</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;none&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>puts &#8220;This is a proc and #{a} was passed along to me&#8221;</p>
 
-<p>my_proc.call(10) #call method that passes in 10</p>
+<p>&#8211;>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</p>
 
-<p>my_proc.(20) #this isn&#8217;t a typo, gets converted to a call</p>
-
-<p>my_proc[30] #</p>
-
-<p>my_proc === 40 # triple equal is called the case equality operator, it&#8217;s primary function is used in case statements</p>
-
-<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }</p>
-
-<p>none = Proc.new { |number| number == 0 }</p>
-
-<p>case number</p>
-
-<p>when several</p>
-
-<p>puts &#8220;several&#8221;</p>
-
-<p>when none</p>
-
-<p>puts &#8220;none&#8221;</p>
-
-<p>end</p>
-
-<p>&#8211;>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away
-Lambdas</p>
+<p><strong><em>Lambdas</em></strong></p>
 
 <p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
 Closures</p>
 
 <p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.</p>
 
-<p>def run_proc(p)</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">run_proc</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Fred&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print_a_name</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="nb">puts</span> <span class="nb">name</span> <span class="p">}</span> <span class="c1"># this name doesn&#39;t exist in the definition above. This magic is called a closure. (23 Min)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">run_proc</span> <span class="n">print_a_name</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>p.call</p>
-
-<p>end</p>
-
-<p>name = &#8220;Fred&#8221;</p>
-
-<p>print_a_name = proc { puts name } # this name doesn&#8217;t exist in the definition above. This magic is called a closure. (23 Min)</p>
-
-<p>run_proc print_a_name</p>
 
 <p>ALSO:</p>
 
-<p>def run_proc(p)</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">run_proc</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Fred&quot;</span>
+</span><span class='line'><span class="n">print_a_name</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="nb">puts</span> <span class="nb">name</span> <span class="p">}</span>
+</span><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">run_proc</span> <span class="n">print_a_name</span> <span class="c1"># =&gt; now this will output John because it kept a reference to the local variable.</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>p.call</p>
 
-<p>end</p>
+<p><a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></p>
 
-<p>name = &#8220;Fred&#8221;</p>
-
-<p>print_a_name = proc { puts name }</p>
-
-<p>name = &#8220;John&#8221;</p>
-
-<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.</p>
-
-<p>Video:</p>
-
-<p>http://www.youtube.com/watch?v=VBC-G6hahWA</p>
-
-<p>DOCUMENTATION:</p>
-
-<p>http://www.ruby-doc.org/core-1.9.3/Proc.html</p>
+<p><a href="http://www.ruby-doc.org/core-1.9.3/Proc.html">DOCUMENTATION</a></p>
 
 <p>SOME MORE READING:</p>
 
-<p>http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</p>
+<p><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</a></p>
 
-<p>http://pine.fm/LearnToProgram/?Chapter=10</p>
+<p><a href="http://pine.fm/LearnToProgram/?Chapter=10">http://pine.fm/LearnToProgram/?Chapter=10</a></p>
 
-<p>http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</p>
+<p><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</a></p>
 
-<p>http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</p>
+<p><a href="http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html">http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</a></p>
 </div>
   
   
@@ -346,43 +578,51 @@ Closures</p>
   </header>
 
 
-  <div class="entry-content"><h2>In a case statement&#8230;</h2>
+  <div class="entry-content"><h3>In a case statement&#8230;</h3>
 
-<p>case number</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">case</span> <span class="n">number</span>
+</span><span class='line'>  <span class="k">when</span> <span class="mi">5</span>
+</span><span class='line'>    <span class="c1">#some code</span>
+</span><span class='line'>  <span class="k">when</span> <span class="mi">3</span>
+</span><span class='line'>    <span class="c1">#more code</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="c1">#something else</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>when 5</p>
-
-<p>(#)some code</p>
-
-<p>when 3</p>
-
-<p>(#)more code</p>
-
-<p>else</p>
-
-<p>(#)something else</p>
-
-<p>end</p>
 
 <p>Behind the scenes 5 is being compared to number with the === operator, so 5 === number, 3 === number, etc</p>
 
-<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">several</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="p">}</span>
+</span><span class='line'><span class="n">none</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="n">number</span>
+</span><span class='line'>  <span class="k">when</span> <span class="n">several</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;several&quot;</span>
+</span><span class='line'>  <span class="k">when</span> <span class="n">none</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;none&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>none = Proc.new { |number| number == 0 }</p>
 
-<p>case number</p>
-
-<p>when several</p>
-
-<p>puts &#8220;several&#8221;</p>
-
-<p>when none</p>
-
-<p>puts &#8220;none&#8221;</p>
-
-<p>end</p>
-
-<p>(#)In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</p>
+<p>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</p>
 </div>
   
   
@@ -420,7 +660,7 @@ Closures</p>
 
   <div class="entry-content"><p>Rails Lecture I - July 2</p>
 
-<p>How the web works:
+<p><strong><em>How the web works:</em></strong>
 -the requests we send to other servers have headers with info about the request
 -you get the response with a header and the body
 -the body is just text and data with HTML
@@ -443,7 +683,7 @@ all models are sigular
 controller songs_controller.rb
 views songs/</p>
 
-<p>Gem:
+<p><strong><em>Gems:</em></strong>
 pre-packaged piece of software that ruby uses</p>
 
 <p>Config Folder&#8211;> where the configuration of our app lives
@@ -451,7 +691,7 @@ pre-packaged piece of software that ruby uses</p>
 
 <p>App Folder: spend most of our time in the app directory</p>
 
-<p>MVC: (7:42 pm)
+<p><strong><em>MVC:</em></strong> (7:42 pm)
 Models: define how data is created, retrieved, updated and deleted&#8211;> the only code that defined these 4 actions are in the model</p>
 
 <p>Controllers: where to send the data to
@@ -471,7 +711,7 @@ any code that doesn&#8217;t require the rails stack to run</p>
 <p>vendor: any 3rd party library that you didn&#8217;t write
 &#8211; similar to the lib directory that you didn&#8217;t write</p>
 
-<p>REST:
+<p><strong><em>REST:</em></strong>
 -Representational State Transfer
 -URL: unifeied resources locators
 - there should be a unified way to expose resources to the world
@@ -481,17 +721,22 @@ any code that doesn&#8217;t require the rails stack to run</p>
 <p>rails generate resource song title:string duration:integer #always singular
 rails generate scaffold song title:string #in the beginning the first few resources are created by scaffolds</p>
 
-<p>MIGRATION: defines a db strcuture
+<p><strong><em>MIGRATIONS:</em></strong> defines a db strcuture
 every resource has it&#8217;s own table</p>
 
-<p>SQL: server query language or standard query language</p>
+<p><strong><em>SQL:</em></strong> server query language or standard query language</p>
 
-<p>SCHEMA- describes the structure of the DB</p>
+<p><strong><em>SCHEMA-</em></strong> describes the structure of the DB</p>
 
-<p>RAKE: a ruby library to run background tasks
-rake stats&#8211; gives me stats on the app
-rake about&#8211;> outputs info about the environment, etc
-rake -T &#8211;> outputs provides commands</p>
+<p><strong><em>RAKE:</em></strong> a ruby library to run background tasks</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake stats-- gives me stats on the app
+</span><span class='line'>rake about--&gt; outputs info about the environment, etc
+</span><span class='line'>rake -T --&gt; outputs provides commands</span></code></pre></td></tr></table></div></figure>
+
 
 <p>VIDEO 2&#8230;</p>
 
@@ -501,13 +746,17 @@ every migration should one and only one thing</p>
 <p>rake db:migrae runs the migration
 rake db:rollback rolls back the migration</p>
 
-<p>OBJECT ORIENTATION
+<p><strong><em>OBJECT ORIENTATION</em></strong>
 -what to create metaphors in our code to representations of the real world</p>
 
-<p>Song.find(2) #=> finds the object of id 2
-Song.all #=> returns all the instances of the class</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; finds the object of id 2</span>
+</span><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">all</span> <span class="c1">#=&gt; returns all the instances of the class</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>ORM: object relational mappers
+
+<p><strong><em>ORM: object relational mappers</em></strong>
 - a class is to a table : an instance of a class is to a row of a table
 -every instance is going to wrap a row of a table
 -one to one relationship between an instance and a row
@@ -515,7 +764,7 @@ Song.all #=> returns all the instances of the class</p>
 
 <p>Programming is just codifying procedural knowledge</p>
 
-<p>DOCUMENTATION:
+<p><strong><em>DOCUMENTATION:</em></strong>
 Rails Guides: more like how-tos
 Rails API: the more technical version</p>
 </div>
@@ -553,13 +802,13 @@ Rails API: the more technical version</p>
   </header>
 
 
-  <div class="entry-content"><p>I haven&#8217;t found great explanations for this yet but there is a video below&#8230;</p>
+  <div class="entry-content"><p>I haven&#8217;t found great explanations for this yet but there is a video below&#8230; prety much the tap method allows you to initialize methods right off the bat.</p>
 
 <p>The tap method is available to all Ruby objects and serves as a way to have a block &#8220;act on&#8221; the method&#8217;s caller and return the object called. Per the Ruby docs, &#8220;the primary purpose of this method is to &#8216;tap into&#8217; a method chain, in order to perform operations on intermediate results within the chain&#8221;. For some examples on using tap see MenTaLguY&#8217;s post on Eavesdropping on Expressions. As he says in his post, &#8220;you can insert your code just about anywhere without disturbing the flow of data.&#8221;</p>
 
 <p>I&#8217;m having some trouble following all this&#8230; Matt Stopa has a video below that is more for a beginner.</p>
 
-<p>[youtube http://www.youtube.com/watch?v=QAJMxBkYaUQ]</p>
+<p><a href="http://www.youtube.com/watch?v=QAJMxBkYaUQ">The video is here</a></p>
 </div>
   
   
@@ -597,7 +846,7 @@ Rails API: the more technical version</p>
 
   <div class="entry-content"><p>This error generally happens when you accidentally recursively changing an attribute. If you have a username attribute in User model, and a virtual attribute named username, that is directly changing the username, you end up calling the virtual, the virtual calls the virtual again and so on.. Therefore, take a look on whether something like that happens somewhere in your code.</p>
 
-<p>SEE: http://stackoverflow.com/questions/5446055/stack-level-too-deep-error</p>
+<p>SEE: <a href="http://stackoverflow.com/questions/5446055/stack-level-too-deep-error">http://stackoverflow.com/questions/5446055/stack-level-too-deep-error</a></p>
 </div>
   
   
@@ -665,35 +914,64 @@ array.map.with_index</p>
 
 <p>count takes a block (how many is this true for&#8230;)</p>
 
-<p>?? diff between take and select
-ENUM METHODS:
-.extend(Enumerable) #=> extends the Enum functionality if operating on a single object</p>
+<p>?? diff between take and select</p>
 
-<p>each_slice doesn&#8217;t overlap like each_cons</p>
+<figure class='code'><figcaption><span>Some Enum methods</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Enumerable</span><span class="p">)</span> <span class="c1">#=&gt; extends the Enum functionality if operating on a single object</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">each_slice</span> <span class="c1"># doesn&#39;t overlap like each_cons</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;prime&#39;</span> <span class="c1">#there is a Prime class </span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">any?</span> <span class="c1"># --&gt; is there anything True in this array?</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">none?</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">one?</span> <span class="c1"># (just one-- will exit after it&#39;s first hit)</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">all?</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="n">a</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="o">]</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">partition</span> <span class="p">{</span><span class="n">block</span> <span class="n">that</span> <span class="n">calls</span> <span class="n">the</span> <span class="n">even</span> <span class="nb">method</span><span class="p">}</span> <span class="c1">#=&gt; wtih divide the result into two arrays a true an other</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">slice_before</span> <span class="c1">#=&gt; [[1,3], [2], [4,5,7], [6]]</span>
+</span><span class='line'><span class="n">chunk</span> <span class="n">discards</span> <span class="n">results</span> <span class="k">for</span> <span class="n">which</span> <span class="n">the</span> <span class="n">block</span> <span class="n">evaluates</span> <span class="n">to</span> <span class="kp">nil</span> <span class="c1">#=&gt; not useful- obscure method</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">take</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">drop</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">take_while</span> <span class="c1">#=&gt; e.g. while true execute below</span>
+</span><span class='line'><span class="n">drop_while</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">permutation</span><span class="o">.</span><span class="n">to_a</span> <span class="c1"># =&gt; yields all the permuatations of the array [[1,2,3], [1,3,2], [2,1,3]]</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">combination</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="c1">#=&gt; yields the combinations (in this case 2 at a time [1,2], [1,3], [2,3])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">sample</span> <span class="c1">#=&gt; pulls a random sample from the array</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">shuffle</span> <span class="c1"># =&gt; will randomize the sample</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>There is a Prime class (require &#8216;prime&#8217;)</p>
-
-<p>array.any? &#8211;> is there anything True in this array?
-array.none?
-array.one? (just one&#8211; will exit after it&#8217;s first hit)
-array.all?</p>
-
-<p>array = [a,3,2,4,5,6,7]
-array.partition {block that calls the even method} #=> wtih divide the result into two arrays a true an other
-array.slice_before #=> [[1,3], [2], [4,5,7], [6]]
-chunk discards results for which the block evaluates to nil #=> not useful- obscure method
-array.take
-array.drop</p>
-
-<p>take_while #=> e.g. while true execute below
-drop_while</p>
-
-<p>array = [1,2,3]
-array.permutation.to_a # => yields all the permuatations of the array [[1,2,3], [1,3,2], [2,1,3]]
-array.combination(2).to_a #=> yields the combinations (in this case 2 at a time [1,2], [1,3], [2,3])</p>
-
-<p>array.sample #=> pulls a random sample from the array
-array.shuffle # => will randomize the sample</p>
 </div>
   
   
@@ -729,15 +1007,15 @@ array.shuffle # => will randomize the sample</p>
   </header>
 
 
-  <div class="entry-content"><p>Sinatra Book, it&#8217;s a quick read: http://sinatra-book.gittr.com/</p>
+  <div class="entry-content"><p>Sinatra Book, it&#8217;s a quick read: <a href="http://sinatra-book.gittr.com/">http://sinatra-book.gittr.com/</a></p>
 
 <p>Seem like a really simple version of Rails&#8211; A rack based application with lots of common features in terms of routing, filters, ERB&#8230;</p>
 
-<p>Here&#8217;s a screencast on Sinatra: http://screencasts.org/episodes/introduction-to-sinatra (free)</p>
+<p>Here&#8217;s a screencast on Sinatra: <a href="http://screencasts.org/episodes/introduction-to-sinatra">http://screencasts.org/episodes/introduction-to-sinatra</a> (free)</p>
 
-<p>There is a peepcode on Sinatra: https://peepcode.com/products/sinatra ($)</p>
+<p>There is a peepcode on Sinatra: <a href="https://peepcode.com/products/sinatra">https://peepcode.com/products/sinatra</a> ($)</p>
 
-<p>Another paid one here: http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra ($)</p>
+<p>Another paid one here: <a href="http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra">http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra</a> ($)</p>
 </div>
   
   
@@ -784,45 +1062,81 @@ map and collect &#8211;> returns the results of the operation&#8211;> so it uts 
 
 <p>is_a? &#8211;> is this an array, this is a validator</p>
 
-<p>HOW TO BUILD CLASS METHODS
+<p><strong><em>HOW TO BUILD CLASS METHODS</em></strong>
 methods that don&#8217;t apply to the instance of the class but the class itself
 you can tell if it&#8217;s a class method if self is the receiver</p>
 
-<p>class Artist
-puts self</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">self</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="o">.</span><span class="n">rank</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Another way...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'><span class="vc">@@all</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:artists</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>  <span class="vc">@@all</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="vi">@artists</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#important pattern of observing intialization and making classes intelligent</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">songs</span>
+</span><span class='line'>  <span class="n">artists</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">song</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
+</span><span class='line'>  <span class="vc">@@all</span> <span class="c1">#return all the artists ever created</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>def self.top_5
-end</p>
 
-<p>end</p>
-
-<p>def self.top_5
-self.all.sort_by{|a| a.rank}
-end
-end</p>
-
-<h3>Another way&#8230;</h3>
-
-<p>class Artist
-@@all = []
-attr_accessor :name, :songs, :artists</p>
-
-<p>def initialize
-@@all &lt;&lt; self
-(#) @songs = []
-(#) @artists = []
-end
-(#)important pattern of observing intialization and making classes intelligent</p>
-
-<p>(# def songs
-(# artists.collect{|artist| artist.song}
-(# end</p>
-
-<p>def self.all
-@@all #return all the artists ever created
-end
-3:30 PM
-MODULES - for creating all sort of shared behavior
+<p>3:30 PM
+<strong><em>MODULES</em></strong> - for creating all sort of shared behavior
 - modules don&#8217;t have instances&#8211;> the difference between modules and classes</p>
 
 <p>two keywords to include behavior&#8211;> include and extend
@@ -835,130 +1149,47 @@ include &#8211;> methods in that module are instance methods
 <p>3:38
 ?? order of attr_accessor and @@all? does it matter?</p>
 
-<p>INHERITANCE &#8211; a pattern that we don&#8217;t like as much as modules
+<p><strong><em>INHERITANCE</em></strong> &#8211; a pattern that we don&#8217;t like as much as modules
 we&#8217;d rather think of things in the builder pattern using include and extend</p>
 
 <p>2nd HALF</p>
 
-<p>File Systems:</p>
-
-<p>Dir documentation (4:10)
+<p><strong><em>File Systems:</em></strong>
+Dir documentation (4:10)
 foreach and Dir.entries</p>
 
-<p>ERB templates (4:23):
+<p><strong><em>ERB templates</em></strong> (4:23):
 we care about the result method for templating</p>
 
-<p>PRIVATE AND PUBLIC METHODS (4:41)</p>
+<p><strong><em>PRIVATE AND PUBLIC METHODS</em></strong> (4:41)
+->a private method cannot be called with an explicit receiever, only implicit receivers&#8211; means they can only be called in the class</p>
 
-<h2>-a private method cannot be called with an explicit receiever, only implicit receivers&#8211; means they can only be called in the class</h2>
+<p><strong><em>GEMS:</em></strong>
+-a pre-built package or functionality
+<a href="http://ruby-toolbox.com">See the Ruby Toolbox</a></p>
 
-<p>GEMS:
--a pre-built package or functionality</p>
-
-<p>ruby-toolbox.com</p>
-
-<p>SINATRA (4:44):
+<p><strong><em>SINATRA</em></strong> (4:44):
 -based on rack (the first )
 RACK - create a class that responds to a method called &#8216;call&#8217;
 - the response must return 3 three things- a status code, the header, the body of the response</p>
 
-<p>ruby -rubygems sinatra.rb</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">rubygems</span> <span class="n">sinatra</span><span class="o">.</span><span class="n">rb</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>SCRAPERS:
+
+<p><strong><em>SCRAPERS:</em></strong>
 nokogiri gem will
 xpath&#8211; path to an element or you can use an CSS adjustment
 nokogiri comes with a method called content
 rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
 
 <p>httparty-
-some reading: http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/
-http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/</p>
+<a href="http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/">some reading on httparty</a>
+<a href="http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">there is more reading here</a></p>
 
 <p>open data:
-freebase.com</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/19/loading-up-a-new-macbook-air/">Loading Up a New Macbook Air</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-19T10:45:00-04:00" pubdate data-updated="true">Jun 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Avi helped me get my new Macbook Air rolling this afternoon&#8230;</p>
-
-<p>Ruby 1.8.7 is the standard version that&#8217;s loaded on the OS X Lion</p>
-
-<p>Some lessons&#8211; Xcode did not come loaded with the GNU Compiler Collection out of the box (AKA out of app store). (-bash: gcc: command not found) See: https://github.com/kennethreitz/osx-gcc-installer/</p>
-
-<p>Anyways this had to be loaded to run anything like Homebrew.</p>
-
-<ul>
-<li>All OSs except for window are a NIX: A Unix-like (sometimes referred to as UN<em>X or </em>nix) operating system is one that behaves in a manner similar to a Unix system, while not necessarily conforming to or being certified to any version of the Single UNIX Specification. (http://en.wikipedia.org/wiki/Unix-like)</li>
-</ul>
-
-
-<p>Once it was installed we got the result: i686-apple-darwin11-llvm-gcc-4.2: no input files from the gcc command. (read more about gcc here: http://gcc.gnu.org/)</p>
-
-<p>Homebrew was installed from: https://github.com/mxcl/homebrew/wiki/installation</p>
-
-<p>-Homebrew replaced the old style of loading software which required configuring the config file since all OSs are customized with different versions. This is frustrating as hell. Jewelry box, RVM, and homebrew are powerful enough to take the grunt work out of the environment set-up, but can&#8217;t the community find a way to wrap this in an app in the app store? Is this feasible?</p>
-
-<p>Jewelry Box was installed from http://jewelrybox.unfiniti.com/</p>
-
-<p>wget was installed from: http://ftp.gnu.org/gnu/wget/</p>
-
-<p>Alfred was installed from: http://www.alfredapp.com/</p>
-
-<p>We also modfiied the bash profile or dot files from Avi&#8217;s github repository.</p>
-
-<ul>
-<li><p>He mentioned that in the future I should choose a user name with all lower case letters rather than the capitalized name that I chose.</p></li>
-<li><p>I also needed to create a symbolic link for my sublime text editor so that I can call it from the command line (this is something I never figured out on my Fedora 15 system)</p></li>
-</ul>
-
-
-<p>So for those keeping track at home:</p>
-
-<pre><code>GCC
-Homebrew
-Jewelry box
-RVM
-Ruby Update
-Rails
-</code></pre>
-
-<p>No MySQL or anything like that&#8230; until I need it.</p>
-
-<p>This is a good post on what to load up:</p>
-
-<p>http://tech.xtremelabs.com/how-to-setup-your-mac-for-rails-development/</p>
+<a href="freebase.com">freebase</a></p>
 </div>
   
   
@@ -977,8 +1208,34 @@ Rails
 <aside class="sidebar">
   
     <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/about/'>about (1)</a></li>
+<li class='category'><a href='/blog/categories/better/'>better (1)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (1)</a></li>
+<li class='category'><a href='/blog/categories/learn/'>learn (1)</a></li>
+<li class='category'><a href='/blog/categories/lecture/'>lecture (3)</a></li>
+<li class='category'><a href='/blog/categories/lecture-/'>lecture, (3)</a></li>
+<li class='category'><a href='/blog/categories/mac-/'>mac, (1)</a></li>
+<li class='category'><a href='/blog/categories/more/'>more (1)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (7)</a></li>
+<li class='category'><a href='/blog/categories/notes-/'>notes, (4)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (1)</a></li>
+<li class='category'><a href='/blog/categories/rails-/'>rails, (1)</a></li>
+<li class='category'><a href='/blog/categories/ruby/'>ruby (1)</a></li>
+<li class='category'><a href='/blog/categories/ruby-/'>ruby, (8)</a></li>
+<li class='category'><a href='/blog/categories/things/'>things (2)</a></li>
+<li class='category'><a href='/blog/categories/to/'>to (2)</a></li>
+<li class='category'><a href='/blog/categories/understand/'>understand (1)</a></li>
+
+  </ul>
+</section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/08/lecture-2-rails/">Lecture 2 Rails</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/07/05/octopress/">Octopress</a>
@@ -996,13 +1253,8 @@ Rails
         <a href="/blog/2012/07/02/rails-1st-lecture/">Rails 1st Lecture</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/07/02/the-tap-method/">The tap method</a>
-      </li>
-    
   </ul>
 </section>
-
 
 
 

@@ -128,35 +128,64 @@ array.map.with_index</p>
 
 <p>count takes a block (how many is this true for&#8230;)</p>
 
-<p>?? diff between take and select
-ENUM METHODS:
-.extend(Enumerable) #=> extends the Enum functionality if operating on a single object</p>
+<p>?? diff between take and select</p>
 
-<p>each_slice doesn&#8217;t overlap like each_cons</p>
+<figure class='code'><figcaption><span>Some Enum methods</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Enumerable</span><span class="p">)</span> <span class="c1">#=&gt; extends the Enum functionality if operating on a single object</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">each_slice</span> <span class="c1"># doesn&#39;t overlap like each_cons</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;prime&#39;</span> <span class="c1">#there is a Prime class </span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">any?</span> <span class="c1"># --&gt; is there anything True in this array?</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">none?</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">one?</span> <span class="c1"># (just one-- will exit after it&#39;s first hit)</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">all?</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="n">a</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="o">]</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">partition</span> <span class="p">{</span><span class="n">block</span> <span class="n">that</span> <span class="n">calls</span> <span class="n">the</span> <span class="n">even</span> <span class="nb">method</span><span class="p">}</span> <span class="c1">#=&gt; wtih divide the result into two arrays a true an other</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">slice_before</span> <span class="c1">#=&gt; [[1,3], [2], [4,5,7], [6]]</span>
+</span><span class='line'><span class="n">chunk</span> <span class="n">discards</span> <span class="n">results</span> <span class="k">for</span> <span class="n">which</span> <span class="n">the</span> <span class="n">block</span> <span class="n">evaluates</span> <span class="n">to</span> <span class="kp">nil</span> <span class="c1">#=&gt; not useful- obscure method</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">take</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">drop</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">take_while</span> <span class="c1">#=&gt; e.g. while true execute below</span>
+</span><span class='line'><span class="n">drop_while</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">permutation</span><span class="o">.</span><span class="n">to_a</span> <span class="c1"># =&gt; yields all the permuatations of the array [[1,2,3], [1,3,2], [2,1,3]]</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">combination</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="c1">#=&gt; yields the combinations (in this case 2 at a time [1,2], [1,3], [2,3])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">sample</span> <span class="c1">#=&gt; pulls a random sample from the array</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">shuffle</span> <span class="c1"># =&gt; will randomize the sample</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>There is a Prime class (require &#8216;prime&#8217;)</p>
-
-<p>array.any? &#8211;> is there anything True in this array?
-array.none?
-array.one? (just one&#8211; will exit after it&#8217;s first hit)
-array.all?</p>
-
-<p>array = [a,3,2,4,5,6,7]
-array.partition {block that calls the even method} #=> wtih divide the result into two arrays a true an other
-array.slice_before #=> [[1,3], [2], [4,5,7], [6]]
-chunk discards results for which the block evaluates to nil #=> not useful- obscure method
-array.take
-array.drop</p>
-
-<p>take_while #=> e.g. while true execute below
-drop_while</p>
-
-<p>array = [1,2,3]
-array.permutation.to_a # => yields all the permuatations of the array [[1,2,3], [1,3,2], [2,1,3]]
-array.combination(2).to_a #=> yields the combinations (in this case 2 at a time [1,2], [1,3], [2,3])</p>
-
-<p>array.sample #=> pulls a random sample from the array
-array.shuffle # => will randomize the sample</p>
 </div>
 
 
@@ -216,8 +245,34 @@ array.shuffle # => will randomize the sample</p>
 <aside class="sidebar">
   
     <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/about/'>about (1)</a></li>
+<li class='category'><a href='/blog/categories/better/'>better (1)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (1)</a></li>
+<li class='category'><a href='/blog/categories/learn/'>learn (1)</a></li>
+<li class='category'><a href='/blog/categories/lecture/'>lecture (3)</a></li>
+<li class='category'><a href='/blog/categories/lecture-/'>lecture, (3)</a></li>
+<li class='category'><a href='/blog/categories/mac-/'>mac, (1)</a></li>
+<li class='category'><a href='/blog/categories/more/'>more (1)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (7)</a></li>
+<li class='category'><a href='/blog/categories/notes-/'>notes, (4)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (1)</a></li>
+<li class='category'><a href='/blog/categories/rails-/'>rails, (1)</a></li>
+<li class='category'><a href='/blog/categories/ruby/'>ruby (1)</a></li>
+<li class='category'><a href='/blog/categories/ruby-/'>ruby, (8)</a></li>
+<li class='category'><a href='/blog/categories/things/'>things (2)</a></li>
+<li class='category'><a href='/blog/categories/to/'>to (2)</a></li>
+<li class='category'><a href='/blog/categories/understand/'>understand (1)</a></li>
+
+  </ul>
+</section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/08/lecture-2-rails/">Lecture 2 Rails</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/07/05/octopress/">Octopress</a>
@@ -235,13 +290,8 @@ array.shuffle # => will randomize the sample</p>
         <a href="/blog/2012/07/02/rails-1st-lecture/">Rails 1st Lecture</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/07/02/the-tap-method/">The tap method</a>
-      </li>
-    
   </ul>
 </section>
-
 
 
 

@@ -39,16 +39,16 @@ String Enumerables
 count takes a block (how many is this true for...)
 
 ?? diff between take and select
-ENUM METHODS:
+``` ruby Some Enum methods
 .extend(Enumerable) #=> extends the Enum functionality if operating on a single object
 
-each_slice doesn't overlap like each_cons
+each_slice # doesn't overlap like each_cons
 
-There is a Prime class (require 'prime')
+require 'prime' #there is a Prime class 
 
-array.any? --> is there anything True in this array?
+array.any? # --> is there anything True in this array?
 array.none?
-array.one? (just one-- will exit after it's first hit)
+array.one? # (just one-- will exit after it's first hit)
 array.all?
 
 array = [a,3,2,4,5,6,7]
@@ -67,3 +67,4 @@ array.combination(2).to_a #=> yields the combinations (in this case 2 at a time 
 
 array.sample #=> pulls a random sample from the array
 array.shuffle # => will randomize the sample
+```
