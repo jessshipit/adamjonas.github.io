@@ -3,7 +3,7 @@ layout: post
 title: "The tap method"
 date: 2012-07-02 10:52
 comments: true
-categories: ruby, notes, things to better understand
+categories: ruby notes TODO
 ---
 
 I haven't found great explanations for this yet but there is a video below... prety much the tap method allows you to initialize methods right off the bat.

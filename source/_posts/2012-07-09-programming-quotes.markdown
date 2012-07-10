@@ -3,7 +3,7 @@ layout: post
 title: Programming Quotes
 date: 2012-07-09 14:50
 comments: true
-categories: 
+categories: quotes
 ---
 
 Beauty is more important in computing than anywhere else in technology because software is so complicated. Beauty is the ultimate defence against complexity.

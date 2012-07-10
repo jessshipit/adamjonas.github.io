@@ -4,7 +4,7 @@
   <title><![CDATA[Category: notes | Documenting all this...]]></title>
   <link href="http://ajonas.heroku.com/blog/categories/notes/atom.xml" rel="self"/>
   <link href="http://ajonas.heroku.com/"/>
-  <updated>2012-07-10T12:42:45-04:00</updated>
+  <updated>2012-07-10T12:48:32-04:00</updated>
   <id>http://ajonas.heroku.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -136,6 +136,172 @@ with_options :controller =&gt; 'site' do |s|
   s.get 'home'
 end
 </code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/05/octopress/"/>
+    <updated>2012-07-05T10:54:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/05/octopress</id>
+    <content type="html"><![CDATA[<p>Follow directions here...</p>
+
+<p>Setting Up Octopress</p>
+
+<p><a href="http://octopress.org/docs/setup/">http://octopress.org/docs/setup/</a></p>
+
+<p>Had one hiccup in my system didn't have Ruby 1.9.2 which .rvmrc file requires (https://rvm.io//workflow/rvmrc/). I had to go ahead and install it.</p>
+
+<p>Deploying on Heroku:</p>
+
+<p>To see on localhost:4000
+rake preview</p>
+
+<p><strong>To push:</strong>
+<code>
+rake generate
+git add .
+git commit -m 'site updated'
+git push heroku master
+</code></p>
+
+<p><a href="http://octopress.org/docs/deploying/heroku/">Octopress delpoy instructons</a></p>
+
+<p>That all went fairly well... though I didn't understand all the intermediate steps. I'll have to take closer look.</p>
+
+<p><a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/">Markdown language cheat sheet</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Procs and lambdas]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/03/procs-and-lambdas/"/>
+    <updated>2012-07-03T10:53:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/03/procs-and-lambdas</id>
+    <content type="html"><![CDATA[<p>You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...
+PROCS:</p>
+
+<p>Very standard to pass along a code block to the each method</p>
+
+<p>block_given? --> method to check whether a block was given to a method or not</p>
+
+<p>A proc --> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
+
+<p>``` ruby E.G.
+class Array
+def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.
+  shuffle.each do |el|</p>
+
+<pre><code>b.call el  #=&gt; b is a proc
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>[1,2,3,4,5].random_each do |el|
+puts |el|</p>
+
+<p>end
+```
+You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
+
+<p>``` ruby E.G.
+Def run_two_procs (a, b)
+  a.call
+  b.call
+end</p>
+
+<p>proc1 = Proc.new do
+puts "This is proc1"
+end</p>
+
+<p>proc2 = Proc.new do
+puts "This is proc2"
+end</p>
+
+<p>run_two_procs proc1, proc2
+```
+If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
+
+<p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that --> it will do it all implicitly, you don't need to specify anything here. If it can't find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
+
+<p>``` ruby
+Def run_block
+  p = Proc.new # **see above
+  p.call
+end</p>
+
+<p>run_block do
+puts "Hello World'</p>
+
+<p>end
+```</p>
+
+<p>In Ruby 1.9 there are 4 main ways to run or call a block:
+``` ruby Proc e.g.
+my_proc = Proc.new do |a|
+  puts "This is a proc and #{a} was passed along to me"
+my_proc.call(10) #call method that passes in 10
+my_proc.(20) #this isn't a typo, gets converted to a call
+my_proc[30] #
+my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
+
+<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }
+none = Proc.new { |number| number == 0 }</p>
+
+<p>case number
+when several
+  puts "several"
+when none
+  puts "none"
+end
+```
+-->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
+
+<p><strong><em>Lambdas</em></strong></p>
+
+<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
+Closures</p>
+
+<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.
+``` ruby
+def run_proc(p)
+  p.call
+end</p>
+
+<p>name = "Fred"</p>
+
+<p>print_a_name = proc { puts name } # this name doesn't exist in the definition above. This magic is called a closure. (23 Min)</p>
+
+<p>run_proc print_a_name
+```</p>
+
+<p>ALSO:
+``` ruby
+def run_proc(p)
+  p.call
+end</p>
+
+<p>name = "Fred"
+print_a_name = proc { puts name }
+name = "John"</p>
+
+<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.
+```
+<a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></p>
+
+<p><a href="http://www.ruby-doc.org/core-1.9.3/Proc.html">DOCUMENTATION</a></p>
+
+<p>SOME MORE READING:</p>
+
+<p><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</a></p>
+
+<p><a href="http://pine.fm/LearnToProgram/?Chapter=10">http://pine.fm/LearnToProgram/?Chapter=10</a></p>
+
+<p><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</a></p>
+
+<p><a href="http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html">http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</a></p>
 ]]></content>
   </entry>
   
@@ -296,135 +462,6 @@ Song.all #=&gt; returns all the instances of the class
 <p><strong><em>DOCUMENTATION:</em></strong>
 Rails Guides: more like how-tos
 Rails API: the more technical version</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Sinatra]]></title>
-    <link href="http://ajonas.heroku.com/blog/2012/06/26/sinatra/"/>
-    <updated>2012-06-26T10:48:00-04:00</updated>
-    <id>http://ajonas.heroku.com/blog/2012/06/26/sinatra</id>
-    <content type="html"><![CDATA[<p>Sinatra Book, it's a quick read: <a href="http://sinatra-book.gittr.com/">http://sinatra-book.gittr.com/</a></p>
-
-<p>Seem like a really simple version of Rails-- A rack based application with lots of common features in terms of routing, filters, ERB...</p>
-
-<p>Here's a screencast on Sinatra: <a href="http://screencasts.org/episodes/introduction-to-sinatra">http://screencasts.org/episodes/introduction-to-sinatra</a> (free)</p>
-
-<p>There is a peepcode on Sinatra: <a href="https://peepcode.com/products/sinatra">https://peepcode.com/products/sinatra</a> ($)</p>
-
-<p>Another paid one here: <a href="http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra">http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra</a> ($)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 6 Ruby- Class Methods]]></title>
-    <link href="http://ajonas.heroku.com/blog/2012/06/25/lecture-6-ruby-class-methods/"/>
-    <updated>2012-06-25T10:48:00-04:00</updated>
-    <id>http://ajonas.heroku.com/blog/2012/06/25/lecture-6-ruby-class-methods</id>
-    <content type="html"><![CDATA[<p>Strategy...</p>
-
-<p>-->look for nouns to start
-url- unified resource locator
-map and collect --> returns the results of the operation--> so it uts it into a new array</p>
-
-<p>select when you are trying to match something, cannot collect things conditionally
-(#) => library.songs.select{|s| s.name ==song_name}</p>
-
-<p>is_a? --> is this an array, this is a validator</p>
-
-<p><strong><em>HOW TO BUILD CLASS METHODS</em></strong>
-methods that don't apply to the instance of the class but the class itself
-you can tell if it's a class method if self is the receiver</p>
-
-<p>``` ruby
-class Artist
-puts self</p>
-
-<p>def self.top_5
-end</p>
-
-<p>end</p>
-
-<p>def self.top_5
-  self.all.sort_by{|a| a.rank}
-end
-end</p>
-
-<h1>Another way...</h1>
-
-<p>class Artist
-@@all = []
-attr_accessor :name, :songs, :artists</p>
-
-<p>def initialize
-  @@all &lt;&lt; self
-  @songs = []
-  @artists = []
-end</p>
-
-<h1>important pattern of observing intialization and making classes intelligent</h1>
-
-<p>def songs
-  artists.collect{|artist| artist.song}
-end</p>
-
-<p>def self.all
-  @@all #return all the artists ever created
-end
-```</p>
-
-<p>3:30 PM
-<strong><em>MODULES</em></strong> - for creating all sort of shared behavior
-- modules don't have instances--> the difference between modules and classes</p>
-
-<p>two keywords to include behavior--> include and extend
-diff between include and extend --> trying to describe the scope of the module behavior</p>
-
-<p>extending- makes it a class methods
-include --> methods in that module are instance methods
-?? how does require fit into this??</p>
-
-<p>3:38
-?? order of attr_accessor and @@all? does it matter?</p>
-
-<p><strong><em>INHERITANCE</em></strong> -- a pattern that we don't like as much as modules
-we'd rather think of things in the builder pattern using include and extend</p>
-
-<p>2nd HALF</p>
-
-<p><strong><em>File Systems:</em></strong>
-Dir documentation (4:10)
-foreach and Dir.entries</p>
-
-<p><strong><em>ERB templates</em></strong> (4:23):
-we care about the result method for templating</p>
-
-<p><strong><em>PRIVATE AND PUBLIC METHODS</em></strong> (4:41)
-->a private method cannot be called with an explicit receiever, only implicit receivers-- means they can only be called in the class</p>
-
-<p><strong><em>GEMS:</em></strong>
--a pre-built package or functionality
-<a href="http://ruby-toolbox.com">See the Ruby Toolbox</a></p>
-
-<p><strong><em>SINATRA</em></strong> (4:44):
--based on rack (the first )
-RACK - create a class that responds to a method called 'call'
-- the response must return 3 three things- a status code, the header, the body of the response
-<code>
-ruby -rubygems sinatra.rb
-</code>
-<strong><em>SCRAPERS:</em></strong>
-nokogiri gem will
-xpath-- path to an element or you can use an CSS adjustment
-nokogiri comes with a method called content
-rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
-
-<p>httparty-
-<a href="http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/">some reading on httparty</a>
-<a href="http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">there is more reading here</a></p>
-
-<p>open data:
-<a href="freebase.com">freebase</a></p>
 ]]></content>
   </entry>
   

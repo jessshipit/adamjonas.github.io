@@ -3,7 +3,7 @@ layout: post
 title: "Enumerables and OO- Class Notes for Lecture 5"
 date: 2012-06-17 10:40
 comments: true
-categories: ruby, lecture, notes
+categories: ruby lecture notes
 ---
 
 (FROM THE VIDEO)

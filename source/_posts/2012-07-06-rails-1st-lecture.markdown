@@ -3,7 +3,7 @@ layout: post
 title: "Rails 1st Lecture"
 date: 2012-07-02 10:53
 comments: true
-categories: rails, lecture, notes
+categories: rails lecture notes
 ---
 
 Rails Lecture I - July 2

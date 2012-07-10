@@ -3,7 +3,7 @@ layout: post
 title: "Procs and lambdas"
 date: 2012-07-03 10:53
 comments: true
-categories: ruby, notes, things to learn more about
+categories: ruby notes TODO
 ---
 
 You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...

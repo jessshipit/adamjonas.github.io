@@ -3,7 +3,7 @@ layout: post
 title: "Lecture 6 Ruby- Class Methods"
 date: 2012-06-25 10:48
 comments: true
-categories: ruby, lecture, notes
+categories: ruby lecture notes
 ---
 
 Strategy...

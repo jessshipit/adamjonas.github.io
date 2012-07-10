@@ -3,7 +3,7 @@ layout: post
 title: "Ruby Collections and Enumerators – David Black"
 date: 2012-06-26 10:49
 comments: true
-categories: ruby, lecture
+categories: ruby lecture
 ---
 
 Ruby Collections and Enumerators
