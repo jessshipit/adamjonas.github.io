@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Documenting all this...]]></title>
   <link href="http://ajonas.heroku.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://ajonas.heroku.com/"/>
-  <updated>2012-07-10T12:48:32-04:00</updated>
+  <updated>2012-07-11T00:23:11-04:00</updated>
   <id>http://ajonas.heroku.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,118 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Diaspora- Day 1]]></title>
+    <link href="http://ajonas.heroku.com/blog/2012/07/10/diaspora/"/>
+    <updated>2012-07-10T12:51:00-04:00</updated>
+    <id>http://ajonas.heroku.com/blog/2012/07/10/diaspora</id>
+    <content type="html"><![CDATA[<p><a href="http://rubysource.com/build-your-own-social-network-with-diaspora-an-introduction/">What is diaspora?</a></p>
+
+<p>Now I need to decide what DB I'm going to use. I poked around and found <a href="http://mariadb.org/">MariaDB</a>, but Avi suggested I go with <a href="http://www.percona.com/">Percona</a>, MySQL or Postgres. Postgres seems to have the best intergration with Heroku so I'll go with that...</p>
+
+<p>I already have psql version 9.0.5. This isn't the newest version... TODO</p>
+
+<p><strong><em>Open SSL</em></strong>
+The <a href="http://www.openssl.org/about/"><strong>OpenSSL</strong></a> Project is a collaborative effort to develop a robust, commercial-grade, full-featured, and Open Source toolkit implementing the Secure Sockets Layer (SSL v2/v3) and Transport Layer Security (TLS v1) protocols as well as a full-strength general purpose cryptography library managed by a worldwide community of volunteers that use the Internet to communicate, plan, and develop the OpenSSL toolkit and its related documentation.
+- I'm not really sure what all that means... so I checked out
+Here is what I found:
+ - TLS and its predecessor SSL make significant use of certificate authorities.
+ - The browser then uses the public key to encrypt a randomly selected symmetric key. Public-key encryption takes a lot of computing, so most systems use a combination of public-key and symmetric key encryption. When two computers initiate a secure session, one computer creates a symmetric key and sends it to the other computer using public-key encryption. The two computers can then communicate using symmetric-key encryption. Once the session is finished, each computer discards the symmetric key used for that session. Any additional sessions require that a new symmetric key be created, and the process is repeated.
+ I can circle back to learn more <a href="http://www.techradar.com/news/software/how-ssl-and-tls-works-1047412">here.</a> TODO</p>
+
+<p>I also have openSSL installed, but I'll update through
+<code>
+brew install openssl
+</code>
+This downloaded the package, but didn't update the version that I currently have. It stil shows:
+<code>
+♕ openssl version
+OpenSSL 0.9.8r 8 Feb 2011
+</code>
+That's not great. Well I can't fix it now... another TODO</p>
+
+<p><strong><em>cURL</em></strong> groks URLs <a href="http://curl.haxx.se/">http://curl.haxx.se/</a>
+curl is a command line tool for transferring data with URL syntax, supporting DICT, FILE, FTP, FTPS, Gopher, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, Telnet and TFTP. curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP form based upload, proxies, cookies, user+password authentication (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer resume, proxy tunneling and a busload of other useful tricks.
+- To <strong>grok</strong> is to intimately and completely share the same reality or line of thinking with another physical or conceptual entity.
+- There is a tutorial <a href="http://curl.haxx.se/libcurl/c/libcurl-tutorial.html">http://curl.haxx.se/libcurl/c/libcurl-tutorial.html</a>. this however mostly focuses on C so I'm not even close to understanding it.
+- There is another intro <a href="http://blog.instabill.com/index.php/2011/12/21/a-brief-introduction-to-curl">here</a> that appears to be more my speed.
+- also there is a <a href="">video</a>
+ - don't know what any of this means... but I do have it installed. Another TODO</p>
+
+<p><strong><em>imagemagick</em></strong> is next:
+<code>
+brew install imagemagick
+</code>
+That was easy...</p>
+
+<p><strong><em>Redis</em></strong>
+need redis as well.
+<code>
+brew install redis
+</code>
+There is a <a href="http://try.redis-db.com/">try redis</a> tutorial.
+Alright, now let's get down to diaspora.</p>
+
+<p>So I cloned the diaspora repo and then tried to cd into the folder
+```</p>
+
+<h1>♕ cd diaspora</h1>
+
+<h1>= NOTICE                                                                           =</h1>
+
+<p>= RVM has encountered a new or modified .rvmrc file in the current directory       =
+= This is a shell script and therefore may contain any shell commands.             =
+=                                                                                  =
+= Examine the contents of this file carefully to be sure the contents are          =</p>
+
+<h1>= safe before trusting it! ( Choose v[iew] below to view the contents )            =</h1>
+
+<p>Do you wish to trust this .rvmrc file? (/Users/Ajonas/diaspora/.rvmrc)
+y[es], n[o], v[iew], c[ancel]> y
+ruby-1.9.3-p125 is not installed.
+To install do: 'rvm install ruby-1.9.3-p125'
+ruby-1.9.3-p125 is not installed.
+Retrieving rubygems-1.8.17
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</p>
+
+<pre><code>                             Dload  Upload   Total   Spent    Left  Speed
+</code></pre>
+
+<p>100  246k  100  246k    0     0   453k      0 --:--:-- --:--:-- --:--:-- 1401k
+Extracting rubygems-1.8.17 ...
+Removing old Rubygems files...
+Installing rubygems-1.8.17 for ruby-1.9.3-p125 ...
+Error running 'GEM_PATH="/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194:/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194@global:/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194:/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194@global" GEM_HOME="/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194" "/Users/Ajonas/.rvm/rubies/ruby-1.9.3-p125/bin/ruby" "/Users/Ajonas/.rvm/src/rubygems-1.8.17/setup.rb"', please read /Users/Ajonas/.rvm/log/ruby-1.9.3-p125/rubygems.install.log
+Installation of rubygems did not complete successfully.
+<code>
+OK well just follow the bouncing ball right?
+</code>
+[14:32:19] (master) diaspora
+♕ rvm install ruby-1.9.3-p125
+Already installed ruby-1.9.3-p125.
+To reinstall use:</p>
+
+<pre><code>rvm reinstall ruby-1.9.3-p125
+</code></pre>
+
+<p>```
+Not good. I looked at the install log but it didn't provide much help. So after a google search I found <a href="https://github.com/rubygems/rubygems/issues/311">this</a>, which suggests it is the .gemrc file. So now I'm in over my head...</p>
+
+<p>So Avi to the rescue. I reinstalled patch 125 with:
+<code>
+rvm reinstall ruby-1.9.3-p125
+</code>
+That sucks I was so hung up on this.</p>
+
+<p>So I bundled again after removing the mysql gem from the gem file since I'm using postgreSQL.</p>
+
+<p>It bundled properly but I can't get thin to boot...</p>
+
+<p>P.S.
+??Should I include a sym link?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress]]></title>
@@ -202,76 +314,6 @@ name = "John"</p>
     <content type="html"><![CDATA[<p>This error generally happens when you accidentally recursively changing an attribute. If you have a username attribute in User model, and a virtual attribute named username, that is directly changing the username, you end up calling the virtual, the virtual calls the virtual again and so on.. Therefore, take a look on whether something like that happens somewhere in your code.</p>
 
 <p>SEE: <a href="http://stackoverflow.com/questions/5446055/stack-level-too-deep-error">http://stackoverflow.com/questions/5446055/stack-level-too-deep-error</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby Collections and Enumerators – David Black]]></title>
-    <link href="http://ajonas.heroku.com/blog/2012/06/26/ruby-collections-and-enumerators-david-black/"/>
-    <updated>2012-06-26T10:49:00-04:00</updated>
-    <id>http://ajonas.heroku.com/blog/2012/06/26/ruby-collections-and-enumerators-david-black</id>
-    <content type="html"><![CDATA[<p>Ruby Collections and Enumerators
-David Black
-June 26, 2012</p>
-
-<p>Enumerators
-- what is an enum?
-- an instance of class Enum
--external iterator
--iterates via a specific method on an underlying object</p>
-
-<p>??next method- walk through the iteration and give you the next value</p>
-
-<p>the default bound is the each method
-%w --> converst to enum</p>
-
-<p>loop resuces the stop Iteration error
-??each_cons method
-if you run each on enum = array.map # => it behaves like map
-same with array.select and array.each_cons</p>
-
-<p>Can also chain enumerators:</p>
-
-<p>array.each.with_index #=> will yield the index
-array.map.with_index</p>
-
-<p>String Enumerables
--bytes (aka each_byte)
--chars (aka each_char)
--lines (aka each_line)</p>
-
-<p>count takes a block (how many is this true for...)</p>
-
-<p>?? diff between take and select
-``` ruby Some Enum methods
-.extend(Enumerable) #=> extends the Enum functionality if operating on a single object</p>
-
-<p>each_slice # doesn't overlap like each_cons</p>
-
-<p>require 'prime' #there is a Prime class</p>
-
-<p>array.any? # --> is there anything True in this array?
-array.none?
-array.one? # (just one-- will exit after it's first hit)
-array.all?</p>
-
-<p>array = [a,3,2,4,5,6,7]
-array.partition {block that calls the even method} #=> wtih divide the result into two arrays a true an other
-array.slice_before #=> [[1,3], [2], [4,5,7], [6]]
-chunk discards results for which the block evaluates to nil #=> not useful- obscure method
-array.take
-array.drop</p>
-
-<p>take_while #=> e.g. while true execute below
-drop_while</p>
-
-<p>array = [1,2,3]
-array.permutation.to_a # => yields all the permuatations of the array [[1,2,3], [1,3,2], [2,1,3]]
-array.combination(2).to_a #=> yields the combinations (in this case 2 at a time [1,2], [1,3], [2,3])</p>
-
-<p>array.sample #=> pulls a random sample from the array
-array.shuffle # => will randomize the sample
-```</p>
 ]]></content>
   </entry>
   
