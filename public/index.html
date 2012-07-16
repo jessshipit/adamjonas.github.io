@@ -9,8 +9,17 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Rails Lecture 3- July 15 why you &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
--bc want to use http verbs to be more specific &hellip;">
+  <meta name="description" content="I just spent more than an hour debugging an issue when trying to run 1
+rake generate The error I kept receiving was: 1
+2
+3
+4
+5
+6
+7
+8
+9
+## Generating &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +74,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/16/octopress-blues/">Octopress Blues</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-16T16:53:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I just spent more than an hour debugging an issue when trying to run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The error I kept receiving was:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>## Generating Site with Jekyll
+</span><span class='line'>unchanged sass/screen.scss
+</span><span class='line'>Configuration from /Users/Ajonas/octopress/_config.yml
+</span><span class='line'>Building site: source -&gt; public
+</span><span class='line'>/Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/rubypython-0.5.3/lib/rubypython/rubypyproxy.rb:198:in `method_missing': ClassNotFound: no lexer for alias 'Query' found (RubyPython::PythonError)
+</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:135:in `lexer_for'
+</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:91:in `highlight'
+</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:24:in `pygments'
+</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:14:in `highlight'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It goes on much longer from there. Anyways, I googled it and found <a href="http://samrange.com/blog/2012/06/17/octopress-code-highlighting-with-arch-linux/">this</a> which sent me on a wild goose chase to change out the path in the rubypython gem file.</p>
+
+<p>After trying to fix this, I decided to generate some other posts. What I discovered was other posts could be generated and pushed which meant it wasn&#8217;t the gem at all&#8230;</p>
+
+<p>In the end, I hadn&#8217;t named the language of the code snippet so the post couldn&#8217;t be generated.</p>
+
+<p>Ugh.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1092,86 +1171,6 @@ Closures</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/03/equals-equals-equals-case-equality-operator/">=== Case Equality Operator</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-03T10:53:00-04:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>In a case statement&#8230;</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">case</span> <span class="n">number</span>
-</span><span class='line'>  <span class="k">when</span> <span class="mi">5</span>
-</span><span class='line'>    <span class="c1">#some code</span>
-</span><span class='line'>  <span class="k">when</span> <span class="mi">3</span>
-</span><span class='line'>    <span class="c1">#more code</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="c1">#something else</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Behind the scenes 5 is being compared to number with the === operator, so 5 === number, 3 === number, etc</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">several</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="p">}</span>
-</span><span class='line'><span class="n">none</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">case</span> <span class="n">number</span>
-</span><span class='line'>  <span class="k">when</span> <span class="n">several</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;several&quot;</span>
-</span><span class='line'>  <span class="k">when</span> <span class="n">none</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;none&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1188,23 +1187,29 @@ Closures</p>
     <li class='category'><a href='/blog/categories/todo/'>TODO (2)</a></li>
 <li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
 <li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
-<li class='category'><a href='/blog/categories/errors/'>errors (1)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (2)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
 <li class='category'><a href='/blog/categories/lecture/'>lecture (7)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
-<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (10)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
 <li class='category'><a href='/blog/categories/rails/'>rails (4)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (10)</a></li>
+<li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/16/octopress-blues/">octopress blues</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/07/16/lecture-3-july-15/">Lecture 3- July 15</a>
@@ -1220,10 +1225,6 @@ Closures</p>
     
       <li class="post">
         <a href="/blog/2012/07/09/rake/">Rake</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/09/programming-quotes/">Programming Quotes</a>
       </li>
     
   </ul>
