@@ -9,8 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="Rails Lecture 3- July 15 why you &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
+-bc want to use http verbs to be more specific &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,7 +91,105 @@
   </header>
 
 
-<div class="entry-content">
+<div class="entry-content"><p><strong><em>Rails Lecture 3- July 15</em></strong></p>
+
+<p>why you &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
+-bc want to use http verbs to be more specific
+-match is more vague, you should generally use specific verbs</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake routes CONTROLLER=SESSIONS</span></code></pre></td></tr></table></div></figure>
+
+
+<p>will narrow output</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>render :action =&gt; 'under_construction' #=&gt; relative to the current controller
+</span><span class='line'>render :template =&gt; 'shared/under_construction' #=&gt; doesn't assume it is in the current views folder
+</span><span class='line'>#under the class name
+</span><span class='line'>render 'shared/under_construction' #=&gt; these 3 work the same now</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Private Methods</strong>(2:40)
+- about what object the receiver is on the method called&#8211; private methods can only be called on implicit receivers
+- a way to control scope
+- anything that is not an action, that isn&#8217;t an endpoint of a route should be private</p>
+
+<p>routes: bridge between the browser, specifcially URLs, and the app</p>
+
+<p>Polymorphic Interface(2:50)
+The link_to method&#8211;> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
+-> if I send it an instance of active record, it&#8217;s behavior will change ==> it will become intelligent and it will understand that it is an instance of active record</p>
+
+<p><strong>Lecture</strong> (2:55)</p>
+
+<p>anything that starts with an underscore &#8216;_form.erb.html&#8217; for example is a snippet of code that is reused on multiple templates</p>
+
+<p>form_for(@song) &#8211;> knows whether the song is new or should be updated&#8230; obviously different verbs are required for those diff actions</p>
+
+<figure class='code'><figcaption><span>Form Helpers (3:09)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">form_for</span><span class="p">(</span><span class="vi">@song</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">textfield</span> <span class="ss">:artist_name</span> <span class="c1">#=&gt; this will break if there is not a artist_name method for the song class in the controller</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>  <span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># this line instantiates a New Song</span>
+</span><span class='line'>  <span class="c1"># collects the data</span>
+</span><span class='line'>  <span class="c1">#assigning the data to the correct attribute</span>
+</span><span class='line'> <span class="c1">#the params[:song] lines does the last two steps</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Params</strong> (3:20)
+params looks and behaves like a hash
+its a nested hash</p>
+
+<figure class='code'><figcaption><span>Assigning a name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@song</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:song</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span> <span class="c1">#but this happens during the following line of code:</span>
+</span><span class='line'>
+</span><span class='line'><span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span> <span class="c1"># this happens using mass assignment!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Manually Assigning the Name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">input</span> <span class="n">type</span> <span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;song[name]&quot;</span> <span class="c1">#this looks like the key of the params hash ==&gt; params[:song][:name]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(3:50) Nested hash testing</p>
+
+<figure class='code'><figcaption><span>Query string (3:57)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mldraft</span><span class="o">.</span><span class="n">com?person</span><span class="o">[</span><span class="nb">name</span><span class="o">]=</span><span class="n">adam</span><span class="o">&amp;</span><span class="n">person</span><span class="o">[</span><span class="n">email</span><span class="o">]=</span><span class="n">adam</span><span class="vi">@mldraft</span><span class="o">.</span><span class="n">com</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Can access the params hash in the same way as the form. So params[:person][:name] will equal adam</p>
+
+<p>Mass Assignment Vulnability (4:05)
+- attr_accessible is a whitelist approach versus attr_protected which is a black list approach
+- this has nothing to do with the attr_accessor, reader, or writer</p>
+
+<p>Virtual attributes don&#8217;t persist to the database</p>
 </div>
 
 

@@ -5,3 +5,82 @@ date: 2012-07-16 16:06
 comments: true
 categories: rails lecture notes
 ---
+
+***Rails Lecture 3- July 15***
+
+why you 'get' instead of 'match' in the routes file?
+-bc want to use http verbs to be more specific
+-match is more vague, you should generally use specific verbs
+
+```
+rake routes CONTROLLER=SESSIONS
+```
+will narrow output
+
+```
+render :action => 'under_construction' #=> relative to the current controller
+render :template => 'shared/under_construction' #=> doesn't assume it is in the current views folder
+#under the class name
+render 'shared/under_construction' #=> these 3 work the same now
+```
+
+**Private Methods**(2:40)
+- about what object the receiver is on the method called-- private methods can only be called on implicit receivers
+- a way to control scope
+- anything that is not an action, that isn't an endpoint of a route should be private 
+
+routes: bridge between the browser, specifcially URLs, and the app
+
+Polymorphic Interface(2:50)
+The link_to method--> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
+-> if I send it an instance of active record, it's behavior will change ==> it will become intelligent and it will understand that it is an instance of active record
+
+
+**Lecture** (2:55)
+
+
+anything that starts with an underscore '_form.erb.html' for example is a snippet of code that is reused on multiple templates
+
+form_for(@song) --> knows whether the song is new or should be updated... obviously different verbs are required for those diff actions
+
+``` ruby Form Helpers (3:09)
+form_for(@song)
+f.textfield :artist_name #=> this will break if there is not a artist_name method for the song class in the controller
+```
+
+``` ruby
+def create
+	@song = Song.new(param[:song]) 
+	# this line instantiates a New Song
+	# collects the data
+	#assigning the data to the correct attribute
+ #the params[:song] lines does the last two steps
+end
+```
+
+**Params** (3:20)
+params looks and behaves like a hash
+its a nested hash
+
+``` ruby Assigning a name
+@song.name = params[:song][:name] #but this happens during the following line of code:
+
+@song = Song.new(param[:song]) # this happens using mass assignment!
+```
+
+``` ruby Manually Assigning the Name
+input type ="text" name="song[name]" #this looks like the key of the params hash ==> params[:song][:name]
+```
+
+(3:50) Nested hash testing
+
+``` ruby Query string (3:57)
+mldraft.com?person[name]=adam&person[email]=adam@mldraft.com
+```
+Can access the params hash in the same way as the form. So params[:person][:name] will equal adam
+
+Mass Assignment Vulnability (4:05)
+- attr_accessible is a whitelist approach versus attr_protected which is a black list approach
+- this has nothing to do with the attr_accessor, reader, or writer
+
+Virtual attributes don't persist to the database

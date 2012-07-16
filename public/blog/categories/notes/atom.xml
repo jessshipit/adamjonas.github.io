@@ -4,7 +4,7 @@
   <title><![CDATA[Category: notes | Documenting all this...]]></title>
   <link href="http://ajonas.heroku.com/blog/categories/notes/atom.xml" rel="self"/>
   <link href="http://ajonas.heroku.com/"/>
-  <updated>2012-07-16T16:36:34-04:00</updated>
+  <updated>2012-07-16T16:50:43-04:00</updated>
   <id>http://ajonas.heroku.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -18,7 +18,87 @@
     <link href="http://ajonas.heroku.com/blog/2012/07/16/lecture-3-july-15/"/>
     <updated>2012-07-16T16:06:00-04:00</updated>
     <id>http://ajonas.heroku.com/blog/2012/07/16/lecture-3-july-15</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p><strong><em>Rails Lecture 3- July 15</em></strong></p>
+
+<p>why you 'get' instead of 'match' in the routes file?
+-bc want to use http verbs to be more specific
+-match is more vague, you should generally use specific verbs</p>
+
+<p><code>
+rake routes CONTROLLER=SESSIONS
+</code>
+will narrow output</p>
+
+<p>```
+render :action => 'under_construction' #=> relative to the current controller
+render :template => 'shared/under_construction' #=> doesn't assume it is in the current views folder</p>
+
+<h1>under the class name</h1>
+
+<p>render 'shared/under_construction' #=> these 3 work the same now
+```</p>
+
+<p><strong>Private Methods</strong>(2:40)
+- about what object the receiver is on the method called-- private methods can only be called on implicit receivers
+- a way to control scope
+- anything that is not an action, that isn't an endpoint of a route should be private</p>
+
+<p>routes: bridge between the browser, specifcially URLs, and the app</p>
+
+<p>Polymorphic Interface(2:50)
+The link_to method--> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
+-> if I send it an instance of active record, it's behavior will change ==> it will become intelligent and it will understand that it is an instance of active record</p>
+
+<p><strong>Lecture</strong> (2:55)</p>
+
+<p>anything that starts with an underscore '_form.erb.html' for example is a snippet of code that is reused on multiple templates</p>
+
+<p>form_for(@song) --> knows whether the song is new or should be updated... obviously different verbs are required for those diff actions</p>
+
+<p><code>ruby Form Helpers (3:09)
+form_for(@song)
+f.textfield :artist_name #=&gt; this will break if there is not a artist_name method for the song class in the controller
+</code></p>
+
+<p>``` ruby
+def create</p>
+
+<pre><code>@song = Song.new(param[:song]) 
+# this line instantiates a New Song
+# collects the data
+#assigning the data to the correct attribute
+</code></pre>
+
+<p> #the params[:song] lines does the last two steps
+end
+```</p>
+
+<p><strong>Params</strong> (3:20)
+params looks and behaves like a hash
+its a nested hash</p>
+
+<p>``` ruby Assigning a name
+@song.name = params[:song][:name] #but this happens during the following line of code:</p>
+
+<p>@song = Song.new(param[:song]) # this happens using mass assignment!
+```</p>
+
+<p><code>ruby Manually Assigning the Name
+input type ="text" name="song[name]" #this looks like the key of the params hash ==&gt; params[:song][:name]
+</code></p>
+
+<p>(3:50) Nested hash testing</p>
+
+<p><code>ruby Query string (3:57)
+mldraft.com?person[name]=adam&amp;person[email]=adam@mldraft.com
+</code>
+Can access the params hash in the same way as the form. So params[:person][:name] will equal adam</p>
+
+<p>Mass Assignment Vulnability (4:05)
+- attr_accessible is a whitelist approach versus attr_protected which is a black list approach
+- this has nothing to do with the attr_accessor, reader, or writer</p>
+
+<p>Virtual attributes don't persist to the database</p>
 ]]></content>
   </entry>
   
