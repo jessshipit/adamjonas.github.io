@@ -4,7 +4,7 @@
   <title><![CDATA[Category: lecture | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/lecture/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-07-17T17:24:42-04:00</updated>
+  <updated>2012-07-18T11:51:36-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Lecture 3]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/17/ruby-lecture-3-july-16/"/>
+    <updated>2012-07-17T22:50:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/17/ruby-lecture-3-july-16</id>
+    <content type="html"><![CDATA[<p><strong><em>Lecture 3, July 17</em></strong></p>
+
+<p>Kent Beck</p>
+
+<p>FizzBuzz
+solutions on ?ruberque?</p>
+
+<p>TDD: able to write the code that you wish you had</p>
+
+<p><strong>Array Review:</strong>
+empty[0] = "filled" #=> can assign slots one at a time
+easy_as[1, 5] #=> can slice elements off, have elastic arrays --> can add elements to an array without doing anything else</p>
+
+<p><strong>Lecture:</strong>
+Object orientation- we send object methods
+important to identify who the receiver is and what the method is
+part of dot notation: every method returns an object, so you can chain another method on it
+it's the return of the previous method that is the receiver for the following method</p>
+
+<p>the strip method is part of the family of normalization</p>
+
+<p>gsub = global substitution
+sub will only replace the first occurrence it encounters</p>
+
+<p>== is the same as eql method</p>
+
+<p>methods that end with question marks --> the ? is part of the method name that indicates it returns a boolean value</p>
+
+<p>strings like arrays can be sliced</p>
+
+<p>match accepts a pattern of REGEX
+  -the string literal for patterns are /a/e/i/o/u
+  -check <a href="http://rubluar.com">http://rubluar.com</a></p>
+
+<p><strong>Iteration</strong> is a fancy word for looping
+anything that can iterated upon is described as an <em>enumerable</em>
+strings and arrays are enumerables</p>
+
+<p><strong>Scope</strong>
+scope gates -- every time you see a 'do', 'end', 'def' keyword your scope changed.</p>
+
+<p>blocks have an exclusive scope. If it is defined in that block and only in that block it is accessible for the outside.
+method scopes are even stricter. cannot access method outside of that particular method.
+parameters are how you pass in values into a method.</p>
+
+<p>2nd program- (8:25- 8:35)
+artist, album, song sorting</p>
+
+<p><em>first step in a program is usually to set up state</em></p>
+
+<p><strong>More Data Types</strong>
+<em>Hashes</em> a lot like an array in that it is a collection object. An array is only indexed, so you can only refer to the objects within the array by its position</p>
+
+<p><em>literal constructors</em>
+"" - strings
+// - REGEX
+[] - array
+{} - hashes
+: - symbols</p>
+
+<p>Hashes are valuable when you care about the meta data</p>
+
+<p>every time you create a new string, it creates a new object in memory
+a symbol is an immutable object</p>
+
+<p>vending machine {</p>
+
+<pre><code>a: =&gt; ["snickers", "twix", "kit kat"]
+</code></pre>
+
+<p>}
+puts vending_machine[:a][0] #=> this accesses the :a key and the 0th position of the array which is the value</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lecture 3- July 15]]></title>
@@ -405,118 +485,6 @@ array.combination(2).to_a #=> yields the combinations (in this case 2 at a time 
 <p>array.sample #=> pulls a random sample from the array
 array.shuffle # => will randomize the sample
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 6 Ruby- Class Methods]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/06/25/lecture-6-ruby-class-methods/"/>
-    <updated>2012-06-25T10:48:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/06/25/lecture-6-ruby-class-methods</id>
-    <content type="html"><![CDATA[<p>Strategy...</p>
-
-<p>-->look for nouns to start
-url- unified resource locator
-map and collect --> returns the results of the operation--> so it uts it into a new array</p>
-
-<p>select when you are trying to match something, cannot collect things conditionally
-(#) => library.songs.select{|s| s.name ==song_name}</p>
-
-<p>is_a? --> is this an array, this is a validator</p>
-
-<p><strong><em>HOW TO BUILD CLASS METHODS</em></strong>
-methods that don't apply to the instance of the class but the class itself
-you can tell if it's a class method if self is the receiver</p>
-
-<p>``` ruby
-class Artist
-puts self</p>
-
-<p>def self.top_5
-end</p>
-
-<p>end</p>
-
-<p>def self.top_5
-  self.all.sort_by{|a| a.rank}
-end
-end</p>
-
-<h1>Another way...</h1>
-
-<p>class Artist
-@@all = []
-attr_accessor :name, :songs, :artists</p>
-
-<p>def initialize
-  @@all &lt;&lt; self
-  @songs = []
-  @artists = []
-end</p>
-
-<h1>important pattern of observing intialization and making classes intelligent</h1>
-
-<p>def songs
-  artists.collect{|artist| artist.song}
-end</p>
-
-<p>def self.all
-  @@all #return all the artists ever created
-end
-```</p>
-
-<p>3:30 PM
-<strong><em>MODULES</em></strong> - for creating all sort of shared behavior
-- modules don't have instances--> the difference between modules and classes</p>
-
-<p>two keywords to include behavior--> include and extend
-diff between include and extend --> trying to describe the scope of the module behavior</p>
-
-<p>extending- makes it a class methods
-include --> methods in that module are instance methods
-?? how does require fit into this??</p>
-
-<p>3:38
-?? order of attr_accessor and @@all? does it matter?</p>
-
-<p><strong><em>INHERITANCE</em></strong> -- a pattern that we don't like as much as modules
-we'd rather think of things in the builder pattern using include and extend</p>
-
-<p>2nd HALF</p>
-
-<p><strong><em>File Systems:</em></strong>
-Dir documentation (4:10)
-foreach and Dir.entries</p>
-
-<p><strong><em>ERB templates</em></strong> (4:23):
-we care about the result method for templating</p>
-
-<p><strong><em>PRIVATE AND PUBLIC METHODS</em></strong> (4:41)
-->a private method cannot be called with an explicit receiever, only implicit receivers-- means they can only be called in the class</p>
-
-<p><strong><em>GEMS:</em></strong>
--a pre-built package or functionality
-<a href="http://ruby-toolbox.com">See the Ruby Toolbox</a></p>
-
-<p><strong><em>SINATRA</em></strong> (4:44):
--based on rack (the first )
-RACK - create a class that responds to a method called 'call'
-- the response must return 3 three things- a status code, the header, the body of the response
-<code>
-ruby -rubygems sinatra.rb
-</code>
-<strong><em>SCRAPERS:</em></strong>
-nokogiri gem will
-xpath-- path to an element or you can use an CSS adjustment
-nokogiri comes with a method called content
-rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
-
-<p>httparty-
-<a href="http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/">some reading on httparty</a>
-<a href="http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">there is more reading here</a></p>
-
-<p>open data:
-<a href="freebase.com">freebase</a></p>
 ]]></content>
   </entry>
   
