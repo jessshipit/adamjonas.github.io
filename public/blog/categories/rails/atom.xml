@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-07-18T11:51:36-04:00</updated>
+  <updated>2012-07-18T17:15:57-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rails helpers]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/18/rails-helpers/"/>
+    <updated>2012-07-18T16:58:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/18/rails-helpers</id>
+    <content type="html"><![CDATA[<p>'Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers are mainly for use in that context. Helpers are the only methods you can access, other than instance methods for an instance you have access to.' <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">except from</a></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">why this is important?</a>
+and <a href="/blog/2012-07-18-solid-principles/">my own write up of Dependency Inversion Principle</a></p>
+
+<p>Declare a controller method as a helper. For example, the following makes the current_user controller method available to the view. You
+``` ruby
+class ApplicationController &lt; ActionController::Base
+  helper_method :current_user, :logged_in?</p>
+
+<p>  def current_user</p>
+
+<pre><code>@current_user ||= User.find_by_id(session[:user])
+</code></pre>
+
+<p>  end</p>
+
+<p>   def logged_in?</p>
+
+<pre><code> current_user != nil
+</code></pre>
+
+<p>   end
+end
+<code>
+In a view:
+</code> ruby
+&lt;% if logged_in? -%>Welcome, &lt;%= current_user.name %>&lt;% end -%>
+```
+Parameters
+method[, method] - A name or names of a method on the controller to be made available on the view.</p>
+
+<p>A solid beginner's break-down (it's a little old though) is <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">here</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[the clues errors provide]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/18/the-clues-errors-provide/"/>
+    <updated>2012-07-18T16:35:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/18/the-clues-errors-provide</id>
+    <content type="html"><![CDATA[<p>``` ruby Here's the code in the sessions controller
+def create</p>
+
+<pre><code>user = User.find_by_email_address(params[:email_address])
+if user &amp;&amp; user.authenticate(params[:password])
+ #blah blah blah
+</code></pre>
+
+<p>  end
+<code>
+</code> ruby The Error
+undefined method `authenticate' for nil:NilClass
+```
+This means that the method was called on a receiver that is nil. Meaning that it's not the right object...</p>
+
+<p>``` ruby Here's the code in the sessions controller
+def create</p>
+
+<pre><code>user = User.find_by_email_address(params[:email_address])
+if user &amp;&amp; user.magic(params[:password])
+#blah blah blah
+</code></pre>
+
+<p>end
+```</p>
+
+<p><code>ruby The Error
+undefined method `magic' for #&lt;User:0x007fa35e3e2fe8&gt;
+</code>
+This means that the method magic doesn't exist for that object.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[has_secured_password]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/18/has-secured-password/"/>
+    <updated>2012-07-18T15:23:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/18/has-secured-password</id>
+    <content type="html"><![CDATA[<p><a href="http://railscasts.com/episodes/270-authentication-in-rails-3-1">Rails Cast on Authentication Rails 3.1</a>
+also want to check out <a href="http://railscasts.com/episodes/250-authentication-from-scratch">Rails cast on Authentication from Scratch</a></p>
+
+<p>The user model rails allows you to call
+<code>ruby has_secure_password
+class User &lt; ActiveRecord::Base
+  attr_accessible :email, :password, :password_confirmation
+  has_secure_password
+  validates_presence_of :password, :on =&gt; :create
+end
+</code>
+You will likely want to add validation for the email address as well, but that's outside the scope of this...</p>
+
+<p>The has_secure_password setting automatically adds validation for mismatched password between the password and password confirmation fields.</p>
+
+<h3>Helper Methods: specifically :current_user</h3>
+
+<p>See the <a href="/blog/2012-07-18-rails-helpers/">post on this</a>.</p>
+
+<h3>SSL</h3>
+
+<p>can also add options for ssl with the simple line in the ApplicationController:
+<code>ruby
+protect_from_forgery
+force_ssl
+</code>
+This will only be reflected in production and test environments NOT development...</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lecture 3- July 15]]></title>
@@ -127,242 +241,6 @@ gem 'foreigner', '~> 1.1.0'</p>
 bingo.</p>
 
 <p>I finally got this running by downloading mysql and setting the db to mysql... victory.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 2 Rails]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/08/lecture-2-rails/"/>
-    <updated>2012-07-08T14:21:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/08/lecture-2-rails</id>
-    <content type="html"><![CDATA[<p><strong><em>Lecture 2</em></strong></p>
-
-<p>BASH
-<code>
-cd .. # change to up a directory
-cd . # change to current directory
-ls # list
-cd ~ #home directory
-</code></p>
-
-<p><strong><em>Resources</em></strong>
-- the thing you want to let users manipulate
-<code>
-rails generate resource Mixtape nae:string
-</code></p>
-
-<p>Rake-
-a ruby language for running scripts</p>
-
-<p>Models-
-main component of your application, they represent the resources of your application
-every model is just a ruby class definition located in the model</p>
-
-<p>so the mixtape model defines a class Mixtape that is the object that will allow our app to CRUD mixtapes</p>
-
-<p>If we a Users model we have a users table</p>
-
-<p>Goal for today is to understand the request cycle</p>
-
-<p><strong><em>Routes</em></strong></p>
-
-<p><strong><em>DSL- Domain Specific Language</em></strong> (3:08PM)
-``` ruby
-match '/foo' => 'songs#foo' # this needs to be sent to a controller</p>
-
-<h1>a songs controller with the foo action</h1>
-
-<p>```
-we need to find something that can handle the route--> we want to send it to a waiter, like ordering an A7 at a chinese resturant</p>
-
-<p><strong>an ACTION is just a method defined in the class!!</strong>
-a Controller is just a class --> a grouping that relates to songs</p>
-
-<p>if it can't find a page it is 404</p>
-
-<p>every action in the app needs to be defined</p>
-
-<p>5 keywords available...
-MATCH
-GET
-POST
-PUT
-DELETE</p>
-
-<p>cmd T --> opens a window for you to access files</p>
-
-<p><strong><em>rake routes:</em></strong>
-first column is the request
-second is http verb
-third is url or pattern
-fourth is the contoller#action</p>
-
-<p>resources macro- defines all the restful actions for the resource</p>
-
-<p>?? so what was the main problem with the post request?</p>
-
-<p><strong><em>Controllers &amp; #actions </em></strong></p>
-
-<p>``` ruby e.g. of actions in the Songs controller
-def name
-  render :template => 'songs/name' #explicit template rendering
-end</p>
-
-<h1>exactly the same as this...</h1>
-
-<p>def name
-end
-```</p>
-
-<p><code>ruby Renders
-render :action =&gt; "name" # in the views folder named after the controller
-render :template =&gt; 'songs/name' # need to specify the full path
-render :xml
-render :json
-</code></p>
-
-<p>Video 2 starts 4PM
-diff between &lt;% and =&lt;%
-&lt;% will get executed, but will not show in the html
-&lt;%= will get executed and will also show in the html</p>
-
-<p><strong><em> Instance variables </em></strong>
-Instance variables are the only thing passed from the controller to the views
-??? do class variables get passed as well?</p>
-
-<p><strong>link_to</strong>
-<code>ruby
-&lt;%= link_to 'Search', 'http://google.com' %&gt;
-</code>
-we have two methods <em>path and </em>url</p>
-
-<p><code>ruby e.g. of link_to
-&lt;%= link_to 'Show', 'song' %&gt; #polymorphic interface
-</code></p>
-
-<p>3 pars of rails (4:10 PM)
-ORM- active record
-Action controller
-Action view</p>
-
-<p>LEARN MORE: there are lots of polymorphic interfaces play nicely with active record</p>
-
-<p><code>ruby automatic routing with namespacing with_options
-with_options :controller =&gt; 'site' do |s|
-  s.get 'about'
-  s.get 'home'
-end
-</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails 1st Lecture]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/02/rails-1st-lecture/"/>
-    <updated>2012-07-02T10:53:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/02/rails-1st-lecture</id>
-    <content type="html"><![CDATA[<p>Rails Lecture I - July 2</p>
-
-<p><strong><em>How the web works:</em></strong>
--the requests we send to other servers have headers with info about the request
--you get the response with a header and the body
--the body is just text and data with HTML
--the communication happens over TCP/IP, namely HTTP
-- the browser renders the HTML by making it pretty
--we use GET, POST, PUT, and DELETE -</p>
-
-<p>4 imporotant HTTP Verbs-->
-GET- retrieve representation of content
-POST- Submits data
-PUT- Update
-Delete- Deletes a specific resource</p>
-
-<p>Convention over configuration
--we wants defaults</p>
-
-<p>There are naming schemes such as:
-all tables pl
-all models are sigular
-controller songs_controller.rb
-views songs/</p>
-
-<p><strong><em>Gems:</em></strong>
-pre-packaged piece of software that ruby uses</p>
-
-<p>Config Folder--> where the configuration of our app lives
--Database.yaml- this is how we communicate the database</p>
-
-<p>App Folder: spend most of our time in the app directory</p>
-
-<p><strong><em>MVC:</em></strong> (7:42 pm)
-Models: define how data is created, retrieved, updated and deleted--> the only code that defined these 4 actions are in the model</p>
-
-<p>Controllers: where to send the data to
-business logic</p>
-
-<p>Views: display logic</p>
-
-<p>Helpers: helper functions for your views
-db: stores your database and all the instructions for your database</p>
-
-<p>lib: code that you app needs but isn't part of the request cycle
--tasks- background tasks</p>
-
-<p>public dir:
-any code that doesn't require the rails stack to run</p>
-
-<p>vendor: any 3rd party library that you didn't write
--- similar to the lib directory that you didn't write</p>
-
-<p><strong><em>REST:</em></strong>
--Representational State Transfer
--URL: unifeied resources locators
-- there should be a unified way to expose resources to the world
--1st concept: the things we get online are resources-- what the server is going to respond with is a representation of the real thing (since it can't deliver the real thing)
--there should be consistency and predictability-</p>
-
-<p>rails generate resource song title:string duration:integer #always singular
-rails generate scaffold song title:string #in the beginning the first few resources are created by scaffolds</p>
-
-<p><strong><em>MIGRATIONS:</em></strong> defines a db strcuture
-every resource has it's own table</p>
-
-<p><strong><em>SQL:</em></strong> server query language or standard query language</p>
-
-<p><strong><em>SCHEMA-</em></strong> describes the structure of the DB</p>
-
-<p><strong><em>RAKE:</em></strong> a ruby library to run background tasks
-<code>
-rake stats-- gives me stats on the app
-rake about--&gt; outputs info about the environment, etc
-rake -T --&gt; outputs provides commands
-</code></p>
-
-<p>VIDEO 2...</p>
-
-<p>migrations are iterative by nature
-every migration should one and only one thing</p>
-
-<p>rake db:migrae runs the migration
-rake db:rollback rolls back the migration</p>
-
-<p><strong><em>OBJECT ORIENTATION</em></strong>
--what to create metaphors in our code to representations of the real world
-<code>ruby
-Song.find(2) #=&gt; finds the object of id 2
-Song.all #=&gt; returns all the instances of the class
-</code>
-<strong><em>ORM: object relational mappers</em></strong>
-- a class is to a table : an instance of a class is to a row of a table
--every instance is going to wrap a row of a table
--one to one relationship between an instance and a row
--the library, the ORM, allows you to relate to the objects with knowing how the objects are related</p>
-
-<p>Programming is just codifying procedural knowledge</p>
-
-<p><strong><em>DOCUMENTATION:</em></strong>
-Rails Guides: more like how-tos
-Rails API: the more technical version</p>
 ]]></content>
   </entry>
   

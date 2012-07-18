@@ -9,9 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Lecture 3, July 17 Kent Beck FizzBuzz
-solutions on ?ruberque? TDD: able to write the code that you wish you had Array Review:
-empty[0] = &#8220; &hellip;">
+  <meta name="description" content="&#8216;Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -73,6 +71,294 @@ empty[0] = &#8220; &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/07/18/rails-helpers/">Rails Helpers</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:58:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>&#8216;Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers are mainly for use in that context. Helpers are the only methods you can access, other than instance methods for an instance you have access to.&#8217; <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">except from</a></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">why this is important?</a>
+and <a href="/blog/2012-07-18-solid-principles/">my own write up of Dependency Inversion Principle</a></p>
+
+<p>Declare a controller method as a helper. For example, the following makes the current_user controller method available to the view. You</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span><span class="p">,</span> <span class="ss">:logged_in?</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="k">def</span> <span class="nf">logged_in?</span>
+</span><span class='line'>     <span class="n">current_user</span> <span class="o">!=</span> <span class="kp">nil</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In a view:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">logged_in?</span> <span class="o">-</span><span class="sx">%&gt;Welcome, &lt;%= current_user.name %&gt;</span><span class="o">&lt;</span><span class="sx">% end </span><span class="o">-%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Parameters
+method[, method] - A name or names of a method on the controller to be made available on the view.</p>
+
+<p>A solid beginner&#8217;s break-down (it&#8217;s a little old though) is <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">here</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/18/the-clues-errors-provide/">The Clues Errors Provide</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:35:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>     <span class="c1">#blah blah blah</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`authenticate&#39; for nil:NilClass</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This means that the method was called on a receiver that is nil. Meaning that it&#8217;s not the right object&#8230;</p>
+
+<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">magic</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#blah blah blah</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`magic&#39; for #&lt;User:0x007fa35e3e2fe8&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This means that the method magic doesn&#8217;t exist for that object.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/18/solid-principles/">SOLID Principles</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:05:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion</a></h3>
+
+<p>Dependency inversion principle
+:  one should “Depend upon Abstractions. Do not depend upon concretions.</p>
+
+<p>This means that in the controller, it is better to define</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>  <span class="vi">@current_user</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>than using the instance variable because right now the instance var is concrete but you might want to add logic and redefine it:</p>
+
+<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">sessions</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/18/has-secured-password/">Has_secured_password</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T15:23:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://railscasts.com/episodes/270-authentication-in-rails-3-1">Rails Cast on Authentication Rails 3.1</a>
+also want to check out <a href="http://railscasts.com/episodes/250-authentication-from-scratch">Rails cast on Authentication from Scratch</a></p>
+
+<p>The user model rails allows you to call</p>
+
+<figure class='code'><figcaption><span>has_secure_password</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:password_confirmation</span>
+</span><span class='line'>  <span class="n">has_secure_password</span>
+</span><span class='line'>  <span class="n">validates_presence_of</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:on</span> <span class="o">=&gt;</span> <span class="ss">:create</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You will likely want to add validation for the email address as well, but that&#8217;s outside the scope of this&#8230;</p>
+
+<p>The has_secure_password setting automatically adds validation for mismatched password between the password and password confirmation fields.</p>
+
+<h3>Helper Methods: specifically :current_user</h3>
+
+<p>See the <a href="/blog/2012-07-18-rails-helpers/">post on this</a>.</p>
+
+<h3>SSL</h3>
+
+<p>can also add options for ssl with the simple line in the ApplicationController:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">protect_from_forgery</span>
+</span><span class='line'><span class="n">force_ssl</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will only be reflected in production and test environments NOT development&#8230;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/07/17/ruby-lecture-3-july-16/">Ruby Lecture 3</a></h1>
     
     
@@ -96,21 +382,22 @@ empty[0] = &#8220; &hellip;">
   </header>
 
 
-  <div class="entry-content"><p><strong><em>Lecture 3, July 17</em></strong></p>
-
-<p>Kent Beck</p>
+  <div class="entry-content"><p>Programmer of the day:
+Kent Beck</p>
 
 <p>FizzBuzz
 solutions on ?ruberque?</p>
 
 <p>TDD: able to write the code that you wish you had</p>
 
-<p><strong>Array Review:</strong>
-empty[0] = &#8220;filled&#8221; #=> can assign slots one at a time
+<p><strong>Array Review:</strong></p>
+
+<p>empty[0] = &#8220;filled&#8221; #=> can assign slots one at a time
 easy_as[1, 5] #=> can slice elements off, have elastic arrays &#8211;> can add elements to an array without doing anything else</p>
 
-<p><strong>Lecture:</strong>
-Object orientation- we send object methods
+<p><strong>Lecture:</strong></p>
+
+<p>Object orientation- we send object methods
 important to identify who the receiver is and what the method is
 part of dot notation: every method returns an object, so you can chain another method on it
 it&#8217;s the return of the previous method that is the receiver for the following method</p>
@@ -130,12 +417,14 @@ sub will only replace the first occurrence it encounters</p>
   -the string literal for patterns are /a/e/i/o/u
   -check <a href="http://rubluar.com">http://rubluar.com</a></p>
 
-<p><strong>Iteration</strong> is a fancy word for looping
-anything that can iterated upon is described as an <em>enumerable</em>
+<p><strong>Iteration</strong> is a fancy word for looping</p>
+
+<p>anything that can iterated upon is described as an <em>enumerable</em>
 strings and arrays are enumerables</p>
 
-<p><strong>Scope</strong>
-scope gates &#8211; every time you see a &#8216;do&#8217;, &#8216;end&#8217;, &#8216;def&#8217; keyword your scope changed.</p>
+<p><strong>Scope</strong></p>
+
+<p>scope gates &#8211; every time you see a &#8216;do&#8217;, &#8216;end&#8217;, &#8216;def&#8217; keyword your scope changed.</p>
 
 <p>blocks have an exclusive scope. If it is defined in that block and only in that block it is accessible for the outside.
 method scopes are even stricter. cannot access method outside of that particular method.
@@ -149,25 +438,33 @@ artist, album, song sorting</p>
 <p><strong>More Data Types</strong>
 <em>Hashes</em> a lot like an array in that it is a collection object. An array is only indexed, so you can only refer to the objects within the array by its position</p>
 
-<p><em>literal constructors</em>
-&#8221;&#8221; - strings
-// - REGEX
-[] - array
-{} - hashes
-: - symbols</p>
+<p><em>Literal Constructors:</em></p>
+
+<p>&#8221;&#8221; - strings</p>
+
+<p>/ - REGEX</p>
+
+<p>[] - array</p>
+
+<p>{} - hashes</p>
+
+<p>: - symbols</p>
 
 <p>Hashes are valuable when you care about the meta data</p>
 
 <p>every time you create a new string, it creates a new object in memory
 a symbol is an immutable object</p>
 
-<p>vending machine {</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">vending</span> <span class="n">machine</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">a</span><span class="p">:</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;snickers&quot;</span><span class="p">,</span> <span class="s2">&quot;twix&quot;</span><span class="p">,</span> <span class="s2">&quot;kit kat&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">vending_machine</span><span class="o">[</span><span class="ss">:a</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="c1">#=&gt; this accesses the :a key and the 0th position of the array which is the value</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>a: =&gt; ["snickers", "twix", "kit kat"]
-</code></pre>
-
-<p>}
-puts vending_machine[:a][0] #=> this accesses the :a key and the 0th position of the array which is the value</p>
 </div>
   
   
@@ -671,368 +968,6 @@ Alright, now let&#8217;s get down to diaspora.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/09/rake/">Rake</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-09T15:29:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong><em>Rake</em></strong>
-- Rake lets you define a dependency tree of tasks to be executed.
-- Rake tasks are loaded from the file Rakefile
-- Rails rake tasks live under railties/lib/tasks
-- You can put your own tasks under lib/tasks</p>
-
-<p>Useful Rake Tasks</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db:migrate
-</span><span class='line'>db:sessions:create
-</span><span class='line'>doc:app
-</span><span class='line'>doc:rails
-</span><span class='line'>log:clear
-</span><span class='line'>rails:freeze:gems
-</span><span class='line'>rails:freeze:edge
-</span><span class='line'>test (default task)
-</span><span class='line'>stats</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/09/programming-quotes/">Programming Quotes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-09T14:50:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Beauty is more important in computing than anywhere else in technology because software is so complicated. Beauty is the ultimate defence against complexity.
-— David Gelernter</p>
-
-<p>Life is too short to run proprietary software.
-— Bdale Garbee</p>
-
-<p>“Computer science education cannot make anybody an expert programmer any more than studying brushes and pigment can make somebody an expert painter.”
-- Eric S. Raymond</p>
-
-<p>Good design adds value faster than it adds cost.
-- Thomas C. Gale</p>
-
-<p>Talk is cheap. Show me the code.
-- Linus Torvalds</p>
-
-<p>Perfection [in design] is achieved, not when there is nothing more to add, but when there is nothing left to take away.
-- Antoine de Saint-Exupéry</p>
-
-<p>Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.
-- Brian W. Kernighan.</p>
-
-<p>To iterate is human, to recurse divine.
-- L. Peter Deutsch</p>
-
-<p>Most good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.
-- Linus Torvalds</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/09/github/">GitHub</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-09T14:25:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Good cheat sheet is: <a href="http://rogerdudler.github.com/git-guide/">http://rogerdudler.github.com/git-guide/</a>
-There is a nice site <a href="http://try.github.com">http://try.github.com</a> to practice.</p>
-
-<p>I had not added my <strong><em>SSH key</em></strong> for the new Mac Air so that was preventing me from pushing. It gave me no issue with pulling or cloning, only pushing. The SSH was accessed by typing:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cat .ssh/id_rsa.pub</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After adding it to <a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a> I had no problems&#8230;</p>
-
-<p>Pushed a bunch of branches with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git push origin &lt;name of the branch&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I could check what was in the repo and what had been pushed to the remote using the command: git branch with the all flag&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git branch -a</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/08/lecture-2-rails/">Lecture 2 Rails</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-08T14:21:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong><em>Lecture 2</em></strong></p>
-
-<p>BASH</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd .. # change to up a directory
-</span><span class='line'>cd . # change to current directory
-</span><span class='line'>ls # list
-</span><span class='line'>cd ~ #home directory</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong><em>Resources</em></strong>
-- the thing you want to let users manipulate</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rails generate resource Mixtape nae:string</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Rake-
-a ruby language for running scripts</p>
-
-<p>Models-
-main component of your application, they represent the resources of your application
-every model is just a ruby class definition located in the model</p>
-
-<p>so the mixtape model defines a class Mixtape that is the object that will allow our app to CRUD mixtapes</p>
-
-<p>If we a Users model we have a users table</p>
-
-<p>Goal for today is to understand the request cycle</p>
-
-<p><strong><em>Routes</em></strong></p>
-
-<p><strong><em>DSL- Domain Specific Language</em></strong> (3:08PM)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">match</span> <span class="s1">&#39;/foo&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs#foo&#39;</span> <span class="c1"># this needs to be sent to a controller</span>
-</span><span class='line'><span class="c1"># a songs controller with the foo action</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>we need to find something that can handle the route&#8211;> we want to send it to a waiter, like ordering an A7 at a chinese resturant</p>
-
-<p><strong>an ACTION is just a method defined in the class!!</strong>
-a Controller is just a class &#8211;> a grouping that relates to songs</p>
-
-<p>if it can&#8217;t find a page it is 404</p>
-
-<p>every action in the app needs to be defined</p>
-
-<p>5 keywords available&#8230;
-MATCH
-GET
-POST
-PUT
-DELETE</p>
-
-<p>cmd T &#8211;> opens a window for you to access files</p>
-
-<p><strong><em>rake routes:</em></strong>
-first column is the request
-second is http verb
-third is url or pattern
-fourth is the contoller#action</p>
-
-<p>resources macro- defines all the restful actions for the resource</p>
-
-<p>?? so what was the main problem with the post request?</p>
-
-<p><strong><em>Controllers &amp; #actions </em></strong></p>
-
-<figure class='code'><figcaption><span>e.g. of actions in the Songs controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">name</span>
-</span><span class='line'>  <span class="n">render</span> <span class="ss">:template</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs/name&#39;</span> <span class="c1">#explicit template rendering</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># exactly the same as this...</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">name</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Renders</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">render</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s2">&quot;name&quot;</span> <span class="c1"># in the views folder named after the controller</span>
-</span><span class='line'><span class="n">render</span> <span class="ss">:template</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs/name&#39;</span> <span class="c1"># need to specify the full path</span>
-</span><span class='line'><span class="n">render</span> <span class="ss">:xml</span>
-</span><span class='line'><span class="n">render</span> <span class="ss">:json</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Video 2 starts 4PM
-diff between &lt;% and =&lt;%
-&lt;% will get executed, but will not show in the html
-&lt;%= will get executed and will also show in the html</p>
-
-<p><strong><em> Instance variables </em></strong>
-Instance variables are the only thing passed from the controller to the views
-??? do class variables get passed as well?</p>
-
-<p><strong>link_to</strong></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s1">&#39;Search&#39;</span><span class="p">,</span> <span class="s1">&#39;http://google.com&#39;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>we have two methods <em>path and </em>url</p>
-
-<figure class='code'><figcaption><span>e.g. of link_to</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s1">&#39;Show&#39;</span><span class="p">,</span> <span class="s1">&#39;song&#39;</span> <span class="o">%&gt;</span> <span class="c1">#polymorphic interface </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>3 pars of rails (4:10 PM)
-ORM- active record
-Action controller
-Action view</p>
-
-<p>LEARN MORE: there are lots of polymorphic interfaces play nicely with active record</p>
-
-<figure class='code'><figcaption><span>automatic routing with namespacing with_options</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">with_options</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="s1">&#39;site&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">get</span> <span class="s1">&#39;about&#39;</span>
-</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">get</span> <span class="s1">&#39;home&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1048,23 +983,23 @@ Action view</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/07/17/ruby-lecture-3-july-16/">Ruby Lecture 3</a>
+        <a href="/blog/2012/07/18/rails-helpers/">rails helpers</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/07/17/scope/">scope</a>
+        <a href="/blog/2012/07/18/the-clues-errors-provide/">the clues errors provide</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/07/16/octopress-blues/">octopress blues</a>
+        <a href="/blog/2012/07/18/solid-principles/">SOLID principles</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/07/16/lecture-3-july-15/">Lecture 3- July 15</a>
+        <a href="/blog/2012/07/18/has-secured-password/">has_secured_password</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/07/11/diaspora2/">Diaspora- Day 2</a>
+        <a href="/blog/2012/07/17/ruby-lecture-3-july-16/">ruby lecture 3</a>
       </li>
     
   </ul>
@@ -1073,18 +1008,22 @@ Action view</p>
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/todo/'>TODO (3)</a></li>
+<li class='category'><a href='/blog/categories/authentication/'>authentication (1)</a></li>
 <li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
+<li class='category'><a href='/blog/categories/concepts/'>concepts (1)</a></li>
 <li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
-<li class='category'><a href='/blog/categories/errors/'>errors (2)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
+<li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
 <li class='category'><a href='/blog/categories/lecture/'>lecture (8)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
 <li class='category'><a href='/blog/categories/notes/'>notes (10)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
+<li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
-<li class='category'><a href='/blog/categories/rails/'>rails (4)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (7)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (12)</a></li>
