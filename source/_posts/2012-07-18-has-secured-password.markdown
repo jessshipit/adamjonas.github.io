@@ -22,7 +22,7 @@ You will likely want to add validation for the email address as well, but that's
 The has_secure_password setting automatically adds validation for mismatched password between the password and password confirmation fields.
 
 ###Helper Methods: specifically :current_user###
-See the [post on this](/blog/2012-07-18-rails-helpers/).
+See the [post on this](/blog/2012/07/18/rails-helpers/).
 
 ###SSL###
 can also add options for ssl with the simple line in the ApplicationController:

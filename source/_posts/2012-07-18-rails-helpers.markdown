@@ -9,7 +9,7 @@ categories: helpers rails
 'Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers are mainly for use in that context. Helpers are the only methods you can access, other than instance methods for an instance you have access to.' [except from](http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html)
 
 [why this is important?](http://en.wikipedia.org/wiki/Dependency_inversion_principle)
-and [my own write up of Dependency Inversion Principle](/blog/2012-07-18-solid-principles/)
+and [my own write up of Dependency Inversion Principle](/blog/2012/07/18/solid-principles/)
 
 Declare a controller method as a helper. For example, the following makes the current_user controller method available to the view. You
 ``` ruby

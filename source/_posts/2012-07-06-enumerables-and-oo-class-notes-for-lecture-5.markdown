@@ -73,12 +73,14 @@ shouldn't reassign constants once they have been assigned
 we use upper case letters for class names, because it is a constants
 ALL UPPERCASE are reserved for global variables
 
+```
 :: Ruby syntax for name spacing
+``` 
 
 Global variables begin with $, but you should never use them... they aren't neccessary
 
 For further reading on Variable Scope see:
-http://www.techotopia.com/index.php/Ruby_Variable_Scope (1 hr 30 min)
+<http://www.techotopia.com/index.php/Ruby_Variable_Scope> (1 hr 30 min)
 
 puts- what is the receiver of puts?
 - the implicit receiever of puts is self (1 hr 32 min)

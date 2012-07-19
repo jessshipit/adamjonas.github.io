@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-07-18T17:15:57-04:00</updated>
+  <updated>2012-07-19T11:35:00-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Lecture 4]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/18/ruby-lecture-4/"/>
+    <updated>2012-07-18T19:08:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/18/ruby-lecture-4</id>
+    <content type="html"><![CDATA[<p>Programmer of the day:
+Alan Kay</p>
+
+<h3>Object Orientation</h3>
+
+<p>once you have a user class, you can send it a message
+once you have a class you can teach the class how to do things like authenticate a user</p>
+
+<h3>Review</h3>
+
+<p>iteration: going through many things one at a time
+we refer to that character one at a time, as the iterator or yield</p>
+
+<p>.inspect allows you to look at an object that</p>
+
+<p>common to have nested iteration-- iterate through them, by looping through enumerables within a loop</p>
+
+<p>Iterating a hash you get yielded two variables at once, the key first and the value second</p>
+
+<p>``` ruby
+alphabet = {:a => 1, :b => 2}</p>
+
+<p>alphabet.each do |key, value|
+  puts "#{key} is the #{value} letter"
+end
+```</p>
+
+<p>.compact will get rid of any nil values
+.uniq will get rid of duplicates</p>
+
+<p>! methods will change the data set forever...</p>
+
+<p>.flatten will remove nesting from an array-- will flatten all elements in array
+.reverse elements in the array</p>
+
+<p>side note: python believes there is one way to do something. Ruby believes there should be many ways to do it so that you can be more expressive.</p>
+
+<p><code>ruby ordinalize is a integer method
+1.ordinalize     # =&gt; "1st"
+2.ordinalize     # =&gt; "2nd"
+1002.ordinalize  # =&gt; "1002nd"
+</code></p>
+
+<p>``` ruby multiple_of?(number)</p>
+
+<h1>Check whether the integer is evenly divisible by the argument.</h1>
+
+<p>0.multiple_of?(0)  #=> true
+6.multiple_of?(5)  #=> false
+10.multiple_of?(2) #=> true
+```</p>
+
+<p>Lab solution (8PM)</p>
+
+<p>hash structure with root or without root TODO</p>
+
+<p>.detect, .select and .reject methods are all useful array elements</p>
+
+<p>class CONSTANTS are really good for storing data about the class</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ruby lecture 3]]></title>
@@ -272,138 +339,6 @@ git push heroku master
 <p>That all went fairly well... though I didn't understand all the intermediate steps. I'll have to take closer look.</p>
 
 <p><a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/">Markdown language cheat sheet</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Procs and lambdas]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/03/procs-and-lambdas/"/>
-    <updated>2012-07-03T10:53:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/03/procs-and-lambdas</id>
-    <content type="html"><![CDATA[<p>You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...
-PROCS:</p>
-
-<p>Very standard to pass along a code block to the each method</p>
-
-<p>block_given? --> method to check whether a block was given to a method or not</p>
-
-<p>A proc --> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
-
-<p>``` ruby E.G.
-class Array
-def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.
-  shuffle.each do |el|</p>
-
-<pre><code>b.call el  #=&gt; b is a proc
-end
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>[1,2,3,4,5].random_each do |el|
-puts |el|</p>
-
-<p>end
-```
-You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
-
-<p>``` ruby E.G.
-Def run_two_procs (a, b)
-  a.call
-  b.call
-end</p>
-
-<p>proc1 = Proc.new do
-puts "This is proc1"
-end</p>
-
-<p>proc2 = Proc.new do
-puts "This is proc2"
-end</p>
-
-<p>run_two_procs proc1, proc2
-```
-If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
-
-<p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that --> it will do it all implicitly, you don't need to specify anything here. If it can't find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
-
-<p>``` ruby
-Def run_block
-  p = Proc.new # **see above
-  p.call
-end</p>
-
-<p>run_block do
-puts "Hello World'</p>
-
-<p>end
-```</p>
-
-<p>In Ruby 1.9 there are 4 main ways to run or call a block:
-``` ruby Proc e.g.
-my_proc = Proc.new do |a|
-  puts "This is a proc and #{a} was passed along to me"
-my_proc.call(10) #call method that passes in 10
-my_proc.(20) #this isn't a typo, gets converted to a call
-my_proc[30] #
-my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
-
-<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }
-none = Proc.new { |number| number == 0 }</p>
-
-<p>case number
-when several
-  puts "several"
-when none
-  puts "none"
-end
-```
--->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
-
-<p><strong><em>Lambdas</em></strong></p>
-
-<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
-Closures</p>
-
-<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.
-``` ruby
-def run_proc(p)
-  p.call
-end</p>
-
-<p>name = "Fred"</p>
-
-<p>print_a_name = proc { puts name } # this name doesn't exist in the definition above. This magic is called a closure. (23 Min)</p>
-
-<p>run_proc print_a_name
-```</p>
-
-<p>ALSO:
-``` ruby
-def run_proc(p)
-  p.call
-end</p>
-
-<p>name = "Fred"
-print_a_name = proc { puts name }
-name = "John"</p>
-
-<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.
-```
-<a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></p>
-
-<p><a href="http://www.ruby-doc.org/core-1.9.3/Proc.html">DOCUMENTATION</a></p>
-
-<p>SOME MORE READING:</p>
-
-<p><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</a></p>
-
-<p><a href="http://pine.fm/LearnToProgram/?Chapter=10">http://pine.fm/LearnToProgram/?Chapter=10</a></p>
-
-<p><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</a></p>
-
-<p><a href="http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html">http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</a></p>
 ]]></content>
   </entry>
   
