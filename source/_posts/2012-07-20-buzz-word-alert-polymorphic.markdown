@@ -7,11 +7,12 @@ categories: terms rails associations TODO
 ---
 
 ###Polymorphism### 
--“is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour.” (wikipedia)
+
+- “is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour.” (wikipedia)
 -is a language feature that allows the same function call to be associated with different definitions during the same execution, by delaying the binding of the call to run-time. [here](http://cs.calvin.edu/curriculum/cs/214/adams/labs/10/)
 
 ###Polymorphic Associations###
-- in the [guides](http://guides.rubyonrails.org/association_basics.html#polymorphic-associations) state that: "With polymorphic associations, a model can belong to more than one other model, on a single association." 
+- in the [guides](http://guides.rubyonrails.org/association_basics.html#polymorphic-associations) it states: "With polymorphic associations, a model can belong to more than one other model, on a single association." 
 - You can think of a polymorphic belongs_to declaration as setting up an interface that any other model can use. 
 
 As usual Ryan Bates to the rescue-- [polymorphic association rails cast.](http://railscasts.com/episodes/154-polymorphic-association?view=comments)
@@ -75,6 +76,7 @@ end
 
 ###Beyond the rails cast###
 [Charles Max Wood's explanation](http://teachmetocode.com/articles/ruby-on-rails-what-are-polymorphic-associations/)
+
 Polymorphic associations allow us to associate a single attribute of the class to any number of specified classes.
 Charles suggest that you [put your polymorphic associations and related functionality into mixin modules](http://teachmetocode.com/articles/ruby-on-rails-polymorphic-associations-with-mixin-modules/).
 [Youtube Video](http://www.youtube.com/watch?v=9NiCx1Lu-DY)-

@@ -32,11 +32,10 @@ Install Twitter Bootstrap
 A file that was generated is: app/assets/stylesheets/bootstrap_and_override.css.less
 This is where I would do the bulk of the customization
  - including if padding is needed between the body and the nav bar...
- ``` ruby Need some padding...
- @import "twitter/bootstrap/bootstrap";
 
+``` ruby For some padding at the top
+@import "twitter/bootstrap/bootstrap";
 body { padding-top: 60px; }
-
 @import "twitter/bootstrap/responsive";
 ```
 
@@ -50,14 +49,7 @@ rails g bootstrap:themed Posts
 ```
 Without the 3rd line it looks terrible so remember to run it!
 
-??
-```
-csrf metatabs
-```
-Ensures that information submitted through forms have a specific tag that identifies it as information submitted through the form I created.
-
-
-
 Further reading is [here.](http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/)
+
 
 NOTE: We went over twitter bootstrap in lecture 6 of ROR spring

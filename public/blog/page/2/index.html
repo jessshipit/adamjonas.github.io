@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="I just spent more than an hour debugging an issue when trying to run 1
-rake generate The error I kept receiving was: 1
+  <meta name="description" content="Fancy Scope1
 2
 3
 4
@@ -19,7 +18,8 @@ rake generate The error I kept receiving was: 1
 7
 8
 9
-## Generating &hellip;">
+10
+class Whatever def add add_junk(new_junk) #this just feeds into the next method end def add_junk(new_junk) @junk &lt &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,65 @@ rake generate The error I kept receiving was: 1
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/17/scope/">Scope</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-17T20:19:00-04:00" pubdate data-updated="true">Jul 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Fancy Scope</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Whatever</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">add</span>
+</span><span class='line'>    <span class="n">add_junk</span><span class="p">(</span><span class="n">new_junk</span><span class="p">)</span> <span class="c1">#this just feeds into the next method</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">add_junk</span><span class="p">(</span><span class="n">new_junk</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@junk</span> <span class="o">&lt;&lt;</span> <span class="n">new_junk</span>
+</span><span class='line'>    <span class="n">new_junk</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I need to understand that feeding into the 2nd method better</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -940,238 +999,6 @@ rake preview</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/03/procs-and-lambdas/">Procs and Lambdas</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-03T10:53:00-04:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>You know how everything in Ruby is an object, well, as it turns out that&#8217;s not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class&#8230;
-PROCS:</p>
-
-<p>Very standard to pass along a code block to the each method</p>
-
-<p>block_given? &#8211;> method to check whether a block was given to a method or not</p>
-
-<p>A proc &#8211;> a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Array</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">random_each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>  <span class="c1"># =&gt; with the ampersand, b essentially becomes a reference to the code block below.</span>
-</span><span class='line'>  <span class="n">shuffle</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">el</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">b</span><span class="o">.</span><span class="n">call</span> <span class="n">el</span>  <span class="c1">#=&gt; b is a proc</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">random_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">el</span><span class="o">|</span>
-</span><span class='line'><span class="nb">puts</span> <span class="o">|</span><span class="n">el</span><span class="o">|</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Def</span> <span class="n">run_two_procs</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">a</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>  <span class="n">b</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">proc1</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
-</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;This is proc1&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">proc2</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
-</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;This is proc2&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">run_two_procs</span> <span class="n">proc1</span><span class="p">,</span> <span class="n">proc2</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
-
-<p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that &#8211;> it will do it all implicitly, you don&#8217;t need to specify anything here. If it can&#8217;t find a block (e..g if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Def</span> <span class="n">run_block</span>
-</span><span class='line'>  <span class="nb">p</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="c1"># **see above</span>
-</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">run_block</span> <span class="k">do</span>
-</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Hello World&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In Ruby 1.9 there are 4 main ways to run or call a block:</p>
-
-<figure class='code'><figcaption><span>Proc e.g.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">my_proc</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;This is a proc and </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2"> was passed along to me&quot;</span>
-</span><span class='line'><span class="n">my_proc</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1">#call method that passes in 10</span>
-</span><span class='line'><span class="n">my_proc</span><span class="o">.</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="c1">#this isn&#39;t a typo, gets converted to a call</span>
-</span><span class='line'><span class="n">my_proc</span><span class="o">[</span><span class="mi">30</span><span class="o">]</span> <span class="c1">#</span>
-</span><span class='line'><span class="n">my_proc</span> <span class="o">===</span> <span class="mi">40</span> <span class="c1"># triple equal is called the case equality operator, it&#39;s primary function is used in case statements</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">several</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="p">}</span>
-</span><span class='line'><span class="n">none</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">case</span> <span class="n">number</span>
-</span><span class='line'><span class="k">when</span> <span class="n">several</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;several&quot;</span>
-</span><span class='line'><span class="k">when</span> <span class="n">none</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;none&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>&#8211;>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</p>
-
-<p><strong><em>Lambdas</em></strong></p>
-
-<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
-Closures</p>
-
-<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">run_proc</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Fred&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">print_a_name</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="nb">puts</span> <span class="nb">name</span> <span class="p">}</span> <span class="c1"># this name doesn&#39;t exist in the definition above. This magic is called a closure. (23 Min)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">run_proc</span> <span class="n">print_a_name</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ALSO:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">run_proc</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Fred&quot;</span>
-</span><span class='line'><span class="n">print_a_name</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="nb">puts</span> <span class="nb">name</span> <span class="p">}</span>
-</span><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">run_proc</span> <span class="n">print_a_name</span> <span class="c1"># =&gt; now this will output John because it kept a reference to the local variable.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></p>
-
-<p><a href="http://www.ruby-doc.org/core-1.9.3/Proc.html">DOCUMENTATION</a></p>
-
-<p>SOME MORE READING:</p>
-
-<p><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/</a></p>
-
-<p><a href="http://pine.fm/LearnToProgram/?Chapter=10">http://pine.fm/LearnToProgram/?Chapter=10</a></p>
-
-<p><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html</a></p>
-
-<p><a href="http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html">http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1189,6 +1016,10 @@ Closures</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/21/cross-site-request-forgery/">Cross Site Request Forgery</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/20/buzz-word-alert-polymorphic/">Buzz Word Alert: Polymorphic</a>
       </li>
     
@@ -1204,16 +1035,12 @@ Closures</p>
         <a href="/blog/2012/07/18/ruby-lecture-4/">Ruby Lecture 4</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/07/18/rails-helpers/">rails helpers</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/todo/'>TODO (4)</a></li>
+    <li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
 <li class='category'><a href='/blog/categories/associations/'>associations (1)</a></li>
 <li class='category'><a href='/blog/categories/authentication/'>authentication (1)</a></li>
 <li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
@@ -1231,7 +1058,7 @@ Closures</p>
 <li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
-<li class='category'><a href='/blog/categories/rails/'>rails (9)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (10)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (13)</a></li>
