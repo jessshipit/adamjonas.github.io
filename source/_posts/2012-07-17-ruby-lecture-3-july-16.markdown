@@ -14,12 +14,13 @@ solutions on ?ruberque?
 
 TDD: able to write the code that you wish you had
 
-**Array Review:**
-
+###Array Review:###
+``` ruby
 empty[0] = "filled" #=> can assign slots one at a time
 easy_as[1, 5] #=> can slice elements off, have elastic arrays --> can add elements to an array without doing anything else
+```
 
-**Lecture:**
+###Lecture:###
 
 Object orientation- we send object methods
 important to identify who the receiver is and what the method is
