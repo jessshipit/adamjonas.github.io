@@ -58,6 +58,7 @@ Need to change the routes:
 map.resources :articles, :has_many => :comments
 map.resources :photos, :has_many => :comments
 map.resources :events, :has_many => :comments
+# i realize this isn't Rails 3.2 code...
 ```
 
 At the end of the comment controller, Ryan adds the find_commentable method:
