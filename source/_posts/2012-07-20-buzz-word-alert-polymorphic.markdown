@@ -6,7 +6,7 @@ comments: true
 categories: terms rails associations TODO
 ---
 
-###Polymorphism### 
+###Polymorphism###
 
 - “is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour.” (wikipedia)
 -is a language feature that allows the same function call to be associated with different definitions during the same execution, by delaying the binding of the call to run-time. [here](http://cs.calvin.edu/curriculum/cs/214/adams/labs/10/)
