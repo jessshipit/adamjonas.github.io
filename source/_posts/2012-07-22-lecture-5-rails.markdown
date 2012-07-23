@@ -77,7 +77,8 @@ Shortcut: cmd D shortcut to highlight similar words to edit
 errors:
 when you get a stack trace and it's part of rails you can ignore it because you created the file NOT rails.
 
-###has_many :through### (2:58)
+###has_many :through###
+(2:58)
 artists have many albums through their songs
 - a many to many association
 
@@ -126,12 +127,13 @@ in the mixtapes_controller
 params[:song_ids].each do |song_id|
   @mixtape.mixtape_songs.build :song => song_id
 end
+```
  
 Next level of abstraction up... (4:55)
 in the html we want to pass in:
 mixtape[song_ids][]
 
-Mass assignment is this accordian of 
+??Mass assignment is this accordian of ____
 a writer method implies an attribute of a model
 **Main goal as a programmer** name your data so that it is easily accessbile in params
 
@@ -211,4 +213,4 @@ Rails Casts on this subject:
 
 [Nested Models- revised](http://railscasts.com/episodes/196-nested-model-form-revised)
 
-http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html
+[API reading](http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html)

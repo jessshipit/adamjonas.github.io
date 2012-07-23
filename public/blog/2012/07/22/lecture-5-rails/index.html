@@ -221,9 +221,10 @@ find_in_batches it yields songs</p>
 <p>errors:
 when you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
 
-<h3>has_many :through### (2:58)</h3>
+<h3>has_many :through</h3>
 
-<p>artists have many albums through their songs
+<p>(2:58)
+artists have many albums through their songs
 - a many to many association</p>
 
 <p>if a model has 2 :belongs_to associations means that it is a join table
@@ -291,6 +292,86 @@ If a field name end in an [], it will allow multiple fields and rails will treat
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@mixtape</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this would also work</span>
+</span><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">song_id</span><span class="o">|</span>
+</span><span class='line'>  <span class="vi">@mixtape</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="n">song_id</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next level of abstraction up&#8230; (4:55)
+in the html we want to pass in:
+mixtape[song_ids][]</p>
+
+<p>??Mass assignment is this accordian of ____
+a writer method implies an attribute of a model
+<strong>Main goal as a programmer</strong> name your data so that it is easily accessbile in params</p>
+
+<p>TODO (5:03)
+HTML:
+scope, attribute, attribute kind</p>
+
+<h3>form_tag helper</h3>
+
+<p>NEXT: <em>A rails implementation: form_tag helper</em>, a low level rails helper
+all these methods do is generate html for you. not all that railsy.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">form_tag</span> <span class="n">mixtapes_path</span> <span class="k">do</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At least we aren&#8217;t writing HTML here now&#8230; this level of implementation gives you lots of flexibility and control but at the expense of maintainability and explicitness.</p>
+
+<h3>form helper builders</h3>
+
+<p><em>html, form_tag helpers family, form helpers in order of low level of abstraction to higher</em>
+want to bind the active record object to the form element
+e.g. text_field, label
+(5:17)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= label :mixtape, :name %&gt; #:mixtape represents @mixtape, but rails doesn&#39;t support @mixtape</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">text_field</span> <span class="ss">:mixtape</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>form_for</h3>
+
+<p>We want to bind the instance var to the form itself
+- the problem with text_field is that hte form is still built without any knowledge of the active record instance behind the form &#8211;> it should be an extension of the object
+- these are the way our scaffolds normally work</p>
+
+<p>form_for method yields a form builderthat knows the model the form is about</p>
+
+<p>mixtape_form.object would return the mixtape object because it has knowledge of the form object</p>
+
+<p>you also get access to <em>fields_for</em> -</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mixtape_form</span><span class="o">.</span><span class="n">fields_for</span> <span class="ss">:mixtape_songs</span><span class="p">,</span> <span class="vi">@mixtape</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span><span class="p">,</span> <span class="ss">:index</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="k">do</span>
+</span><span class='line'><span class="o">|</span><span class="n">mixtape_songs_field</span><span class="o">|</span> <span class="c1">#index option will increment them automatically</span>
+</span><span class='line'>  <span class="n">mixtape_songs_fields_for</span><span class="o">.</span><span class="n">label</span> <span class="ss">:song_id</span>
+</span><span class='line'>  <span class="n">mixtape_songs_fields_for</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:song_id</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Does your model implement a method called &#8220;mixtape_songs_attributes=&#8221;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
@@ -299,120 +380,22 @@ If a field name end in an [], it will allow multiple fields and rails will treat
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@mixtape</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">]</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">accepts_nested_attributes_for</span> <span class="ss">:mixtape_songs</span>
+</span><span class='line'><span class="c1">#builds this method:</span>
+</span><span class='line'> <span class="k">def</span> <span class="nf">mixtape_songs_attributes</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+</span><span class='line'>   <span class="n">attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">attribute_has</span><span class="o">|</span>
+</span><span class='line'>   <span class="no">MixtapeSong</span><span class="o">.</span><span class="n">build</span><span class="o">.</span><span class="n">attribute_has</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'><span class="c1"># this assigns the attributes of the mixtape_songs</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">#this would also work</span>
-</span><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">song_id</span><span class="o">|</span>
-</span><span class='line'>  <span class="vi">@mixtape</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="n">song_id</span>
+</span><span class='line'><span class="c1">#this is the same as</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">mixtape_songs_attributes</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+</span><span class='line'>   <span class="n">attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">index</span><span class="p">,</span> <span class="n">mixtape_song_attributes</span><span class="o">|</span>
+</span><span class='line'>     <span class="no">MixtapeSong</span><span class="o">.</span><span class="n">new</span> <span class="ss">:song_id</span> <span class="o">=</span> <span class="n">mixtape_song_attributes</span><span class="o">[</span><span class="ss">:song_id</span><span class="o">]</span>
+</span><span class='line'>   <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Next</span> <span class="n">level</span> <span class="n">of</span> <span class="n">abstraction</span> <span class="n">up</span><span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">(</span><span class="mi">4</span><span class="p">:</span><span class="mi">55</span><span class="p">)</span>
-</span><span class='line'><span class="k">in</span> <span class="n">the</span> <span class="n">html</span> <span class="n">we</span> <span class="n">want</span> <span class="n">to</span> <span class="n">pass</span> <span class="k">in</span><span class="p">:</span>
-</span><span class='line'><span class="n">mixtape</span><span class="o">[</span><span class="n">song_ids</span><span class="o">][]</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Mass</span> <span class="n">assignment</span> <span class="n">is</span> <span class="n">this</span> <span class="n">accordian</span> <span class="n">of</span>
-</span><span class='line'><span class="n">a</span> <span class="n">writer</span> <span class="nb">method</span> <span class="n">implies</span> <span class="n">an</span> <span class="n">attribute</span> <span class="n">of</span> <span class="n">a</span> <span class="n">model</span>
-</span><span class='line'><span class="o">**</span><span class="no">Main</span> <span class="n">goal</span> <span class="n">as</span> <span class="n">a</span> <span class="n">programmer</span><span class="o">**</span> <span class="nb">name</span> <span class="n">your</span> <span class="n">data</span> <span class="n">so</span> <span class="n">that</span> <span class="n">it</span> <span class="n">is</span> <span class="n">easily</span> <span class="n">accessbile</span> <span class="k">in</span> <span class="n">params</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">TODO</span> <span class="p">(</span><span class="mi">5</span><span class="p">:</span><span class="mo">03</span><span class="p">)</span>
-</span><span class='line'><span class="no">HTML</span><span class="p">:</span>
-</span><span class='line'><span class="n">scope</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">attribute</span> <span class="n">kind</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">###form_tag helper###</span>
-</span><span class='line'><span class="no">NEXT</span><span class="p">:</span> <span class="o">*</span><span class="n">A</span> <span class="n">rails</span> <span class="n">implementation</span><span class="p">:</span> <span class="n">form_tag</span> <span class="n">helper</span><span class="o">*</span><span class="p">,</span> <span class="n">a</span> <span class="n">low</span> <span class="n">level</span> <span class="n">rails</span> <span class="n">helper</span>
-</span><span class='line'><span class="n">all</span> <span class="n">these</span> <span class="nb">methods</span> <span class="k">do</span> <span class="n">is</span> <span class="n">generate</span> <span class="n">html</span> <span class="k">for</span> <span class="n">you</span><span class="o">.</span> <span class="ow">not</span> <span class="n">all</span> <span class="n">that</span> <span class="n">railsy</span><span class="o">.</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>&lt;%= form_tag mixtapes_path do %></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">At</span> <span class="n">least</span> <span class="n">we</span> <span class="n">aren</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">writing</span> <span class="no">HTML</span> <span class="n">here</span> <span class="n">now</span><span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="n">this</span> <span class="n">level</span> <span class="n">of</span> <span class="n">implementation</span> <span class="n">gives</span> <span class="n">you</span> <span class="n">lots</span> <span class="n">of</span> <span class="n">flexibility</span> <span class="ow">and</span> <span class="n">control</span> <span class="n">but</span> <span class="n">at</span> <span class="n">the</span> <span class="n">expense</span> <span class="n">of</span> <span class="n">maintainability</span> <span class="ow">and</span> <span class="n">explicitness</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">###form helper builders###</span>
-</span><span class='line'><span class="o">*</span><span class="n">html</span><span class="p">,</span> <span class="n">form_tag</span> <span class="n">helpers</span> <span class="n">family</span><span class="p">,</span> <span class="n">form</span> <span class="n">helpers</span> <span class="k">in</span> <span class="n">order</span> <span class="n">of</span> <span class="n">low</span> <span class="n">level</span> <span class="n">of</span> <span class="n">abstraction</span> <span class="n">to</span> <span class="n">higher</span><span class="o">*</span>
-</span><span class='line'><span class="n">want</span> <span class="n">to</span> <span class="n">bind</span> <span class="n">the</span> <span class="n">active</span> <span class="n">record</span> <span class="n">object</span> <span class="n">to</span> <span class="n">the</span> <span class="n">form</span> <span class="n">element</span>
-</span><span class='line'><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">text_field</span><span class="p">,</span> <span class="n">label</span>
-</span><span class='line'><span class="p">(</span><span class="mi">5</span><span class="p">:</span><span class="mi">17</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> ruby
-&lt;%= label :mixtape, :name %> #:mixtape represents @mixtape, but rails doesn&#8217;t support @mixtape
-&lt;%= text_field :mixtape, :name %></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">###form_for###</span>
-</span><span class='line'><span class="no">We</span> <span class="n">want</span> <span class="n">to</span> <span class="n">bind</span> <span class="n">the</span> <span class="n">instance</span> <span class="n">var</span> <span class="n">to</span> <span class="n">the</span> <span class="n">form</span> <span class="n">itself</span>
-</span><span class='line'><span class="o">-</span> <span class="n">the</span> <span class="n">problem</span> <span class="n">with</span> <span class="n">text_field</span> <span class="n">is</span> <span class="n">that</span> <span class="n">hte</span> <span class="n">form</span> <span class="n">is</span> <span class="n">still</span> <span class="n">built</span> <span class="n">without</span> <span class="n">any</span> <span class="n">knowledge</span> <span class="n">of</span> <span class="n">the</span> <span class="n">active</span> <span class="n">record</span> <span class="n">instance</span> <span class="n">behind</span> <span class="n">the</span> <span class="n">form</span> <span class="o">--&gt;</span> <span class="n">it</span> <span class="n">should</span> <span class="n">be</span> <span class="n">an</span> <span class="n">extension</span> <span class="n">of</span> <span class="n">the</span> <span class="n">object</span>
-</span><span class='line'><span class="o">-</span> <span class="n">these</span> <span class="n">are</span> <span class="n">the</span> <span class="n">way</span> <span class="n">our</span> <span class="n">scaffolds</span> <span class="n">normally</span> <span class="n">work</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">form_for</span> <span class="nb">method</span> <span class="n">yields</span> <span class="n">a</span> <span class="n">form</span> <span class="n">builderthat</span> <span class="n">knows</span> <span class="n">the</span> <span class="n">model</span> <span class="n">the</span> <span class="n">form</span> <span class="n">is</span> <span class="n">about</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">mixtape_form</span><span class="o">.</span><span class="n">object</span> <span class="n">would</span> <span class="k">return</span> <span class="n">the</span> <span class="n">mixtape</span> <span class="n">object</span> <span class="n">because</span> <span class="n">it</span> <span class="n">has</span> <span class="n">knowledge</span> <span class="n">of</span> <span class="n">the</span> <span class="n">form</span> <span class="n">object</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">you</span> <span class="n">also</span> <span class="n">get</span> <span class="n">access</span> <span class="n">to</span> <span class="o">*</span><span class="n">fields_for</span><span class="o">*</span> <span class="o">-</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> ruby
-mixtape_form.fields_for :mixtape_songs, @mixtape.mixtape_songs.build, :index => 0 do
-|mixtape_songs_field| #index option will increment them automatically
-  mixtape_songs_fields_for.label :song_id
-  mixtape_songs_fields_for.text_field :song_id
- end</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Does</span> <span class="n">your</span> <span class="n">model</span> <span class="n">implement</span> <span class="n">a</span> <span class="nb">method</span> <span class="n">called</span> <span class="s2">&quot;mixtape_songs_attributes=&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> ruby
-accepts_nested_attributes_for :mixtape_songs</p>
-
-<h1>builds this method:</h1>
-
-<p> def mixtape_songs_attributes=(attributes)
-   attributes.each do |attribute_has|
-   MixtapeSong.build.attribute_has
- end</p>
-
-<h1>this assigns the attributes of the mixtape_songs</h1>
-
-<h1>this is the same as</h1>
-
-<p>def mixtape_songs_attributes=(attributes)
-   attributes.each do |index, mixtape_song_attributes|</p>
-
-<pre><code> MixtapeSong.new :song_id = mixtape_song_attributes[:song_id]
-</code></pre>
-
-<p>   end
-end
-&#8220;`</p>
 
 <p><a href="http://masonoise.wordpress.com/2010/07/23/rails-and-forms-using-accepts_nested_attributes_for/">Read</a>
 <a href="http://railscasts.com/episodes/196-nested-model-form-part-1">railscast</a>
@@ -433,7 +416,7 @@ end
 
 <p><a href="http://railscasts.com/episodes/196-nested-model-form-revised">Nested Models- revised</a></p>
 
-<p>http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html</p>
+<p><a href="http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html">API reading</a></p>
 </div>
 
 
