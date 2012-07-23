@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Lecture 5- Rails - Documenting all this...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Rails Lecture 4- July 22 In the migration: In the migration1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+def change add_column :songs, :album_id, :integer # &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Documenting all this..." type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Documenting all this...</a></h1>
+  
+    <h2>A Hacking Journey</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ajonas.herokuapp.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Lecture 5- Rails</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-22T14:18:00-04:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Rails Lecture 4- July 22</p>
+
+<p>In the migration:</p>
+
+<figure class='code'><figcaption><span>In the migration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>  <span class="n">add_column</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:album_id</span><span class="p">,</span> <span class="ss">:integer</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#should probably make the below code in the rake tasks (in seed/tasks)</span>
+</span><span class='line'>  <span class="n">songs</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">songs</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">album</span><span class="o">=</span> <span class="no">Album</span><span class="o">.</span><span class="n">find_or_create_by_name</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">album_name</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#update those songs to relate to that album</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;UPdating song </span><span class="si">#{</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> to album </span><span class="si">#{</span><span class="n">album</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">...&quot;</span>
+</span><span class='line'>    <span class="n">s</span><span class="o">.</span><span class="n">album</span><span class="o">=</span> <span class="n">album</span>
+</span><span class='line'>    <span class="n">s</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">remove_column</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:album_name</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Some other methods:</p>
+
+<p>find_each method: look it up in guides <a href="http://guides.rubyonrails.org/active_record_querying.html">here</a>.
+find_each yields each individual object one at a time
+find_in_batches it yields songs</p>
+
+<p>in the seeds file:</p>
+
+<figure class='code'><figcaption><span>Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">aretha</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Aretha Franklin&quot;</span>
+</span><span class='line'><span class="n">respect</span> <span class="o">=</span> <span class="n">aretha</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Respect&quot;</span>
+</span><span class='line'><span class="n">aretha</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#many to one, the reverse of above</span>
+</span><span class='line'><span class="n">monster</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Monster&quot;</span>
+</span><span class='line'><span class="n">monster</span><span class="o">.</span><span class="n">build_artist</span> <span class="nb">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Kanye West&quot;</span>
+</span><span class='line'><span class="n">monster</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">aretha</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Natural Woman&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#unintentional performance issue here because it loads the full array</span>
+</span><span class='line'><span class="c1">#in order to push one song into it</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kanye</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">find_by_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Kanye West&quot;</span>
+</span><span class='line'><span class="n">kanye</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Home&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">michael</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Michael Jackson&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">michael</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="s2">&quot;Black and white&quot;</span><span class="p">,</span> <span class="s2">&quot;Thriller&quot;</span><span class="p">,</span> <span class="s2">&quot;beat it&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">song_name</span><span class="o">|</span>
+</span><span class='line'><span class="c1"># need collect instead of each method b/c need the return</span>
+</span><span class='line'>  <span class="n">song</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="n">song_name</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">michael</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="no">Song</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Black and white&quot;</span><span class="p">,</span> <span class="s2">&quot;Thriller&quot;</span><span class="p">,</span> <span class="s2">&quot;beat it&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will output the log output of the rake tasks:</p>
+
+<figure class='code'><figcaption><span>Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="n">log</span><span class="o">/</span><span class="n">development</span><span class="o">.</span><span class="n">log</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>update the forms in the application (2:50)</p>
+
+<p>Shortcut: cmd D shortcut to highlight similar words to edit</p>
+
+<p>errors:
+when you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
+
+<h3>has_many :through### (2:58)</h3>
+
+<p>artists have many albums through their songs
+- a many to many association</p>
+
+<p>if a model has 2 :belongs_to associations means that it is a join table
+even though it is a join model is has all the same behaviors as a has_many assoc</p>
+
+<p>INNER JOIN is SQL:
+The INNER JOIN keyword return rows when there is at least one match in both tables.</p>
+
+<h3>Foreign Key/ belongs_to RULE</h3>
+
+<p>if it belongs_to xyz it is a foreign key. if it is a foreign key than it belongs_to xyz.</p>
+
+<figure class='code'><figcaption><span>Seeds File from the lab</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">avi</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Avi&quot;</span>
+</span><span class='line'>  <span class="n">favorites</span> <span class="o">=</span> <span class="no">Mixtape</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Avi&#39;s favs&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">avi</span><span class="o">.</span><span class="n">mixtapes</span> <span class="o">&lt;&lt;</span> <span class="n">favorites</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">black_and_white</span> <span class="o">=</span> <span class="n">michael</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="n">black_and_white</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">build</span> <span class="c1">#when it&#39;s a many it is genres.build</span>
+</span><span class='line'>  <span class="c1">#singular is build_genre</span>
+</span><span class='line'>  <span class="n">black_and_white</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">favorites</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="n">black_and_white</span>
+</span><span class='line'>  <span class="n">favorites</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Thriller&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">#(4:34)</span>
+</span><span class='line'>  <span class="c1">#if you understand :belongs_to and has_many it doesn&#39;t matter if it&#39;s a :through</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">UserMixtape</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span class='line'>    <span class="ss">:user</span> <span class="o">=&gt;</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Roland&quot;</span><span class="p">),</span>
+</span><span class='line'>    <span class="ss">:mixtape</span> <span class="o">=&gt;</span> <span class="n">favorites</span>
+</span><span class='line'>    <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Forms</h3>
+
+<p><strong>How do we build forms that give users the same abilities we have through forms?</strong>
+If a field name end in an [], it will allow multiple fields and rails will treat it as unique values and glob them together in a params array (4:46)
+- If you want to have multiple fields anem it with an empty array</p>
+
+<p>in the mixtapes_controller</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@mixtape</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this would also work</span>
+</span><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">song_id</span><span class="o">|</span>
+</span><span class='line'>  <span class="vi">@mixtape</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="n">song_id</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Next</span> <span class="n">level</span> <span class="n">of</span> <span class="n">abstraction</span> <span class="n">up</span><span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">(</span><span class="mi">4</span><span class="p">:</span><span class="mi">55</span><span class="p">)</span>
+</span><span class='line'><span class="k">in</span> <span class="n">the</span> <span class="n">html</span> <span class="n">we</span> <span class="n">want</span> <span class="n">to</span> <span class="n">pass</span> <span class="k">in</span><span class="p">:</span>
+</span><span class='line'><span class="n">mixtape</span><span class="o">[</span><span class="n">song_ids</span><span class="o">][]</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Mass</span> <span class="n">assignment</span> <span class="n">is</span> <span class="n">this</span> <span class="n">accordian</span> <span class="n">of</span>
+</span><span class='line'><span class="n">a</span> <span class="n">writer</span> <span class="nb">method</span> <span class="n">implies</span> <span class="n">an</span> <span class="n">attribute</span> <span class="n">of</span> <span class="n">a</span> <span class="n">model</span>
+</span><span class='line'><span class="o">**</span><span class="no">Main</span> <span class="n">goal</span> <span class="n">as</span> <span class="n">a</span> <span class="n">programmer</span><span class="o">**</span> <span class="nb">name</span> <span class="n">your</span> <span class="n">data</span> <span class="n">so</span> <span class="n">that</span> <span class="n">it</span> <span class="n">is</span> <span class="n">easily</span> <span class="n">accessbile</span> <span class="k">in</span> <span class="n">params</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">TODO</span> <span class="p">(</span><span class="mi">5</span><span class="p">:</span><span class="mo">03</span><span class="p">)</span>
+</span><span class='line'><span class="no">HTML</span><span class="p">:</span>
+</span><span class='line'><span class="n">scope</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">attribute</span> <span class="n">kind</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">###form_tag helper###</span>
+</span><span class='line'><span class="no">NEXT</span><span class="p">:</span> <span class="o">*</span><span class="n">A</span> <span class="n">rails</span> <span class="n">implementation</span><span class="p">:</span> <span class="n">form_tag</span> <span class="n">helper</span><span class="o">*</span><span class="p">,</span> <span class="n">a</span> <span class="n">low</span> <span class="n">level</span> <span class="n">rails</span> <span class="n">helper</span>
+</span><span class='line'><span class="n">all</span> <span class="n">these</span> <span class="nb">methods</span> <span class="k">do</span> <span class="n">is</span> <span class="n">generate</span> <span class="n">html</span> <span class="k">for</span> <span class="n">you</span><span class="o">.</span> <span class="ow">not</span> <span class="n">all</span> <span class="n">that</span> <span class="n">railsy</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&lt;%= form_tag mixtapes_path do %></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">At</span> <span class="n">least</span> <span class="n">we</span> <span class="n">aren</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">writing</span> <span class="no">HTML</span> <span class="n">here</span> <span class="n">now</span><span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="n">this</span> <span class="n">level</span> <span class="n">of</span> <span class="n">implementation</span> <span class="n">gives</span> <span class="n">you</span> <span class="n">lots</span> <span class="n">of</span> <span class="n">flexibility</span> <span class="ow">and</span> <span class="n">control</span> <span class="n">but</span> <span class="n">at</span> <span class="n">the</span> <span class="n">expense</span> <span class="n">of</span> <span class="n">maintainability</span> <span class="ow">and</span> <span class="n">explicitness</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">###form helper builders###</span>
+</span><span class='line'><span class="o">*</span><span class="n">html</span><span class="p">,</span> <span class="n">form_tag</span> <span class="n">helpers</span> <span class="n">family</span><span class="p">,</span> <span class="n">form</span> <span class="n">helpers</span> <span class="k">in</span> <span class="n">order</span> <span class="n">of</span> <span class="n">low</span> <span class="n">level</span> <span class="n">of</span> <span class="n">abstraction</span> <span class="n">to</span> <span class="n">higher</span><span class="o">*</span>
+</span><span class='line'><span class="n">want</span> <span class="n">to</span> <span class="n">bind</span> <span class="n">the</span> <span class="n">active</span> <span class="n">record</span> <span class="n">object</span> <span class="n">to</span> <span class="n">the</span> <span class="n">form</span> <span class="n">element</span>
+</span><span class='line'><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">text_field</span><span class="p">,</span> <span class="n">label</span>
+</span><span class='line'><span class="p">(</span><span class="mi">5</span><span class="p">:</span><span class="mi">17</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> ruby
+&lt;%= label :mixtape, :name %> #:mixtape represents @mixtape, but rails doesn&#8217;t support @mixtape
+&lt;%= text_field :mixtape, :name %></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">###form_for###</span>
+</span><span class='line'><span class="no">We</span> <span class="n">want</span> <span class="n">to</span> <span class="n">bind</span> <span class="n">the</span> <span class="n">instance</span> <span class="n">var</span> <span class="n">to</span> <span class="n">the</span> <span class="n">form</span> <span class="n">itself</span>
+</span><span class='line'><span class="o">-</span> <span class="n">the</span> <span class="n">problem</span> <span class="n">with</span> <span class="n">text_field</span> <span class="n">is</span> <span class="n">that</span> <span class="n">hte</span> <span class="n">form</span> <span class="n">is</span> <span class="n">still</span> <span class="n">built</span> <span class="n">without</span> <span class="n">any</span> <span class="n">knowledge</span> <span class="n">of</span> <span class="n">the</span> <span class="n">active</span> <span class="n">record</span> <span class="n">instance</span> <span class="n">behind</span> <span class="n">the</span> <span class="n">form</span> <span class="o">--&gt;</span> <span class="n">it</span> <span class="n">should</span> <span class="n">be</span> <span class="n">an</span> <span class="n">extension</span> <span class="n">of</span> <span class="n">the</span> <span class="n">object</span>
+</span><span class='line'><span class="o">-</span> <span class="n">these</span> <span class="n">are</span> <span class="n">the</span> <span class="n">way</span> <span class="n">our</span> <span class="n">scaffolds</span> <span class="n">normally</span> <span class="n">work</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">form_for</span> <span class="nb">method</span> <span class="n">yields</span> <span class="n">a</span> <span class="n">form</span> <span class="n">builderthat</span> <span class="n">knows</span> <span class="n">the</span> <span class="n">model</span> <span class="n">the</span> <span class="n">form</span> <span class="n">is</span> <span class="n">about</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mixtape_form</span><span class="o">.</span><span class="n">object</span> <span class="n">would</span> <span class="k">return</span> <span class="n">the</span> <span class="n">mixtape</span> <span class="n">object</span> <span class="n">because</span> <span class="n">it</span> <span class="n">has</span> <span class="n">knowledge</span> <span class="n">of</span> <span class="n">the</span> <span class="n">form</span> <span class="n">object</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">you</span> <span class="n">also</span> <span class="n">get</span> <span class="n">access</span> <span class="n">to</span> <span class="o">*</span><span class="n">fields_for</span><span class="o">*</span> <span class="o">-</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> ruby
+mixtape_form.fields_for :mixtape_songs, @mixtape.mixtape_songs.build, :index => 0 do
+|mixtape_songs_field| #index option will increment them automatically
+  mixtape_songs_fields_for.label :song_id
+  mixtape_songs_fields_for.text_field :song_id
+ end</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Does</span> <span class="n">your</span> <span class="n">model</span> <span class="n">implement</span> <span class="n">a</span> <span class="nb">method</span> <span class="n">called</span> <span class="s2">&quot;mixtape_songs_attributes=&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> ruby
+accepts_nested_attributes_for :mixtape_songs</p>
+
+<h1>builds this method:</h1>
+
+<p> def mixtape_songs_attributes=(attributes)
+   attributes.each do |attribute_has|
+   MixtapeSong.build.attribute_has
+ end</p>
+
+<h1>this assigns the attributes of the mixtape_songs</h1>
+
+<h1>this is the same as</h1>
+
+<p>def mixtape_songs_attributes=(attributes)
+   attributes.each do |index, mixtape_song_attributes|</p>
+
+<pre><code> MixtapeSong.new :song_id = mixtape_song_attributes[:song_id]
+</code></pre>
+
+<p>   end
+end
+&#8220;`</p>
+
+<p><a href="http://masonoise.wordpress.com/2010/07/23/rails-and-forms-using-accepts_nested_attributes_for/">Read</a>
+<a href="http://railscasts.com/episodes/196-nested-model-form-part-1">railscast</a>
+<a href="http://asciicasts.com/episodes/196-nested-model-form-part-1">ascii casts</a></p>
+
+<p><strong>an attribute has a getter and setter method called the name of the attribute</strong></p>
+
+<p>Rails Casts on this subject:
+<a href="http://railscasts.com/episodes/47-two-many-to-many/">Many to Many</a></p>
+
+<p><a href="http://railscasts.com/episodes/73-complex-forms-part-1/">Complex Forms - 1</a></p>
+
+<p><a href="http://railscasts.com/episodes/74-complex-forms-part-2/">Complex Forms - 2</a></p>
+
+<p><a href="http://railscasts.com/episodes/75-complex-forms-part-3">Complex Forms - 3</a></p>
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested models 1</a></p>
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-revised">Nested Models- revised</a></p>
+
+<p>http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-22T14:18:00-04:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/forms/'>forms</a>, <a class='category' href='/blog/categories/lecture/'>lecture</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails/" data-via="" data-counturl="http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/21/git-initialization-for-a-new-repo/" title="Previous Post: Git initialization for a new repo">&laquo; Git initialization for a new repo</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/22/lecture-5-rails/">Lecture 5- Rails</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/21/git-initialization-for-a-new-repo/">Git initialization for a new repo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/21/cross-site-request-forgery/">Cross Site Request Forgery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/20/buzz-word-alert-polymorphic/">Buzz Word Alert: Polymorphic</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/20/association-station/">association station</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/todo/'>TODO (6)</a></li>
+<li class='category'><a href='/blog/categories/associations/'>associations (1)</a></li>
+<li class='category'><a href='/blog/categories/authentication/'>authentication (1)</a></li>
+<li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
+<li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
+<li class='category'><a href='/blog/categories/concepts/'>concepts (1)</a></li>
+<li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
+<li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
+<li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
+<li class='category'><a href='/blog/categories/lecture/'>lecture (10)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (10)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
+<li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
+<li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
+<li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (11)</a></li>
+<li class='category'><a href='/blog/categories/rake/'>rake (1)</a></li>
+<li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
+<li class='category'><a href='/blog/categories/ruby/'>ruby (13)</a></li>
+<li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
+<li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
+<li class='category'><a href='/blog/categories/terms/'>terms (1)</a></li>
+
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails/';
+        var disqus_url = 'http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

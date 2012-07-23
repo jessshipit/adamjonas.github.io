@@ -6,6 +6,9 @@ comments: true
 categories: errors rails
 ---
 
+When you get a stack trace and it's part of rails you can ignore it because you created the file NOT rails.
+
+
 ``` ruby Here's the code in the sessions controller
 def create
   	user = User.find_by_email_address(params[:email_address])
