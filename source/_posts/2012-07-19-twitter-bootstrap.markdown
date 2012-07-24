@@ -51,5 +51,6 @@ Without the 3rd line it looks terrible so remember to run it!
 
 Further reading is [here.](http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/)
 
+When I'm ready for it, Bates does a follow up rails cast on more [advanced twitter bootstrap](http://railscasts.com/episodes/329-more-on-twitter-bootstrap).
 
 NOTE: We went over twitter bootstrap in lecture 6 of ROR spring

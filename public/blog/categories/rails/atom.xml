@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-07-23T09:34:04-04:00</updated>
+  <updated>2012-07-23T21:09:07-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -14,11 +14,119 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Lecture 6- Rails]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/23/lecture-6-rails/"/>
+    <updated>2012-07-23T19:08:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/23/lecture-6-rails</id>
+    <content type="html"><![CDATA[<p>if it has a belongs_to it has a foreign key...
+e.g. songs belong to an artist, so it must have an artist_id</p>
+
+<p>``` ruby</p>
+
+<h1>the return value of this is all the songs</h1>
+
+<p>aretha.song &lt;&lt; Song.new(:name => "Natural Woman")</p>
+
+<h1>this is just one song</h1>
+
+<p>respect = aretha.songs.build(:name => "Respect")
+```</p>
+
+<p>7:27
+``` ruby
+favorites.mixtape_songs.build :song => Song.find_by_name("Thriller")</p>
+
+<h1>these accomplish the same thing, but above is more expressive</h1>
+
+<p>favorites.songs &lt;&lt; Song.first
+```</p>
+
+<p>the first level of keys in the params hash is usually scope.</p>
+
+<p>what is params?
+- user passes in data through forms
+- rails takes that data and makes it easy to access through forms</p>
+
+<p>so <em>accepts_nested_attributes</em> is a way for you to specify that this model should accept data for its associations</p>
+
+<p>field_for
+f.fields_for :song_genres
+is accessing params[:song][:song_genres]</p>
+
+<h3>Select Boxes</h3>
+
+<p>select(method, choices, options = {}, html_options = {})
+<code>ruby
+&lt;%= song_genre.select :genre_id, [
+  ["Rap", 1]
+  ["Pop", 2]
+  ["Whatever", 3]
+  ] %&gt;
+</code>
+<strong>Text Boxes</strong>:
+adding functionalty</p>
+
+<p><strong><em>classes are data and behavior</em></strong>
+we have added behavior to the song_genre model because this is the only place the genre_id is being stored.</p>
+
+<p><em>LookUp</em> Ruby try method</p>
+
+<p>``` ruby Delegate
+delegate :name, :to => :genre, :prefix => true, :allow_nils => true</p>
+
+<h1>the above macro is the same as the method below method.</h1>
+
+<p>def genre_name
+  genre.name if genre
+end
+```</p>
+
+<h3>Normalization</h3>
+
+<p>the incision point for normalization are easy to do on writer. but if you are using a vanilla writer, then don't write a normalizer just to normalize. Use a gem or something.</p>
+
+<p><code>
+:uniq
+If true, duplicates will be omitted from the collection. Useful in conjunction with :through.
+</code>
+in general this goes on the through model... which doesn't make all that much sense, but that's how it goes on many to many relationships
+This isn't preventing the creation of duplicates, it's just treating duplicates as singular-- total crap</p>
+
+<p>8:15
+Allow destroy
+with a checkbox</p>
+
+<h3>Validations</h3>
+
+<p>```</p>
+
+<h1>following valdiation rule is a constraint on the following attribute</h1>
+
+<p>validates :name, :length => {:minimum => 2, :maximum => 12}
+validates :name, :uniqueness => { :scope => :song_id}
+```
+<a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html">See rails guides validations</a>
+<a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html#uniqueness">specifically uniqueness</a></p>
+
+<h3>Technical Debt</h3>
+
+<p>Technical debt (also known as design debt or code debt) is a neologistic metaphor referring to the eventual consequences of poor or evolving software architecture and software development within a codebase. The debt can be thought of as work that needs to be done before a particular job can be considered complete.</p>
+
+<p>in console can call .valid? to debug and see if an object is valid.</p>
+
+<h3>When debugging...</h3>
+
+<p>try to reduce abstraction
+-actually need to debug the problem at hand</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Lecture 5- Rails]]></title>
     <link href="http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails/"/>
     <updated>2012-07-22T14:18:00-04:00</updated>
     <id>http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails</id>
-    <content type="html"><![CDATA[<p>Rails Lecture 4- July 22</p>
+    <content type="html"><![CDATA[<p>HOMEWORK:</p>
 
 <p>In the migration:
 ``` ruby In the migration
@@ -442,48 +550,9 @@ Without the 3rd line it looks terrible so remember to run it!</p>
 
 <p>Further reading is <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">here.</a></p>
 
+<p>When I'm ready for it, Bates does a follow up rails cast on more <a href="http://railscasts.com/episodes/329-more-on-twitter-bootstrap">advanced twitter bootstrap</a>.</p>
+
 <p>NOTE: We went over twitter bootstrap in lecture 6 of ROR spring</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails helpers]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/18/rails-helpers/"/>
-    <updated>2012-07-18T16:58:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/18/rails-helpers</id>
-    <content type="html"><![CDATA[<p>'Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers are mainly for use in that context. Helpers are the only methods you can access, other than instance methods for an instance you have access to.' <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">except from</a></p>
-
-<p><a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">why this is important?</a>
-and <a href="/blog/2012/07/18/solid-principles/">my own write up of Dependency Inversion Principle</a></p>
-
-<p>Declare a controller method as a helper. For example, the following makes the current_user controller method available to the view. You
-``` ruby
-class ApplicationController &lt; ActionController::Base
-  helper_method :current_user, :logged_in?</p>
-
-<p>  def current_user</p>
-
-<pre><code>@current_user ||= User.find_by_id(session[:user])
-</code></pre>
-
-<p>  end</p>
-
-<p>   def logged_in?</p>
-
-<pre><code> current_user != nil
-</code></pre>
-
-<p>   end
-end
-<code>
-In a view:
-</code> ruby
-&lt;% if logged_in? -%>Welcome, &lt;%= current_user.name %>&lt;% end -%>
-```
-Parameters
-method[, method] - A name or names of a method on the controller to be made available on the view.</p>
-
-<p>A solid beginner's break-down (it's a little old though) is <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">here</a>.</p>
 ]]></content>
   </entry>
   

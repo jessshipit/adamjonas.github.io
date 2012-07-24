@@ -6,8 +6,7 @@ comments: true
 categories: rails lecture forms
 ---
 
-Rails Lecture 4- July 22
-
+HOMEWORK:
 
 In the migration:
 ``` ruby In the migration

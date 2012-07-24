@@ -111,7 +111,7 @@
 <p>most common kind
 <a href="http://www.maakal.com/maakalDB/ERD_Examples2.htm">e.g.</a></p>
 
-<h3>One-to-one relationship###</h3>
+<h3>One-to-one relationship</h3>
 
 <p>:    A row in a table is associated to one and only one row in another table.  An example of a one-to-one relationship is a person can have one social security number and a social security number can only be assigned to one person.</p>
 
@@ -123,7 +123,30 @@
 
 <p>:   When one or more rows in a table are associated with one or more rows in another table.  An example of a many-to-many relationship is a table of customers can purchase many products and many customers can purchase a product.</p>
 
-<p><a href="http://help.filemaker.com/app/answers/detail/a_id/9922/~/understanding-and-creating-many-to-many-relationships-in-filemaker-pro">From</a></p>
+<p><a href="http://help.filemaker.com/app/answers/detail/a_id/9922/~/understanding-and-creating-many-to-many-relationships-in-filemaker-pro">Source</a></p>
+
+<h3>Self joins</h3>
+
+<p>In designing a data model, you will sometimes find a model that should have a relation to itself. For example, you may want to store all employees in a single database model, but be able to trace relationships such as between manager and subordinates. This situation can be modeled with self-joining associations:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Employee</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:subordinates</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:foreign_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;manager_id&quot;</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:manager</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With this setup, you can retrieve @employee.subordinates and @employee.manager</p>
+
+<p>There is another rails cast on <a href="http://railscasts.com/episodes/163-self-referential-association">self-referential-association</a>. Ryan Bates is amazing.</p>
+
+<p>Notes:</p>
 </div>
 
 
@@ -187,6 +210,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/23/lecture-6-rails/">Lecture 6- Rails</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/23/building-a-profile-page/">Building a profile page</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/22/lecture-5-rails/">Lecture 5- Rails</a>
       </li>
     
@@ -196,14 +227,6 @@
     
       <li class="post">
         <a href="/blog/2012/07/21/cross-site-request-forgery/">Cross Site Request Forgery</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/20/buzz-word-alert-polymorphic/">Buzz Word Alert: Polymorphic</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/20/association-station/">association station</a>
       </li>
     
   </ul>
@@ -223,14 +246,14 @@
 <li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
-<li class='category'><a href='/blog/categories/lecture/'>lecture (10)</a></li>
+<li class='category'><a href='/blog/categories/lecture/'>lecture (11)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
 <li class='category'><a href='/blog/categories/notes/'>notes (10)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
-<li class='category'><a href='/blog/categories/rails/'>rails (11)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (12)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (13)</a></li>
