@@ -49,3 +49,7 @@ With this setup, you can retrieve @employee.subordinates and @employee.manager
 There is another rails cast on [self-referential-association](http://railscasts.com/episodes/163-self-referential-association). Ryan Bates is amazing.
 
 Notes:
+
+
+Reading:
+[patterns of enterprise application architecture](http://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420)

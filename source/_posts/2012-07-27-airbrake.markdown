@@ -1,0 +1,52 @@
+---
+layout: post
+title: "Airbrake"
+date: 2012-07-27 12:23
+comments: true
+categories: airbrake 
+---
+
+Airbrake is basically wrapped around a begin rescue block...
+The app doesn't break AND the error is sent to the application.
+
+There are errors in apps that happen that you don't care about, then there are show-stoppers.
+- Solution: rebuild a dashboard to ignore the errors or use airbrake to config their own errors.
+
+?How do you decide what kinds of errors are important 
+```
+AirbrakeAPI::Errors
+```
+
+after you instantite the credientials, you need to create the connections
+- learned this via the spec/client_spec
+
+Keep running into the [deep_merge](http://www.dzone.com/snippets/hashdeepmerge) undefined method. According to their specs, Airbreak assumes that the gems in the specs should be included in the library. They assume that people won't be using this outside of rails, which is a big assumption.
+
+HashieMashie- hashes behave as both as regular hash and as an object
+
+Once the proper gems are required it works properly.
+If this library had corrected all of the dependencies in it's stand along library, this would have been fine...
+
+```
+♕ gem install airbrake-api
+♕ irb
+1.9.3p194 :001 > require 'active_support'
+ => true 
+1.9.3p194 :002 > require 'active_support/core_ext'
+ => true 
+1.9.3p194 :003 > require 'i18n'
+ => false 
+1.9.3p194 :004 > require 'airbrake'
+ => true 
+1.9.3p194 :005 > require 'airbrake-api'
+ => true 
+1.9.3p194 :006 > AirbrakeAPI.configure(:account => 'gearshare', :auth_token => 'authcodehere', :secure => true)
+ => AirbrakeAPI 
+1.9.3p194 :007 > AirbrakeAPI.new
+NoMethodError: undefined method `new' for AirbrakeAPI:Module
+1.9.3p194 :008 > AirbrakeAPI::Client.new
+ => #<AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"> 
+1.9.3p194 :009 > a = _
+ => #<AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"> 
+1.9.3p194 :010 > a.errors
+```

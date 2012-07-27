@@ -34,3 +34,11 @@ end
 undefined method `magic' for #<User:0x007fa35e3e2fe8>
 ```
 This means that the method magic doesn't exist for that object.
+
+###DB Errors###
+When the browser can't locate a table that you know exists-- ***make sure you migrate the DB!!***
+
+###Can't save something to the DB###
+- Open up console. 
+- When you can't save it, send it '.save!' and it will throw off the errors.
+
