@@ -6,6 +6,8 @@ comments: true
 categories: databases MongoDB
 ---
 
+[Mongo Cheat Sheet](http://blog.wiemann.name/mongoid-cheat-sheet)
+
 #NoSQL#
 Non-relational, next-generation operational datastores and databases
 -databases designed for the web and attacking the traditional problems that traditional DBs have such as scaling out.
