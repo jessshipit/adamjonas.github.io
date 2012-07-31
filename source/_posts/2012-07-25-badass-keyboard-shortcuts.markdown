@@ -9,3 +9,8 @@ categories: shortcuts
 shift, cmd, T -- open the last tab closed in chrome and FF
 
 And of course [shortcut foo](https://www.shortcutfoo.com/) is awesome too!
+
+```
+rake routes | grep mixtape
+```
+Will only show the routes that match this resource.

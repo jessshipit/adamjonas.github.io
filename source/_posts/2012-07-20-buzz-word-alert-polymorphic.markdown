@@ -11,6 +11,16 @@ categories: terms rails associations TODO
 - “is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour.” (wikipedia)
 -is a language feature that allows the same function call to be associated with different definitions during the same execution, by delaying the binding of the call to run-time. [here](http://cs.calvin.edu/curriculum/cs/214/adams/labs/10/)
 
+###Some Real Life Examples###
+- depending on the argument that you send it, it has different behavior
+when you send @mixtape it looks up:
+``` ruby
+mixtape_path(@mixtape) #=> '/mixtapes/1'
+```
+real life e.g.s
+subway slot can accept a metrocard and a credit card-- depending on what you send it, it has differnt behavior
+a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.
+
 ###Polymorphic Associations###
 - in the [guides](http://guides.rubyonrails.org/association_basics.html#polymorphic-associations) it states: "With polymorphic associations, a model can belong to more than one other model, on a single association." 
 - You can think of a polymorphic belongs_to declaration as setting up an interface that any other model can use. 

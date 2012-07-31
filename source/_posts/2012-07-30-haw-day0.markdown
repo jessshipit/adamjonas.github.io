@@ -1,0 +1,152 @@
+---
+layout: post
+title: "HAW- Day0"
+date: 2012-07-30 10:13
+comments: true
+categories: notes
+---
+
+Pivotal:
+Move from icebox to current
+Click Start
+Each story is either a feature, a bug, or a chore
+
+
+Generate our app
+Some sort of layout
+beginning data model
+- main model
+- tag model
+Import script to retreive that data off the API
+
+Views/Controllers
+- index view
+- tagging
+
+Keep commits small and never develop in the master branch
+
+Git:
+Git create the repo
+git clone the repo
+git merge mongoid-setup --no-ff #no FF- will show the branch even after the commmit
+
+
+Mongoid-
+rails new myapp -O (--skip-active-record)
+```
+gem 'mongoid', "~> 3.0.0"
+```
+
+Twitter Bootstrap
+gem twitter-bootstrap
+
+Airbrake Gem
+
+Powder Gem
+gem install powder
+makes app available at airbrake.dev
+
+Immediately want to start creating the 'error model', but error is a terrible title so call it airbrake model
+
+Routes:
+change index to errors#index
+
+Generate airbrake_errors model
+Generate errors_controller
+Generate bootstrap 
+```ruby Fluid Layout
+rails g bootstrap layout application fluid
+```
+```ruby In Console
+AirbrakeError.create(:name => "Test")
+```
+
+in the test unit, want to check that AirbrakeError.delete_all
+test to make sure the airbrake API gem tried to connect
+
+```ruby
+def AirbrakeError.import_from_airbrake
+```
+
+Create initializer to config the connection to airbrake
+
+###Next Steps###
+build out the bootstrap layout
+build the import script
+
+Ruby Debugger: TODO
+gem debugger at the bottom of the gem file
+bundle
+
+inspect the hashiemashie to see how the objects are composed
+
+```ruby
+def self.import_from_airbrake
+  a = AirbrakeAPI::Client.new
+end
+```
+
+Airbrake Doc:
+Can make calls to get a list of errors in general and a call to get more info about an error.
+-The api in general isn't all that detailed.
+
+There is a diff between .error('id') and .errors -- the difference is in what is returned-- i.e. the backtrace etc.
+
+check out what notices because we are probably interested more in the notice than the error itself. 
+
+```ruby Maybe Something Like This?
+def ignore
+  AirbrakeAPI.update(self.id, :group => { :resolved => true})
+end
+```
+
+Diff between error and notice: an error is a unique conceptual item and a notice is the occurance of the error
+
+```ruby
+h = {:a => 1}
+  h.each do |k,v| 
+  end
+b[k] = v
+#this is the same as the dynamic dispatching method
+airbrake.send("#{key}=", value)
+```
+
+From there let's go to the view and start formatting the output
+
+
+Ruby alias method-- this is built into ruby not rails or mongoid
+```ruby airbrake_error.rb
+alias :name :error_message
+```
+
+TIPS and Tricks section:
+Gem Server shows the documentation locally
+
+[Jeff Atwood](http://www.codinghorror.com/)
+
+LOOK-UP 'Client', 'tap', 'send'
+dynamic dispatch and the send method
+rails cycle
+Moped::BSON: -- how it generates its unique IDs
+
+
+GIT STUFF:
+git pull --rebase #=> if the remote has merges, rewind and then move back forward
+git reset --hard HEAD #=> go to the last checkout (HEAD of the branch) without the warnings (hard)
+git stash # save changes
+git stash pop #restore changes
+
+```
+♕ git add .
+♕ git status
+♕ git checkout -b link-to-airbrake
+M	app/models/airbrake_error.rb
+M	app/views/errors/index.html.erb
+Switched to a new branch 'link-to-airbrake'
+♕ git add .
+♕ git commit -am "added airbrake_url method and link_to in views"
+♕ git push
+♕ git checkout master
+♕ git merge link-to-airbrake
+♕ git push
+```
