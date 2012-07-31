@@ -1,0 +1,84 @@
+---
+layout: post
+title: "haw-day1"
+date: 2012-07-31 15:15
+comments: true
+categories: notes
+---
+
+###Deploying to Heroku##
+
+Make sure to modify the [mongoid.yml file](https://devcenter.heroku.com/articles/mongohq#mongoid) to config the production environment.
+
+***2 major issues with the mongoid deploy:***
+
+1. Issue with ruby version was the first error we encountered... need to keep in that *mongoid only supports 1.9.3* this ended up being a big issue.
+
+In --> heroku logs --tail:
+```
+ActionView::Template::Error (undefined method `[]' for nil:NilClass):
+ 11:   </thead>  
+ 10:     </tr>
+ 12: 
+ 13:   <% @airbrake_errors.each_with_index do |a_e, index| %>
+```
+
+2. The other issue was to reconfigure the setting below from false to true as the 
+
+```ruby config/environments/production.rb
+ config.assets.compile = true
+```
+
+```
+ ActionView::Template::Error (images/apple-touch-icon-144x144-precomposed.png isn't precompiled):
+
+ <%= favicon_link_tag 'images/apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
+
+ app/views/layouts/application.html.erb:19:in `_app_views_layouts_application_html_erb___1957659516384225917_21931620'
+```
+
+###Rewriting the writer###
+```ruby Change the tag writer
+def tag_names=(string_of_names)
+    string_of_names.split(", ").each do |tag_name|
+      self.tags.find_or_create_by(name: tag_name)
+      #the find_or_create_by wasn't creating unique tag names
+      #the reason was because we were linking too many methods together
+      #mongoid is finicky
+    end
+  end
+
+# was changed to...
+def tag_names=(string_of_names)
+    self.tags << string_of_names.split(", ").collect do |tag_name|
+      tag = Tag.find_or_create_by(name: tag_name)
+    end
+  end
+
+# but we discoved that the tags were no disappearing if they were left off the form
+def tag_names=(string_of_names)
+   #later we added this line because tags were persisting even if we tried to edit them.
+    self.tags.delete_all
+    self.tags << string_of_names.split(", ").collect do |tag_name|
+      tag = Tag.find_or_create_by(name: tag_name)
+    end
+  end
+```
+```ruby the last td was changed...
+ <% @airbrake_errors.each_with_index do |a_e, index| %>
+    <tr>
+      <td>
+ 		<%= a_e.tags.collect{ |tag|
+			link_to(tag.name, tag_path(tag)) #=> "<a href="adasda">Tag</a>"
+		}.join(", ").html_safe %>
+		</td>
+		# this needs to be better understood-- TODO
+```
+
+###Authentication###
+[This did it](http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku).
+
+###Pushing the seed file to heroku###
+```
+♕ heroku run rake db:seed
+```
