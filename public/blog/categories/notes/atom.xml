@@ -4,7 +4,7 @@
   <title><![CDATA[Category: notes | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/notes/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-07-27T13:44:40-04:00</updated>
+  <updated>2012-07-30T23:18:12-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,157 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HAW- Day0]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/30/haw-day0/"/>
+    <updated>2012-07-30T10:13:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/30/haw-day0</id>
+    <content type="html"><![CDATA[<p>Pivotal:
+Move from icebox to current
+Click Start
+Each story is either a feature, a bug, or a chore</p>
+
+<p>Generate our app
+Some sort of layout
+beginning data model
+- main model
+- tag model
+Import script to retreive that data off the API</p>
+
+<p>Views/Controllers
+- index view
+- tagging</p>
+
+<p>Keep commits small and never develop in the master branch</p>
+
+<p>Git:
+Git create the repo
+git clone the repo
+git merge mongoid-setup --no-ff #no FF- will show the branch even after the commmit</p>
+
+<p>Mongoid-
+rails new myapp -O (--skip-active-record)
+<code>
+gem 'mongoid', "~&gt; 3.0.0"
+</code></p>
+
+<p>Twitter Bootstrap
+gem twitter-bootstrap</p>
+
+<p>Airbrake Gem</p>
+
+<p>Powder Gem
+gem install powder
+makes app available at airbrake.dev</p>
+
+<p>Immediately want to start creating the 'error model', but error is a terrible title so call it airbrake model</p>
+
+<p>Routes:
+change index to errors#index</p>
+
+<p>Generate airbrake_errors model
+Generate errors_controller
+Generate bootstrap
+<code>ruby Fluid Layout
+rails g bootstrap layout application fluid
+</code>
+<code>ruby In Console
+AirbrakeError.create(:name =&gt; "Test")
+</code></p>
+
+<p>in the test unit, want to check that AirbrakeError.delete_all
+test to make sure the airbrake API gem tried to connect</p>
+
+<p><code>ruby
+def AirbrakeError.import_from_airbrake
+</code></p>
+
+<p>Create initializer to config the connection to airbrake</p>
+
+<h3>Next Steps</h3>
+
+<p>build out the bootstrap layout
+build the import script</p>
+
+<p>Ruby Debugger: TODO
+gem debugger at the bottom of the gem file
+bundle</p>
+
+<p>inspect the hashiemashie to see how the objects are composed</p>
+
+<p><code>ruby
+def self.import_from_airbrake
+  a = AirbrakeAPI::Client.new
+end
+</code></p>
+
+<p>Airbrake Doc:
+Can make calls to get a list of errors in general and a call to get more info about an error.
+-The api in general isn't all that detailed.</p>
+
+<p>There is a diff between .error('id') and .errors -- the difference is in what is returned-- i.e. the backtrace etc.</p>
+
+<p>check out what notices because we are probably interested more in the notice than the error itself.</p>
+
+<p><code>ruby Maybe Something Like This?
+def ignore
+  AirbrakeAPI.update(self.id, :group =&gt; { :resolved =&gt; true})
+end
+</code></p>
+
+<p>Diff between error and notice: an error is a unique conceptual item and a notice is the occurance of the error</p>
+
+<p>```ruby
+h = {:a => 1}
+  h.each do |k,v|
+  end
+b[k] = v</p>
+
+<h1>this is the same as the dynamic dispatching method</h1>
+
+<p>airbrake.send("#{key}=", value)
+```</p>
+
+<p>From there let's go to the view and start formatting the output</p>
+
+<p>Ruby alias method-- this is built into ruby not rails or mongoid
+<code>ruby airbrake_error.rb
+alias :name :error_message
+</code></p>
+
+<p>TIPS and Tricks section:
+Gem Server shows the documentation locally</p>
+
+<p><a href="http://www.codinghorror.com/">Jeff Atwood</a></p>
+
+<p>LOOK-UP 'Client', 'tap', 'send'
+dynamic dispatch and the send method
+rails cycle
+Moped::BSON: -- how it generates its unique IDs</p>
+
+<p>GIT STUFF:
+git pull --rebase #=> if the remote has merges, rewind and then move back forward
+git reset --hard HEAD #=> go to the last checkout (HEAD of the branch) without the warnings (hard)
+git stash # save changes
+git stash pop #restore changes</p>
+
+<p><code>
+♕ git add .
+♕ git status
+♕ git checkout -b link-to-airbrake
+M   app/models/airbrake_error.rb
+M   app/views/errors/index.html.erb
+Switched to a new branch 'link-to-airbrake'
+♕ git add .
+♕ git commit -am "added airbrake_url method and link_to in views"
+♕ git push
+♕ git checkout master
+♕ git merge link-to-airbrake
+♕ git push
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lecture 3- July 15]]></title>
@@ -407,116 +558,6 @@ none = Proc.new { |number| number == 0 }</p>
 <p>end
 ```
 In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails 1st Lecture]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/02/rails-1st-lecture/"/>
-    <updated>2012-07-02T10:53:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/02/rails-1st-lecture</id>
-    <content type="html"><![CDATA[<p>Rails Lecture I - July 2</p>
-
-<p><strong><em>How the web works:</em></strong>
--the requests we send to other servers have headers with info about the request
--you get the response with a header and the body
--the body is just text and data with HTML
--the communication happens over TCP/IP, namely HTTP
-- the browser renders the HTML by making it pretty
--we use GET, POST, PUT, and DELETE -</p>
-
-<p>4 imporotant HTTP Verbs-->
-GET- retrieve representation of content
-POST- Submits data
-PUT- Update
-Delete- Deletes a specific resource</p>
-
-<p>Convention over configuration
--we wants defaults</p>
-
-<p>There are naming schemes such as:
-all tables pl
-all models are sigular
-controller songs_controller.rb
-views songs/</p>
-
-<p><strong><em>Gems:</em></strong>
-pre-packaged piece of software that ruby uses</p>
-
-<p>Config Folder--> where the configuration of our app lives
--Database.yaml- this is how we communicate the database</p>
-
-<p>App Folder: spend most of our time in the app directory</p>
-
-<p><strong><em>MVC:</em></strong> (7:42 pm)
-Models: define how data is created, retrieved, updated and deleted--> the only code that defined these 4 actions are in the model</p>
-
-<p>Controllers: where to send the data to
-business logic</p>
-
-<p>Views: display logic</p>
-
-<p>Helpers: helper functions for your views
-db: stores your database and all the instructions for your database</p>
-
-<p>lib: code that you app needs but isn't part of the request cycle
--tasks- background tasks</p>
-
-<p>public dir:
-any code that doesn't require the rails stack to run</p>
-
-<p>vendor: any 3rd party library that you didn't write
--- similar to the lib directory that you didn't write</p>
-
-<p><strong><em>REST:</em></strong>
--Representational State Transfer
--URL: unifeied resources locators
-- there should be a unified way to expose resources to the world
--1st concept: the things we get online are resources-- what the server is going to respond with is a representation of the real thing (since it can't deliver the real thing)
--there should be consistency and predictability-</p>
-
-<p>rails generate resource song title:string duration:integer #always singular
-rails generate scaffold song title:string #in the beginning the first few resources are created by scaffolds</p>
-
-<p><strong><em>MIGRATIONS:</em></strong> defines a db strcuture
-every resource has it's own table</p>
-
-<p><strong><em>SQL:</em></strong> server query language or standard query language</p>
-
-<p><strong><em>SCHEMA-</em></strong> describes the structure of the DB</p>
-
-<p><strong><em>RAKE:</em></strong> a ruby library to run background tasks
-<code>
-rake stats-- gives me stats on the app
-rake about--&gt; outputs info about the environment, etc
-rake -T --&gt; outputs provides commands
-</code></p>
-
-<p>VIDEO 2...</p>
-
-<p>migrations are iterative by nature
-every migration should one and only one thing</p>
-
-<p>rake db:migrae runs the migration
-rake db:rollback rolls back the migration</p>
-
-<p><strong><em>OBJECT ORIENTATION</em></strong>
--what to create metaphors in our code to representations of the real world
-<code>ruby
-Song.find(2) #=&gt; finds the object of id 2
-Song.all #=&gt; returns all the instances of the class
-</code>
-<strong><em>ORM: object relational mappers</em></strong>
-- a class is to a table : an instance of a class is to a row of a table
--every instance is going to wrap a row of a table
--one to one relationship between an instance and a row
--the library, the ORM, allows you to relate to the objects with knowing how the objects are related</p>
-
-<p>Programming is just codifying procedural knowledge</p>
-
-<p><strong><em>DOCUMENTATION:</em></strong>
-Rails Guides: more like how-tos
-Rails API: the more technical version</p>
 ]]></content>
   </entry>
   

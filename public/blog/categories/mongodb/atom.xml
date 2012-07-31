@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: MongoDB | Documenting all this...]]></title>
+  <link href="http://ajonas.herokuapp.com/blog/categories/mongodb/atom.xml" rel="self"/>
+  <link href="http://ajonas.herokuapp.com/"/>
+  <updated>2012-07-30T23:18:12-04:00</updated>
+  <id>http://ajonas.herokuapp.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MongoDB &amp; Mongoid]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/28/mongodb-and-mongoid/"/>
+    <updated>2012-07-28T12:17:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/28/mongodb-and-mongoid</id>
+    <content type="html"><![CDATA[<h1>NoSQL</h1>
+
+<p>Non-relational, next-generation operational datastores and databases
+-databases designed for the web and attacking the traditional problems that traditional DBs have such as scaling out.</p>
+
+<p>-Horizontally scalable architectures => no joins + no complex transactions</p>
+
+<p>Datamodels:</p>
+
+<ol>
+<li>Key / Value Stores - (memcached, Dynamo)</li>
+<li>Tabular (BigTable) - a hybrid</li>
+<li>Document Oriented (MongoDB, CouchDB)</li>
+</ol>
+
+
+<p>Memcached and key/value are high on the scalability and performance side, but low on depth of functionality</p>
+
+<p>RDBMS (relational database management systems) - strong depth of functionality with join models etc., low on the scalability and performance scale.</p>
+
+<p>MongoDB- try to get the scalability and performance of a key/value store and try to make as functional as possible</p>
+
+<p>What's Missing?
+- Joins
+- Complex multi-row transactions
+- SQL</p>
+
+<p>Terminology:
+In RDBMS // MongoDB
+ - database => database like in MySQL
+ - table => collection
+ - row => document</p>
+
+<p> MongoDB uses JSON style documents called BSON (binary JSON)</p>
+
+<h2>-There are not predefined schemas, can use nested structures to embed complex values based on the keys</h2>
+
+<p>```
+post = {author: "mike",
+date: new Date (),
+text: "my blog post",
+tags: ["mongodb", "intro"]}</p>
+
+<p>db.posts.save(post)
+```</p>
+
+<p>MongoDB expects to have every document to have a '_id' key-- it's a <strong>*unique primary key</strong>**</p>
+
+<h3>Dynamic Queries</h3>
+
+<p>```
+db.posts.find({author: "mike"})</p>
+
+<h1>more advanced</h1>
+
+<p>db.posts.find()</p>
+
+<pre><code>    .sort({date: -1})
+    .limit(10)
+</code></pre>
+
+<p>```</p>
+
+<p>MongoDB has its own document based query language.</p>
+
+<h3>Indexing</h3>
+
+<p>B-Tree indexes
+```
+db.posts.ensureIndex({tags: 1})</p>
+
+<h1>Indexing / Querying on Embedded Docs (dot notation)</h1>
+
+<p>db.posts.find({"comments.author": "eliot"})</p>
+
+<p>```</p>
+
+<p><strong><em>Focus on Performance</em></strong>:
+Don't use REST to talk to the database. Use a binary TCP wire protocol because it is faster.</p>
+
+<h3>Replica Sets</h3>
+
+<p>similar to master-slave replication, but there is a primary and secondary node</p>
+
+<h3>Auto-sharding</h3>
+
+<ul>
+<li>split up the data so certain shards (which are groups of nodes- replica set or master //slave) are responsible for some subset of the data</li>
+</ul>
+
+
+<p><a href="http://www.youtube.com/watch?v=bwAqN9l14kI">Intro video</a></p>
+
+<p><a href="http://www.mongodb.org/display/DOCS/MongoDB+Data+Modeling+and+Rails">###Types###</a></p>
+
+<h2>Mongoid</h2>
+
+<p><a href="http://blog.wiemann.name/mongoid-cheat-sheet">Cheatsheet</a>
+<a href="http://vimeo.com/9864311">Intro by the creator</a>
+<a href="http://railscasts.com/episodes/238-mongoid">RailsCast</a>
+<a href="http://mongoid.org/en/mongoid/">Docs</a></p>
+
+<p>-Mongoid by default stores documents in a collection that is the pluralized form of the class name. For the following Person class, the collection the document would get stored in would be named people.</p>
+
+<p>When a document is stored in the database the ruby object will get serialized into BSON and have a structure like so:
+```
+{
+  "_id" : ObjectId("4d3ed089fb60ab534684b7e9"),
+  "title" : "Sir",
+  "name" : {</p>
+
+<pre><code>"_id" : ObjectId("4d3ed089fb60ab534684b7ff"),
+"first_name" : "Durran"
+</code></pre>
+
+<p>  },
+  "addresses" : [</p>
+
+<pre><code>{
+  "_id" : ObjectId("4d3ed089fb60ab534684b7e0"),
+  "city" : "Berlin",
+  "country" : "Deutschland"
+}
+</code></pre>
+
+<p>  ]
+}
+```</p>
+
+<h3>Querying</h3>
+
+<p><code>ruby Mongoid Querying
+Band.where(name: "Depeche Mode")
+Band.
+  where(:founded.gte =&gt; "1980-1-1").
+  in(name: [ "Tool", "Deftones" ]).
+  union.
+  in(name: [ "Melvins" ])
+</code></p>
+
+<h3>Attributes</h3>
+
+<p>All relations contain a target, which is the proxied document or documents, a base which is the document the relation hangs off, and metadata which provides information about the relation.</p>
+
+<p>attr_accessible and validation are the same in Mongo as in ActiveRecord</p>
+
+<p>embeds_many similar to has_many => but the information is embedded in the document rather than in a separate record like in ActiveRecord. Will I need to fetch this record outside of the parent? If so, I need than has_many makes more sense. The advantage of course is that the information is right inside that record.</p>
+
+<p><strong><em>Embedded 1-1 relationships</em></strong>
+:    The parent document of the relation should use the embeds_one macro to indicate is has 1 embedded child, where the document that is embedded uses embedded_in.</p>
+
+<p><strong>*Embedded 1-Many</strong>**
+:   The parent document of the relation should use the embeds_many macro to indicate it has n number of embedded children, where the document that is embedded uses embedded_in.</p>
+
+<p><strong><em>Referenced 1-1</em></strong>
+:    The parent document of the relation should use the has_one macro to indicate is has 1 referenced child, where the document that is referenced in it uses belongs_to.</p>
+
+<p><strong><em>Referenced Many-to-Many</em></strong>
+:    Many to many relationships where the inverse documents are stored in a separate collection from the base document are defined using Mongoid's has_and_belongs_to_many macro. This exhibits similar behavior to Active Record with the exception that no join collection is needed, the foreign key ids are stored as arrays on either side of the relation.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-07-27T13:44:40-04:00</updated>
+  <updated>2012-07-30T23:18:12-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,105 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lecture 7 -Rails]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/29/lecture-7-rails/"/>
+    <updated>2012-07-29T14:20:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/29/lecture-7-rails</id>
+    <content type="html"><![CDATA[<p>``` ruby Song class
+def genre_name
+  self.genres.collect{|g| g.name.join(",")}
+end</p>
+
+<p>def genre_name=(str)
+  str.split(",").collect{|s| s.downcase.strip}.</p>
+
+<pre><code>SongGenre.new(:genre =&gt; Genre.find_or_create_by_name(genre_name))
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>an album has many songs... which means the accepts nested attributes for will be a good fit</p>
+
+<h3>Nested Resource</h3>
+
+<p>begins with the routes</p>
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested Model Form Rails Cast</a></p>
+
+<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong><em>Dont' use nested attributes for a belongs_to association</em></strong></a></p>
+
+<p>mass assignment and the .build(params[:user_name])</p>
+
+<p>Form_for (2:40)</p>
+
+<h3>Layouts and Sub-layouts</h3>
+
+<p><code>ruby On the Index Page
+&lt;% content_for :sub_nav do %&gt;
+  &lt;%= link_to "New Song", new_song_path %&gt;
+ &lt;% end %&gt;
+ # this could also be on the show page so they would share this sub_nav
+ &lt;nav class="sub_nav"&gt;
+  &lt;%= yield :sub_nav %&gt;
+ &lt;% end %&gt;
+ # this works because you create another yield in the app besides the body
+</code>
+you can open up a sublayout as many times as you want to add links...</p>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to_unless_current">link_to_unless_current</a>- it just creates the title, not the link to its own page... useful for nav bars</p>
+
+<p>polymorphic interfaces: depending on the argument that you send it, it has different behavior
+when you send @mixtape it looks up:
+<code>ruby
+mixtape_path(@mixtape) #=&gt; '/mixtapes/1'
+</code>
+real life e.g.s
+subway slot can accept a metrocard and a credit card-- depending on what you send it, it has differnt behavior
+a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.</p>
+
+<p>render is another flexible polymorphic object-
+``` ruby Rending Partials in a Collection- very important
+&lt;%= render @mixtape.songs %></p>
+
+<h1>Down a level of abstraction since it reveals the collection and partial:</h1>
+
+<p>&lt;%= render :collection => @mixtape.songs, :partial => songs/song_li', :as => :song %>
+```</p>
+
+<p><code>ruby Cast Variables
+&lt;%= render 'songs/fields', :f =&gt; song_form %&gt;
+</code>
+If skip album name is true, then
+(3:40)
+``` ruby
+&lt;% if include_album_name %>
+  <div class="field"></p>
+
+<pre><code>&lt;% f.label :album %&gt; &lt;br /&gt;#more code....
+</code></pre>
+
+<p>```</p>
+
+<p><a href="http://guides.rubyonrails.org/layouts_and_rendering.html#asset-tag-helpers">Passing Local Variables into Partials</a>... need to scroll down a little</p>
+
+<p>write_attribute</p>
+
+<p><a href="http://www.davidverhasselt.com/2011/06/28/5-ways-to-set-attributes-in-activerecord/">5 ways to set attributes in ActiveRecord</a></p>
+
+<p>Could use callbacks and lifecycle hooks to normalize as well...
+```ruby
+before_validate :normalize_name</p>
+
+<p>def normalize_name
+  self.name = self.name.downcase.strip
+end
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lecture 6- Rails]]></title>
@@ -397,6 +496,20 @@ csrf metatabs
 </ul>
 
 
+<h3>Some Real Life Examples</h3>
+
+<ul>
+<li>depending on the argument that you send it, it has different behavior
+when you send @mixtape it looks up:
+<code>ruby
+mixtape_path(@mixtape) #=&gt; '/mixtapes/1'
+</code>
+real life e.g.s
+subway slot can accept a metrocard and a credit card-- depending on what you send it, it has differnt behavior
+a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.</li>
+</ul>
+
+
 <h3>Polymorphic Associations</h3>
 
 <ul>
@@ -493,66 +606,6 @@ has_many :comments, :as => :commentable</p>
 There is a video on this <a href="http://www.youtube.com/watch?v=vEo6hmHTvS4">here</a>.</p>
 
 <p><a href="http://robots.thoughtbot.com/post/159809241/whats-the-deal-with-rails-polymorphic-associations">The beginning of this is worth a read</a>... even if it's from 2006.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Twitter Bootstrap]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/19/twitter-bootstrap/"/>
-    <updated>2012-07-19T12:29:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/19/twitter-bootstrap</id>
-    <content type="html"><![CDATA[<p>Rails Cast for <a href="http://railscasts.com/episodes/328-twitter-bootstrap-basics">twitter bootstrap:</a></p>
-
-<p>LESS is a CSS precessor
-:  to get LESS working with rails you need the help of some gems</p>
-
-<p>I can download the source <a href="https://github.com/seyhunak/twitter-bootstrap-rails">here</a>. This is the preferred code not, <a href="https://github.com/twitter/bootstrap/">this one</a>.</p>
-
-<p>Change Gemfile
-```</p>
-
-<pre><code>gem 'therubyracer', :platform =&gt; :ruby
-gem 'twitter-bootstrap-rails'
-gem 'chosen-rails'
-</code></pre>
-
-<p><code>
-Install Twitter Bootstrap
-</code></p>
-
-<pre><code>bundle
-rails g bootstrap:install
-rails g bootstrap:layout application fixed
-</code></pre>
-
-<p>```</p>
-
-<p>A file that was generated is: app/assets/stylesheets/bootstrap_and_override.css.less
-This is where I would do the bulk of the customization
- - including if padding is needed between the body and the nav bar...</p>
-
-<p><code>ruby For some padding at the top
-@import "twitter/bootstrap/bootstrap";
-body { padding-top: 60px; }
-@import "twitter/bootstrap/responsive";
-</code></p>
-
-<p>Layout fixed makes it 940px and fluid makes it full screen. Both are responsive though.</p>
-
-<h3>When I generate new resources</h3>
-
-<p><code>
-rails g scaffold Post title:string description:text
-rake db:migrate
-rails g bootstrap:themed Posts
-</code>
-Without the 3rd line it looks terrible so remember to run it!</p>
-
-<p>Further reading is <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">here.</a></p>
-
-<p>When I'm ready for it, Bates does a follow up rails cast on more <a href="http://railscasts.com/episodes/329-more-on-twitter-bootstrap">advanced twitter bootstrap</a>.</p>
-
-<p>NOTE: We went over twitter bootstrap in lecture 6 of ROR spring</p>
 ]]></content>
   </entry>
   
