@@ -9,23 +9,12 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="HOMEWORK: In the migration: In the migration1
+  <meta name="description" content="if it has a belongs_to it has a foreign key&#8230;
+e.g. songs belong to an artist, so it must have an artist_id 1
 2
 3
 4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-def change add_column :songs, :album_id, :integer #should probably &hellip;">
+#the return value of this is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +70,197 @@ def change add_column :songs, :album_id, :integer #should probably &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/23/lecture-6-rails/">Lecture 6- Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T19:08:00-04:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>if it has a belongs_to it has a foreign key&#8230;
+e.g. songs belong to an artist, so it must have an artist_id</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#the return value of this is all the songs </span>
+</span><span class='line'><span class="n">aretha</span><span class="o">.</span><span class="n">song</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Natural Woman&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#this is just one song</span>
+</span><span class='line'><span class="n">respect</span> <span class="o">=</span> <span class="n">aretha</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Respect&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7:27</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">favorites</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Thriller&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#these accomplish the same thing, but above is more expressive</span>
+</span><span class='line'><span class="n">favorites</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">first</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>the first level of keys in the params hash is usually scope.</p>
+
+<p>what is params?
+- user passes in data through forms
+- rails takes that data and makes it easy to access through forms</p>
+
+<p>so <em>accepts_nested_attributes</em> is a way for you to specify that this model should accept data for its associations</p>
+
+<p>field_for
+f.fields_for :song_genres
+is accessing params[:song][:song_genres]</p>
+
+<h3>Select Boxes</h3>
+
+<p>select(method, choices, options = {}, html_options = {})</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">song_genre</span><span class="o">.</span><span class="n">select</span> <span class="ss">:genre_id</span><span class="p">,</span> <span class="o">[</span>
+</span><span class='line'>  <span class="o">[</span><span class="s2">&quot;Rap&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">[</span><span class="s2">&quot;Pop&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">[</span><span class="s2">&quot;Whatever&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">]</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Text Boxes</strong>:
+adding functionalty</p>
+
+<p><strong><em>classes are data and behavior</em></strong>
+we have added behavior to the song_genre model because this is the only place the genre_id is being stored.</p>
+
+<p><em>LookUp</em> Ruby try method</p>
+
+<figure class='code'><figcaption><span>Delegate</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">delegate</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:genre</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:allow_nils</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'><span class="c1">#the above macro is the same as the method below method.</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">genre_name</span>
+</span><span class='line'>  <span class="n">genre</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">genre</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Normalization</h3>
+
+<p>the incision point for normalization are easy to do on writer. but if you are using a vanilla writer, then don&#8217;t write a normalizer just to normalize. Use a gem or something.</p>
+
+<figure class='code'><figcaption><span>Delegate</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">:uniq</span>
+</span><span class='line'><span class="no">If</span> <span class="kp">true</span><span class="p">,</span> <span class="n">duplicates</span> <span class="n">will</span> <span class="n">be</span> <span class="n">omitted</span> <span class="n">from</span> <span class="n">the</span> <span class="n">collection</span><span class="o">.</span> <span class="no">Useful</span> <span class="k">in</span> <span class="n">conjunction</span> <span class="n">with</span> <span class="ss">:through</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>in general this goes on the through model&#8230; which doesn&#8217;t make all that much sense, but that&#8217;s how it goes on many to many relationships
+This isn&#8217;t preventing the creation of duplicates, it&#8217;s just treating duplicates as singular&#8211; total crap</p>
+
+<p>8:15
+Allow destroy
+with a checkbox</p>
+
+<h3>Validations</h3>
+
+<figure class='code'><figcaption><span>Delegate</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#following valdiation rule is a constraint on the following attribute</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:length</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:minimum</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="ss">:maximum</span> <span class="o">=&gt;</span> <span class="mi">12</span><span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:uniqueness</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:scope</span> <span class="o">=&gt;</span> <span class="ss">:song_id</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html">See rails guides validations</a>
+<a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html#uniqueness">specifically uniqueness</a></p>
+
+<h3>Technical Debt</h3>
+
+<p>Technical debt (also known as design debt or code debt) is a neologistic metaphor referring to the eventual consequences of poor or evolving software architecture and software development within a codebase. The debt can be thought of as work that needs to be done before a particular job can be considered complete.</p>
+
+<p>in console can call .valid? to debug and see if an object is valid.</p>
+
+<h3>When debugging&#8230;</h3>
+
+<p>try to reduce abstraction
+-actually need to debug the problem at hand</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/23/building-a-profile-page/">Building a Profile Page</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T14:32:00-04:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://rails.francik.name/tutorial/chapter/6">login and security</a>
+<a href="http://rails.francik.name/tutorial/chapter/8">extending a profile in rails</a></p>
+
+<p><a href="https://github.com/plataformatec/devise/wiki/How-To:-Redirect-to-a-specific-page-on-successful-sign-in">How to redirect to a specific page on successful sign in</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1095,157 +1275,6 @@ method[, method] - A name or names of a method on the controller to be made avai
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/18/the-clues-errors-provide/">The Clues Errors Provide</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:35:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>     <span class="c1">#blah blah blah</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`authenticate&#39; for nil:NilClass</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This means that the method was called on a receiver that is nil. Meaning that it&#8217;s not the right object&#8230;</p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">magic</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="c1">#blah blah blah</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`magic&#39; for #&lt;User:0x007fa35e3e2fe8&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This means that the method magic doesn&#8217;t exist for that object.</p>
-
-<h3>DB Errors</h3>
-
-<p>When the browser can&#8217;t locate a table that you know exists&#8211; <strong><em>make sure you migrate the DB!!</em></strong></p>
-
-<h3>Can&#8217;t save something to the DB</h3>
-
-<ul>
-<li>Open up console.</li>
-<li>When you can&#8217;t save it, send it &#8216;.save!&#8217; and it will throw off the errors.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/18/solid-principles/">SOLID Principles</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:05:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3><a href="http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion</a></h3>
-
-<p>Dependency inversion principle
-:  one should “Depend upon Abstractions. Do not depend upon concretions.</p>
-
-<p>This means that in the controller, it is better to define</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>  <span class="vi">@current_user</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>than using the instance variable because right now the instance var is concrete but you might want to add logic and redefine it:</p>
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">sessions</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1263,6 +1292,14 @@ method[, method] - A name or names of a method on the controller to be made avai
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/31/haw-day1/">haw-day1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/31/rake-tasks/">Rake tasks</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/30/haw-day0/">HAW- Day0</a>
       </li>
     
@@ -1272,14 +1309,6 @@ method[, method] - A name or names of a method on the controller to be made avai
     
       <li class="post">
         <a href="/blog/2012/07/28/mongodb-and-mongoid/">MongoDB &amp; Mongoid</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/27/airbrake/">Airbrake</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/25/badass-keyboard-shortcuts/">BadAss Keyboard Shortcuts</a>
       </li>
     
   </ul>
@@ -1301,18 +1330,18 @@ method[, method] - A name or names of a method on the controller to be made avai
 <li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
-<li class='category'><a href='/blog/categories/heroku/'>heroku (1)</a></li>
+<li class='category'><a href='/blog/categories/heroku/'>heroku (2)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
 <li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
-<li class='category'><a href='/blog/categories/notes/'>notes (11)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
 <li class='category'><a href='/blog/categories/postgresql/'>postgresql (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
 <li class='category'><a href='/blog/categories/rails/'>rails (13)</a></li>
-<li class='category'><a href='/blog/categories/rake/'>rake (1)</a></li>
+<li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (13)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>

@@ -4,7 +4,7 @@
   <title><![CDATA[Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-07-30T23:18:12-04:00</updated>
+  <updated>2012-07-31T18:16:24-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,173 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[haw-day1]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/31/haw-day1/"/>
+    <updated>2012-07-31T15:15:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/31/haw-day1</id>
+    <content type="html"><![CDATA[<h3>Deploying to Heroku</h3>
+
+<p>Make sure to modify the <a href="https://devcenter.heroku.com/articles/mongohq#mongoid">mongoid.yml file</a> to config the production environment.</p>
+
+<p><strong><em>2 major issues with the mongoid deploy:</em></strong></p>
+
+<ol>
+<li>Issue with ruby version was the first error we encountered&#8230; need to keep in that <em>mongoid only supports 1.9.3</em> this ended up being a big issue.</li>
+</ol>
+
+
+<p>In &#8211;> heroku logs &#8211;tail:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ActionView::Template::Error (undefined method `[]' for nil:NilClass):
+</span><span class='line'> 11:   &lt;/thead&gt;  
+</span><span class='line'> 10:     &lt;/tr&gt;
+</span><span class='line'> 12: 
+</span><span class='line'> 13:   &lt;% @airbrake_errors.each_with_index do |a_e, index| %&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>The other issue was to reconfigure the setting below from false to true as the</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">compile</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">ActionView</span><span class="o">::</span><span class="no">Template</span><span class="o">::</span><span class="no">Error</span> <span class="p">(</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span> <span class="n">isn</span><span class="s1">&#39;t precompiled):</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> &lt;%= favicon_link_tag &#39;</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span><span class="s1">&#39;, :rel =&gt; &#39;</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="n">precomposed</span><span class="s1">&#39;, :type =&gt; &#39;</span><span class="n">image</span><span class="o">/</span><span class="n">png</span><span class="s1">&#39;, :sizes =&gt; &#39;</span><span class="mi">144</span><span class="n">x144</span><span class="s1">&#39; %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> app/views/layouts/application.html.erb:19:in `_app_views_layouts_application_html_erb___1957659516384225917_21931620&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Rewriting the writer</h3>
+
+<figure class='code'><figcaption><span>Change the tag writer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1">#the find_or_create_by wasn&#39;t creating unique tag names</span>
+</span><span class='line'>      <span class="c1">#the reason was because we were linking too many methods together</span>
+</span><span class='line'>      <span class="c1">#mongoid is finicky</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># was changed to...</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># but we discoved that the tags were no disappearing if they were left off the form</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>   <span class="c1">#later we added this line because tags were persisting even if we tried to edit them.</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">delete_all</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="o">&lt;</span><span class="sx">% @airbrake_errors.each_with_index </span><span class="k">do</span> <span class="o">|</span><span class="n">a_e</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">    &lt;tr&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">td</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="sx">%= a_e.tags.collect{ |tag|</span>
+</span><span class='line'><span class="sx">         link_to(tag.name, tag_path(tag)) #=</span><span class="o">&gt;</span> <span class="s2">&quot;&lt;a href=&quot;</span><span class="n">adasda</span><span class="s2">&quot;&gt;Tag&lt;/a&gt;&quot;</span>
+</span><span class='line'>      <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">     &lt;/td&gt;</span>
+</span><span class='line'>      <span class="c1"># this needs to be better understood-- TODO</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Authentication</h3>
+
+<p><a href="http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku">This did it</a>.</p>
+
+<h3>Pushing the seed file to heroku</h3>
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">db</span><span class="ss">:seed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rake tasks]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/31/rake-tasks/"/>
+    <updated>2012-07-31T11:54:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/31/rake-tasks</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span>This is a rake task file&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">task</span> <span class="ss">:load_errors</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>  <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">import_from_airbrake</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In heroku I would run this:</p>
+
+<figure class='code'><figcaption><span>This is a rake task file&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">load_errors</span>
+</span><span class='line'><span class="c1"># NOT</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">task</span> <span class="n">bandaid</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HAW- Day0]]></title>
@@ -159,11 +326,20 @@ dynamic dispatch and the send method
 rails cycle
 Moped::BSON: &#8211; how it generates its unique IDs</p>
 
-<p>GIT STUFF:
-git pull &#8211;rebase #=> if the remote has merges, rewind and then move back forward
-git reset &#8211;hard HEAD #=> go to the last checkout (HEAD of the branch) without the warnings (hard)
-git stash # save changes
-git stash pop #restore changes</p>
+<p>GIT STUFF:</p>
+
+<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">pull</span> <span class="o">--</span><span class="n">rebase</span> <span class="c1">#=&gt; if the remote has merges, rewind and then move back forward</span>
+</span><span class='line'><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="no">HEAD</span> <span class="c1">#=&gt; go to the last checkout (HEAD of the branch) without the warnings (hard)</span>
+</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="c1"># save changes</span>
+</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="n">pop</span> <span class="c1">#restore changes</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 
 <figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -329,7 +505,9 @@ a vending machine accepts dollar bills and credit card. Depending on what you in
     <link href="http://ajonas.herokuapp.com/blog/2012/07/28/mongodb-and-mongoid/"/>
     <updated>2012-07-28T12:17:00-04:00</updated>
     <id>http://ajonas.herokuapp.com/blog/2012/07/28/mongodb-and-mongoid</id>
-    <content type="html"><![CDATA[<h1>NoSQL</h1>
+    <content type="html"><![CDATA[<p><a href="http://blog.wiemann.name/mongoid-cheat-sheet">Mongo Cheat Sheet</a></p>
+
+<h1>NoSQL</h1>
 
 <p>Non-relational, next-generation operational datastores and databases
 -databases designed for the web and attacking the traditional problems that traditional DBs have such as scaling out.</p>
@@ -676,6 +854,24 @@ If this library had corrected all of the dependencies in it&#8217;s stand along 
 <p>as outlined in the rails3 basics <a href="https://devcenter.heroku.com/articles/rails3">here&#8230;</a></p>
 
 <p>See how to point domains to your heroku project <a href="https://devcenter.heroku.com/articles/custom-domains">here</a>.</p>
+
+<p><strong>Linking Local Branches to Remote Apps:</strong>*</p>
+
+<p>Heroku is designed only to accept pushes from master. In order to push from a feature branch you need to do something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git push heroku branch_name:master</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This says push branch named &#8216;branch_name&#8217; to heroku but call it master. <a href="https://devcenter.heroku.com/articles/multiple-environments#advanced-linking-local-branches-to-remote-apps">Explanation</a></p>
+
+<p>Also look at rake tasks for heroku&#8230; its on the rake task post&#8230;</p>
+
+<h3>Pushing the seed file to heroku</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ heroku run rake db:seed</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
@@ -1619,103 +1815,6 @@ and <a href="http://ajonas.herokuapp.com/blog/2012/07/18/solid-principles/">my o
 method[, method] - A name or names of a method on the controller to be made available on the view.</p>
 
 <p>A solid beginner&#8217;s break-down (it&#8217;s a little old though) is <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">here</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[the clues errors provide]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/18/the-clues-errors-provide/"/>
-    <updated>2012-07-18T16:35:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/18/the-clues-errors-provide</id>
-    <content type="html"><![CDATA[<p>When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>     <span class="c1">#blah blah blah</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`authenticate&#39; for nil:NilClass</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This means that the method was called on a receiver that is nil. Meaning that it&#8217;s not the right object&#8230;</p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">magic</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="c1">#blah blah blah</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`magic&#39; for #&lt;User:0x007fa35e3e2fe8&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This means that the method magic doesn&#8217;t exist for that object.</p>
-
-<h3>DB Errors</h3>
-
-<p>When the browser can&#8217;t locate a table that you know exists&#8211; <strong><em>make sure you migrate the DB!!</em></strong></p>
-
-<h3>Can&#8217;t save something to the DB</h3>
-
-<ul>
-<li>Open up console.</li>
-<li>When you can&#8217;t save it, send it &#8216;.save!&#8217; and it will throw off the errors.</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SOLID principles]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/18/solid-principles/"/>
-    <updated>2012-07-18T16:05:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/18/solid-principles</id>
-    <content type="html"><![CDATA[<h3><a href="http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion</a></h3>
-
-<p>Dependency inversion principle
-:  one should “Depend upon Abstractions. Do not depend upon concretions.</p>
-
-<p>This means that in the controller, it is better to define</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>  <span class="vi">@current_user</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>than using the instance variable because right now the instance var is concrete but you might want to add logic and redefine it:</p>
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">sessions</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Rails Cast on Authentication Rails 3.1
-also want to check out Rails cast on Authentication from Scratch The user model rails allows you to call &hellip;">
+  <meta name="description" content="When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails. Here&#8217;s the code in the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +65,157 @@ also want to check out Rails cast on Authentication from Scratch The user model 
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/18/the-clues-errors-provide/">The Clues Errors Provide</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:35:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
+
+<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>     <span class="c1">#blah blah blah</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`authenticate&#39; for nil:NilClass</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This means that the method was called on a receiver that is nil. Meaning that it&#8217;s not the right object&#8230;</p>
+
+<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">magic</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#blah blah blah</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>The Error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`magic&#39; for #&lt;User:0x007fa35e3e2fe8&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This means that the method magic doesn&#8217;t exist for that object.</p>
+
+<h3>DB Errors</h3>
+
+<p>When the browser can&#8217;t locate a table that you know exists&#8211; <strong><em>make sure you migrate the DB!!</em></strong></p>
+
+<h3>Can&#8217;t save something to the DB</h3>
+
+<ul>
+<li>Open up console.</li>
+<li>When you can&#8217;t save it, send it &#8216;.save!&#8217; and it will throw off the errors.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/18/solid-principles/">SOLID Principles</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:05:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion</a></h3>
+
+<p>Dependency inversion principle
+:  one should “Depend upon Abstractions. Do not depend upon concretions.</p>
+
+<p>This means that in the controller, it is better to define</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>  <span class="vi">@current_user</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>than using the instance variable because right now the instance var is concrete but you might want to add logic and redefine it:</p>
+
+<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">sessions</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -824,126 +974,6 @@ Alright, now let&#8217;s get down to diaspora.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/09/programming-quotes/">Programming Quotes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-09T14:50:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Beauty is more important in computing than anywhere else in technology because software is so complicated. Beauty is the ultimate defence against complexity.
-— David Gelernter</p>
-
-<p>Life is too short to run proprietary software.
-— Bdale Garbee</p>
-
-<p>“Computer science education cannot make anybody an expert programmer any more than studying brushes and pigment can make somebody an expert painter.”
-- Eric S. Raymond</p>
-
-<p>Good design adds value faster than it adds cost.
-- Thomas C. Gale</p>
-
-<p>Talk is cheap. Show me the code.
-- Linus Torvalds</p>
-
-<p>Perfection [in design] is achieved, not when there is nothing more to add, but when there is nothing left to take away.
-- Antoine de Saint-Exupéry</p>
-
-<p>Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.
-- Brian W. Kernighan.</p>
-
-<p>To iterate is human, to recurse divine.
-- L. Peter Deutsch</p>
-
-<p>Most good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.
-- Linus Torvalds</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/09/github/">GitHub</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-09T14:25:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Good cheat sheet is: <a href="http://rogerdudler.github.com/git-guide/">http://rogerdudler.github.com/git-guide/</a>
-There is a nice site <a href="http://try.github.com">http://try.github.com</a> to practice.</p>
-
-<p>I had not added my <strong><em>SSH key</em></strong> for the new Mac Air so that was preventing me from pushing. It gave me no issue with pulling or cloning, only pushing. The SSH was accessed by typing:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cat .ssh/id_rsa.pub</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After adding it to <a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a> I had no problems&#8230;</p>
-
-<p>Pushed a bunch of branches with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git push origin &lt;name of the branch&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I could check what was in the repo and what had been pushed to the remote using the command: git branch with the all flag&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git branch -a</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -961,6 +991,14 @@ There is a nice site <a href="http://try.github.com">http://try.github.com</a> t
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/31/haw-day1/">haw-day1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/31/rake-tasks/">Rake tasks</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/30/haw-day0/">HAW- Day0</a>
       </li>
     
@@ -970,14 +1008,6 @@ There is a nice site <a href="http://try.github.com">http://try.github.com</a> t
     
       <li class="post">
         <a href="/blog/2012/07/28/mongodb-and-mongoid/">MongoDB &amp; Mongoid</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/27/airbrake/">Airbrake</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/25/badass-keyboard-shortcuts/">BadAss Keyboard Shortcuts</a>
       </li>
     
   </ul>
@@ -999,18 +1029,18 @@ There is a nice site <a href="http://try.github.com">http://try.github.com</a> t
 <li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
-<li class='category'><a href='/blog/categories/heroku/'>heroku (1)</a></li>
+<li class='category'><a href='/blog/categories/heroku/'>heroku (2)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
 <li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
-<li class='category'><a href='/blog/categories/notes/'>notes (11)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
 <li class='category'><a href='/blog/categories/postgresql/'>postgresql (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
 <li class='category'><a href='/blog/categories/rails/'>rails (13)</a></li>
-<li class='category'><a href='/blog/categories/rake/'>rake (1)</a></li>
+<li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (13)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
