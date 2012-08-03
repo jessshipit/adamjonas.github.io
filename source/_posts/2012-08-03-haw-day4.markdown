@@ -20,26 +20,24 @@ struggling with this...
 ```ruby Trying to make this work
 def self.import_from_airbrake
     client = AirbrakeAPI::Client.new
-
-	actions = [:action => action, :controller => controller, :created_at => airbrake_created_at, 
-	  :error_class => error_class, :error_message => error_message, :file => file,
-	  :id => airbrake_id, :line_number => line_number, 
-	  :most_recent_notice_at => airbrake_most_recent_notice_at, 
-	  :notice_hash => notice_hash, :notices_count => notices_count, 
-	  :project_id => project_id, :rails_env => rails_env, :resolved => airbrake_resolved,
-	  :search_index_me => search_index_me, :updated_at => airbrake_updated_at]
-
-    @airbrake_error = AirbrakeError.new    
+  
     errors = client.errors
-    
-    errors.each do |error|
-	    actions.each do |airbrake_action, our_action|  
-	      @airbrake_error.our_action = error[airbrake_action]
-	      @airbrake_error.attribute_updater
-	      @airbrake_error.save
-	    end
+    actions = [:action => action, :controller => controller, :created_at => airbrake_created_at, 
+              :error_class => error_class, :error_message => error_message, :file => file,
+              :id => airbrake_id, :line_number => line_number, 
+              :most_recent_notice_at => airbrake_most_recent_notice_at, 
+              :notice_hash => notice_hash, :notices_count => notices_count, 
+              :project_id => project_id, :rails_env => rails_env, :resolved => airbrake_resolved,
+              :search_index_me => search_index_me, :updated_at => airbrake_updated_at]
+
+    errors.collect do |error|
+      actions.each do |airbrake_action, our_action|
+        error.our_action = error[airbrake_action]
+        error.attribute_updater
+        error.save
+      end
     end
-end
+  end
 ```
 
 ```ruby This is the original...
