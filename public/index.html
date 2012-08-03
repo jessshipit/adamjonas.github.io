@@ -9,7 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Deploying to Heroku Make sure to modify the mongoid.yml file to config the production environment. 2 major issues with the mongoid deploy: Issue with &hellip;">
+  <meta name="description" content="Error:
+&#8220;SystemStackError: stack level too deep&#8221;
+This means that you have entered an infinite loop. e.g. you have called something on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +67,332 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/03/haw-day4/">HAW-day4</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-03T16:17:00-04:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Error:
+&#8220;SystemStackError: stack level too deep&#8221;
+This means that you have entered an infinite loop. e.g. you have called something on itself.</p>
+
+<p>Need to understand inject&#8230;
+http://blog.jayfields.com/2008/03/ruby-inject.html</p>
+
+<p>struggling with this&#8230;</p>
+
+<figure class='code'><figcaption><span>Trying to make this work</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span><span class='line'>    <span class="n">client</span> <span class="o">=</span> <span class="no">AirbrakeAPI</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">actions</span> <span class="o">=</span> <span class="o">[</span><span class="ss">:action</span> <span class="o">=&gt;</span> <span class="n">action</span><span class="p">,</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="n">controller</span><span class="p">,</span> <span class="ss">:created_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_created_at</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:error_class</span> <span class="o">=&gt;</span> <span class="n">error_class</span><span class="p">,</span> <span class="ss">:error_message</span> <span class="o">=&gt;</span> <span class="n">error_message</span><span class="p">,</span> <span class="ss">:file</span> <span class="o">=&gt;</span> <span class="n">file</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">airbrake_id</span><span class="p">,</span> <span class="ss">:line_number</span> <span class="o">=&gt;</span> <span class="n">line_number</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:most_recent_notice_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_most_recent_notice_at</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:notice_hash</span> <span class="o">=&gt;</span> <span class="n">notice_hash</span><span class="p">,</span> <span class="ss">:notices_count</span> <span class="o">=&gt;</span> <span class="n">notices_count</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:project_id</span> <span class="o">=&gt;</span> <span class="n">project_id</span><span class="p">,</span> <span class="ss">:rails_env</span> <span class="o">=&gt;</span> <span class="n">rails_env</span><span class="p">,</span> <span class="ss">:resolved</span> <span class="o">=&gt;</span> <span class="n">airbrake_resolved</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:search_index_me</span> <span class="o">=&gt;</span> <span class="n">search_index_me</span><span class="p">,</span> <span class="ss">:updated_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_updated_at</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="vi">@airbrake_error</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">errors</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">errors</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">actions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">airbrake_action</span><span class="p">,</span> <span class="n">our_action</span><span class="o">|</span>
+</span><span class='line'>        <span class="vi">@airbrake_error</span><span class="o">.</span><span class="n">our_action</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="n">airbrake_action</span><span class="o">]</span>
+</span><span class='line'>        <span class="vi">@airbrake_error</span><span class="o">.</span><span class="n">attribute_updater</span>
+</span><span class='line'>        <span class="vi">@airbrake_error</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>This is the original&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span><span class='line'>    <span class="n">client</span> <span class="o">=</span> <span class="no">AirbrakeAPI</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">errors</span>
+</span><span class='line'>    <span class="n">errors</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">airbrake_error</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:action</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">controller</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:controller</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_created_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:created_at</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">error_class</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:error_class</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:error_message</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_id</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">line_number</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:line_number</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_most_recent_notice_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:most_recent_notice_at</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">notice_hash</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:notice_hash</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">notices_count</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:notices_count</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:project_id</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">rails_env</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:rails_env</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_resolved</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:resolved</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">search_index_me</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:search_index_me</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_updated_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:updated_at</span><span class="o">]</span>
+</span><span class='line'>        <span class="c1"># airbrake.send(&quot;#{key}=&quot;, value)</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">attribute_updater</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/02/haw-day3/">HAW-day3</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-02T10:55:00-04:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Rolled back git using the sha</p>
+
+<p>used the fresh method to collect the fresh errors in an array. then we used the flatten method to un-nest the array to acccess the objects.</p>
+
+<p>changed the interface to show the airbrake IDs so that we can differentiate the errors with the same name</p>
+
+<p>p291
+form_tag issues an HTTP request that replaces all the content in the browser.
+form_remote_tag issues an HTTP request, but processes the results with JavaScript
+rather than having the browser render them directly.</p>
+
+<p>nav
+filtering
+all errors inbox
+checkboxes(which don&#8217;t work but do display) - have the route for signal</p>
+
+<p>event driven programming</p>
+
+<p>dom fields</p>
+
+<p>cmd option i - to open the</p>
+
+<p>collect all values int eh cb
+submit the request, submit the values manually
+raise params.inspect</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/01/haw-day2/">HAW-day2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-01T11:31:00-04:00" pubdate data-updated="true">Aug 1<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>builder pattern versus the inheritance pattern</p>
+
+<p>no diff between slugs and permalinks</p>
+
+<p>To install a gem from a fork</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'rails', :git =&gt; 'git://github.com/rails/rails.git'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>add validation to prevent slug nil</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git reset --hard HEAD
+</span><span class='line'># could also reset to a specific point in time
+</span><span class='line'>git reset --hard &lt;sha&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>HEAD is the current version</p>
+
+<p>delete local branch:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git branch -d initial-error-tagging
+</span><span class='line'>#to delete the remote...
+</span><span class='line'>♕ git push origin :initial-error-tagging</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOALS:
+1. normalize the tag_names DONE</p>
+
+<ol>
+<li>should be able to mark the error as ignore and rerun the importer and when it&#8217;s reimported it should still be marked as ignored&#8230;.</li>
+<li>inbox not show you errors with tag ignore</li>
+<li>if we reimport these errors they need to maintain their tags (is this )
+does the count update?</li>
+</ol>
+
+
+<p> look into scopes&#8211; need to filter ignore off the index
+read about named scopes on mongoid
+http://mongoid.org/en/mongoid/docs/querying.html#scoping
+desired code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">errors</span><span class="o">.</span><span class="n">not_ignored</span>
+</span><span class='line'><span class="c1">#or better yet</span>
+</span><span class='line'><span class="n">errors</span><span class="o">.</span><span class="n">fresh</span> <span class="c1"># =&gt; to get a list of errors that haven&#39;t been ignored.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>li needs to build a show page of each error&#8217;s attributes</li>
+</ol>
+
+
+<p>NOTES:
+Scoping - so scoping is like a filter
+<a href="http://mongoid.org/en/mongoid/docs/querying.html#scoping">Mongoid scoping macro</a></p>
+
+<figure class='code'><figcaption><span>Filtering/Scope</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Tag</span><span class="o">.</span><span class="n">not_in</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;fresh&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="ss">:airbrake_errors</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">t</span><span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">airbrake_errors</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Autocomplete for tags:
+<a href="http://www.dwellable.com/blog/Tech-Autocomplete-with-Rails-Mongoid">http://www.dwellable.com/blog/Tech-Autocomplete-with-Rails-Mongoid</a></p>
+
+<p><a href="http://railsforum.com/viewtopic.php?id=2151">Select all checkboxes</a>
+<a href="http://www.rorexperts.com/select-and-unselect-all-checkboxes-by-selecting-single-check-t1614.html">or</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -216,7 +544,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>Authentication</h3>
+<h3>HTTP Authentication</h3>
 
 <p><a href="http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku">This did it</a>.</p>
 
@@ -1025,188 +1353,6 @@ If this library had corrected all of the dependencies in it&#8217;s stand along 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/25/postgres/">Postgres</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-25T11:00:00-04:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://russbrooks.com/2010/11/25/install-postgresql-9-on-os-x">Install of postgresql on Mac OS X</a></p>
-
-<p><a href="http://stackoverflow.com/questions/6710654/how-do-you-easily-change-from-sqlite-to-postgresql-in-rails">How do you easily change from SQLite to PostgreSQL in Rails</a> It hasn&#8217;t been a seemless transition for me. At least the first time around.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/24/heroku/">Heroku</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-24T15:07:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add heroku git@heroku.com:gearshare.git
-</span><span class='line'>fatal: remote heroku already exists.</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://digitalsanctum.com/2010/05/05/heroku-no-app-specified/">See</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#this initializes the heroku repo
-</span><span class='line'>♕ heroku create #i'm sure I can name the app here, instead of the below steps
-</span><span class='line'>Creating ancient-tor-4530... done, stack is cedar
-</span><span class='line'>http://ancient-tor-4530.herokuapp.com/ | git@heroku.com:ancient-tor-4530.git
-</span><span class='line'>Git remote heroku added
-</span><span class='line'>
-</span><span class='line'>#check to see what remotes I've set up
-</span><span class='line'>♕ git remote -v
-</span><span class='line'>heroku    git@heroku.com:ancient-tor-4530.git (fetch)
-</span><span class='line'>heroku    git@heroku.com:ancient-tor-4530.git (push)
-</span><span class='line'>origin    https://github.com/ajonas04/*appname*.git (fetch)
-</span><span class='line'>origin    https://github.com/ajonas04/*appname*.git (push)
-</span><span class='line'>
-</span><span class='line'># need to remove heroku so that I can rename it
-</span><span class='line'>♕ git remote rm heroku
-</span><span class='line'>
-</span><span class='line'>#add new name
-</span><span class='line'>♕ git remote add heroku git@heroku.com:*appname*.git</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I was missing this command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>heroku run rake db:migrate</span></code></pre></td></tr></table></div></figure>
-
-
-<p>as outlined in the rails3 basics <a href="https://devcenter.heroku.com/articles/rails3">here&#8230;</a></p>
-
-<p>See how to point domains to your heroku project <a href="https://devcenter.heroku.com/articles/custom-domains">here</a>.</p>
-
-<p><strong>Linking Local Branches to Remote Apps:</strong>*</p>
-
-<p>Heroku is designed only to accept pushes from master. In order to push from a feature branch you need to do something like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git push heroku branch_name:master</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This says push branch named &#8216;branch_name&#8217; to heroku but call it master. <a href="https://devcenter.heroku.com/articles/multiple-environments#advanced-linking-local-branches-to-remote-apps">Explanation</a></p>
-
-<p>Also look at rake tasks for heroku&#8230; its on the rake task post&#8230;</p>
-
-<h3>Pushing the seed file to heroku</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ heroku run rake db:seed</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/24/airbrake/">Airbrake</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-24T14:17:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://airbrake.io/pages/home">Airbreak</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1222,23 +1368,23 @@ If this library had corrected all of the dependencies in it&#8217;s stand along 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/03/haw-day4/">HAW-day4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/02/haw-day3/">HAW-day3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/01/haw-day2/">HAW-day2</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/31/haw-day1/">haw-day1</a>
       </li>
     
       <li class="post">
         <a href="/blog/2012/07/31/rake-tasks/">Rake tasks</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/30/haw-day0/">HAW- Day0</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/29/lecture-7-rails/">Lecture 7 -Rails</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/28/mongodb-and-mongoid/">MongoDB &amp; Mongoid</a>
       </li>
     
   </ul>
@@ -1264,7 +1410,7 @@ If this library had corrected all of the dependencies in it&#8217;s stand along 
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
 <li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
-<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (13)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
