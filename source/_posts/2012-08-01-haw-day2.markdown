@@ -1,0 +1,65 @@
+---
+layout: post
+title: "HAW-day2"
+date: 2012-08-01 11:31
+comments: true
+categories: 
+---
+
+builder pattern versus the inheritance pattern
+
+no diff between slugs and permalinks
+
+To install a gem from a fork
+```
+gem 'rails', :git => 'git://github.com/rails/rails.git'
+```
+
+add validation to prevent slug nil
+
+```
+git reset --hard HEAD
+# could also reset to a specific point in time
+git reset --hard <sha>
+```
+HEAD is the current version
+
+delete local branch:
+```
+git branch -d initial-error-tagging
+#to delete the remote...
+♕ git push origin :initial-error-tagging
+```
+
+GOALS:
+1. normalize the tag_names DONE
+
+2. should be able to mark the error as ignore and rerun the importer and when it's reimported it should still be marked as ignored....
+- inbox not show you errors with tag ignore
+- if we reimport these errors they need to maintain their tags (is this )
+does the count update? 
+
+ look into scopes-- need to filter ignore off the index 
+read about named scopes on mongoid
+http://mongoid.org/en/mongoid/docs/querying.html#scoping
+desired code
+```ruby
+errors.not_ignored
+#or better yet
+errors.fresh # => to get a list of errors that haven't been ignored.
+```
+
+3. li needs to build a show page of each error's attributes
+
+NOTES:
+Scoping - so scoping is like a filter
+[Mongoid scoping macro](http://mongoid.org/en/mongoid/docs/querying.html#scoping)
+
+```ruby Filtering/Scope
+Tag.not_in(:name => "fresh").includes(:airbrake_errors).collect{|t| t.airbrake_errors}
+```
+Autocomplete for tags:
+<http://www.dwellable.com/blog/Tech-Autocomplete-with-Rails-Mongoid>
+
+[Select all checkboxes](http://railsforum.com/viewtopic.php?id=2151)
+[or](http://www.rorexperts.com/select-and-unselect-all-checkboxes-by-selecting-single-check-t1614.html)

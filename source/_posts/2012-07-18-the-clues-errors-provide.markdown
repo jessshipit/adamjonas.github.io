@@ -42,3 +42,6 @@ When the browser can't locate a table that you know exists-- ***make sure you mi
 - Open up console. 
 - When you can't save it, send it '.save!' and it will throw off the errors.
 
+
+"SystemStackError: stack level too deep"
+This means that you have entered an infinite loop. e.g. you have called something on itself.

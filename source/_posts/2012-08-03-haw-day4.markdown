@@ -1,0 +1,76 @@
+---
+layout: post
+title: "HAW-day4"
+date: 2012-08-03 16:17
+comments: true
+categories: 
+---
+
+Error:
+"SystemStackError: stack level too deep"
+This means that you have entered an infinite loop. e.g. you have called something on itself.
+
+Need to understand inject...
+http://blog.jayfields.com/2008/03/ruby-inject.html
+
+
+
+struggling with this...
+
+```ruby Trying to make this work
+def self.import_from_airbrake
+    client = AirbrakeAPI::Client.new
+
+	actions = [:action => action, :controller => controller, :created_at => airbrake_created_at, 
+	  :error_class => error_class, :error_message => error_message, :file => file,
+	  :id => airbrake_id, :line_number => line_number, 
+	  :most_recent_notice_at => airbrake_most_recent_notice_at, 
+	  :notice_hash => notice_hash, :notices_count => notices_count, 
+	  :project_id => project_id, :rails_env => rails_env, :resolved => airbrake_resolved,
+	  :search_index_me => search_index_me, :updated_at => airbrake_updated_at]
+
+    @airbrake_error = AirbrakeError.new    
+    errors = client.errors
+    
+    errors.each do |error|
+	    actions.each do |airbrake_action, our_action|  
+	      @airbrake_error.our_action = error[airbrake_action]
+	      @airbrake_error.attribute_updater
+	      @airbrake_error.save
+	    end
+    end
+end
+```
+
+```ruby This is the original...
+def self.import_from_airbrake
+    client = AirbrakeAPI::Client.new
+
+    errors = client.errors
+    errors.each do |error|
+
+      airbrake_error = AirbrakeError.new
+      airbrake_error.action = error[:action]
+      airbrake_error.controller = error[:controller]
+      airbrake_error.airbrake_created_at = error[:created_at]
+      airbrake_error.error_class = error[:error_class]
+      airbrake_error.error_message = error[:error_message]
+      airbrake_error.file = error[:file]
+      airbrake_error.airbrake_id = error[:id]
+      airbrake_error.line_number = error[:line_number]
+      airbrake_error.airbrake_most_recent_notice_at = error[:most_recent_notice_at]
+      airbrake_error.notice_hash = error[:notice_hash]
+      airbrake_error.notices_count = error[:notices_count]
+      airbrake_error.project_id = error[:project_id]
+      airbrake_error.rails_env = error[:rails_env]
+      airbrake_error.airbrake_resolved = error[:resolved]
+      airbrake_error.search_index_me = error[:search_index_me]
+      airbrake_error.airbrake_updated_at = error[:updated_at]
+        # airbrake.send("#{key}=", value)
+      airbrake_error.attribute_updater
+
+      airbrake_error.save
+      
+    end
+  end
+```
