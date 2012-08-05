@@ -29,12 +29,12 @@ def self.import_from_airbrake
               :notice_hash => notice_hash, :notices_count => notices_count, 
               :project_id => project_id, :rails_env => rails_env, :resolved => airbrake_resolved,
               :search_index_me => search_index_me, :updated_at => airbrake_updated_at]
-
-    errors.collect do |error|
-      actions.each do |airbrake_action, our_action|
-        error.our_action = error[airbrake_action]
-        error.attribute_updater
-        error.save
+    actions.each do |airbrake_action, our_action|
+	    errors.collect do |error|
+	    airbrake_error = AirbrakeError.new
+     	airbrake_error.our_action = error[airbrake_action]
+        airbrake_error.attribute_updater
+        airbrake_error.save
       end
     end
   end
