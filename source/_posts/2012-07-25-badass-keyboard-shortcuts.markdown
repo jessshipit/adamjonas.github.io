@@ -14,3 +14,7 @@ And of course [shortcut foo](https://www.shortcutfoo.com/) is awesome too!
 rake routes | grep mixtape
 ```
 Will only show the routes that match this resource.
+
+###Indents in text editors###
+cmd [ to move it <- 
+and cmd ] to move it -> in both textmate and sublime

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: notes | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/notes/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-08-05T14:38:38-04:00</updated>
+  <updated>2012-08-14T18:32:33-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,80 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day5]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/06/haw-day5/"/>
+    <updated>2012-08-06T10:23:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/06/haw-day5</id>
+    <content type="html"><![CDATA[<p>GOALS:
+Refactor code, figure out the jquery ajax checkboxes.
+ship v1 by the end of the day</p>
+
+<p><a href="http://khelll.com/blog/ruby/ruby-dynamic-method-calling/">send method</a>
+<a href="http://philcrissman.com/2009/06/26/rubys-objectsend-can-call-private-and-protected-methods/">send method to call private method</a></p>
+
+<p>```ruby Code that finally worked...
+def self.import_from_airbrake</p>
+
+<pre><code>client = AirbrakeAPI::Client.new
+
+errors = client.errors
+actions = {:action =&gt; "action", :controller =&gt; "controller", :created_at =&gt; "airbrake_created_at", 
+           :error_class =&gt; "error_class", :error_message =&gt; "error_message", :file =&gt; "file",
+           :id =&gt; "airbrake_id", :line_number =&gt; "line_number", 
+           :most_recent_notice_at =&gt; "airbrake_most_recent_notice_at", 
+           :notice_hash =&gt; "notice_hash", :notices_count =&gt; "notices_count", 
+           :project_id =&gt; "project_id", :rails_env =&gt; "rails_env", :resolved =&gt; "airbrake_resolved",
+           :search_index_me =&gt; "search_index_me", :updated_at =&gt; "airbrake_updated_at"}
+
+ errors.collect do |error| #each error is a hash
+  airbrake_error = AirbrakeError.new #this needs to be outside the following loop or it will create a new object during every loop...
+  actions.each do |airbrake_action, our_action| #aa is a sym key, oa is a string value
+   airbrake_error.send("#{our_action}=".to_sym, error[airbrake_action])# SEND method here
+
+  airbrake_error.attribute_updater #see below
+  end
+  airbrake_error.save
+end
+</code></pre>
+
+<p>  end
+<code>
+</code>ruby Other use of send...
+def attribute_updater</p>
+
+<pre><code>@airbrake_errors = AirbrakeError.all
+
+updater_actions = ["notices_count", "action", "controller", "error_class", "file", "line_number",
+                  "airbrake_most_recent_notice_at", "notice_hash", "airbrake_resolved", 
+                  "airbrake_updated_at"]
+
+if @airbrake_errors.where(airbrake_id: self.airbrake_id).present?
+  original_error = @airbrake_errors.find_by(airbrake_id: self.airbrake_id)
+
+    updater_actions.each do |action|
+      original_error.send("#{action}=".to_sym, self["#{action}".to_sym])
+      original_error.save
+    end
+else     
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>TODO:
+inject method</p>
+
+<p>Per Dave:
+-one form that is ignore, one that signal, one that is the tags
+-remote true- a flag that going to submit the form via ajax</p>
+
+<p><a href="http://guides.rubyonrails.org/form_helpers.html">Remote True:</a>
+Unlike other forms making an asynchronous file upload form is not as simple as providing form_for with :remote => true. With an Ajax form the serialization is done by JavaScript running inside the browser and since JavaScript cannot read files from your hard drive the file cannot be uploaded. The most common workaround is to use an invisible iframe that serves as the target for the form submission.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HAW-day3]]></title>
@@ -40,9 +114,19 @@ checkboxes(which don't work but do display) - have the route for signal</p>
 
 <p>cmd option i - to open the</p>
 
-<p>collect all values int eh cb
+<p>collect all values
 submit the request, submit the values manually
 raise params.inspect</p>
+
+<p>GOAL OF THE IMPORTER:
+import a new set of airbrake errors</p>
+
+<p>if the id is NOT uniq then update the attributes but do not display or save in mongoid memory</p>
+
+<p>identify what is uniq with the present method
+if uniq ignore
+if NOT uniq then update attributes
+makes sure the newly imported error will not save --> validation should take care of this</p>
 ]]></content>
   </entry>
   
@@ -392,132 +476,6 @@ Can access the params hash in the same way as the form. So params[:person][:name
 - this has nothing to do with the attr_accessor, reader, or writer</p>
 
 <p>Virtual attributes don't persist to the database</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 2 Rails]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/08/lecture-2-rails/"/>
-    <updated>2012-07-08T14:21:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/08/lecture-2-rails</id>
-    <content type="html"><![CDATA[<p><strong><em>Lecture 2</em></strong></p>
-
-<p>BASH
-<code>
-cd .. # change to up a directory
-cd . # change to current directory
-ls # list
-cd ~ #home directory
-</code></p>
-
-<p><strong><em>Resources</em></strong>
-- the thing you want to let users manipulate
-<code>
-rails generate resource Mixtape nae:string
-</code></p>
-
-<p>Rake-
-a ruby language for running scripts</p>
-
-<p>Models-
-main component of your application, they represent the resources of your application
-every model is just a ruby class definition located in the model</p>
-
-<p>so the mixtape model defines a class Mixtape that is the object that will allow our app to CRUD mixtapes</p>
-
-<p>If we a Users model we have a users table</p>
-
-<p>Goal for today is to understand the request cycle</p>
-
-<p><strong><em>Routes</em></strong></p>
-
-<p><strong><em>DSL- Domain Specific Language</em></strong> (3:08PM)
-``` ruby
-match '/foo' => 'songs#foo' # this needs to be sent to a controller</p>
-
-<h1>a songs controller with the foo action</h1>
-
-<p>```
-we need to find something that can handle the route--> we want to send it to a waiter, like ordering an A7 at a chinese resturant</p>
-
-<p><strong>an ACTION is just a method defined in the class!!</strong>
-a Controller is just a class --> a grouping that relates to songs</p>
-
-<p>if it can't find a page it is 404</p>
-
-<p>every action in the app needs to be defined</p>
-
-<p>5 keywords available...
-MATCH
-GET
-POST
-PUT
-DELETE</p>
-
-<p>cmd T --> opens a window for you to access files</p>
-
-<p><strong><em>rake routes:</em></strong>
-first column is the request
-second is http verb
-third is url or pattern
-fourth is the contoller#action</p>
-
-<p>resources macro- defines all the restful actions for the resource</p>
-
-<p>?? so what was the main problem with the post request?</p>
-
-<p><strong><em>Controllers &amp; #actions </em></strong></p>
-
-<p>``` ruby e.g. of actions in the Songs controller
-def name
-  render :template => 'songs/name' #explicit template rendering
-end</p>
-
-<h1>exactly the same as this...</h1>
-
-<p>def name
-end
-```</p>
-
-<p><code>ruby Renders
-render :action =&gt; "name" # in the views folder named after the controller
-render :template =&gt; 'songs/name' # need to specify the full path
-render :xml
-render :json
-</code></p>
-
-<p>Video 2 starts 4PM
-diff between &lt;% and =&lt;%
-&lt;% will get executed, but will not show in the html
-&lt;%= will get executed and will also show in the html</p>
-
-<p><strong><em> Instance variables </em></strong>
-Instance variables are the only thing passed from the controller to the views
-??? do class variables get passed as well?</p>
-
-<p><strong>link_to</strong>
-<code>ruby
-&lt;%= link_to 'Search', 'http://google.com' %&gt;
-</code>
-we have two methods <em>path and </em>url</p>
-
-<p><code>ruby e.g. of link_to
-&lt;%= link_to 'Show', 'song' %&gt; #polymorphic interface
-</code></p>
-
-<p>3 pars of rails (4:10 PM)
-ORM- active record
-Action controller
-Action view</p>
-
-<p>LEARN MORE: there are lots of polymorphic interfaces play nicely with active record</p>
-
-<p><code>ruby automatic routing with namespacing with_options
-with_options :controller =&gt; 'site' do |s|
-  s.get 'about'
-  s.get 'home'
-end
-</code></p>
 ]]></content>
   </entry>
   
