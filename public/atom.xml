@@ -4,7 +4,7 @@
   <title><![CDATA[Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-08-14T18:32:33-04:00</updated>
+  <updated>2012-08-23T16:23:05-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,807 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[routes of the app]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/23/routes-of-the-app/"/>
+    <updated>2012-08-23T12:35:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/23/routes-of-the-app</id>
+    <content type="html"><![CDATA[<h3>The plan for the refactor</h3>
+
+<ol>
+<li>Multiple errors are being mass assigned a unique tag</li>
+<li><p>multiple tags are being assigned to an error</p></li>
+<li><p>individual tags are assigned to an individual error</p></li>
+<li>individual tags are being removed from an error</li>
+</ol>
+
+
+<p>Invidual Tag and Error</p>
+
+<pre><code>DELETE /errors/id/tags/id - Remove this tag from that error
+POST /errors/id/tags/id - Adding this tag to that error
+</code></pre>
+
+<p>Multiple Tags to an Error</p>
+
+<pre><code>PUT /errors/id/tags -
+</code></pre>
+
+<p>Update an Error</p>
+
+<pre><code># Sure, it could also accept tags tag_tokens=
+PUT /errors/id
+</code></pre>
+
+<p>Multiple Errors are Assigned One Tag</p>
+
+<pre><code>POST /tags/id/errors
+{
+    error_ids =&gt; [],
+}
+
+Supply a Tag ID in the URL along with an array of error_ids.
+
+DELETE /tags/id/errors
+</code></pre>
+
+<h3>Creating the controllers</h3>
+
+<p>tags_controller is responsible for updating tags_controller
+the errors controller is responsible for updating errors</p>
+
+<pre><code>the errors/tags controller is responsible for update tags on an error
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day14]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/20/haw-day14/"/>
+    <updated>2012-08-20T12:10:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/20/haw-day14</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span>Debug Method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">allVals</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// location.reload()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Look up dataTypes &#8211; text, json, script (js), xml, html
+This the request type format that we want it in.</p>
+
+<h3>JQuery Token Input</h3>
+
+<p>http://railscasts.com/episodes/258-token-fields
+need to make sure the controller responds to .json
+-the default has it nested in an @tags key. To remove that we need to map it to its attributes like so&#8211;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">:json</span> <span class="o">=&gt;</span> <span class="vi">@tags</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">t</span><span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">attributes</span><span class="p">}</span>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>prePoulation was an issue as well</p>
+
+<figure class='code'><figcaption><span>Symobol to Proc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">].</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="p">}</span> <span class="c1">#=&gt; [&quot;1&quot;, &quot;2&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To Jquery plugin to gem</p>
+
+<p>query isn&#8217;t searching properly in the tags controller
+remove the submit button for tag tokens</p>
+
+<p>f.text_field options for onAdd or on Remove</p>
+
+<p>put the :controller => :error, :action => :resolve_on_airbrake on the fix button
+or gather all the errors tagged with fixed and move this task to a background job&#8230;</p>
+
+<p>sidekiq runs on redis
+create a worker folder
+??needs to be serialized into redis?
+sidekiq will run if there is an error: can disable the retry option with an option
+pool thread limits the number of jobs that can be run</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day13]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/17/haw-day13/"/>
+    <updated>2012-08-17T13:43:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/17/haw-day13</id>
+    <content type="html"><![CDATA[<p>Checkboxes</p>
+
+<p>return default goes at the end
+preventDefault() goes at the beginning</p>
+
+<p>return false goes at the end</p>
+
+<p>we can import the deploys with client.deploys(&#8216;project#&#8217;).first</p>
+
+<p>You can also pass local variables into partials, making them even more powerful and flexible. For example, you can use this technique to reduce duplication between new and edit pages, while still keeping a bit of distinct content:</p>
+
+<p>new.html.erb</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;h1&gt;New zone&lt;/h1&gt;
+</span><span class='line'>&lt;%= error_messages_for :zone %&gt;
+</span><span class='line'>&lt;%= render :partial =&gt; "form", :locals =&gt; { :zone =&gt; @zone } %&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Specifying a class in a link_to</h3>
+
+<figure class='code'><figcaption><span>Using Twitter Bootstrap</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn-group pull-right&quot;</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%=link_to &quot; Refresh Errors&quot;, errors_import_path, :class =</span><span class="o">&gt;</span> <span class="s1">&#39;btn icon-refresh btn-success&#39;</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day12]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/16/haw-day12/"/>
+    <updated>2012-08-16T10:19:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/16/haw-day12</id>
+    <content type="html"><![CDATA[<p>js buttons on tag show pages
+fix checkboxes/mass assigning tags
+deploy- avi</p>
+
+<h3>respond_to</h3>
+
+<p>This is basically a glorified case statement&#8230;</p>
+
+<p>if no action is specified the default is the action of the namespace</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">tag</span>
+</span><span class='line'>    <span class="c1">#some code</span>
+</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span><span class="n">redirect_to</span> <span class="ss">:back</span><span class="p">}</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">js</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So it looks for tag.js as the default&#8230;</p>
+
+<p>BUG:
+tell firefox not to autocomplete</p>
+
+<p>checkboxes
+get all the values
+submit to server</p>
+
+<p>loop through the elements
+gather all the values (which are the ids)
+find errors by ids
+push in tag name signal</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[jquery-air-intermediate]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/15/jquery-air-intermediate/"/>
+    <updated>2012-08-15T15:35:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/15/jquery-air-intermediate</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span>Retriving the href</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#tabs ul li:last a&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#tabs ul li:last a&#39;</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;flights&#39;</span><span class="p">)</span> <span class="c1">//this would be from an html5 data tag</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>event delegation-
+it can be method chained and performs faster than live
+$(document).delegate</p>
+
+<p><strong><em>Don&#8217;t forget the brackets on the selector!!</em></strong></p>
+
+<h3>eq selector</h3>
+
+<p>eq(element#) - a selector</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3)&#39;</span><span class="p">).</span><span class="nx">html</span><span class="err">­</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a&#39;</span><span class="p">).</span><span class="nx">a</span><span class="err">­</span><span class="nx">ttr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="err">­</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// to access the href you need to specify the a tag</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a&#39;</span><span class="p">).</span><span class="nx">d</span><span class="err">­</span><span class="nx">ata</span><span class="p">(</span><span class="s1">&#39;seat&#39;</span><span class="err">­</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div.seating-chart a.available&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a.available&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Bind Element</h3>
+
+<p>jQuery bind() function is used to attach an event handler to elements, while the unbind() is used to detached an existing event handler from elements.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div.seating-chart a.available&#39;</span><span class="p">).</span><span class="nx">bind</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">click</span><span class="o">:</span> <span class="nx">selectSeat</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This allows you to list multiple events for each element. NOTE the different syntax, this becomes like a MAP now (very similar to a hash)</p>
+
+<h3>Unbind Element</h3>
+
+<p>Let’s imagine the following scenario&#8230;
+The user clicks on a “vote” button.
+Some AJAX calls are performed.
+After a successful AJAX call you setup a cookie to deny further votes from this machine.
+So one possible solution is to unbind the click event&#8230;</p>
+
+<p>Have something happen on a click event, but only once! Unbind the click handler after the element has been clicked once.</p>
+
+<figure class='code'><figcaption><span>Once and only once&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#my-selector&#39;</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>       <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">);</span>
+</span><span class='line'>       <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Clicked and unbound!&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Jquery Air</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">selectSeat</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.selected&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectSeat</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#seatSelected&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;seat&#39;</span><span class="p">));</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#confirm-seat&#39;</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div.seating-chart li a.available&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="nx">selectSeat</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Live Event</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a.confirm-upgrade&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">confirmUpgrade</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bind binds to the event one time
+Live will look for that event now or in the future and will catch it and call the right function</p>
+
+<h3>Delegate</h3>
+
+<figure class='code'><figcaption><span>Delegate > live</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#flights a&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectFlight</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// is the same as</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">delegate</span><span class="p">(</span><span class="s2">&quot;#flights a&quot;</span><span class="p">,</span> <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectFlight</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// this is too general. It would be better if you just checked inside a specific element</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="err">#</span><span class="nx">tabs</span> <span class="nx">div</span><span class="p">).</span><span class="nx">delegate</span><span class="p">(</span><span class="s2">&quot;#flights a&quot;</span><span class="p">,</span> <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectFlight</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// check inside the element rather than the entire page</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Delegate can be method chained and it is more performant</p>
+
+<h3>Ajax</h3>
+
+<p>Video2
+$.get and $.ajax are alternatives. $.ajax is slightly more
+cache: false option ensures that your browser won&#8217;t cache the html for every request
+Error handling
+Loading div - call beforeSend the AJAX invoked then hide it in the complete:
+If it returns successfully - success: and if not - error:</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[jquery-air-beginner]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/15/jquery-air-beginner/"/>
+    <updated>2012-08-15T15:34:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/15/jquery-air-beginner</id>
+    <content type="html"><![CDATA[<p>The DOM is a node structure or tree
+has HTML tag, head tag, title child, body tag, etc.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//find all h1s</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//find all ps</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;p#final&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//find the paragraph with ID final</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//these return arrays with the elements inside</span>
+</span><span class='line'><span class="c1">//if the search doesn&#39;t return anything, then it returns an empty array []</span>
+</span><span class='line'><span class="c1">// be careful- this empty array is considered truthy</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1, p.plan&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">//returns an array with both elements-- one string, seperated by commas</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">,</span> <span class="s2">&quot;p.plan&quot;</span><span class="p">)</span> <span class="c1">// THIS WON&#39;T WORK</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p:first&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//returns the first p it encounters</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p.first&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">//looks for the p.first node</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To select children elements use a space between the parent and child selector&#8230;
+For example, to select all A tags that are children of a tag with id = foo, you&#8217;d do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo a&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//in the exercise</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul#first_class li&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//Select all the rows and seats in first class, everything with an &lt;LI&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>You can go as many levels deep as you want when selecting children</li>
+<li>For example, to select all <a> tags that have two <div> parents, you&#8217;d do this:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div div a&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//in the exercise:</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul li ul li&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Find all the window seats (a & d in first class, and a & f in economy)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li.a, ul#first_class li.d, ul#economy_class li.f&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>can pass in a map which is like a hash in ruby
+key are seperated from values by colons</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">belts</span> <span class="o">=</span> <span class="nx">confirm</span><span class="p">(</span><span class="s1">&#39;Turn on the fasten seatbelt sign?&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Seatbelts: &#39;</span> <span class="o">+</span> <span class="nx">belts</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//can string multiple calls together like above</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>having trouble with the syntax of closing the parentheses.</p>
+
+<h3>Why JS?</h3>
+
+<p>HTML is for structure
+CSS is for presentation
+Javascript is for interaction &#8211; it shouldn&#8217;t take over the duties of the other two</p>
+
+<pre><code>use .css() with reservation. better to manipulate the class and IDs 
+</code></pre>
+
+<p>.addClass()
+.removeClass() //if you do this with no parameters it will strip it of all css classes</p>
+
+<p>hasClass() #=> true /false</p>
+
+<p>do/undo toggle pattern
+(&#8216;p:first&#8217;).toggleClass(&#8220;bigger&#8221;):</p>
+
+<p>.show()
+.hide()
+.toggle()</p>
+
+<p>Document ready waits for the DOM to download then the DOM comes through. When it&#8217;s finished the ready event fires</p>
+
+<p><strong><em>JSON</em></strong> is just a javascript map that gets passed around</p>
+
+<p>DOM and CSS communicate through classes and IDs
+use .css() with reservation. better to manipulate the class and IDs thereby delegating the responsbility to the css</p>
+
+<h3>Common queries</h3>
+
+<p>.text() => query text
+.html() => queries html
+.prepend() => inserts inside the taget object before
+.append() => inserts inside the target object after
+.before() => add element before selection
+.after() => add element after selection
+.remove => pulls the target from the DOM
+to move an object remove it while storing it in a var and the insert it where you&#8217;d like (remember vars don&#8217;t require &#8217; &#8216;s )</p>
+
+<h3>event bubbling</h3>
+
+<p>JS is triggered by the environment or the user
+if someone clicks on a span, the JS engine asks if anyone is listening for that click, or a click on the paragraph or the whole body&#8211; <strong><em>it walked up the DOM tree looking for event handlers</em></strong></p>
+
+<h3>Functions</h3>
+
+<p>function optionalname (parameters) {instructions}</p>
+
+<figure class='code'><figcaption><span>For Instance</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">popWarning</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Warning: &quot;</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>    
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Anonymous Function
+:  Just a function that isn&#8217;t given a name
+so just function (parameters) {instructions}</p>
+
+<figure class='code'><figcaption><span>Anon e.g. of previous function</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Warning: &quot;</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>    
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Since it has no name this can&#8217;t be called by another function. Instead it is passed in to another function.</p>
+
+<figure class='code'><figcaption><span>Doc Ready</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;The DOM is ready!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Got it&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>This: using this in javascript</h3>
+
+<p>This refers to the current object (usually just a plain DOM element)
+Since it&#8217;s not a jquery element, we need to wrap it in $(this)</p>
+
+<figure class='code'><figcaption><span>Using this</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Document ready and Timing</h3>
+
+<p>If wrapped in a $(document).ready() the JS won&#8217;t start looking though the document until every thing has been downloaded.</p>
+
+<figure class='code'><figcaption><span>Named Functions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">increment_weight</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">display</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#gross_weight span#display&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">weight</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">display</span><span class="p">.</span><span class="nx">text</span><span class="p">());</span> <span class="c1">//notice parseInt doesn&#39;t need a $</span>
+</span><span class='line'>  <span class="nx">weight</span> <span class="o">=</span> <span class="nx">weight</span> <span class="o">+</span> <span class="mi">50</span> <span class="p">;</span>
+</span><span class='line'>  <span class="nx">display</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">weight</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span> <span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a#weight_down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">// this code is run when a#weight_down is clicked</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">current_weight</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span#display&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+</span><span class='line'>  <span class="c1">//make sure you pull out the number, see the parseInt below</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">current_lbs</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">current_weight</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#display&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">current_lbs</span> <span class="o">-</span> <span class="mi">50</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span> <span class="c1">// this prevents it from following the link</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Hover</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span> <span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#plane_features li&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+</span><span class='line'>  <span class="c1">//the hover accepts two functions- the on-hover and off-hover</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(){</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;feature_hover&#39;</span><span class="p">);},</span>
+</span><span class='line'>  <span class="c1">//note the &#39;,&#39; at the end of the line</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(){</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;feature_hover&#39;</span><span class="p">)}</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This can be refactored as&#8230;.</p>
+
+<figure class='code'><figcaption><span>Refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#plane_features li a&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+</span><span class='line'>    <span class="kd">function</span><span class="p">(){</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_hover&quot;</span><span class="p">);}</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>toggleClass</h3>
+
+<p>Needs to be called on <em>this</em></p>
+
+<p>This is what I had&#8230;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plane_features li a&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_selected&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="c1">//this is wrong... it needs to be THIS</span>
+</span><span class='line'>      <span class="p">};</span> <span class="c1">// missed a closing parens here too</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>The Answer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plane_features li a&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_selected&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>KeyPress</h3>
+
+<p>Put the focus on the entire body, because you aren&#8217;t sure what the focus will be when the key is pressed.</p>
+
+<p>By defining the object with event e.g.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>we get access to the <em>Event Object</em> which helps us with such things as:
+- event.which - has a numeric code for the key which is pressed
+- event has other attributes like pageX, pageY and target.</p>
+
+<h3>If statement</h3>
+
+<figure class='code'><figcaption><span>IF</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">){</span><span class="nx">instructions</span><span class="p">};</span>
+</span><span class='line'><span class="p">}</span> <span class="c1">//why no ; here?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>so&#8230;.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">102</span><span class="p">){</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;fantastic&quot;</span><span class="p">)};</span>
+</span><span class='line'><span class="p">}</span> <span class="c1">//why no ; here?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span> <span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">keydown</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">83</span><span class="p">){</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li:first&#39;</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_selected&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span> <span class="c1">//still not ; here</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>event.stopPropogation</h3>
+
+<p>call .stopPropogation in the handler to prevent the event from bubbling up the DOM tree</p>
+
+<h3>Animation</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#altitude&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">(</span><span class="s2">&quot;slow&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">// takes &quot;slow&quot;, &quot;fast&quot;, and number in milliseconds as a parameter</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This works with hide, the show and toggle functions
+.slideUp(&#8220;slow&#8221;)
+.slideDown()
+.slideToggle()
+.fadeOut()
+.fadeIn()
+.fadeToggle()</p>
+
+<h3>True Ajax</h3>
+
+<p>Sending and receiving information from the server via XMLHttpRequests
+- best way to do that is with the .load() function</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span.number&#39;</span><span class="p">).</span><span class="nx">load</span><span class="p">(</span><span class="err">/flights/824/gate);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This load request will retrieve that address from the server and then inject it into the selected element an it and then the DOM will show that update</p>
+
+<p>Attach a click event listener to the Refresh button that uses ajax to load &#8216;/nearby_flights&#8217; and places the response into the Nearby Flights list. Don&#8217;t forget to prevent the default link behavior.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a#refresh&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;ul#nearby_flights&quot;</span><span class="p">).</span><span class="nx">load</span><span class="p">(</span><span class="s1">&#39;/nearby_flights&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day11]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/08/15/haw-day11/"/>
+    <updated>2012-08-15T11:34:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/08/15/haw-day11</id>
+    <content type="html"><![CDATA[<h3>return false;</h3>
+
+<p>needed to prevent the confirm box cancel from going ahead with the action anyway&#8230;
+I tried <a href="http://stackoverflow.com/questions/1469875/calling-another-jquery-function-if-confirm-is-true">.preventDefault()</a> first but it didn&#8217;t work.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HAW-day10]]></title>
@@ -312,27 +1113,20 @@ setting up filters - if front end bug assignment</p>
     <link href="http://ajonas.herokuapp.com/blog/2012/08/07/jquery/"/>
     <updated>2012-08-07T11:35:00-04:00</updated>
     <id>http://ajonas.herokuapp.com/blog/2012/08/07/jquery</id>
-    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">belts</span> <span class="o">=</span> <span class="nx">confirm</span><span class="p">(</span><span class="s1">&#39;Turn on the fasten seatbelt sign?&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Seatbelts: &#39;</span> <span class="o">+</span> <span class="nx">belts</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//can string multiple calls together like above</span>
-</span></code></pre></td></tr></table></div></figure>
+    <content type="html"><![CDATA[<h3>The DOM:</h3>
 
-
-<p>having trouble with the syntax of closing the parentheses.</p>
+<p>the web browser remembers the HTML tags, their attributes, and the order in which they appear in the file—this representation of the page is called the Document Object Model, or DOM for short. (js and jquery the missing manual, p127)</p>
 
 <p>Repel -</p>
 
-<p>everythign with remote true should have their submit button hijacked and exectured with ajax
+<p>everything with remote true should have their submit button hijacked and exectured with ajax
 jquery is to rails what ruby is js</p>
 
 <figure class='code'><figcaption><span>src</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">&quot;URL&quot;</span><span class="nt">&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
 
 
 <figure class='code'><figcaption><span>[XHR](</span><a href='https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest?redirectlocale=en-US&redirectslug=XMLHttpRequest)'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -360,71 +1154,17 @@ elements of user experience</p>
 
 <p>predictable DOM</p>
 
-<p>The DOM is a node structure or tree
-has HTML tag, head tag, title child, body tag, etc.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//find all h1s</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//find all ps</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;p#final&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//find the paragraph with ID final</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//these return arrays with the elements inside</span>
-</span><span class='line'><span class="c1">//if the search doesn&#39;t return anything, then it returns an empty array []</span>
-</span><span class='line'><span class="c1">// be careful- this empty array is considered truthy</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1, p.plan&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="c1">//returns an array with both elements-- one string, seperated by commas</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">,</span> <span class="s2">&quot;p.plan&quot;</span><span class="p">)</span> <span class="c1">// THIS WON&#39;T WORK</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p:first&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//returns the first p it encounters</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p.first&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="c1">//looks for the p.first node</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
 <p><a href="http://css-tricks.com/the-difference-between-id-and-class/">###Difference between li/#b and li.b?###</a></p>
 
-<h1>=> ids &#8211;> IDs are unique</h1>
-
-<ul>
-<li>Each element can have only one ID</li>
-<li>Each page can have only one element with that ID</li>
-</ul>
-
+<p>/# => ids &#8211;> IDs are unique
+- Each element can have only one ID
+- Each page can have only one element with that ID</p>
 
 <p>dot b => class names &#8211;> are NOT unique
 - You can use the same class on multiple elements.
 - You can use multiple classes on the same element.</p>
 
-<h3>Crazy Selector</h3>
+<h3>Crazy Selector for our app</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -437,75 +1177,7 @@ has HTML tag, head tag, title child, body tag, etc.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>To select children elements use a space between the parent and child selector&#8230;
-For example, to select all <a> tags that are children of a tag with id = foo, you&#8217;d do this:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo a&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//in the exercise</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul#first_class li&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//Select all the rows and seats in first class, everything with an &lt;LI&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>You can go as many levels deep as you want when selecting children</li>
-<li>For example, to select all <a> tags that have two <div> parents, you&#8217;d do this:</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div div a&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">//in the exercise:</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul li ul li&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Find all the window seats (a & d in first class, and a & f in economy)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li.a, ul#first_class li.d, ul#economy_class li.f&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>can pass in a map which is like a hash in ruby
-key are seperated from values by colons</p>
-
-<p>HTML is for structure
-CSS is for presentation
-Javascript is for interaction &#8211; it shouldn&#8217;t take over the duties of the other two</p>
-
-<pre><code>use .css() with reservation. better to manipulate the class and IDs 
-</code></pre>
-
-<p>.addClass()
-.removeClass() //if you do this with no parameters it will strip it of all css classes</p>
-
-<p>hasClass() #=> true /false</p>
-
-<p>do/undo toggle pattern
-(&#8216;p:first&#8217;).toggleClass(&#8220;bigger&#8221;):</p>
-
-<p>.show()
-.hide()
-.toggle()</p>
-
-<p>Document ready waits for the DOM to download then the DOM comes through. When it&#8217;s finished the ready event fires</p>
-
-<p><strong><em>JSON</em></strong> is just a javascript map that gets passed around</p>
-
-<p>DOM and CSS communicate through classes and IDs
-use .css() with reservation. better to manipulate the class and IDs thereby delegating the responsbility to the css</p>
-
-<p>event bubbling
-event delegation</p>
 ]]></content>
   </entry>
   
@@ -1055,652 +1727,6 @@ Scoping - so scoping is like a filter
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">db</span><span class="ss">:seed</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rake tasks]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/31/rake-tasks/"/>
-    <updated>2012-07-31T11:54:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/31/rake-tasks</id>
-    <content type="html"><![CDATA[<figure class='code'><figcaption><span>This is a rake task file&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">task</span> <span class="ss">:load_errors</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
-</span><span class='line'>  <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">import_from_airbrake</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In heroku I would run this:</p>
-
-<figure class='code'><figcaption><span>This is a rake task file&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">load_errors</span>
-</span><span class='line'><span class="c1"># NOT</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">task</span> <span class="n">bandaid</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HAW- Day0]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/30/haw-day0/"/>
-    <updated>2012-07-30T10:13:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/30/haw-day0</id>
-    <content type="html"><![CDATA[<p>Pivotal:
-Move from icebox to current
-Click Start
-Each story is either a feature, a bug, or a chore</p>
-
-<p>Generate our app
-Some sort of layout
-beginning data model
-- main model
-- tag model
-Import script to retreive that data off the API</p>
-
-<p>Views/Controllers
-- index view
-- tagging</p>
-
-<p>Keep commits small and never develop in the master branch</p>
-
-<p>Git:
-Git create the repo
-git clone the repo
-git merge mongoid-setup &#8211;no-ff #no FF- will show the branch even after the commmit</p>
-
-<p>Mongoid-
-rails new myapp -O (&#8211;skip-active-record)</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'mongoid', "~&gt; 3.0.0"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Twitter Bootstrap
-gem twitter-bootstrap</p>
-
-<p>Airbrake Gem</p>
-
-<p>Powder Gem
-gem install powder
-makes app available at airbrake.dev</p>
-
-<p>Immediately want to start creating the &#8216;error model&#8217;, but error is a terrible title so call it airbrake model</p>
-
-<p>Routes:
-change index to errors#index</p>
-
-<p>Generate airbrake_errors model
-Generate errors_controller
-Generate bootstrap</p>
-
-<figure class='code'><figcaption><span>Fluid Layout</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">bootstrap</span> <span class="n">layout</span> <span class="n">application</span> <span class="n">fluid</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>In Console</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">AirbrakeError</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Test&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>in the test unit, want to check that AirbrakeError.delete_all
-test to make sure the airbrake API gem tried to connect</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">AirbrakeError</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create initializer to config the connection to airbrake</p>
-
-<h3>Next Steps</h3>
-
-<p>build out the bootstrap layout
-build the import script</p>
-
-<p>Ruby Debugger: TODO
-gem debugger at the bottom of the gem file
-bundle</p>
-
-<p>inspect the hashiemashie to see how the objects are composed</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
-</span><span class='line'>  <span class="n">a</span> <span class="o">=</span> <span class="no">AirbrakeAPI</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Airbrake Doc:
-Can make calls to get a list of errors in general and a call to get more info about an error.
--The api in general isn&#8217;t all that detailed.</p>
-
-<p>There is a diff between .error(&#8216;id&#8217;) and .errors &#8211; the difference is in what is returned&#8211; i.e. the backtrace etc.</p>
-
-<p>check out what notices because we are probably interested more in the notice than the error itself.</p>
-
-<figure class='code'><figcaption><span>Maybe Something Like This?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">ignore</span>
-</span><span class='line'>  <span class="no">AirbrakeAPI</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:resolved</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">})</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Diff between error and notice: an error is a unique conceptual item and a notice is the occurance of the error</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">}</span>
-</span><span class='line'>  <span class="n">h</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="n">b</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">v</span>
-</span><span class='line'><span class="c1">#this is the same as the dynamic dispatching method</span>
-</span><span class='line'><span class="n">airbrake</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>From there let&#8217;s go to the view and start formatting the output</p>
-
-<p>Ruby alias method&#8211; this is built into ruby not rails or mongoid</p>
-
-<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">alias</span> <span class="ss">:name</span> <span class="ss">:error_message</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>TIPS and Tricks section:
-Gem Server shows the documentation locally</p>
-
-<p><a href="http://www.codinghorror.com/">Jeff Atwood</a></p>
-
-<p>LOOK-UP &#8216;Client&#8217;, &#8216;tap&#8217;, &#8216;send&#8217;
-dynamic dispatch and the send method
-rails cycle
-Moped::BSON: &#8211; how it generates its unique IDs</p>
-
-<p>GIT STUFF:</p>
-
-<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">pull</span> <span class="o">--</span><span class="n">rebase</span> <span class="c1">#=&gt; if the remote has merges, rewind and then move back forward</span>
-</span><span class='line'><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="no">HEAD</span> <span class="c1">#=&gt; go to the last checkout (HEAD of the branch) without the warnings (hard)</span>
-</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="c1"># save changes</span>
-</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="n">pop</span> <span class="c1">#restore changes</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">status</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">link</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">airbrake</span>
-</span><span class='line'><span class="n">M</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">airbrake_error</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'><span class="n">M</span>  <span class="n">app</span><span class="o">/</span><span class="n">views</span><span class="o">/</span><span class="n">errors</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">erb</span>
-</span><span class='line'><span class="no">Switched</span> <span class="n">to</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">branch</span> <span class="s1">&#39;link-to-airbrake&#39;</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">am</span> <span class="s2">&quot;added airbrake_url method and link_to in views&quot;</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">push</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">merge</span> <span class="n">link</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">airbrake</span>
-</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">push</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 7 -Rails]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/29/lecture-7-rails/"/>
-    <updated>2012-07-29T14:20:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/29/lecture-7-rails</id>
-    <content type="html"><![CDATA[<figure class='code'><figcaption><span>Song class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">genre_name</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">g</span><span class="o">|</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)}</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">genre_name</span><span class="o">=</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">strip</span><span class="p">}</span><span class="o">.</span>
-</span><span class='line'>    <span class="no">SongGenre</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:genre</span> <span class="o">=&gt;</span> <span class="no">Genre</span><span class="o">.</span><span class="n">find_or_create_by_name</span><span class="p">(</span><span class="n">genre_name</span><span class="p">))</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>an album has many songs&#8230; which means the accepts nested attributes for will be a good fit</p>
-
-<h3>Nested Resource</h3>
-
-<p>begins with the routes</p>
-
-<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested Model Form Rails Cast</a></p>
-
-<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong><em>Dont&#8217; use nested attributes for a belongs_to association</em></strong></a></p>
-
-<p>mass assignment and the .build(params[:user_name])</p>
-
-<p>Form_for (2:40)</p>
-
-<h3>Layouts and Sub-layouts</h3>
-
-<figure class='code'><figcaption><span>On the Index Page</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% content_for </span><span class="ss">:sub_nav</span> <span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;%= link_to &quot;New Song&quot;, new_song_path %&gt;</span>
-</span><span class='line'> <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
-</span><span class='line'><span class="sx"> # this could also be on the show page so they would share this sub_nav</span>
-</span><span class='line'><span class="sx"> &lt;nav class=&quot;sub_nav&quot;&gt;</span>
-</span><span class='line'>  <span class="o">&lt;%=</span> <span class="k">yield</span> <span class="ss">:sub_nav</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx"> &lt;% end %&gt;</span>
-</span><span class='line'> <span class="c1"># this works because you create another yield in the app besides the body</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>you can open up a sublayout as many times as you want to add links&#8230;</p>
-
-<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to_unless_current">link_to_unless_current</a>- it just creates the title, not the link to its own page&#8230; useful for nav bars</p>
-
-<p>polymorphic interfaces: depending on the argument that you send it, it has different behavior
-when you send @mixtape it looks up:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mixtape_path</span><span class="p">(</span><span class="vi">@mixtape</span><span class="p">)</span> <span class="c1">#=&gt; &#39;/mixtapes/1&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>real life e.g.s
-subway slot can accept a metrocard and a credit card&#8211; depending on what you send it, it has differnt behavior
-a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.</p>
-
-<p>render is another flexible polymorphic object-</p>
-
-<figure class='code'><figcaption><span>Rending Partials in a Collection- very important</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= render @mixtape.songs %&gt;</span>
-</span><span class='line'><span class="sx">#Down a level of abstraction since it reveals the collection and partial:</span>
-</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">render</span> <span class="ss">:collection</span> <span class="o">=&gt;</span> <span class="vi">@mixtape</span><span class="o">.</span><span class="n">songs</span><span class="p">,</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="n">songs</span><span class="o">/</span><span class="n">song_li</span><span class="err">&#39;</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:song</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Cast Variables</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= render &#39;songs/fields&#39;, :f =</span><span class="o">&gt;</span> <span class="n">song_form</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If skip album name is true, then
-(3:40)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">include_album_name</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;div class=&quot;field&quot;&gt;</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="sx">% f.label </span><span class="ss">:album</span> <span class="sx">%&gt; &lt;br /&gt;</span><span class="c1">#more code....</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://guides.rubyonrails.org/layouts_and_rendering.html#asset-tag-helpers">Passing Local Variables into Partials</a>&#8230; need to scroll down a little</p>
-
-<p>write_attribute</p>
-
-<p><a href="http://www.davidverhasselt.com/2011/06/28/5-ways-to-set-attributes-in-activerecord/">5 ways to set attributes in ActiveRecord</a></p>
-
-<p>Could use callbacks and lifecycle hooks to normalize as well&#8230;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before_validate</span> <span class="ss">:normalize_name</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">normalize_name</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">strip</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MongoDB &amp; Mongoid]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/28/mongodb-and-mongoid/"/>
-    <updated>2012-07-28T12:17:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/28/mongodb-and-mongoid</id>
-    <content type="html"><![CDATA[<p><a href="http://blog.wiemann.name/mongoid-cheat-sheet">Mongo Cheat Sheet</a></p>
-
-<h1>NoSQL</h1>
-
-<p>Non-relational, next-generation operational datastores and databases
--databases designed for the web and attacking the traditional problems that traditional DBs have such as scaling out.</p>
-
-<p>-Horizontally scalable architectures => no joins + no complex transactions</p>
-
-<p>Datamodels:</p>
-
-<ol>
-<li>Key / Value Stores - (memcached, Dynamo)</li>
-<li>Tabular (BigTable) - a hybrid</li>
-<li>Document Oriented (MongoDB, CouchDB)</li>
-</ol>
-
-
-<p>Memcached and key/value are high on the scalability and performance side, but low on depth of functionality</p>
-
-<p>RDBMS (relational database management systems) - strong depth of functionality with join models etc., low on the scalability and performance scale.</p>
-
-<p>MongoDB- try to get the scalability and performance of a key/value store and try to make as functional as possible</p>
-
-<p>What&#8217;s Missing?
-- Joins
-- Complex multi-row transactions
-- SQL</p>
-
-<p>Terminology:
-In RDBMS // MongoDB
- - database => database like in MySQL
- - table => collection
- - row => document</p>
-
-<p> MongoDB uses JSON style documents called BSON (binary JSON)</p>
-
-<h2>-There are not predefined schemas, can use nested structures to embed complex values based on the keys</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>post = {author: "mike",
-</span><span class='line'>date: new Date (),
-</span><span class='line'>text: "my blog post",
-</span><span class='line'>tags: ["mongodb", "intro"]} 
-</span><span class='line'>
-</span><span class='line'>db.posts.save(post)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>MongoDB expects to have every document to have a &#8216;_id&#8217; key&#8211; it&#8217;s a <strong>*unique primary key</strong>**</p>
-
-<h3>Dynamic Queries</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.posts.find({author: "mike"})
-</span><span class='line'>
-</span><span class='line'>#more advanced
-</span><span class='line'>db.posts.find()
-</span><span class='line'>        .sort({date: -1})
-</span><span class='line'>        .limit(10)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>MongoDB has its own document based query language.</p>
-
-<h3>Indexing</h3>
-
-<p>B-Tree indexes</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.posts.ensureIndex({tags: 1})
-</span><span class='line'>
-</span><span class='line'>#Indexing / Querying on Embedded Docs (dot notation)
-</span><span class='line'>db.posts.find({"comments.author": "eliot"})
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong><em>Focus on Performance</em></strong>:
-Don&#8217;t use REST to talk to the database. Use a binary TCP wire protocol because it is faster.</p>
-
-<h3>Replica Sets</h3>
-
-<p>similar to master-slave replication, but there is a primary and secondary node</p>
-
-<h3>Auto-sharding</h3>
-
-<ul>
-<li>split up the data so certain shards (which are groups of nodes- replica set or master //slave) are responsible for some subset of the data</li>
-</ul>
-
-
-<p><a href="http://www.youtube.com/watch?v=bwAqN9l14kI">Intro video</a></p>
-
-<p><a href="http://www.mongodb.org/display/DOCS/MongoDB+Data+Modeling+and+Rails">###Types###</a></p>
-
-<h2>Mongoid</h2>
-
-<p><a href="http://blog.wiemann.name/mongoid-cheat-sheet">Cheatsheet</a>
-<a href="http://vimeo.com/9864311">Intro by the creator</a>
-<a href="http://railscasts.com/episodes/238-mongoid">RailsCast</a>
-<a href="http://mongoid.org/en/mongoid/">Docs</a></p>
-
-<p>-Mongoid by default stores documents in a collection that is the pluralized form of the class name. For the following Person class, the collection the document would get stored in would be named people.</p>
-
-<p>When a document is stored in the database the ruby object will get serialized into BSON and have a structure like so:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>{
-</span><span class='line'>  "_id" : ObjectId("4d3ed089fb60ab534684b7e9"),
-</span><span class='line'>  "title" : "Sir",
-</span><span class='line'>  "name" : {
-</span><span class='line'>    "_id" : ObjectId("4d3ed089fb60ab534684b7ff"),
-</span><span class='line'>    "first_name" : "Durran"
-</span><span class='line'>  },
-</span><span class='line'>  "addresses" : [
-</span><span class='line'>    {
-</span><span class='line'>      "_id" : ObjectId("4d3ed089fb60ab534684b7e0"),
-</span><span class='line'>      "city" : "Berlin",
-</span><span class='line'>      "country" : "Deutschland"
-</span><span class='line'>    }
-</span><span class='line'>  ]
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Querying</h3>
-
-<figure class='code'><figcaption><span>Mongoid Querying</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Band</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;Depeche Mode&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="no">Band</span><span class="o">.</span>
-</span><span class='line'>  <span class="n">where</span><span class="p">(</span><span class="ss">:founded</span><span class="o">.</span><span class="n">gte</span> <span class="o">=&gt;</span> <span class="s2">&quot;1980-1-1&quot;</span><span class="p">)</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">in</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="o">[</span> <span class="s2">&quot;Tool&quot;</span><span class="p">,</span> <span class="s2">&quot;Deftones&quot;</span> <span class="o">]</span><span class="p">)</span><span class="o">.</span>
-</span><span class='line'>  <span class="n">union</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">in</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="o">[</span> <span class="s2">&quot;Melvins&quot;</span> <span class="o">]</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Attributes</h3>
-
-<p>All relations contain a target, which is the proxied document or documents, a base which is the document the relation hangs off, and metadata which provides information about the relation.</p>
-
-<p>attr_accessible and validation are the same in Mongo as in ActiveRecord</p>
-
-<p>embeds_many similar to has_many => but the information is embedded in the document rather than in a separate record like in ActiveRecord. Will I need to fetch this record outside of the parent? If so, I need than has_many makes more sense. The advantage of course is that the information is right inside that record.</p>
-
-<p><strong><em>Embedded 1-1 relationships</em></strong>
-:    The parent document of the relation should use the embeds_one macro to indicate is has 1 embedded child, where the document that is embedded uses embedded_in.</p>
-
-<p><strong>*Embedded 1-Many</strong>**
-:   The parent document of the relation should use the embeds_many macro to indicate it has n number of embedded children, where the document that is embedded uses embedded_in.</p>
-
-<p><strong><em>Referenced 1-1</em></strong>
-:    The parent document of the relation should use the has_one macro to indicate is has 1 referenced child, where the document that is referenced in it uses belongs_to.</p>
-
-<p><strong><em>Referenced Many-to-Many</em></strong>
-:    Many to many relationships where the inverse documents are stored in a separate collection from the base document are defined using Mongoid&#8217;s has_and_belongs_to_many macro. This exhibits similar behavior to Active Record with the exception that no join collection is needed, the foreign key ids are stored as arrays on either side of the relation.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Airbrake]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/27/airbrake/"/>
-    <updated>2012-07-27T12:23:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/27/airbrake</id>
-    <content type="html"><![CDATA[<p>Airbrake is basically wrapped around a begin rescue block&#8230;
-The app doesn&#8217;t break AND the error is sent to the application.</p>
-
-<p>There are errors in apps that happen that you don&#8217;t care about, then there are show-stoppers.
-- Solution: rebuild a dashboard to ignore the errors or use airbrake to config their own errors.</p>
-
-<p>?How do you decide what kinds of errors are important</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>AirbrakeAPI::Errors</span></code></pre></td></tr></table></div></figure>
-
-
-<p>after you instantite the credientials, you need to create the connections
-- learned this via the spec/client_spec</p>
-
-<p>Keep running into the <a href="http://www.dzone.com/snippets/hashdeepmerge">deep_merge</a> undefined method. According to their specs, Airbreak assumes that the gems in the specs should be included in the library. They assume that people won&#8217;t be using this outside of rails, which is a big assumption.</p>
-
-<p>HashieMashie- hashes behave as both as regular hash and as an object</p>
-
-<p>Once the proper gems are required it works properly.
-If this library had corrected all of the dependencies in it&#8217;s stand along library, this would have been fine&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ gem install airbrake-api
-</span><span class='line'>♕ irb
-</span><span class='line'> :001 &gt; require 'active_support'
-</span><span class='line'> =&gt; true 
-</span><span class='line'> :002 &gt; require 'active_support/core_ext'
-</span><span class='line'> =&gt; true 
-</span><span class='line'> :003 &gt; require 'i18n'
-</span><span class='line'> =&gt; false 
-</span><span class='line'> :004 &gt; require 'airbrake'
-</span><span class='line'> =&gt; true 
-</span><span class='line'> :005 &gt; require 'airbrake-api'
-</span><span class='line'> =&gt; true 
-</span><span class='line'> :006 &gt; AirbrakeAPI.configure(:account =&gt; 'gearshare', :auth_token =&gt; 'authcodehere', :secure =&gt; true)
-</span><span class='line'> =&gt; AirbrakeAPI 
-</span><span class='line'> :007 &gt; AirbrakeAPI.new
-</span><span class='line'>NoMethodError: undefined method `new' for AirbrakeAPI:Module
-</span><span class='line'> :008 &gt; AirbrakeAPI::Client.new
-</span><span class='line'> =&gt; #&lt;AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"&gt; 
-</span><span class='line'> :009 &gt; a = _
-</span><span class='line'> =&gt; #&lt;AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"&gt; 
-</span><span class='line'> :010 &gt; a.errors</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[BadAss Keyboard Shortcuts]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/25/badass-keyboard-shortcuts/"/>
-    <updated>2012-07-25T17:49:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/25/badass-keyboard-shortcuts</id>
-    <content type="html"><![CDATA[<p>shift, cmd, T &#8211; open the last tab closed in chrome and FF</p>
-
-<p>And of course <a href="https://www.shortcutfoo.com/">shortcut foo</a> is awesome too!</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake routes | grep mixtape</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Will only show the routes that match this resource.</p>
-
-<h3>Indents in text editors</h3>
-
-<p>cmd [ to move it <-
-and cmd ] to move it -> in both textmate and sublime</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Postgres]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/25/postgres/"/>
-    <updated>2012-07-25T11:00:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/25/postgres</id>
-    <content type="html"><![CDATA[<p><a href="http://russbrooks.com/2010/11/25/install-postgresql-9-on-os-x">Install of postgresql on Mac OS X</a></p>
-
-<p><a href="http://stackoverflow.com/questions/6710654/how-do-you-easily-change-from-sqlite-to-postgresql-in-rails">How do you easily change from SQLite to PostgreSQL in Rails</a> It hasn&#8217;t been a seemless transition for me. At least the first time around.</p>
 ]]></content>
   </entry>
   

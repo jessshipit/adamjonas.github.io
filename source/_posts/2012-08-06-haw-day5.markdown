@@ -1,0 +1,73 @@
+---
+layout: post
+title: "HAW-day5"
+date: 2012-08-06 10:23
+comments: true
+categories: notes
+---
+
+GOALS:
+Refactor code, figure out the jquery ajax checkboxes.
+ship v1 by the end of the day
+
+
+[send method](http://khelll.com/blog/ruby/ruby-dynamic-method-calling/)
+[send method to call private method](http://philcrissman.com/2009/06/26/rubys-objectsend-can-call-private-and-protected-methods/)
+
+```ruby Code that finally worked...
+def self.import_from_airbrake
+    client = AirbrakeAPI::Client.new
+
+    errors = client.errors
+    actions = {:action => "action", :controller => "controller", :created_at => "airbrake_created_at", 
+               :error_class => "error_class", :error_message => "error_message", :file => "file",
+               :id => "airbrake_id", :line_number => "line_number", 
+               :most_recent_notice_at => "airbrake_most_recent_notice_at", 
+               :notice_hash => "notice_hash", :notices_count => "notices_count", 
+               :project_id => "project_id", :rails_env => "rails_env", :resolved => "airbrake_resolved",
+               :search_index_me => "search_index_me", :updated_at => "airbrake_updated_at"}
+
+     errors.collect do |error| #each error is a hash
+      airbrake_error = AirbrakeError.new #this needs to be outside the following loop or it will create a new object during every loop...
+      actions.each do |airbrake_action, our_action| #aa is a sym key, oa is a string value
+       airbrake_error.send("#{our_action}=".to_sym, error[airbrake_action])# SEND method here
+
+      airbrake_error.attribute_updater #see below
+      end
+      airbrake_error.save
+    end
+  end
+```
+```ruby Other use of send...
+def attribute_updater
+
+    @airbrake_errors = AirbrakeError.all
+
+    updater_actions = ["notices_count", "action", "controller", "error_class", "file", "line_number",
+                      "airbrake_most_recent_notice_at", "notice_hash", "airbrake_resolved", 
+                      "airbrake_updated_at"]
+
+    if @airbrake_errors.where(airbrake_id: self.airbrake_id).present?
+      original_error = @airbrake_errors.find_by(airbrake_id: self.airbrake_id)
+
+        updater_actions.each do |action|
+          original_error.send("#{action}=".to_sym, self["#{action}".to_sym])
+          original_error.save
+        end
+    else     
+    end
+  end
+```
+
+TODO: 
+inject method
+
+
+Per Dave:
+-one form that is ignore, one that signal, one that is the tags
+-remote true- a flag that going to submit the form via ajax
+
+
+[Remote True:](http://guides.rubyonrails.org/form_helpers.html)
+Unlike other forms making an asynchronous file upload form is not as simple as providing form_for with :remote => true. With an Ajax form the serialization is done by JavaScript running inside the browser and since JavaScript cannot read files from your hard drive the file cannot be uploaded. The most common workaround is to use an invisible iframe that serves as the target for the form submission.
+

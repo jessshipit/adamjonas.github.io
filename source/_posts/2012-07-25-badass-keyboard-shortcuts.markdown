@@ -18,3 +18,8 @@ Will only show the routes that match this resource.
 ###Indents in text editors###
 cmd [ to move it <- 
 and cmd ] to move it -> in both textmate and sublime
+
+In Chrome:
+⌥⌘I (Command - Option - I) keys to open Developer Tools
+⌥⌘J (Command - Option - J) to open Developer Tools and bring focus to the Console.
+⇧⌘C (Command - Shift - C) to toggle Inspect Element mode.
