@@ -36,10 +36,9 @@ $('p.first')
 ```
 
 To select children elements use a space between the parent and child selector...
-For example, to select all A tags that are children of a tag with id = foo, you'd do this:
+For example, to select all the A tags that are children of a tag with id = foo, you'd do this:
 ```javascript
 $('#foo a');
-
 //in the exercise
 $('ul#first_class li');
 //Select all the rows and seats in first class, everything with an <LI>
