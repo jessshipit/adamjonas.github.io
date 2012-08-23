@@ -45,7 +45,7 @@ $('ul#first_class li');
 ```
 
 - You can go as many levels deep as you want when selecting children
-- For example, to select all <a> tags that have two <div> parents, you'd do this:
+- For example, to select all A tags that have two <div> parents, you'd do this:
 ```javascript
 $('div div a');
 //in the exercise:
