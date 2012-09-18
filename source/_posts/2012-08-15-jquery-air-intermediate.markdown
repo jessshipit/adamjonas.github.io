@@ -102,3 +102,17 @@ cache: false option ensures that your browser won't cache the html for every req
 Error handling
 Loading div - call beforeSend the AJAX invoked then hide it in the complete:
 If it returns successfully - success: and if not - error:
+
+###Mistake I keep making###
+```javascript
+function fetchFirstClassConfirm() {
+  var flight_id = 815;
+  var url = '/flights/' + flight_id
+  $.ajax(url, {
+    success: function(result) {
+      $('#confirm-first-class').html(result).show();
+      //I have a big problem missing the '' in the selector!
+    }
+  });
+}
+```

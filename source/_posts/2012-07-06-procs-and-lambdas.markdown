@@ -7,7 +7,30 @@ categories: ruby notes TODO
 ---
 
 You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...
+
+Procs and lambdas are basically blocks that have been assigned to variables.
+
+
 PROCS:
+
+Treehouse notes:
+- Need to pass a block in as a parameter when creating a block. (even if it is an empty block)
+```ruby
+my_proc = Proc.new {}
+#OR
+my_proc = proc {}
+#call with 
+my_proc.call
+```
+- you call a proc with the method .call -> my_proc.call
+
+```ruby passing in parameters
+my_proc = proc { |name| puts "Hello, #{name}" }
+#call with no parameters
+my_proc.call #=> "Hello, "
+my_proc.call("Adam") #=> "Hello, Adam"
+```
+
 
 Very standard to pass along a code block to the each method
 
@@ -84,9 +107,28 @@ end
 ```
 -->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
 
+
 ***Lambdas***
 
+Treehouse notes:
+```ruby
+my_lambda = lambda {}
+#OR
+my_lambda = -> {}
+```
+Can't assign variables to keywords
+
 Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
+
+```ruby passing in parameters
+my_lambda = lambda { |name| puts "Hello, #{name}" }
+#call with no parameters
+my_lambda.call #=> breaks!- wrong number of arguments
+#when you create a lambda the arguments are required....
+my_lambda.call("Adam") #=> "Hello, Adam"
+```
+
+
 Closures
 
 In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.
@@ -114,6 +156,12 @@ name = "John"
 
 run_proc print_a_name # => now this will output John because it kept a reference to the local variable.
 ```
+
+Returns:
+- The lambda returns the last line of the method just like a regular method
+- A proc returns only what is executed INSIDE the proc.
+
+
 [Video](http://www.youtube.com/watch?v=VBC-G6hahWA)
 
 [DOCUMENTATION](http://www.ruby-doc.org/core-1.9.3/Proc.html)

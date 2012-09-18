@@ -39,4 +39,4 @@ Multiple Errors are Assigned One Tag
 ###Creating the controllers###
 tags_controller is responsible for updating tags_controller
 the errors controller is responsible for updating errors
-	the errors/tags controller is responsible for update tags on an error
+-the errors/tags controller is responsible for update tags on an error
