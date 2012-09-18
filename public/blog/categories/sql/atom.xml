@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SQL | Documenting all this...]]></title>
+  <link href="http://ajonas.herokuapp.com/blog/categories/sql/atom.xml" rel="self"/>
+  <link href="http://ajonas.herokuapp.com/"/>
+  <updated>2012-09-18T16:11:38-04:00</updated>
+  <id>http://ajonas.herokuapp.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MySQL DB Design]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/09/05/mysql-db-design/"/>
+    <updated>2012-09-05T11:51:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/09/05/mysql-db-design</id>
+    <content type="html"><![CDATA[<p><a href="http://code.google.com/edu/tools101/mysql.html">MySQL Google</a></p>
+
+<p><em>Data normalization</em>
+:  This is the process we go through to develop a design that is free of redundant data and that can be consistently and correctly modified</p>
+
+<p><em>primary keys</em> uniquely identify a record in a table, and <em>foreign keys</em> are used to relate tables
+- Every record must have a unique primary key which should not be reused once deleted</p>
+
+<p><em>Referential integrity</em>
+:  The data in a foreign key needs to match the primary key in some record of the original table. Referential integrity assures there are no broken links between tables. Note that if you delete a record in the original table, for example, you delete one of the customers from the customer table, referential integrity requires that you delete all references to that customer in the order table.</p>
+
+<h3>MySQL Exercises</h3>
+
+<ol>
+<li>Start up MySQL with
+<code>
+mysql -uroot -ppassword
+</code>
+Creating a table...
+<code>
+create table customer (cust_no int not null auto_increment, name varchar(40),
+address varchar(40), phone varchar(12), primary key(cust_no));
+</code>
+"varchar" which means variable-length strings. The numbers following "varchar" in the command above indicate maximum length for the data stored in the field. We also set up cust_no to be the primary key.</li>
+</ol>
+
+
+<p>The orders table...
+<code>
+create table orders (order_no int not null auto_increment, FK_cust_no int not null,
+foreign key(FK_cust_no) references customer(cust_no), primary key(order_no));
+</code>
+There are only two fields in this table. The order_no field is a primary key, and is an integer, not null and it will auto increment. The cust_no field is a foreign key. We have named it FK_cust_no in the orders table to distinguish it from the cust_no field in the customer table.</p>
+
+<p><em>A foreign key is a field that references a primary key in another table.</em> In the command, we indicate that the FK_cust_no field is a foreign key referencing the cust_no field in customer, indicated by the "foreign key(FK_cust_no) references customer(cust_no)" part of the command. By setting the table up this way, MySQL will enforce constraints-- any order that we enter into the orders table must reference a valid customer in the customer table. If we enter a cust_no in orders that does not exist in customers, an error will result.</p>
+]]></content>
+  </entry>
+  
+</feed>

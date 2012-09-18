@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: codeschool | Documenting all this...]]></title>
+  <link href="http://ajonas.herokuapp.com/blog/categories/codeschool/atom.xml" rel="self"/>
+  <link href="http://ajonas.herokuapp.com/"/>
+  <updated>2012-09-18T16:11:38-04:00</updated>
+  <id>http://ajonas.herokuapp.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Bits]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/09/06/ruby-bits/"/>
+    <updated>2012-09-06T15:33:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/09/06/ruby-bits</id>
+    <content type="html"><![CDATA[<p>||= Assigns if there is not existing value. Otherwise, the previous assigment will override it.
+Good way to set defaults if you need them</p>
+
+<p>```ruby Refactoring using ||=
+options[:country] = 'us' if options[:country].nil?</p>
+
+<h1>can refactor as</h1>
+
+<p>options[:country] ||= 'us'
+```</p>
+
+<p>```ruby Case statement e.g.
+def search(games, search_term)
+  search_index = case games.find_index(search_term)</p>
+
+<pre><code>  when search_index
+     "Game #{search_term} found: #{games[search_index]} at index #{search_index}."
+   else
+    "Game #{search_term} not found."
+  end
+</code></pre>
+
+<p>end
+games = ["Super Mario Bros.", "Contra", "Metroid", "Mega Man 2"]
+puts search(games, "Contra")
+```</p>
+
+<p>```ruby Options
+def new_game(name, options= {})
+  {</p>
+
+<pre><code>name: name,
+year: options[:year],
+system: options[:system]
+</code></pre>
+
+<p>  }
+end
+game = new_game("Street Figher II",
+ year: 1992,
+ system: "SNES"
+ )
+```</p>
+
+<p>rindex- Returns the index of the last occurrence of the given substring or pattern (regexp) in str. Returns nil if not found. If the second parameter is present, it specifies the position in the string to end the search—characters beyond this point will not be considered.</p>
+
+<p>private methods: all private methods are not accessible for outside objects</p>
+
+<p>```ruby Raising Exceptions
+class InvalidGameError &lt; StandardError; end
+def new_game(name, options={})
+  raise InvalidGameError if name.nil?
+  {</p>
+
+<pre><code>name: name,
+year: options[:year],
+system: options[:system]
+</code></pre>
+
+<p>  }
+end
+begin
+  game = new_game(nil)
+rescue InvalidGameError => e
+  puts "There was a problem creating your new game: #{e.message}"
+end
+```</p>
+
+<p>```ruby splat arguments
+def describe_favorites(*games)
+  for game in games</p>
+
+<pre><code>puts "Favorite Game: #{game}"
+</code></pre>
+
+<p>  end<br/>
+end
+describe_favorites('Mario', 'Contra', 'Metroid')
+```</p>
+
+<p>```ruby Classes
+class Game
+  def initialize(name, options={})</p>
+
+<pre><code>@name = name
+@system = options[:system]
+@year = options[:year]
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>Encapsulation</h3>
+
+<p>Passing around data and numbers breaks encapsulation
+If all you are passing around is data- then an options hash should suffice</p>
+
+<h3>Private / Protected Methods</h3>
+
+<p>Private methods in Ruby cannot be called with an explicit receiver.
+```ruby Private
+def up_vote(friend)</p>
+
+<h1>in this case, bump karma is private</h1>
+
+<pre><code>bump_karma
+#below will error out
+friend.bump_karma
+</code></pre>
+
+<p>end
+```</p>
+
+<p>Protected methods in Ruby CAN be called with an explicit receiver, but not outside the class.
+```ruby Protected
+def up_vote(friend)</p>
+
+<h1>in this case, bump karma is private</h1>
+
+<pre><code>bump_karma
+#below will error out
+friend.bump_karma
+</code></pre>
+
+<p>end
+```</p>
+
+<h3>Inheritance / Super</h3>
+
+<p>A way to DRY up duplication is to use inheritance ot inherit behavior for two classes</p>
+
+<p>Super looks for definitions in the parent class and applies it in the child class</p>
+
+<h3>Active Support</h3>
+
+<p>```ruby
+def anniversary(game, years)
+  game[:release].advance(years: years)
+end</p>
+
+<p>game = {
+  name: 'Contra',
+  release: DateTime.new(1987, 2, 20, 0, 0, 0)
+}
+puts anniversary(game, 20)
+```</p>
+
+<p>```ruby difference between hashes</p>
+
+<h1>Using ActiveSupport, return the difference between Mario's favorite games and Luigis's favorite games by implementing the difference_between method.</h1>
+
+<p>def difference_between(player1, player2)
+  player1.diff(player2)
+end
+```</p>
+
+<p>when you include something. it is included in the ancestor's class.</p>
+
+<h3>Namespacing</h3>
+
+<p>putting functions in a module will prevent namespacing conflicts
+a common pattern is to 'include' the module inside of the class... this will expose the module methods as instances methods in the object -- which means the methods will have access to the object's internal properties.</p>
+
+<p>when use mixin versus classical class inheritance.
+A class can only have one super class
+inheritance suggests specialization</p>
+
+<p>the extends keyword included as the class methods</p>
+
+<p>use extend to expose class methods as class methods
+use include to expose class methods as instance methods</p>
+
+<p>if you call extend on an object, then it exposes the methods as instance methods on an object</p>
+
+<p>```ruby object extend
+game = Game.new("Contra")</p>
+
+<h1>extend the Playable module for the specific game object</h1>
+
+<h1>the module is not available to other objects in that class</h1>
+
+<p>game.extend(Playable)
+game.play
+```</p>
+
+<p>method hooks allows you to both include and extend modules</p>
+
+<p>```ruby
+module LibraryUtils</p>
+
+<p>  def add_game(game)
+  end</p>
+
+<p>  def remove_game(game)
+  end</p>
+
+<h1>this extends the ClassMethods so that it doesn't need to be called below</h1>
+
+<p>  def self.included(base)</p>
+
+<pre><code>base.extend(ClassMethods)
+</code></pre>
+
+<p>  end</p>
+
+<p>  module ClassMethods</p>
+
+<pre><code>def search_by_game_name(name)
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>class AtariLibrary
+  include LibraryUtils
+  #see-- no extend but still includes the class methods module...
+end
+```</p>
+
+<h3>Active Support Concern</h3>
+
+<p>this allows us to use the include and extend calls without making it so ugly.</p>
+
+<p>```ruby ActiveSupport Concern
+require 'active_support/concern'</p>
+
+<p>module LibraryUtils</p>
+
+<h1>this ensures that the dependencies are properly resolved...</h1>
+
+<p>  extend ActiveSupport::Concern</p>
+
+<p>  def add_game(game)
+  end</p>
+
+<p>  def remove_game(game)
+  end</p>
+
+<p>  module ClassMethods</p>
+
+<pre><code>def search_by_game_name(name)
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby ActiveSupport Concern
+module LibraryLoader</p>
+
+<p>  module ClassMethods</p>
+
+<pre><code>def load_game_list
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>module LibraryUtils</p>
+
+<p>  extend ActiveSupport::Concern</p>
+
+<p>  #included block below is much cleaner
+  included do</p>
+
+<pre><code>load_game_list
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>class AtariLibrary
+  include LibraryUtils
+end
+```
+Some more in depth reading to understand this better...
+<a href="http://yehudakatz.com/2009/11/12/better-ruby-idioms/">here is an explanation from yehuda katz</a></p>
+
+<p><a href="http://www.fakingfantastic.com/2010/09/20/concerning-yourself-with-active-support-concern/">Concerning Yourself with ActiveSupport::Concern</a></p>
+
+<p>From 2010- <a href="http://www.strictlyuntyped.com/2010/05/tweaking-on-rails-30-2.html">Tweaking on Rails 3.0: #2 ActiveSupport::Concern</a></p>
+
+<h3>Blocks</h3>
+
+<p>```ruby Yields
+class Library
+  attr_accessor :games</p>
+
+<p>  def initialize(games = [])</p>
+
+<pre><code>self.games = games
+</code></pre>
+
+<p>  end</p>
+
+<p>  def each_on_system(system)</p>
+
+<pre><code>games.each do |game| 
+#'yield game'yields the game object
+  yield game if game.system == system
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby Yields
+  def list</p>
+
+<pre><code>games.each do |game|
+  puts yield game
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>```ruby
+class Game
+  attr_accessor :name, :year, :system
+  attr_reader :created_at</p>
+
+<p>  def initialize(name, options={})</p>
+
+<pre><code>self.name = name
+self.year = options[:year]
+self.system = options[:system]
+@created_at = Time.now
+</code></pre>
+
+<p>  end</p>
+
+<p>  def play</p>
+
+<pre><code>emulate do |emulator|
+  emulator.play(self)
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def screenshot</p>
+
+<pre><code>emulate do |emulator|
+  emulator.start(self) 
+  emulator.screenshot
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>private</p>
+
+<p>def emulate
+  begin
+  emulator = Emulator.new(system)
+  yield emulator</p>
+
+<pre><code>rescue Exception =&gt; e
+  puts "Emulator failed: #{e}"
+</code></pre>
+
+<p>  end
+end
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

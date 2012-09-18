@@ -37,13 +37,15 @@ belongs_to :singular
 has_many :plaural
 
 put and delete are hidden in the html 5 data-method 
-This is all done with unobtrusive javascript
+This is all done with unobtrusive javascript.
 
+```ruby link_to
 link_to 'All Zombies', zombies_path
 link_to 'All Zombies', new_zombies_path
 link_to 'Edit Zombies', edit_zombies_path(@zombie)
 link_to 'Show Zombies', zombie_path(@zombie)
 link_to 'Show Zombies', @zombie
+```
 
 ```ruby
 <h2><%= @zombie.name %>'s weapons</h2>
@@ -84,12 +86,15 @@ end
 [See](http://guides.rubyonrails.org/action_mailer_basics.html#sending-emails-with-attachments)
 
 Asset Tags:
-- auto_discovery_link_tag
-- javascript_include_tag
-- stylesheet_link_tag
-- image_tag
-- video_tag
-- audio_tag
+```ruby
+auto_discovery_link_tag
+javascript_include_tag
+stylesheet_link_tag
+image_tag
+video_tag
+audio_tag
+```
+
 ```ruby e.g.
 <%= image_tag("weapon.jpg") %>
 ```

@@ -91,8 +91,43 @@
   </header>
 
 
-<div class="entry-content"><p>You know how everything in Ruby is an object, well, as it turns out that&#8217;s not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class&#8230;
-PROCS:</p>
+<div class="entry-content"><p>You know how everything in Ruby is an object, well, as it turns out that&#8217;s not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class&#8230;</p>
+
+<p>Procs and lambdas are basically blocks that have been assigned to variables.</p>
+
+<p>PROCS:</p>
+
+<p>Treehouse notes:
+- Need to pass a block in as a parameter when creating a block. (even if it is an empty block)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">my_proc</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{}</span>
+</span><span class='line'><span class="c1">#OR</span>
+</span><span class='line'><span class="n">my_proc</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{}</span>
+</span><span class='line'><span class="c1">#call with </span>
+</span><span class='line'><span class="n">my_proc</span><span class="o">.</span><span class="n">call</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>you call a proc with the method .call -> my_proc.call</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>passing in parameters</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">my_proc</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="c1">#call with no parameters</span>
+</span><span class='line'><span class="n">my_proc</span><span class="o">.</span><span class="n">call</span> <span class="c1">#=&gt; &quot;Hello, &quot;</span>
+</span><span class='line'><span class="n">my_proc</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;Adam&quot;</span><span class="p">)</span> <span class="c1">#=&gt; &quot;Hello, Adam&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Very standard to pass along a code block to the each method</p>
 
@@ -226,8 +261,35 @@ PROCS:</p>
 
 <p><strong><em>Lambdas</em></strong></p>
 
-<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.
-Closures</p>
+<p>Treehouse notes:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">my_lambda</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{}</span>
+</span><span class='line'><span class="c1">#OR</span>
+</span><span class='line'><span class="n">my_lambda</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Can&#8217;t assign variables to keywords</p>
+
+<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.</p>
+
+<figure class='code'><figcaption><span>passing in parameters</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">my_lambda</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="c1">#call with no parameters</span>
+</span><span class='line'><span class="n">my_lambda</span><span class="o">.</span><span class="n">call</span> <span class="c1">#=&gt; breaks!- wrong number of arguments</span>
+</span><span class='line'><span class="c1">#when you create a lambda the arguments are required....</span>
+</span><span class='line'><span class="n">my_lambda</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;Adam&quot;</span><span class="p">)</span> <span class="c1">#=&gt; &quot;Hello, Adam&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Closures</p>
 
 <p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.</p>
 
@@ -274,6 +336,10 @@ Closures</p>
 </span><span class='line'><span class="n">run_proc</span> <span class="n">print_a_name</span> <span class="c1"># =&gt; now this will output John because it kept a reference to the local variable.</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>Returns:
+- The lambda returns the last line of the method just like a regular method
+- A proc returns only what is executed INSIDE the proc.</p>
 
 <p><a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></p>
 
@@ -357,23 +423,23 @@ Closures</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/08/23/routes-of-the-app/">routes of the app</a>
+        <a href="/blog/2012/09/18/testing/">Mini-Test</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/08/20/haw-day14/">HAW-day14</a>
+        <a href="/blog/2012/09/18/ruby-standard-library/">Ruby Standard Library</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/08/17/haw-day13/">HAW-day13</a>
+        <a href="/blog/2012/09/10/asset-pipeline/">Asset Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/08/16/haw-day12/">HAW-day12</a>
+        <a href="/blog/2012/09/10/html/">HTML</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/08/15/jquery-air-intermediate/">jquery-air-intermediate</a>
+        <a href="/blog/2012/09/10/struct/">Struct</a>
       </li>
     
   </ul>
@@ -381,13 +447,19 @@ Closures</p>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/mongodb/'>MongoDB (1)</a></li>
+    <li class='category'><a href='/blog/categories/css/'>CSS (1)</a></li>
+<li class='category'><a href='/blog/categories/html/'>HTML (1)</a></li>
+<li class='category'><a href='/blog/categories/mongodb/'>MongoDB (1)</a></li>
+<li class='category'><a href='/blog/categories/omniauth/'>Omniauth (1)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>Rails (1)</a></li>
+<li class='category'><a href='/blog/categories/sql/'>SQL (1)</a></li>
 <li class='category'><a href='/blog/categories/todo/'>TODO (7)</a></li>
 <li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
 <li class='category'><a href='/blog/categories/associations/'>associations (1)</a></li>
 <li class='category'><a href='/blog/categories/authentication/'>authentication (1)</a></li>
 <li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
 <li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
+<li class='category'><a href='/blog/categories/codeschool/'>codeschool (1)</a></li>
 <li class='category'><a href='/blog/categories/concepts/'>concepts (1)</a></li>
 <li class='category'><a href='/blog/categories/databases/'>databases (1)</a></li>
 <li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
@@ -410,11 +482,12 @@ Closures</p>
 <li class='category'><a href='/blog/categories/rails/'>rails (13)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
-<li class='category'><a href='/blog/categories/ruby/'>ruby (13)</a></li>
+<li class='category'><a href='/blog/categories/ruby/'>ruby (16)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
 <li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
 <li class='category'><a href='/blog/categories/terms/'>terms (1)</a></li>
+<li class='category'><a href='/blog/categories/testing/'>testing (1)</a></li>
 
   </ul>
 </section>
