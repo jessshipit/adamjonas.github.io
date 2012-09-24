@@ -4,7 +4,7 @@
   <title><![CDATA[Category: testing | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-09-18T16:24:30-04:00</updated>
+  <updated>2012-09-24T13:25:50-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -14,11 +14,183 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Rails Unit Testing]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/09/24/rails-unit-testing/"/>
+    <updated>2012-09-24T13:20:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/09/24/rails-unit-testing</id>
+    <content type="html"><![CDATA[<h3>Rails Testing</h3>
+
+<ul>
+<li>Verification Testing</li>
+<li>Test First</li>
+<li>Test Driven Design</li>
+</ul>
+
+
+<h3>Unit Testing</h3>
+
+<ul>
+<li>Piecing of our applications in isolation from other parts</li>
+<li>Easy to debug</li>
+<li>Leads to good documentation</li>
+</ul>
+
+
+<p>WHY TEST::UNIT rather than RSPEC
+- More basic testing library and what rails uses by default
+- similar to other testing libraries from other languages</p>
+
+<p><code>ruby Assert List
+assert &lt;conditional&gt;
+assert_equal &lt;expected&gt;, &lt;actual&gt;
+assert_not_equal
+assert_respond_to &lt;object&gt;, :&lt;method&gt;
+assert_nil &lt;object&gt;
+assert_not_nil &lt;object&gt;
+assert_match &lt;pattern&gt;, &lt;string&gt;
+assert_no_match &lt;pattern&gt;, &lt;string&gt;
+assert_raise(&lt;error&gt;) { &lt;code to raise error&gt; }
+assert_kind_of(&lt;Class&gt;, &lt;object&gt;)
+</code></p>
+
+<p>```ruby
+<subject>_test.rb</p>
+
+<p>require "test/unit"</p>
+
+<p>class <Subject>Test &lt; Test::Unit::TestCase</p>
+
+<pre><code>def test_&lt;what_we_are_testing&gt;
+    &lt;assertion&gt;
+end
+</code></pre>
+
+<p>end</p>
+
+<h1>E.g.</h1>
+
+<p>require "test/unit"</p>
+
+<p>class BooleanTest &lt; Test::Unit::TestCase</p>
+
+<pre><code>def test_true_is_true
+#the 2nd parameter is puts on failure.
+    assert true, "True should be truthy"
+end
+</code></pre>
+
+<p>end</p>
+
+<h1>another e.g.</h1>
+
+<p>require 'test/unit'</p>
+
+<p>class ConditionalTest &lt; Test::Unit::TestCase
+  def test_one_is_greater_than_one</p>
+
+<pre><code>assert 1 &gt; 0, "One is not greater than zero"
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>e.g.</h1>
+
+<p>class MultipleTest &lt; Test::Unit::TestCase
+  def test_multiple_of</p>
+
+<pre><code>assert Multiple.multiple_of?(10, 5), "10 should be a multiple of 5"
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p><em>The best tests have one assertion.</em></p>
+
+<h3>Red, Green, Refactor</h3>
+
+<ol>
+<li>Red: Write a failing test</li>
+<li>Green: Write enough code to make it pass</li>
+<li>Refactor: Refactor your code</li>
+</ol>
+
+
+<p>```ruby assert_respond_to
+def test_humanize_function_added_to_string</p>
+
+<h1>assert_respond_to <object>, &lt;:method></h1>
+
+<p>  assert_respond_to "blah", :humanize
+end
+```</p>
+
+<p>```ruby Assert_match
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_zombify_brains</p>
+
+<pre><code>z = Zombifier.new('I love your arms')
+#assert_match &lt;regex&gt;, &lt;string&gt;
+assert_match /brains/, z.zombify.humanize
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_zombify_upcase</p>
+
+<pre><code>z = Zombifier.new("Hello world").zombify
+#assert_equal "&lt;expected string&gt;", "&lt;actual string&gt;"
+assert_equal "HELLO WORLD BRAINS", z
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby assert_raise
+  #assert_raise(RuntimeError) { "zombie".humanize }
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_brains_in_zombify_raises_error</p>
+
+<pre><code>z = Zombifier.new('BRAINS')
+assert_raise(RuntimeError) { z.zombify }
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_zombify_returns_a_string</p>
+
+<pre><code>z = Zombifier.new('I like knees')
+</code></pre>
+
+<p>   #assert_kind_of(<Class>, <object>)</p>
+
+<pre><code>assert_kind_of(String, z.zombify)
+</code></pre>
+
+<p>  end
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Mini-Test]]></title>
     <link href="http://ajonas.herokuapp.com/blog/2012/09/18/testing/"/>
     <updated>2012-09-18T15:29:00-04:00</updated>
     <id>http://ajonas.herokuapp.com/blog/2012/09/18/testing</id>
-    <content type="html"><![CDATA[<p>```ruby Some examples
+    <content type="html"><![CDATA[<h3>Treehouse</h3>
+
+<p>```ruby Some examples
 require 'minitest/autorun'</p>
 
 <p>class MyTest &lt; MiniTest::Unit::TestCase</p>
@@ -85,6 +257,45 @@ end
 <p>end
 ```
 All tests are prefixed with "test_"</p>
+
+<h3>Mini Test Spec</h3>
+
+<p>The functionality of the Mini-test and Mini-test Spec are pretty similar. The keywords and strucutre are different as shown below...</p>
+
+<p>```ruby Mini Test Spec Examples
+require 'minitest/autorun'
+require 'minitest/spec'</p>
+
+<p>describe 'MyTests' do</p>
+
+<pre><code>#can add before and after blocks
+before do
+    puts "Tests are beginning."
+end
+
+it "adds 2 + 2" do
+    (2+2).must_equal 4
+end
+
+it "includes a frog" do
+    %w(dog cat frog).must_include('frog')
+end
+
+it "must be Fixnum" do
+    (2+2).must_be_instance_of Fixnum
+end
+
+it "should raise an error" do
+    array = []
+    lambda { arrary.hello }.must_raise NoMethodError
+end
+</code></pre>
+
+<p>```</p>
+
+<h3>Test Driven Development</h3>
+
+<p>Write just enough code to make the test pass</p>
 ]]></content>
   </entry>
   

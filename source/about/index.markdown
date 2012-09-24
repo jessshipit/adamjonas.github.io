@@ -15,3 +15,7 @@ footer: true
 
 * [Major League Draft Services](http://mldraft.com)
 
+* [Twitter](https://twitter.com/adamcjonas)
+
+* [StackOverflow](http://stackoverflow.com/users/1496757/a-jonas)
+

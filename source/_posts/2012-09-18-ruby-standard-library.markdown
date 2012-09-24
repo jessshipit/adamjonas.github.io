@@ -6,7 +6,7 @@ comments: true
 categories: ruby
 ---
 
-[###FileUtils###](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/FileUtils.html)
+###[FileUtils](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/FileUtils.html)###
 
 The functions mostly involved changing dir, moving, removing, and copying files.
 
@@ -20,7 +20,7 @@ easy to work with in IRB
 .cp copy contents to another file
 
 
-[###Logger:###](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/logger/rdoc/Logger.html)
+###[Logger:](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/logger/rdoc/Logger.html)###
 
 ###URIs###
 URI stands for "Uniform Resource Identifier." The URI module can be used to parse and manipulate URIs in your Ruby programs.
