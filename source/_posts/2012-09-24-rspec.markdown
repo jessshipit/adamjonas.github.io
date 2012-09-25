@@ -1,0 +1,320 @@
+---
+layout: post
+title: "RSpec"
+date: 2012-09-24 13:21
+comments: true
+categories: RSpec
+---
+
+```ruby
+it "has no brains" do
+	zombie = Zombie.new
+	#modifier is should
+	#matcher is the less than sign
+	zombie.brains.should < 1
+end
+```
+
+```ruby Matchers and Modifiers
+zombie.name.should == 'Ash'
+zombie.alive.should == false
+zombie.rotting.should == true
+zombie.height.should > 5
+zombie.height.should >= 5
+zombie.height.should < 5
+zombie.height.should_not == 5
+```
+
+```ruby Predicate 'be'
+describe Tweet do
+  it 'without a leading @ symbol should be public' do
+    tweet = Tweet.new(status: 'Nom nom nom')
+    tweet.status.should be_true
+    #this is equivalent to tweet.status.should == true
+    #the predicate is a better way though
+  end
+end
+```
+
+```ruby Mark as Pending
+it "is named Ash"
+end
+
+#to mark it as pending
+xit "is named Ash" do
+end
+#OR
+it "is named Ash" do
+	pending
+end
+```
+
+```ruby Should be
+describe Tweet do
+  it 'truncates the status to 140 characters' do
+    tweet = Tweet.new(status: 'Nom nom nom' * 100)
+    # notice the space between the 'should' and 'be'
+    tweet.status.length.should be <= 140
+  end
+end
+```
+
+Installing RSpec
+```
+gem install rspec
+rspec --init
+
+#in rails
+rails generate rspec:install
+```
+
+```ruby Matchers: include
+describe Zombie do
+  it 'includes a tweet' do
+    tweet = Tweet.new
+    zombie = Zombie.new(tweets: [tweet])
+    zombie.tweets.should include(tweet)
+  end
+end
+```
+
+```ruby Matchers: have
+#this
+zombie.weapons.count.should == 2
+#is better written as
+zombie.should have(2).weapons
+
+describe Zombie do
+  it 'increases the number of tweets' do
+    zombie = Zombie.new(name: 'Ash')
+    zombie.tweets.new(message: "Arrrgggggggghhhhh")
+    zombie.should have(1).tweets
+  end
+end
+
+#can also have
+have(n)
+have_at_least(n)
+have_at_most(n)
+```
+
+```ruby Expect Block and Change Methods
+describe Zombie do
+  it 'gains 3 IQ points by eating brains' do
+    zombie = Zombie.new
+    expect { zombie.eat_brains }.to change { zombie.iq }.by(3)
+  end
+end
+
+#can also use
+.by(n)
+.from(n)
+.to(n)
+#and they can be chained
+.from(1).to(5)
+```
+
+```ruby Raise_error
+describe Zombie do
+  it 'raises a Zombie::NotSmartEnoughError if not able to make a decision' do
+    zombie = Zombie.new
+    expect { zombie.make_decision! }.to raise_error(
+      StandardError
+      )
+  end
+end
+#these modifiers also work
+to
+not_to
+to_not
+```
+
+```ruby More Matchers
+@zombie.should respond_to(hungry?)
+@zombie.should be_within(0.1).of(33.3)
+@zombie.should exist
+@zombie.should satisfy { |zombie| zombie.hungry? }
+@hungry_zombie.should be_kind_of(Zombie) #Inheritance: HungryZombie < Zombie
+@status.should be_an_instance_of(String)
+```
+
+```ruby Subject
+#this
+describe Zombie do
+  it 'should not be a genius' do
+    zombie = Zombie.new
+    zombie.should_not be_genius
+  end
+end
+#can be simplified to
+describe Zombie do
+  it 'should not be a genius' do
+    subject.should_not be_genius
+  end
+end
+#this can be further simplified to
+describe Zombie do
+  it 'should not be a genius' do
+	#implicit subject
+    should_not be_genius
+  end
+end
+```
+This is only going to work if using a describe block with a class in it...
+
+```ruby it
+describe Zombie do
+	it { subject.name.should == 'Ash' }
+end
+```
+
+```ruby its
+describe Zombie do
+  it 'should have an iq of zero' do
+    subject.iq.should == 0
+  end
+end
+#can simplify it all the way to
+describe Zombie do
+  its(:iq) { should == 0 }
+end
+```
+
+```ruby its examples
+describe Zombie do
+	its(:name) { should == 'Ash' }
+	its(:weapons) { should include(weapon) }
+	its(:brain) { should be_nil }
+	its('tweet.size') { should == 2 }
+end
+```
+
+```ruby Refactoring with Context
+describe Zombie do
+  it { should_not be_genius }
+  its(:iq) { should == 0 }
+
+  it "should be_genius with high iq" do
+    zombie = Zombie.new(iq: 3)
+    zombie.should be_genius
+  end
+
+  it 'should have a brains_eaten_count of 1 with high iq' do
+    zombie = Zombie.new(iq: 3)
+    zombie.brains_eaten_count.should == 1
+  end
+end
+#Refactored with context and subject and its
+describe Zombie do
+  it { should_not be_genius }
+  its(:iq) { should == 0 }
+
+  context "with high iq" do
+    subject { Zombie.new(iq: 3) }
+    it { should be_genius }
+    its(:brains_eaten_count) { should == 1 }
+  end
+end
+```
+
+```ruby Let
+describe Zombie do
+  let(:tweet) { Tweet.new }
+  	subject { Zombie.new(tweets: [tweet], name: [zombie]) }
+  	#moved zombie to its own let
+    	let(:zombie) { Zombie.new}
+
+  its(:tweets) { should include(tweet) }
+  its(:latest_tweet) { should == tweet } 
+end
+```
+
+```ruby Let!
+describe Zombie do
+  context "with high iq" do
+     let!(:zombie) { Zombie.create(iq: 3, name: 'Anna') }
+     subject { zombie }
+
+     it "should be returned with genius" do
+       Zombie.genius.should include(zombie)
+     end
+
+     it "should have a genius count of 1" do     
+       Zombie.genius.count.should == 1
+     end
+  end
+end
+```
+
+###Hooks###
+```ruby
+before(:each)
+before(:all)
+after(:each)
+aftter(:all)
+```
+
+```ruby
+before { zombie.hungry! }
+#by default, a before clock runs each time before an example is about to run
+```
+```ruby Before Hook
+describe Zombie do
+  let(:zombie) { Zombie.create }
+  subject { zombie }
+
+  it 'is not a dummy zombie' do
+    zombie.eat_brains
+    zombie.should_not be_dummy
+  end
+
+  it 'is a genius zombie' do
+    zombie.eat_brains
+    zombie.should be_genius
+  end
+end
+# refactored as
+describe Zombie do
+  let(:zombie) { Zombie.create }
+  subject { zombie }
+  before { zombie.eat_brains }
+  
+  it 'is not a dummy zombie' do  
+    zombie.should_not be_dummy
+  end
+
+  it 'is a genius zombie' do
+    zombie.should be_genius
+  end
+end
+```
+```ruby
+describe Zombie do
+  let(:zombie) { Zombie.create }
+  before { zombie.iq = 0 }
+  subject { zombie }
+  
+  context 'with a dummy zombie' do
+    before { zombie.iq < 3 } 
+    it { should be_dummy }
+  end
+
+  context 'with a smart zombie' do
+    before { zombie.iq = 3 }
+    it { should_not be_dummy }
+  end
+end
+```
+
+###Shared Examples###
+```ruby Shared Examples
+#used to call shared examples
+it_behaves_like 'yada yada yada'
+
+#refers to the implicit subject
+shared_examples_for 'the undead' do
+	it 'does not have a pulse' do
+		subject.pulse.should == false
+	end
+end
+```

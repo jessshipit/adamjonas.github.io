@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: RSpec | Documenting all this...]]></title>
+  <link href="http://ajonas.herokuapp.com/blog/categories/rspec/atom.xml" rel="self"/>
+  <link href="http://ajonas.herokuapp.com/"/>
+  <updated>2012-09-25T11:24:57-04:00</updated>
+  <id>http://ajonas.herokuapp.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[RSpec]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/09/24/rspec/"/>
+    <updated>2012-09-24T13:21:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/09/24/rspec</id>
+    <content type="html"><![CDATA[<p>```ruby
+it "has no brains" do</p>
+
+<pre><code>zombie = Zombie.new
+#modifier is should
+#matcher is the less than sign
+zombie.brains.should &lt; 1
+</code></pre>
+
+<p>end
+```</p>
+
+<p><code>ruby Matchers and Modifiers
+zombie.name.should == 'Ash'
+zombie.alive.should == false
+zombie.rotting.should == true
+zombie.height.should &gt; 5
+zombie.height.should &gt;= 5
+zombie.height.should &lt; 5
+zombie.height.should_not == 5
+</code></p>
+
+<p>```ruby Predicate 'be'
+describe Tweet do
+  it 'without a leading @ symbol should be public' do</p>
+
+<pre><code>tweet = Tweet.new(status: 'Nom nom nom')
+tweet.status.should be_true
+#this is equivalent to tweet.status.should == true
+#the predicate is a better way though
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby Mark as Pending
+it "is named Ash"
+end</p>
+
+<h1>to mark it as pending</h1>
+
+<p>xit "is named Ash" do
+end</p>
+
+<h1>OR</h1>
+
+<p>it "is named Ash" do</p>
+
+<pre><code>pending
+</code></pre>
+
+<p>end
+```</p>
+
+<p>```ruby Should be
+describe Tweet do
+  it 'truncates the status to 140 characters' do</p>
+
+<pre><code>tweet = Tweet.new(status: 'Nom nom nom' * 100)
+# notice the space between the 'should' and 'be'
+tweet.status.length.should be &lt;= 140
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>Installing RSpec
+```
+gem install rspec
+rspec --init</p>
+
+<h1>in rails</h1>
+
+<p>rails generate rspec:install
+```</p>
+
+<p>```ruby Matchers: include
+describe Zombie do
+  it 'includes a tweet' do</p>
+
+<pre><code>tweet = Tweet.new
+zombie = Zombie.new(tweets: [tweet])
+zombie.tweets.should include(tweet)
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby Matchers: have</p>
+
+<h1>this</h1>
+
+<p>zombie.weapons.count.should == 2</p>
+
+<h1>is better written as</h1>
+
+<p>zombie.should have(2).weapons</p>
+
+<p>describe Zombie do
+  it 'increases the number of tweets' do</p>
+
+<pre><code>zombie = Zombie.new(name: 'Ash')
+zombie.tweets.new(message: "Arrrgggggggghhhhh")
+zombie.should have(1).tweets
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>can also have</h1>
+
+<p>have(n)
+have_at_least(n)
+have_at_most(n)
+```</p>
+
+<p>```ruby Expect Block and Change Methods
+describe Zombie do
+  it 'gains 3 IQ points by eating brains' do</p>
+
+<pre><code>zombie = Zombie.new
+expect { zombie.eat_brains }.to change { zombie.iq }.by(3)
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>can also use</h1>
+
+<p>.by(n)
+.from(n)
+.to(n)</p>
+
+<h1>and they can be chained</h1>
+
+<p>.from(1).to(5)
+```</p>
+
+<p>```ruby Raise_error
+describe Zombie do
+  it 'raises a Zombie::NotSmartEnoughError if not able to make a decision' do</p>
+
+<pre><code>zombie = Zombie.new
+expect { zombie.make_decision! }.to raise_error(
+  StandardError
+  )
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>these modifiers also work</h1>
+
+<p>to
+not_to
+to_not
+```</p>
+
+<p><code>ruby More Matchers
+@zombie.should respond_to(hungry?)
+@zombie.should be_within(0.1).of(33.3)
+@zombie.should exist
+@zombie.should satisfy { |zombie| zombie.hungry? }
+@hungry_zombie.should be_kind_of(Zombie) #Inheritance: HungryZombie &lt; Zombie
+@status.should be_an_instance_of(String)
+</code></p>
+
+<p>```ruby Subject</p>
+
+<h1>this</h1>
+
+<p>describe Zombie do
+  it 'should not be a genius' do</p>
+
+<pre><code>zombie = Zombie.new
+zombie.should_not be_genius
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>can be simplified to</h1>
+
+<p>describe Zombie do
+  it 'should not be a genius' do</p>
+
+<pre><code>subject.should_not be_genius
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>this can be further simplified to</h1>
+
+<p>describe Zombie do
+  it 'should not be a genius' do</p>
+
+<pre><code>#implicit subject
+should_not be_genius
+</code></pre>
+
+<p>  end
+end
+```
+This is only going to work if using a describe block with a class in it...</p>
+
+<p>```ruby it
+describe Zombie do</p>
+
+<pre><code>it { subject.name.should == 'Ash' }
+</code></pre>
+
+<p>end
+```</p>
+
+<p>```ruby its
+describe Zombie do
+  it 'should have an iq of zero' do</p>
+
+<pre><code>subject.iq.should == 0
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>can simplify it all the way to</h1>
+
+<p>describe Zombie do
+  its(:iq) { should == 0 }
+end
+```</p>
+
+<p>```ruby its examples
+describe Zombie do</p>
+
+<pre><code>its(:name) { should == 'Ash' }
+its(:weapons) { should include(weapon) }
+its(:brain) { should be_nil }
+its('tweet.size') { should == 2 }
+</code></pre>
+
+<p>end
+```</p>
+
+<p>```ruby Refactoring with Context
+describe Zombie do
+  it { should_not be_genius }
+  its(:iq) { should == 0 }</p>
+
+<p>  it "should be_genius with high iq" do</p>
+
+<pre><code>zombie = Zombie.new(iq: 3)
+zombie.should be_genius
+</code></pre>
+
+<p>  end</p>
+
+<p>  it 'should have a brains_eaten_count of 1 with high iq' do</p>
+
+<pre><code>zombie = Zombie.new(iq: 3)
+zombie.brains_eaten_count.should == 1
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>Refactored with context and subject and its</h1>
+
+<p>describe Zombie do
+  it { should_not be_genius }
+  its(:iq) { should == 0 }</p>
+
+<p>  context "with high iq" do</p>
+
+<pre><code>subject { Zombie.new(iq: 3) }
+it { should be_genius }
+its(:brains_eaten_count) { should == 1 }
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby Let
+describe Zombie do
+  let(:tweet) { Tweet.new }</p>
+
+<pre><code>subject { Zombie.new(tweets: [tweet], name: [zombie]) }
+#moved zombie to its own let
+    let(:zombie) { Zombie.new}
+</code></pre>
+
+<p>  its(:tweets) { should include(tweet) }
+  its(:latest_tweet) { should == tweet }
+end
+```</p>
+
+<p>```ruby Let!
+describe Zombie do
+  context "with high iq" do</p>
+
+<pre><code> let!(:zombie) { Zombie.create(iq: 3, name: 'Anna') }
+ subject { zombie }
+
+ it "should be returned with genius" do
+   Zombie.genius.should include(zombie)
+ end
+
+ it "should have a genius count of 1" do     
+   Zombie.genius.count.should == 1
+ end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>Hooks</h3>
+
+<p><code>ruby
+before(:each)
+before(:all)
+after(:each)
+aftter(:all)
+</code></p>
+
+<p>```ruby
+before { zombie.hungry! }</p>
+
+<h1>by default, a before clock runs each time before an example is about to run</h1>
+
+<p><code>
+</code>ruby Before Hook
+describe Zombie do
+  let(:zombie) { Zombie.create }
+  subject { zombie }</p>
+
+<p>  it 'is not a dummy zombie' do</p>
+
+<pre><code>zombie.eat_brains
+zombie.should_not be_dummy
+</code></pre>
+
+<p>  end</p>
+
+<p>  it 'is a genius zombie' do</p>
+
+<pre><code>zombie.eat_brains
+zombie.should be_genius
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>refactored as</h1>
+
+<p>describe Zombie do
+  let(:zombie) { Zombie.create }
+  subject { zombie }
+  before { zombie.eat_brains }</p>
+
+<p>  it 'is not a dummy zombie' do</p>
+
+<pre><code>zombie.should_not be_dummy
+</code></pre>
+
+<p>  end</p>
+
+<p>  it 'is a genius zombie' do</p>
+
+<pre><code>zombie.should be_genius
+</code></pre>
+
+<p>  end
+end
+<code>
+</code>ruby
+describe Zombie do
+  let(:zombie) { Zombie.create }
+  before { zombie.iq = 0 }
+  subject { zombie }</p>
+
+<p>  context 'with a dummy zombie' do</p>
+
+<pre><code>before { zombie.iq &lt; 3 } 
+it { should be_dummy }
+</code></pre>
+
+<p>  end</p>
+
+<p>  context 'with a smart zombie' do</p>
+
+<pre><code>before { zombie.iq = 3 }
+it { should_not be_dummy }
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>Shared Examples</h3>
+
+<p>```ruby Shared Examples</p>
+
+<h1>used to call shared examples</h1>
+
+<p>it_behaves_like 'yada yada yada'</p>
+
+<h1>refers to the implicit subject</h1>
+
+<p>shared_examples_for 'the undead' do</p>
+
+<pre><code>it 'does not have a pulse' do
+    subject.pulse.should == false
+end
+</code></pre>
+
+<p>end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>
