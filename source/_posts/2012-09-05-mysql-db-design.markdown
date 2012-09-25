@@ -8,7 +8,6 @@ categories: SQL
 
 [MySQL Google](http://code.google.com/edu/tools101/mysql.html)
 
-
 *Data normalization*
 :  This is the process we go through to develop a design that is free of redundant data and that can be consistently and correctly modified
 
