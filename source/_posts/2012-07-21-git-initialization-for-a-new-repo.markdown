@@ -24,5 +24,10 @@ fatal: remote origin already exists.
 ♕ git remote rm origin
 ♕ git remote add origin https://github.com/ajonas04/REPO_NAME.git
 ```
+
+```
+# git remote add <remote name> <link>
+♕ git remote add group git@github.com:ajonas04/fis.com.git
+```
 I guess I needed to remove the remote origin. I can safely say, I don't understand what's going on here.
 
