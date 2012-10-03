@@ -23,7 +23,7 @@ common to have nested iteration-- iterate through them, by looping through enume
 
 Iterating a hash you get yielded two variables at once, the key first and the value second
 
-``` ruby
+```ruby
 alphabet = {:a => 1, :b => 2}
 
 alphabet.each do |key, value|
@@ -41,13 +41,13 @@ end
 
 side note: python believes there is one way to do something. Ruby believes there should be many ways to do it so that you can be more expressive.
 
-``` ruby ordinalize is a integer method
+```ruby ordinalize is a integer method
 1.ordinalize     # => "1st"
 2.ordinalize     # => "2nd"
 1002.ordinalize  # => "1002nd"
 ```
 
-``` ruby multiple_of?(number)
+```ruby multiple_of?(number)
 #Check whether the integer is evenly divisible by the argument.
 0.multiple_of?(0)  #=> true
 6.multiple_of?(5)  #=> false

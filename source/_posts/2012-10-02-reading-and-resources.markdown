@@ -8,3 +8,5 @@ categories:
 
 [ruby explained to a child](http://ruby4kids.com/ruby4kids/public/web_page/1)
 
+Smalltalk best practice patterns
+

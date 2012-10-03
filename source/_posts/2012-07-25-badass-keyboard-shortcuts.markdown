@@ -6,7 +6,7 @@ comments: true
 categories: shortcuts
 ---
 
-cmd, shift, -> or <- to move between windows in the terminal
+
 
 shift, cmd, T -- open the last tab closed in chrome and FF
 
@@ -29,3 +29,13 @@ In Chrome:
 
 ###Sublime Shortcuts###
 [Good list here](http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/)
+
+###Terminal###
+⌘K clears the 
+cmd, shift, -> or <- to move between windows in the terminal
+pwd #=> will output the full path
+~ #=> home directory
+
+###Sublime Text 2###
+⌘shift P allows you to install nearly any package on sublime text 2 
+⌘shift c color picker
