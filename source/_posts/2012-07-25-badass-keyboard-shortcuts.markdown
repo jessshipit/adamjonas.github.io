@@ -39,3 +39,5 @@ pwd #=> will output the full path
 ###Sublime Text 2###
 ⌘shift P allows you to install nearly any package on sublime text 2 
 ⌘shift c color picker
+cntrl + shift + . to scroll through .erb [see here](https://github.com/eddorre/SublimeERB)
+
