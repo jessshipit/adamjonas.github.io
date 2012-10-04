@@ -11,5 +11,6 @@ categories: cheatsheet
 [Git cheat sheet](http://rogerdudler.github.com/git-guide/)
 
 [Markdown language cheat sheet](http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/)
+[Another markdown language cheat sheet](http://packetlife.net/media/library/16/Markdown.pdf)
 
 [Mongoid cheat sheet](http://blog.wiemann.name/mongoid-cheat-sheet)
