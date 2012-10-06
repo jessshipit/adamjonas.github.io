@@ -40,4 +40,7 @@ pwd #=> will output the full path
 ⌘shift P allows you to install nearly any package on sublime text 2 
 ⌘shift c color picker
 cntrl + shift + . to scroll through .erb [see here](https://github.com/eddorre/SublimeERB)
+⌘shift d - duplicate the line and paste in the line below
 
+###GIT###
+git clean -f => [Removing untracked files from your git working copy](http://stackoverflow.com/questions/61212/removing-untracked-files-from-your-git-working-copy)
