@@ -17,3 +17,10 @@ To create multiple directories down the tree do this…
 $ mkdir -p development/practice/learn_sql/{beginner,intermediate,advanced}
 
 Learned this thanks to this friendly [blog post](http://technosophos.com/content/mkdir-creating-multiple-subdirectories-one-command)
+
+cs (cd and ls in the same command) function loaded into .bash_profile
+```
+function cs () {
+cd "$@" && ls
+}
+```
