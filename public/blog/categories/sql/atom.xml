@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SQL | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/sql/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-10-06T15:23:20-04:00</updated>
+  <updated>2012-10-10T19:50:16-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,181 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day5]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/10/10/fis-day5/"/>
+    <updated>2012-10-10T09:38:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/10/10/fis-day5</id>
+    <content type="html"><![CDATA[<p>"Classes are state plus behavior, if you just want the behavior then use a module!"</p>
+
+<p>```ruby This is no good: Singleton Object- class with one method on it
+class Random</p>
+
+<pre><code>def self.something
+end
+</code></pre>
+
+<p>end
+```
+Underuse of modules...</p>
+
+<h3>Programmer of the day</h3>
+
+<p>Dan Bricklin</p>
+
+<ul>
+<li>inventor of the spreadsheet</li>
+</ul>
+
+
+<h3>Homework Review</h3>
+
+<p>table names should be plaural (e.g.table USERS)</p>
+
+<p>id INTEGER PRIMARY KEY -> always be called ID, is an integer and auto increments</p>
+
+<p>'never use ruby for something SQL can do'</p>
+
+<p>you want to group by integer values rather than string values</p>
+
+<p>AS aliases the columns</p>
+
+<p>subqueries- as long as a query returns one and only one value you can use that for another query</p>
+
+<p><a href="http://www.codinghorror.com/blog/2007/10/a-visual-explanation-of-sql-joins.html">Visual explanation of sql</a></p>
+
+<h3>INDEXes</h3>
+
+<ul>
+<li>index a column when it is being used in columns or queries</li>
+<li>should index foreign keys (they are not automatically indexed)</li>
+<li>cost: everytime you add a record it has to reindex</li>
+<li>indexes compromise the write speed in favor of read speed</li>
+</ul>
+
+
+<p>Two optimization steps:</p>
+
+<ul>
+<li>denormalize (add more columns)</li>
+<li><p>index - optimize for write or read?</p>
+
+<ul>
+<li>the more indexes your keys are using the more efficient your DB will be</li>
+</ul>
+</li>
+<li><p>You optimize the joins by denormalizing (and thus removing the need for joins) and indexing</p></li>
+</ul>
+
+
+<p><code>
+cp -r &lt;old dir name&gt; &lt;new dir name&gt;
+</code></p>
+
+<p>update
+<code>
+UPDATE Persons
+SET Address='Nissestien 67', City='Sandnes'
+WHERE LastName='Tjessem' AND FirstName='Jakob'
+</code>
+<a href="http://stackoverflow.com/questions/2044467/how-to-update-two-tables-in-one-statement-in-sql-server-2005">Transaction</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Advanced SQL]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/10/09/advanced-sql/"/>
+    <updated>2012-10-09T20:58:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/10/09/advanced-sql</id>
+    <content type="html"><![CDATA[<p>INNER JOIN is the same as JOIN.</p>
+
+<p>```
+SELECT title, artist
+  FROM album JOIN track</p>
+
+<pre><code>     ON (album.asin=track.album)
+</code></pre>
+
+<p> WHERE song = 'Alison'
+```</p>
+
+<p>Index structures: if you create an index on the primary key and then search for a row of data based on one of the primary key values, SQL Server first finds that value in the index, and then uses the index to quickly locate the entire row of data. Without the index, a table scan would have to be performed in order to locate the row, which can have a significant effect on performance. <a href="http://www.simple-talk.com/sql/learn-sql-server/sql-server-index-basics/">source</a></p>
+
+<p>Many databases have one special index per table where all of the data from a row exists in the index. SQL Server calls this index a <em>clustered index</em>. Instead of an index at the back of a book, a clustered index is closer in similarity to a phone book because each index entry contains all the information you need, there are no references to follow to pick up additional data values.<a href="http://odetocode.com/code/237.aspx">Source</a></p>
+
+<p>The <em>EXPLAIN</em> statement can be used either as a way to obtain information about how MySQL executes a statement, or as a synonym for DESCRIBE. <a href="http://dev.mysql.com/doc/refman/5.0/en/explain.html">source</a> In other words, a SQL statement can be preceded by the keyword "EXPLAIN" or by the phrase "EXPLAIN QUERY PLAN". Either modification causes the SQL statement to behave as a query and to return information about how the SQL statement would have operated if the EXPLAIN keyword or phrase had been omitted. <a href="http://www.sqlite.org/lang_explain.html">source</a></p>
+
+<h3>Normalized DB</h3>
+
+<ul>
+<li>A normalized database is one where you minimize duplication of data by keeping groups of data in separate tables and linking (using indexes) between the tables.</li>
+<li>Another def: Database normalization is the process of organizing the fields and tables of a relational database to minimize redundancy and dependency. Normalization usually involves dividing large tables into smaller (and less redundant) tables and defining relationships between them. The objective is to isolate data so that additions, deletions, and modifications of a field can be made in just one table and then propagated through the rest of the database via the defined relationships.</li>
+</ul>
+
+
+<h3>Optimization</h3>
+
+<ul>
+<li>Write operations are always more expensive than reads.</li>
+<li>Use memCache</li>
+<li>use background tasks to do your database activity offline</li>
+<li>Denormalize: database normalization is a fatal mistake.
+
+<ul>
+<li>A de-noramlized database is one where you keeps redundant frequently-accessed data, duplicated across several tables, making it possible to fulfill a user request without having to look at more than a single table.</li>
+<li>The key to high performance database access is sticking to single-table SELECT queries with short indexes.</li>
+</ul>
+</li>
+<li>MySQL Triggers (starting from MySQL 5.0) allow us to define a rule to perform whenever a certain table is updated.
+<a href="http://www.softwareprojects.com/resources/programming/t-database-performance-optimization-denormalization-1410.html">source</a></li>
+</ul>
+
+
+<p>The SQL HAVING clause is "like a WHERE clause for aggregated data." It's used with conditional statements, just like WHERE, to filter results. One thing to note is that any column name appearing in the HAVING clause must also appear in the GROUP BY clause.</p>
+
+<p>```
+SELECT DISTINCT player
+  FROM game JOIN goal ON matchid = id</p>
+
+<pre><code>WHERE (game.team1='GER' OR game.team2='GER') AND goal.teamid &lt;&gt; 'GER'
+</code></pre>
+
+<p>SELECT teamname, COUNT(teamid)
+  FROM eteam JOIN goal ON eteam.id = goal.teamid
+GROUP BY teamname</p>
+
+<p>SELECT stadium, count(teamid)
+FROM game join goal on matchid=id
+group by stadium</p>
+
+<p>SELECT matchid,mdate, count(teamid)
+  FROM game JOIN goal ON matchid = id
+ WHERE (team1 = 'POL' OR team2 = 'POL')
+GROUP BY matchid</p>
+
+<p>SELECT day_of_order,
+  product,
+  SUM(quantity) as "Total"
+FROM orders
+GROUP BY day_of_order,product,quantity
+HAVING quantity > 7
+ORDER BY day_of_order;
+```</p>
+
+<p>Other functions min, max, sum, count, cast</p>
+
+<p><a href="http://www.w3schools.com/sql/sql_in.asp">IN operator</a>: The IN operator allows you to specify multiple values in a WHERE clause.</p>
+
+<p>IN Clause:
+<code>
+SELECT * FROM Persons
+WHERE LastName IN ('Hansen','Pettersen')
+</code></p>
+
+<p>casting in ruby (.to_i)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[learn sql the hard way]]></title>
