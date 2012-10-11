@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Code School > Treehouse > Codecademy"
+title: "Learn to Code Online: Code School vs. Treehouse vs. Codecademy"
 date: 2012-10-10 11:15
 comments: true
 categories: 
@@ -13,7 +13,7 @@ Like any n00b, I spent a lot of time learning the skills of programming online. 
 ###Codecademy###
 (not to be confused with [Code Academy](http://www.builtinchicago.org/blog/code-academy-evolves-starter-league-and-partners-37signals)) [exploded on the scene last fall](http://www.businessinsider.com/codecademy-1000000-users-2012-1), but really falls short in the [usability](http://programmingzen.com/2012/01/16/on-the-usability-of-codecademy/) department and error feedback. To be fair, I only have spent time with their JavaScript courses, but it's hard to past first impressions. Granted, Codecademy is run by a [couple of kids](http://mashable.com/2012/07/25/zach-sims-codecademy/) and haven't had the head start that Code School has on its interactive browser, but I found myself more than frustrated going through their lessons. If they spent less time, hammering my inbox with weekly emails and built a better interface, I'd be more likely to take a look at their newly updated and [well funded site]((http://www.crunchbase.com/company/codecademy) (I've heard they added Ruby lessons). At least for now, Codecademy is FREE. So serious brownie points there.
 
-{% img right /images/codecademy.png 300 200 Codecademy Inbox %}
+{% img right /images/codecademy.png 400 250 Codecademy Inbox %}
 
 ###Treehouse is...###
 in a word, boring. Thankfully, I was able to guess most of the answers without struggling through the videos. I did spend, however, a portion of the time learning about subjects on the periphery. Their explanations of structs, I/O, and Ruby Core had slipped through the cracks of other beginner Ruby tutorials. I couldn't get into the humor of [Mike the Frog](http://www.youtube.com/watch?v=jQNXtyoyHic) or some of their other movie "rewards," but I guess that really shouldn't be the main motivating factor. While others thought it is silly, I like that [Jason Seifer](https://twitter.com/jseifer) is such a goofball. He is the lone source of humor in an overall dry learning experience. Personally, I learn faster by doing and Treehouse falls short here. Though they do sprinkle in a few interactive quizzes, it just isn't enough. If you are going to financially invent in your learning, I'd save it for...
