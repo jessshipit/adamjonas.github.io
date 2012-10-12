@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Manifest - tells the app what to include in an app, it tells the app what .js and .css files to include The slowest thing about any connection is the &hellip;">
+  <meta name="description" content="FileUtils The functions mostly involved changing dir, moving, removing, and copying files. Going to give us different options for working with dir &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,230 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/09/18/ruby-standard-library/">Ruby Standard Library</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-18T13:59:00-04:00" pubdate data-updated="true">Sep 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/FileUtils.html">FileUtils</a></h3>
+
+<p>The functions mostly involved changing dir, moving, removing, and copying files.</p>
+
+<p>Going to give us different options for working with dir entries and files in the file system.</p>
+
+<p>easy to work with in IRB</p>
+
+<h3>Methods</h3>
+
+<p>.cmp will tell you if two files have the same content
+.touch creates a file if it doesn&#8217;t exist
+.cp copy contents to another file</p>
+
+<h3><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/logger/rdoc/Logger.html">Logger:</a></h3>
+
+<h3>URIs</h3>
+
+<p>URI stands for &#8220;Uniform Resource Identifier.&#8221; The URI module can be used to parse and manipulate URIs in your Ruby programs.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; require 'uri'
+</span><span class='line'> =&gt; true 
+</span><span class='line'>&gt; require 'open-uri'
+</span><span class='line'> =&gt; true 
+</span><span class='line'>&gt; url = URI.parse('http://teamtreehouse.com/')
+</span><span class='line'> =&gt; #&lt;URI::HTTP:0x007f9b728dfda0 URL:http://teamtreehouse.com/&gt; 
+</span><span class='line'>&gt; puts url.inspect
+</span><span class='line'>#&lt;URI::HTTP:0x007f9b728dfda0 URL:http://teamtreehouse.com/&gt;
+</span><span class='line'> =&gt; nil 
+</span><span class='line'>&gt; puts url.hostanme
+</span><span class='line'>NoMethodError: undefined method `hostanme' for #&lt;URI::HTTP:0x007f9b728dfda0 URL:http://teamtreehouse.com/&gt;
+</span><span class='line'>  from (irb):10
+</span><span class='line'>  from /Users/Ajonas/.rvm/rubies/ruby-1.9.3-p194/bin/irb:16:in `&lt;main&gt;'
+</span><span class='line'>&gt; puts url.hostname
+</span><span class='line'>teamtreehouse.com
+</span><span class='line'> =&gt; nil 
+</span><span class='line'>&gt; puts url.path
+</span><span class='line'>/
+</span><span class='line'> =&gt; nil
+</span><span class='line'>&gt; puts URI.split('http://teamtreehouse.com').inspect
+</span><span class='line'>["http", nil, "teamtreehouse.com", nil, nil, "", nil, nil, nil]
+</span><span class='line'> =&gt; nil 
+</span><span class='line'>&gt; google = open('http://google.com').read
+</span><span class='line'>=&gt; this outputs the html of the google homepage...</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Benchmark Module</h3>
+
+<p>Provides methods to report the time used that the program takes to execute&#8230;</p>
+
+<figure class='code'><figcaption><span>Benchmarking symbols vs strings</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;benchmark&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">repetitions</span> <span class="o">=</span> <span class="mi">1000000</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Benchmark</span><span class="o">.</span><span class="n">bm</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">x</span><span class="o">.</span><span class="n">report</span> <span class="s2">&quot;String&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">repetitions</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">options</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;hello&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;world&#39;</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">x</span><span class="o">.</span><span class="n">report</span> <span class="s1">&#39;Symbol&#39;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">repetitions</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">options</span> <span class="o">=</span> <span class="p">{</span> <span class="n">hello</span><span class="p">:</span> <span class="ss">:world</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>OptParse Library</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyParser</span> 
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">options</span> <span class="o">=</span> <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">opts</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+</span><span class='line'>          <span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="o">=</span> <span class="s2">&quot;Usage: url&quot;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;-u&#39;</span><span class="p">,</span> <span class="s1">&#39;--url URL&#39;</span><span class="p">,</span> <span class="s1">&#39;Fetches the given url&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">url</span><span class="o">|</span>
+</span><span class='line'>              <span class="n">options</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+</span><span class='line'>          <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">begin</span>
+</span><span class='line'>          <span class="n">opts</span><span class="o">.</span><span class="n">parse!</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">rescue</span> <span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>          <span class="nb">puts</span> <span class="s2">&quot;Exceptions encountered: </span><span class="si">#{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>          <span class="nb">puts</span> <span class="n">opts</span>
+</span><span class='line'>          <span class="nb">exit</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">options</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="no">MyParser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">url</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Observable Library</h3>
+
+<p>The Observable module allows you to easily implement the observer pattern in your classes. The observer pattern specifies that an object maintains a list of its dependents, called observers, and notifies them automatically of any state changes.</p>
+
+<p>You could put this behavior in the classes themselves, but by putting them in an observer class it keeps the classes clean.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1673,88 +1897,6 @@ the errors controller is responsible for updating errors
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/08/20/haw-day14/">HAW-day14</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-20T12:10:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span>Debug Method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">allVals</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// location.reload()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Look up dataTypes &#8211; text, json, script (js), xml, html
-This the request type format that we want it in.</p>
-
-<h3>JQuery Token Input</h3>
-
-<p>http://railscasts.com/episodes/258-token-fields
-need to make sure the controller responds to .json
--the default has it nested in an @tags key. To remove that we need to map it to its attributes like so&#8211;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">:json</span> <span class="o">=&gt;</span> <span class="vi">@tags</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">t</span><span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">attributes</span><span class="p">}</span>  <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>prePoulation was an issue as well</p>
-
-<figure class='code'><figcaption><span>Symobol to Proc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">].</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="p">}</span> <span class="c1">#=&gt; [&quot;1&quot;, &quot;2&quot;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To Jquery plugin to gem</p>
-
-<p>query isn&#8217;t searching properly in the tags controller
-remove the submit button for tag tokens</p>
-
-<p>f.text_field options for onAdd or on Remove</p>
-
-<p>put the :controller => :error, :action => :resolve_on_airbrake on the fix button
-or gather all the errors tagged with fixed and move this task to a background job&#8230;</p>
-
-<p>sidekiq runs on redis
-create a worker folder
-??needs to be serialized into redis?
-sidekiq will run if there is an error: can disable the retry option with an option
-pool thread limits the number of jobs that can be run</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1772,6 +1914,10 @@ pool thread limits the number of jobs that can be run</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/10/11/exploring-ruby-gems/">Exploring Ruby Gems</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/10/11/fis-day6/">FIS Day6</a>
       </li>
     
@@ -1785,10 +1931,6 @@ pool thread limits the number of jobs that can be run</p>
     
       <li class="post">
         <a href="/blog/2012/10/10/fis-day5/">FIS Day5</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/09/advanced-sql/">Advanced SQL</a>
       </li>
     
   </ul>
@@ -1821,6 +1963,7 @@ pool thread limits the number of jobs that can be run</p>
 <li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
 <li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
 <li class='category'><a href='/blog/categories/forms/'>forms (2)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (5)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
 <li class='category'><a href='/blog/categories/heroku/'>heroku (2)</a></li>
