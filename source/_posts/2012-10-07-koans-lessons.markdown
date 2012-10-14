@@ -37,3 +37,33 @@ new_hash = hash.merge({ "jim" => 54, "jenny" => 26 })
 hash2 = Hash.new("dos")
 #every default value is now "dos"
 ```
+
+# THINK ABOUT IT:
+  #
+  # The two major ways to write class methods are:
+  #   class Demo
+  #     def self.method
+  #     end
+  #
+  #     class << self
+  #       def class_methods
+  #       end
+  #     end
+  #   end
+  #
+  # Which do you prefer and why?
+  # Are there times you might prefer one over the other?
+
+   def test_method_names_become_symbols
+    symbols_as_strings = Symbol.all_symbols.map { |x| x.to_s }
+    assert_equal true, symbols_as_strings.include?("test_method_names_become_symbols")
+  end
+
+  # THINK ABOUT IT:
+  #
+  # Why do we convert the list of symbols to strings and then compare
+  # against the string value rather than against symbols?
+
+
+  # QUESTION: Which has precedence: The constant in the lexical scope,
+  # or the constant from the inheritance hierarchy? lexical scope

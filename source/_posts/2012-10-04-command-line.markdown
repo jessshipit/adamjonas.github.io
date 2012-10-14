@@ -3,7 +3,7 @@ layout: post
 title: "Command Line"
 date: 2012-10-04 16:01
 comments: true
-categories: CLI
+categories: cli
 ---
 
 

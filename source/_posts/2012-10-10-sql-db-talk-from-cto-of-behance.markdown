@@ -6,6 +6,7 @@ comments: true
 categories: SQL
 ---
 
+###Things examined###
 lock_time the time the server will wait 
 
 rows examined
@@ -18,7 +19,7 @@ indexes- once you created them run completed under the hood
 can only use one index per table
 
 
-[Query execution plan](http://www.simple-talk.com/sql/performance/execution-plan-basics/)
+Review: [Query execution plan](http://www.simple-talk.com/sql/performance/execution-plan-basics/)
 [more reading](http://www.codeproject.com/Articles/9990/SQL-Tuning-Tutorial-Understanding-a-Database-Execu)
 
 - only way to get around this is to change the structre-- i.e. denormalization
@@ -65,12 +66,15 @@ Testing:
 ###Questions###
 ?? why mysql over postgres?
 	
-	right place right time
+- right place right time
 
 MySQL:
--percona port makes the most sense for mysql-
+
+- percona port makes the most sense for mysql-
+
 
 ?? many proj has many tags - many to many - goes through what join table?
 
 Look up:
--jumping words in the terminal
+
+- jumping words in the terminal

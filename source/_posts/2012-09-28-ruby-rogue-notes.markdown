@@ -37,6 +37,8 @@ TO READ:
 
 [hashrocket lunch and learn](http://vimeo.com/42622511)
 
+[Avdi Grimm- Objects on rails](http://objectsonrails.com/#sec-1)
+
 
 [RESTful Webservices](http://www.amazon.com/Restful-Web-Services-Leonard-Richardson/dp/0596529260)
 

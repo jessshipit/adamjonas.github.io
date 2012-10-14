@@ -1,0 +1,216 @@
+---
+layout: post
+title: "FIS Day7"
+date: 2012-10-12 09:46
+comments: true
+categories: FIS ruby
+---
+So this was on hacknews, but I thought this article was awesome: [Why the laptop has such a hard time catching on.](http://www.theatlantic.com/technology/archive/2012/09/why-the-first-laptop-had-such-a-hard-time-catching-on-hint-sexism/262220/)
+
+##Beauty in code##
+*pythagoras*: beauty in numbers. He found the blacksmith's sounds of hammers were beautiful. It was based on the proportion of the hammers-- ended up being the basis of music theory. The ratios were also integrated into Greek Architecture.
+
+*Thomas Aquinas* 
+
+1. proportion
+2. integrity (also have to be able to do the job they need to do and do it well)
+3. Clarity (simplicity and clear)
+
+There is a balance between these three points:
+if a command triggers something very powerful it violates the clarity requirement because so much is happening under the hood.
+
+"Goodness is beauty in action"
+It just so happens that learning how to write software better, happen to comply with the characteristics of beauty.
+
+Elegance is about restraint
+
+One isn't perfect and the other isn't wrong-- it's the tension between opposing sides is what makes it work. (think ying/yang & star wars)
+
+
+##Programmer of the Day##
+*Larry Wall:*
+
+- inventor of perl
+- optimized for human read-ability and not performance
+- modernists believe in a OR b, post-modern believe in AND ~> polymorphic interfaces
+
+Programming Virtues:
+
+- laziness: build a script because we won't accept the long process of manual task
+- impatient: things that are slow, you just won't use
+- hubris: Belief in yourself to tackle a problem that no one else thinks is possible.
+
+###rsync###
+How to move lots of files around. For moving files or music to a server since mac osx is so terrible at moving files.
+
+#Ruby#
+*case statements* AKA switch it
+
+case y #the condition you want to compare it against
+when 3
+when 2,4
+
+just like y ===3
+y===2 || y ===4
+
+integers are immuntible (so are booleans, nil, and symbols)
+
+***When you have mulitple branches of an if statement and you are comparing multiple values, then a case statement is probably more appropriate***
+
+If statement is for controlling flow and when is for switching state.
+
+?? Need to understand state
+
+[Brett Victor](http://worrydream.com). 
+
+###While###
+is a ruby keyword. It's a construct, not a method.
+```ruby While e.g.
+while x<10
+ puts x
+ x+=1
+end
+```
+
+```ruby building each with while
+array = [1,2,3,4,5]
+
+array_length = array.length
+i = 0
+
+def each(array, &block)
+	while i < array_length
+		yield array[i]
+		i +=1
+	end
+end
+
+colors = ["red", "yellow", "green"]
+
+each(colors) do |color|
+	puts color
+end
+```
+
+??I'm not getting yield
+
+[array][-1] -> called a negative index
+
+literal constructors
+
+- [1,2,nil, nil,5]
+- ""
+- {}
+- // -> regex
+
+
+Stopping a loop:
+
+- the break keyword will exit the current loop.
+- return will break the loop but also return the value
+- next 
+
+```ruby next keyword
+["Billy"].each do |i|
+	next if i == "Billy"
+end
+
+"a".next #=> "b"
+```
+
+shout.upcase -> dot notation
+
+```ruby ||=
+x ||= 1 #is the same as
+
+if x.nil?
+	x = 1
+else
+	x
+end
+```
+
+```ruby Helpful methods...
+.insert(position, 'insertion')
+"find the w".index("w") #=> 9
+
+.scan #=> retruns all the matches
+.match #=> returns the first it finds
+```
+
+?? slug def
+space is considered empty?
+
+###&& vs and###
+
+- use and for joining routines
+- use && for conditions
+
+###Scope###
+- something is in scope when the context it which it was defined and used is the same
+
+scope gates: anytime when you change the scope
+
+blocks are scope gates. blocks have shared scope. If defined outside the block it is accessible in the block. Whatever is defined within the block is NOT accessible outside the block.
+
+Methods have exclusive scope gates: are very strict. Parameters are the way to pass in info into a method.
+
+You wouldn't be able to reuse variables if you didn't have scope...
+
+###Hashes###
+```ruby New Notation
+{hello: "World"} #=> {:hello => "World"}
+```
+
+Can use anything has a key
+weird_hash {
+	[0]=> "an array",
+	1=> "number one"
+	"1"=> "string one"
+}
+weird_hash[[0]]
+weird_hash[1]
+weird_hash["1"]
+
+**variables are just pointers they are things**
+
+we use symbols because they are immutible
+
+- Nesting
+In general, we don't need to go 3 levels deep.
+
+**Garbage collection refers to the ability to let go of memory**
+
+When you iterate over over a hash you need to think of the :key=>value pair as one unit. Seperating doesn't make sense.
+
+```ruby
+alphabet = {:a => 1, :b => 2}
+alphabet.each do |arr|
+	arr #=> [:a,1] [:a,2]
+end
+```
+
+###Useful methods on arrays###
+- .compact -> remove all nil values
+- .uniq -> uniq values only
+- .flatten -> will remove nesting from an array
+- .join() -> join with a delimiter
+- .reverse
+- .reverse!
+- .insert
+- .pop() -> the argument it accepts is number of values it pops
+- .shift -> the reverse of pop - removes the first element
+- *.pop is to shift was unshift is to push*
+- .slice -> does not modify the original
+- .delete() -> index position and return the value
+- .index() -> position
+
+puts method.inspect is similar to print
+
+*pop is to shift was unshift is to push*
+[DCI presentation](https://speakerdeck.com/u/mordaroso/p/dci-and-ruby)
+
+[resource idiom](https://speakerdeck.com/u/mattyoho/p/exploiting-the-resource-idiom)
+
+[10 Things You Didn't Know Ruby Could do](https://speakerdeck.com/u/jeg2/p/10-things-you-didnt-know-ruby-could-do)
+
