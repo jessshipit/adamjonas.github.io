@@ -9,15 +9,82 @@ categories:
 Domain Models
 TDD
 
-
 [Evolution of the web](http://www.evolutionoftheweb.com/)
 
 [String Concatenation the Right Way; the Fast and Furious Way](http://frozen-citadel-3574.herokuapp.com/blog/2012/10/09/string-concatenation-the-right-way-the-fastest-way/)
 
-Anonymous functions
+```ruby .upto method
+1.upto(100){|i| puts fizzbuzz(i)}
+```
 
-if you want to store a procedure in a variable
+```ruby Building a prime method
+def assert(expectation)
+	"true" if expectation
+end
+
+class Integer
+	def prime?
+		(2...self/2).each do |i|
+			return false if self % i == 0 #=> number is not prime
+		end
+		return true
+	end
+
+puts assert 1.prime?
+puts assert 2.prime?
+puts assert 3.prime?
+puts assert !(4.prime?)
+```
+
+**SELF is always the receiver the method called on**
 
 
-###Rack###
+```ruby Dot Notation -- calling on the right receiver
+1...4.inspect #will break because 'inspect' is being called on 4, not the range.
+(1..4).inspect is the proper syntax
+```
+
+each just returns the original array 
+
+```ruby inject
+[1,2,3] #=> {:1=>1, :2=>4, :3=>9}
+arr = [1,2,3]
+squares = {}
+
+arr.each do |i|
+	squares["#{i}".to_sym] = i*i
+end
+puts squares
+
+arr.inject({}) do |hash, i|
+	i*i
+end
+
+puts squares
+```
+
+###Collect / Map##
+each just returns the **original array**
+We want to be expression oriented.
+```ruby 
+squares = [] # this is NOT expression oriented
+squares.collect{ |i| i*i }
+
+s = [1,2,3].collect{ |i| i*i ; i} #i is a newline character #=> [1,2,3]
+```
+
+**If you are chaining onto the return value, even if it is on one line.**
+
+```ruby
+.detect (will return the first value for which the block is true)
+```
+
+.select will return all, .detect will return the first.
+.reject returns all the values for which the block is false (the opposite of select)
+
+.select will return an empty array if no values are found, but .detect will return nil since it will only return one value...
+
+.all? is sort of like a case statement except you get to use your own comparison
+
+[string for time](http://foragoodstrftime.com/)
 
