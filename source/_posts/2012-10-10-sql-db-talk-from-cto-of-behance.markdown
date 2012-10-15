@@ -5,6 +5,7 @@ date: 2012-10-10 17:52
 comments: true
 categories: SQL
 ---
+**Thanks to Chris Henry for taking the time to come down**
 
 ###Things examined###
 lock_time the time the server will wait 

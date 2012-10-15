@@ -9,11 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="facebook The Gem Omninauth is just opening the connection1
-2
-3
-@graph = Koala::Facebook::API.new(oauth_access_token)
-#for an hour or so I wasn&#39;t &hellip;">
+  <meta name="description" content="MySQL Google Data normalization
+: This is the process we go through to develop a design that is free of redundant data and that can be consistently &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +85,88 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/09/05/mysql-db-design/">MySQL DB Design</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-05T11:51:00-04:00" pubdate data-updated="true">Sep 5<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://code.google.com/edu/tools101/mysql.html">MySQL Google</a></p>
+
+<p><em>Data normalization</em>
+:  This is the process we go through to develop a design that is free of redundant data and that can be consistently and correctly modified</p>
+
+<p><em>primary keys</em> uniquely identify a record in a table, and <em>foreign keys</em> are used to relate tables
+- Every record must have a unique primary key which should not be reused once deleted</p>
+
+<p><em>Referential integrity</em>
+:  The data in a foreign key needs to match the primary key in some record of the original table. Referential integrity assures there are no broken links between tables. Note that if you delete a record in the original table, for example, you delete one of the customers from the customer table, referential integrity requires that you delete all references to that customer in the order table.</p>
+
+<h3>MySQL Exercises</h3>
+
+<ol>
+<li>Start up MySQL with</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mysql -uroot -ppassword</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Creating a table&#8230;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>create table customer (cust_no int not null auto_increment, name varchar(40),
+</span><span class='line'>address varchar(40), phone varchar(12), primary key(cust_no));</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&#8220;varchar&#8221; which means variable-length strings. The numbers following &#8220;varchar&#8221; in the command above indicate maximum length for the data stored in the field. We also set up cust_no to be the primary key.</p>
+
+<p>The orders table&#8230;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>create table orders (order_no int not null auto_increment, FK_cust_no int not null, 
+</span><span class='line'>foreign key(FK_cust_no) references customer(cust_no), primary key(order_no));</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are only two fields in this table. The order_no field is a primary key, and is an integer, not null and it will auto increment. The cust_no field is a foreign key. We have named it FK_cust_no in the orders table to distinguish it from the cust_no field in the customer table.</p>
+
+<p><em>A foreign key is a field that references a primary key in another table.</em> In the command, we indicate that the FK_cust_no field is a foreign key referencing the cust_no field in customer, indicated by the &#8220;foreign key(FK_cust_no) references customer(cust_no)&#8221; part of the command. By setting the table up this way, MySQL will enforce constraints&#8211; any order that we enter into the orders table must reference a valid customer in the customer table. If we enter a cust_no in orders that does not exist in customers, an error will result.</p>
+
+<p>A <em>transaction</em> is a sequence of individual database operations that are grouped together. A transaction will never be complete unless each individual operation within the group is successful. If any operation within the transaction fails, the entire transaction will fail. Transactions are a relatively new addition to MySQL but not to relational database systems in general.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1225,89 +1304,6 @@ but if they are submitting a single tag_name, such as slug pass that to a differ
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/08/14/forms/">Forms</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-14T10:49:00-04:00" pubdate data-updated="true">Aug 14<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Forms</h3>
-
-<p>forms are a collection of elements
-text element cant live by itself
-the entire sign up for needs to be submitted to one place
-group form elements together and you wrap them in a form</p>
-
-<p>where its going has nothing to do with the information that it is passing in</p>
-
-<p>every web request as a request and a response
-a request has to go somewhere&#8211; that&#8217;s urls&#8211; that&#8217;s the address
-forms pass along data for where we are going&#8211; go here and tell the server this</p>
-
-<p><a href="htmlhttp://www.w3schools.com/tags/tag_input.asp">Input tags</a></p>
-
-<p><strong><em>the name in the form is the key of the params hash</em></strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#The html 
-</span><span class='line'>&lt;input type="text", name="tag"&gt;
-</span><span class='line'>#in the controller
-</span><span class='line'>@airbrake_error.add_tags(params[:tag])</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#if the form contains </span>
-</span><span class='line'><span class="o">&lt;%=</span> <span class="n">text_field_tag</span><span class="p">(</span><span class="ss">:query</span><span class="p">)</span> <span class="o">%&gt;</span>
-</span><span class='line'><span class="c1">#then you would be able to get the value of this field in the controller with params[:query].</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p>text_field_tag :name of the tag and then the prefilled value</p></li>
-<li><p>f.text_field :comments is NESTED in airbrake error which is represented by f</p></li>
-<li><p>The form doesn&#8217;t need a name&#8211; it is the wrapper. The input elements DO need names.</p></li>
-</ul>
-
-
-<p><a href="http://guides.rubyonrails.org/form_helpers.html#understanding-parameter-naming-conventions">Understanding naming parameter conventions</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -1325,6 +1321,10 @@ forms pass along data for where we are going&#8211; go here and tell the server 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/10/15/fis-day8/">FIS Day8</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/10/13/dci/">DCI</a>
       </li>
     
@@ -1338,10 +1338,6 @@ forms pass along data for where we are going&#8211; go here and tell the server 
     
       <li class="post">
         <a href="/blog/2012/10/11/fis-day6/">FIS Day6</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/10/sql-db-talk-from-cto-of-behance/">SQL DB talk from CTO of Behance</a>
       </li>
     
   </ul>
