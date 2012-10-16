@@ -10,7 +10,8 @@
 
   
   <meta name="description" content="Domain Models
-TDD Evolution of the web String Concatenation the Right Way; the Fast and Furious Way Anonymous functions if you want to store a &hellip;">
+TDD Evolution of the web String Concatenation the Right Way; the Fast and Furious Way .upto method1
+1.upto(100){|i| puts fizzbuzz(i)} &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +78,7 @@ TDD Evolution of the web String Concatenation the Right Way; the Fast and Furiou
   
 <ul class="main-navigation">
   <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
   <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
@@ -120,11 +122,121 @@ TDD</p>
 
 <p><a href="http://frozen-citadel-3574.herokuapp.com/blog/2012/10/09/string-concatenation-the-right-way-the-fastest-way/">String Concatenation the Right Way; the Fast and Furious Way</a></p>
 
-<p>Anonymous functions</p>
+<figure class='code'><figcaption><span>.upto method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">100</span><span class="p">){</span><span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">fizzbuzz</span><span class="p">(</span><span class="n">i</span><span class="p">)}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>if you want to store a procedure in a variable</p>
 
-<h3>Rack</h3>
+
+
+<figure class='code'><figcaption><span>Building a prime method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">assert</span><span class="p">(</span><span class="n">expectation</span><span class="p">)</span>
+</span><span class='line'>  <span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">expectation</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Integer</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">prime?</span>
+</span><span class='line'>      <span class="p">(</span><span class="mi">2</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">self</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>          <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="nb">self</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="c1">#=&gt; number is not prime</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="mi">1</span><span class="o">.</span><span class="n">prime?</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="mi">2</span><span class="o">.</span><span class="n">prime?</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="mi">3</span><span class="o">.</span><span class="n">prime?</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="o">!</span><span class="p">(</span><span class="mi">4</span><span class="o">.</span><span class="n">prime?</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>SELF is always the receiver the method called on</strong></p>
+
+<figure class='code'><figcaption><span>Dot Notation &#8211; calling on the right receiver</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">4</span><span class="o">.</span><span class="n">inspect</span> <span class="c1">#will break because &#39;inspect&#39; is being called on 4, not the range.</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span> <span class="n">is</span> <span class="n">the</span> <span class="n">proper</span> <span class="n">syntax</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>each just returns the original array</p>
+
+<figure class='code'><figcaption><span>inject</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span> <span class="c1">#=&gt; {:1=&gt;1, :2=&gt;4, :3=&gt;9}</span>
+</span><span class='line'><span class="n">arr</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'><span class="n">squares</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">squares</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">squares</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">inject</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="nb">hash</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">i</span><span class="o">*</span><span class="n">i</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">squares</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Collect / Map</h3>
+
+<p>each just returns the <strong>original array</strong>
+We want to be expression oriented.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">squares</span> <span class="o">=</span> <span class="o">[]</span> <span class="c1"># this is NOT expression oriented</span>
+</span><span class='line'><span class="n">squares</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">s</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">].</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="p">;</span> <span class="n">i</span><span class="p">}</span> <span class="c1">#i is a newline character #=&gt; [1,2,3]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>If you are chaining onto the return value, even if it is on one line.</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">detect</span> <span class="p">(</span><span class="n">will</span> <span class="k">return</span> <span class="n">the</span> <span class="n">first</span> <span class="n">value</span> <span class="k">for</span> <span class="n">which</span> <span class="n">the</span> <span class="n">block</span> <span class="n">is</span> <span class="kp">true</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>.select will return all, .detect will return the first.
+.reject returns all the values for which the block is false (the opposite of select)</p>
+
+<p>.select will return an empty array if no values are found, but .detect will return nil since it will only return one value&#8230;</p>
+
+<p>.all? is sort of like a case statement except you get to use your own comparison</p>
+
+<p><a href="http://foragoodstrftime.com/">string for time</a></p>
 </div>
 
 
@@ -167,6 +279,8 @@ TDD</p>
         <a class="basic-alignment left articlenav" href="/blog/2012/10/13/dci/" title="Previous Post: DCI">&laquo; DCI</a>
       
       
+        <a class="basic-alignment right articlenav" href="/blog/2012/10/15/rack-and-sinatra/" title="Next Post: Rack and Sinatra">Rack and Sinatra &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -186,6 +300,14 @@ TDD</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/10/16/fis-day9/">FIS Day9</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/15/rack-and-sinatra/">Rack and Sinatra</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/10/15/fis-day8/">FIS Day8</a>
       </li>
     
@@ -195,14 +317,6 @@ TDD</p>
     
       <li class="post">
         <a href="/blog/2012/10/12/fis-day7/">FIS Day7</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/11/exploring-ruby-gems/">Exploring Ruby Gems</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/11/fis-day6/">FIS Day6</a>
       </li>
     
   </ul>
@@ -238,7 +352,6 @@ TDD</p>
 <li class='category'><a href='/blog/categories/heroku/'>heroku (2)</a></li>
 <li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
-<li class='category'><a href='/blog/categories/jargon/'>jargon (1)</a></li>
 <li class='category'><a href='/blog/categories/javascript/'>javascript (1)</a></li>
 <li class='category'><a href='/blog/categories/jquery/'>jquery (1)</a></li>
 <li class='category'><a href='/blog/categories/kentbeck/'>kentbeck (1)</a></li>
@@ -250,10 +363,12 @@ TDD</p>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/oop/'>oop (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
+<li class='category'><a href='/blog/categories/patterns/'>patterns (1)</a></li>
 <li class='category'><a href='/blog/categories/podcasts/'>podcasts (1)</a></li>
 <li class='category'><a href='/blog/categories/postgresql/'>postgresql (1)</a></li>
 <li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
 <li class='category'><a href='/blog/categories/rails/'>rails (13)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
 <li class='category'><a href='/blog/categories/reading/'>reading (1)</a></li>
@@ -263,9 +378,9 @@ TDD</p>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
 <li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (1)</a></li>
 <li class='category'><a href='/blog/categories/terms/'>terms (1)</a></li>
 <li class='category'><a href='/blog/categories/testing/'>testing (2)</a></li>
-<li class='category'><a href='/blog/categories/vocab/'>vocab (1)</a></li>
 
   </ul>
 </section>
