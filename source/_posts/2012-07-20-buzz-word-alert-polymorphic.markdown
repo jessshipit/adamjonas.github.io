@@ -3,7 +3,7 @@ layout: post
 title: "Buzz Word Alert: Polymorphic"
 date: 2012-07-20 17:57
 comments: true
-categories: terms rails associations TODO
+categories: rails associations
 ---
 
 ###Polymorphism###

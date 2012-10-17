@@ -3,7 +3,7 @@ layout: post
 title: "Asset Pipeline"
 date: 2012-09-10 14:31
 comments: true
-categories: Rails
+categories: rails
 ---
 
 Manifest - tells the app what to include
