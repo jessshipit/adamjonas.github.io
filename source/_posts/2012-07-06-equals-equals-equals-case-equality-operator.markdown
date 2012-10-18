@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "=== case equality operator"
+title: "=== and the case equality operator"
 date: 2012-07-03 10:53
 comments: true
-categories: notes
+categories: ruby
 ---
 
 ###In a case statement...
