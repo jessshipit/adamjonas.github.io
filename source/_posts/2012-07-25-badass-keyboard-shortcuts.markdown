@@ -41,6 +41,7 @@ pwd #=> will output the full path
 ⌘shift c color picker
 cntrl + shift + . to scroll through .erb [see here](https://github.com/eddorre/SublimeERB)
 ⌘shift d - duplicate the line and paste in the line below
+option + cntrl + -> or <- to jump by word
 
 ###GIT###
 git clean -f => [Removing untracked files from your git working copy](http://stackoverflow.com/questions/61212/removing-untracked-files-from-your-git-working-copy)

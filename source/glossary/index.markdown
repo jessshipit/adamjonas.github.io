@@ -55,6 +55,9 @@ Referential integrity
 SDK
 >software development kit
 
+Stub
+>A stub is a small program routine that substitutes for a longer program, possibly to be loaded later or that is located remotely. 
+
 Tautology
 >true by virtue of its logical form alone.
 

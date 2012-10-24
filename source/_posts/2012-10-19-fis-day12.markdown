@@ -1,0 +1,80 @@
+---
+layout: post
+title: "FIS Day12"
+date: 2012-10-19 09:36
+comments: true
+categories: modules
+---
+
+###POTD: Tim Berners-Lee###
+- physicist 
+- invented the world wide web in 1989 @ [Cern](http://public.web.cern.ch/public/)
+- [Marshall_McLuhan](http://en.wikipedia.org/wiki/Marshall_McLuhan)
+
+
+###Modules###
+**Dogs and humans can both run, so should they inherit from runner or runnable?**
+
+We put this shared behavior into a module so that the class can include or **mixin** modules.
+
+modules can include other modules
+
+include - is for the instance methods
+extend - is for the class methods
+
+super - call the same exact message on the class above
+
+```ruby Simple Inheritance
+class Animal
+ attr_accessor :legs
+
+ def initialize(legs_count = 4)
+ 	@leg = legs_count
+ end
+end
+
+class Human < Animal
+  attr_accessor :hair_color #this is an additional accessor
+  #and doesn't over-ride any #other attr_accessor
+
+#this overides the initialize in the Animal class
+	def initialize
+		super(2) #super sexy
+	end
+
+end
+```
+
+```ruby The Builder Pattern
+class Animal
+	include Movement::Animal
+end
+
+class Human
+	include Movement::Animal
+	include Movement::Human
+end
+```
+
+###ERB###
+The [standard library](http://www.ruby-doc.org/stdlib-1.9.3/) is separate because you can release ruby and the standard lib without updating the release of the other
+
+<%=  %> (known as a delimiter) is like interpolation for a template
+
+```ruby
+require 'erb'
+
+x = 42
+#EOF = end of file
+template = ERB.new <<-EOF
+	the value of x is: <%= x %>
+EOF
+
+puts template.result(binding) #the value of x is :42
+
+x = 24
+puts template.result(binding) #the value of x is: 24
+
+```
+
+binding - is equal to the current scope - return to me everything in the universe that happened at this point in time.
