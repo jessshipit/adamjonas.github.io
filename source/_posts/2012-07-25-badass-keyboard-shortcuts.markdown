@@ -29,9 +29,10 @@ In Chrome:
 
 ###Sublime Shortcuts###
 [Good list here](http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/)
+⌘T or ⌘R will allow you to jump to files really quickly
 
 ###Terminal###
-⌘K clears the 
+⌘K clears the screen
 cmd, shift, -> or <- to move between windows in the terminal
 pwd #=> will output the full path
 ~ #=> home directory
@@ -45,3 +46,6 @@ option + cntrl + -> or <- to jump by word
 
 ###GIT###
 git clean -f => [Removing untracked files from your git working copy](http://stackoverflow.com/questions/61212/removing-untracked-files-from-your-git-working-copy)
+
+###Mac###
+⌘shift 3 - screen shot

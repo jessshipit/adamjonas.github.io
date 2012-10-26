@@ -20,6 +20,12 @@ Casting
 Canonical
 >Simplest or standard form. e.g. A canonical page is the preferred version of a set of pages with highly similar content.
 
+Daemons
+>are special system applications which typically execute continuously in the background and await requests for the functions they provide from other applications. 
+
+Defensive Programming
+>a form of defensive design intended to ensure the continuing function of a piece of software in spite of unforeseeable usage of said software. The idea can be viewed as reducing or eliminating the prospect of Murphy's Law having effect. Defensive programming techniques are used especially when a piece of software could be misused mischievously or inadvertently to catastrophic effect.
+
 Idempotent
 >is the property of certain operations in mathematics and computer science, that they can be applied multiple times without changing the result beyond the initial application.
 
@@ -39,6 +45,9 @@ end
 
 Levels of Abstraction
 >Going up levels of abstraction means removing the details.
+
+Mock
+>also called double, a mock is “an object that stands in for another object in an example”. This means that if we want to test the interaction between an object and another, we can mock the second one.
 
 Polyglot
 >a computer program that is valid in more than one programming language... in the context of a hash it could mean it is able to include a float, a string, an integer.

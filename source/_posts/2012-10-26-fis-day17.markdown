@@ -1,0 +1,103 @@
+---
+layout: post
+title: "FIS Day17"
+date: 2012-10-26 09:37
+comments: true
+categories: FIS 
+---
+
+###POTD###
+Roy Fielding
+
+HTTP- it's all about representations of data, not the data itself
+
+urls are to represent a resouce. They should be stateless and you should get multiple representations of it (different data types for example).
+
+[SOAP](http://en.wikipedia.org/wiki/SOAP) is "like knocking on your neighbors' door and ask them to send a message to a guy down the street."
+
+###Blogs###
+```ruby
+User.all #=> you want to return an empty array so that you can run an iteration on it.
+```
+
+```ruby Refactor
+def assign_artist(artist_name)
+  artist = Artist.all.select{|artist| artist.name == artist_name} 
+  if  artist.length > 0
+      artist[0]
+  else
+      Artist.new.tap{|artist| artist.name = artist_name}
+    end
+  end
+
+#can be refactored as
+
+def assign_artist(artist_name)
+  Artist.all.select{|artist| artist.name == artist_name} ||
+  Artist.new.tap{|artist| artist.name = artist_name}
+end
+```
+
+##Spinning Up My First Server##
+
+??swap disk space
+
+- **Passenger** knows how to run your app, **nginx** does not
+  - nginx sends your request to a Passenger instance
+    - nginx is managing the load to Passenger
+    - Passenger is actually running the application ~> managing starting up your app and serving it
+      - it could run up to 20 instances of the app on a single server (the default is 5)
+
+- **nginx** is the actual webserver. It's a piece of software that speaks HTTP, is very high performance and sits between your application and the internet.
+
+- The tutorial is very detailed
+  - Not on the tutorial- [adding the SSH key from the server](https://help.github.com/articles/generating-ssh-keys)
+
+###Lessons Learned From the Server Work###
+- Problem: So I couldn't deploy for hours... I went and reconfigured like 3 times. Renamed the name of the application and going through the nginx config file on the server. It sucked.
+- Answer: I had my database in my .gitignore file, which meant that it was in the deploy from the github. AHHHH!!! I never would have gotten that one.
+
+##Ruby##
+
+- Opposites
+  - Enumerable#reject
+    - Returns an array for all elements of enum for which block is false (see alsoEnumerable#find_all).
+  - Enumerable#select
+    - Returns an array containing all elements of enum for which block is not false (see alsoEnumerable#reject).
+
+
+- Equivalent, different order for pipes
+  - Enumerable#each_with_object
+    - Iterates the given block for each element with an arbitrary object given, and returns the initially given object.
+      - [1, 2, 3, 4].each_with_object([]) { |element, result| result << element }
+
+
+- Enumerable#inject
+  - Combines all elements of enum by applying a binary operation, specified by a block or a symbol that names a method or operator.
+    - [1, 2, 3, 4].inject([]) { |result, element| result << element }
+
+
+###Rails###
+- link_to is a great example of a polymorphic interface
+  - if it receives an object (an instance of active record), it can create the correct link
+  - if it receives a string it can create the correct link out of that
+
+```ruby Routes Shortcuts
+get '/about/:action' => 'about' # the action would map directly to the action in the about controller
+#this is dangerous but only on the controller level so it would need to be controlled for there...
+
+get '/about/:action(/:company)' # this means that the company part of the url is optional
+  :company => "whatever" # this additional means that "whatever" will be default value
+```
+
+urls that have parameters in them like songs/:genre ~> you need to pass a paramter so that it can match it ~> songs/:genre/:year needs two parameters
+
+```ruby In the view
+<% link_to 'Avi', avi_path("flombaum", "flatiron", :foo => "baz") %> #will add parameter
+```
+
+```ruby Mass Assignment
+Song.new(:name => "call me maybe")
+#intialize the song with this default attribute
+```
+

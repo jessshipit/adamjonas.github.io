@@ -9,9 +9,16 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="summary of yesterday
-plan for today -everyone should be cloning on their own git clone
-create new repo - git remove remote origin - git add remote &hellip;">
+  <meta name="description" content="Remotes 1
+2
+3
+4
+5
+6
+7
+8
+git remote -v, which shows you the URL that Git has stored for the shortname to be expanded to: $ git remote -v
+origin git:// &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +94,581 @@ create new repo - git remove remote origin - git add remote &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/10/08/git-advanced-discussion/">Git Advanced Discussion</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-08T17:19:00-04:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Remotes</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote -v, which shows you the URL that Git has stored for the shortname to be expanded to:
+</span><span class='line'>
+</span><span class='line'>$ git remote -v
+</span><span class='line'>origin  git://github.com/schacon/ticgit.git
+</span><span class='line'>
+</span><span class='line'>$ git remote add [shortname] [url]
+</span><span class='line'>$ git remote rm [shortname]
+</span><span class='line'>$ git remote rename [oldname] [new name]</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Fetch</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git fetch [remote-name]</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>It’s important to note that the <strong>fetch</strong> command pulls the data to your local repository — it doesn’t automatically merge it with any of your work or modify what you’re currently working on. You have to merge it manually into your work when you’re ready.</li>
+<li>The <em>git pull</em> command to automatically fetch and then merge a remote branch into your current branch.</li>
+</ul>
+
+
+<h3>Pushes</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git push [remote-name] [branch-name]</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Branches</h3>
+
+<p>You can delete a remote branch using the rather obtuse syntax &#8216;$ git push [remotename] :[branch]&#8217;. If you want to delete your serverfix branch from the server, you run the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git push origin &lt;:branch name&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git branch -d &lt;branch name&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Rebasing</h3>
+
+<p>In Git, there are two main ways to integrate changes from one branch into another: the <em>merge</em> and the <em>rebase.</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase master</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It works by going to the common ancestor of the two branches (the one you’re on and the one you’re rebasing onto), getting the diff introduced by each commit of the branch you’re on, saving those diffs to temporary files, resetting the current branch to the same commit as the branch you are rebasing onto, and finally applying each change in turn.</p>
+
+<p><strong>Important:</strong>
+Do not rebase commits that you have pushed to a public repository.</p>
+
+<h3>Git real review</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git commi­t --ame­nd -m 'addi­ng new' #ammend to last commit
+</span><span class='line'>$ git reset­ --sof­t HEAD^­ #erase last commit and rewind to HEAD
+</span><span class='line'>$ git reset­ --sof­t HEAD^­^ #erase the last TWO commits
+</span><span class='line'>$ git push -u origi­n maste­r #-u to indicate this is the default push for the future
+</span><span class='line'>$ git branc­h -r #show all the branches on the remote
+</span><span class='line'>$ git push origi­n :weas­el #deletes the weasel branch on the remote
+</span><span class='line'>
+</span><span class='line'>$ git remot­e show origi­n #Specify a ­remote to ­see specif­ic informa­tion about­ that remo­te. The gi­t remote c­ommand wil­l show you­ available­ remotes.
+</span><span class='line'>$ git remot­e prune­ origi­n #clean up local repo  
+</span><span class='line'>
+</span><span class='line'>$ git tag #list all tags
+</span><span class='line'>$ git tag -a v1.3.2 -m 'new versi­on' #create new tag
+</span><span class='line'>$ git push --tags
+</span><span class='line'>$ git check­out v1.3.1
+</span><span class='line'>
+</span><span class='line'>$ git rebas­e maste­r 
+</span><span class='line'>
+</span><span class='line'>$ git add -u #stages all new files AS WELL AS deletions
+</span><span class='line'>
+</span><span class='line'>$ git diff maste­r eleph­ant 
+</span><span class='line'>
+</span><span class='line'>$ git log -p #diff and log
+</span><span class='line'>
+</span><span class='line'>$ git confi­g user.email "admi­n@example.­com"
+</span><span class='line'>
+</span><span class='line'>$ git confi­g --glo­bal user.­name "blah­ blah"
+</span><span class='line'>
+</span><span class='line'>$ git confi­g --glo­bal alias­.commit pushi­t </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Questions</h3>
+
+<p>What is a reasonable number of commits per branch?
+How often do you commit?
+Working on the same file&#8230; strategies?
+fast forward vs no fast forward</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/10/07/koans-lessons/">Koans Lessons</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-07T21:53:00-04:00" pubdate data-updated="true">Oct 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_accessing_hashes_with_fetch</span>
+</span><span class='line'>    <span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:one</span> <span class="o">=&gt;</span> <span class="s2">&quot;uno&quot;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;uno&quot;</span><span class="p">,</span> <span class="nb">hash</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:one</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">assert_raise</span><span class="p">(</span><span class="no">KeyError</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>      <span class="nb">hash</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:uno</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># THINK ABOUT IT:</span>
+</span><span class='line'>    <span class="c1">#</span>
+</span><span class='line'>    <span class="c1"># Why might you want to use #fetch instead of #[] when accessing hash keys?</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># answer: there are some instances where returning nil blindly from a hash can cause issues</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Bonus Question: Why was &quot;expected&quot; </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>.merge will rewrite values that you had :keys for. </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;jim&quot;</span> <span class="o">=&gt;</span> <span class="mi">53</span><span class="p">,</span> <span class="s2">&quot;amy&quot;</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;dan&quot;</span> <span class="o">=&gt;</span> <span class="mi">23</span> <span class="p">}</span>
+</span><span class='line'><span class="c1">#=&gt; {&quot;jim&quot;=&gt;53, &quot;amy&quot;=&gt;20, &quot;dan&quot;=&gt;23}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">new_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="s2">&quot;jim&quot;</span> <span class="o">=&gt;</span> <span class="mi">54</span><span class="p">,</span> <span class="s2">&quot;jenny&quot;</span> <span class="o">=&gt;</span> <span class="mi">26</span> <span class="p">})</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;jim&quot;</span><span class="o">=&gt;</span><span class="mi">54</span><span class="p">,</span> <span class="s2">&quot;amy&quot;</span><span class="o">=&gt;</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;dan&quot;</span><span class="o">=&gt;</span><span class="mi">23</span><span class="p">,</span> <span class="s2">&quot;jenny&quot;</span><span class="o">=&gt;</span><span class="mi">26</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Default values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">hash2</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;dos&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#every default value is now &quot;dos&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>THINK ABOUT IT:</h1>
+
+<p>  #
+  # The two major ways to write class methods are:
+  #   class Demo
+  #     def self.method
+  #     end
+  #
+  #     class &lt;&lt; self
+  #       def class_methods
+  #       end
+  #     end
+  #   end
+  #
+  # Which do you prefer and why?
+  # Are there times you might prefer one over the other?</p>
+
+<p>   def test_method_names_become_symbols</p>
+
+<pre><code>symbols_as_strings = Symbol.all_symbols.map { |x| x.to_s }
+assert_equal true, symbols_as_strings.include?("test_method_names_become_symbols")
+</code></pre>
+
+<p>  end</p>
+
+<p>  # THINK ABOUT IT:
+  #
+  # Why do we convert the list of symbols to strings and then compare
+  # against the string value rather than against symbols?</p>
+
+<p>  # QUESTION: Which has precedence: The constant in the lexical scope,
+  # or the constant from the inheritance hierarchy? lexical scope</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/10/07/inject/">Inject</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-07T11:33:00-04:00" pubdate data-updated="true">Oct 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Learning inject has been on my TODO list for a while&#8230;</p>
+
+<p>I want to use inject anytime I am building an object a piece at a time. In the case of summing, creating a hash, or an array I&#8217;m building a result by applying changes based on the elements of the enumerable.</p>
+
+<figure class='code'><figcaption><span>Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">total_visits</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">stat</span><span class="o">|</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">visit_count</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#just for fun let&#39;s sum all the numbers from 1 to, oh, say a million</span>
+</span><span class='line'><span class="n">sum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">1000000</span><span class="p">)</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">){</span><span class="o">|</span><span class="n">cummulative</span><span class="p">,</span><span class="n">n</span><span class="o">|</span> <span class="n">cummulative</span><span class="o">+</span><span class="n">n</span><span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">sum</span>   <span class="o">=&gt;</span><span class="mi">500000500000</span>
+</span><span class='line'><span class="c1">#you can do interesting things like build hashes</span>
+</span><span class='line'><span class="n">primes</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">13</span><span class="o">]</span>
+</span><span class='line'><span class="nb">hash</span> <span class="o">=</span> <span class="n">primes</span><span class="o">.</span><span class="n">inject</span><span class="p">({})</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span> <span class="p">{</span> <span class="n">e</span><span class="o">.</span><span class="n">to_s</span> <span class="o">=&gt;</span> <span class="n">e</span> <span class="p">}</span> <span class="p">)</span> <span class="p">}</span>
+</span><span class='line'><span class="nb">p</span> <span class="nb">hash</span>  <span class="c1">#   =&gt;  {&quot;11&quot;=&gt;11, &quot;7&quot;=&gt;7, &quot;13&quot;=&gt;13, &quot;1&quot;=&gt;1, &quot;3&quot;=&gt;3, &quot;5&quot;=&gt;5}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Reading:
+<a href="http://blog.jayfields.com/2008/03/ruby-inject.html">The inject method</a>
+<a href="http://www.fincher.org/tips/Languages/Ruby/">Code e.g. - #21e</a>
+<a href="http://teachmetocode.com/screencasts/rubys-enumerable-module-the-inject-method/">Charles Max Wood Video</a>
+<a href="http://blog.teamtreehouse.com/ruby-arrays">Treehouse explains the inject method</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/10/06/assignment1/">Assignments</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-06T14:54:00-04:00" pubdate data-updated="true">Oct 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://gist.github.com/3856174">Assignment 1</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/10/06/fizzbuzz/">FizzBuzz</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-06T14:39:00-04:00" pubdate data-updated="true">Oct 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://gist.github.com/3856188">Gist</a></p>
+
+<figure class='code'><figcaption><span>Slick FizzBuzz</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">100</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">?</span> <span class="p">((</span><span class="n">i</span><span class="o">%</span><span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">?</span> <span class="s2">&quot;FizzBuzz&quot;</span> <span class="p">:</span> <span class="s2">&quot;Buzz&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="p">((</span><span class="n">i</span><span class="o">%</span><span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">?</span> <span class="s2">&quot;Fizz&quot;</span> <span class="p">:</span> <span class="n">i</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Some background of FizzBuzz</p>
+
+<ul>
+<li><a href="http://www.codinghorror.com/blog/2007/02/fizzbuzz-the-programmers-stairway-to-heaven.html">If you can&#8217;t do FizzBuzz you aren&#8217;t a programmer</a></li>
+<li><a href="http://www.codinghorror.com/blog/2007/02/why-cant-programmers-program.html">The majority of comp sci grads can&#8217;t do fizzbuzz</a></li>
+<li><a href="http://dave.fayr.am/posts/2012-10-4-finding-fizzbuzz.html">proper implementations of fizzbuzz</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/10/05/fisday3/">FISday3</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-05T16:48:00-04:00" pubdate data-updated="true">Oct 5<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Programs are:</p>
+
+<p><em>idealized components</em>&#8230; not bound by degradation of use.</p>
+
+<p><em>infinite complexity</em>&#8230; because nothing is stopping us from building it.</p>
+
+<p><em>Method signature</em> is the first line of the method (e.g. def method_name(*arg))</p>
+
+<p><em>Parameters</em> are the adverbs. Parameters allow us to make a method dynamic.</p>
+
+<p>To the computer, there is no difference between a local variable and a method.</p>
+
+<p>&#8217;==&#8217; => value equality
+&#8217;===&#8217; => object equality</p>
+
+<p>A computationally efficient language will compile down faster than</p>
+
+<p><em>lazy evaluation</em>- the program will stop as soon as an if or elsif is satisfied. It won&#8217;t execute any more statements.</p>
+
+<p><a href="http://www.bartleby.com/103/6.html">Ode</a> by Arthur O&#8217;Shaughnessy</p>
+
+<p>sqlite 3.4.12 is the first version to support multi-line inserts.</p>
+
+<p>?? Are there languages with more syntactic sugar than ruby?
+?? is it really not possible to write a program in SQL
+Does <a href="http://www.simple-talk.com/blogs/2005/12/30/a-sql-game/">this</a> qualify as a program?
+<a href="http://www.red-gate.com/downloads/CreateTheMazeGame.txt">SQL code:</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/10/04/command-line/">Command Line</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-04T16:01:00-04:00" pubdate data-updated="true">Oct 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>To create multiple directories via the CLI using mkdir simply include the -p flag. For example, starting in home directory where &#8216;development already exists run the following:</p>
+
+<p>$ mkdir -p development/practice/learn_sql</p>
+
+<p>To create multiple directories down the tree do this…</p>
+
+<p>$ mkdir -p development/practice/learn_sql/{beginner,intermediate,advanced}</p>
+
+<p>Learned this thanks to this friendly <a href="http://technosophos.com/content/mkdir-creating-multiple-subdirectories-one-command">blog post</a></p>
+
+<p>cs (cd and ls in the same command) function loaded into .bash_profile</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function cs () {
+</span><span class='line'>cd "$@" && ls
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -514,1269 +1096,6 @@ If the wrong version is being used:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/10/02/fisday0/">FISDay0</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-02T09:25:00-04:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>Why are we here?</em></p>
-
-<p>-To fall in love with code</p>
-
-<p>-If you give 100% you will change.</p>
-
-<p><em>Programmer(s) of the day</em></p>
-
-<ul>
-<li><p><a href="http://www.sdsc.edu/ScienceWomen/lovelace.html">Ada Lovelace</a></p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/Charles_Babbage">Charles Babbage and the difference machine</a></p></li>
-</ul>
-
-
-<p><em>CSS Selectors</em></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#elements, #links{
-</span><span class='line'> padding: 25px 0 15px 0;
-</span><span class='line'>}
-</span><span class='line'>#elements h2{
-</span><span class='line'>  font-size: 2em;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Git</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># git remote add &lt;remote name&gt; &lt;link&gt;
-</span><span class='line'>♕ git remote add group git@github.com:ajonas04/etcetc.com.git</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git fetch 
-</span><span class='line'>git co #not ever changing the state of any branch
-</span><span class='line'>git pull
-</span><span class='line'>git branch -a #shows all local branches
-</span><span class='line'>git branch #shows all the remotes</span></code></pre></td></tr></table></div></figure>
-
-
-<p>can get pull requests from forks as well as the head repo</p>
-
-<p>always want to deal with potential conflicts in the feature branch rather than on master</p>
-
-<p><em>rebase</em> take these commits from master and put them in the right place of x feature branch</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git rebase master
-</span><span class='line'>git co master
-</span><span class='line'>git merge add-profile-rexfeng --no-ff #=&gt; merge made by recursive strategy
-</span><span class='line'>git push</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If it&#8217;s forked:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git rebase upstream/master</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Git rainbow is not good.</p>
-
-<p>squashing commits</p>
-
-<p>go into my fork as a remote</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add ajonas04 git@github.com:ajonas04/students.flatironschool.com.git
-</span><span class='line'>git fetch ajonas04
-</span><span class='line'>git co feature-push
-</span><span class='line'>git rebase origin/master #resolve 
-</span><span class='line'>git rebase --continue</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git reset --hard HEAD #=&gt; reset to the state of the repo at the last commit in the repo
-</span><span class='line'>git branch -D add_profile_page</span></code></pre></td></tr></table></div></figure>
-
-
-<p>interactive rebase</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git rebase master -i
-</span><span class='line'>#provide a file that shows all the commits in it</span></code></pre></td></tr></table></div></figure>
-
-
-<p>no fastforward versus fastforward
--maintains the fact that you were once on your own branch</p>
-
-<p>recursion and fast forward
-checkout the branch</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git add . #will ADD all files that haven't been previously committed as well as change modified files
-</span><span class='line'>git commit -am 'message' #will change files, but not add new ones
-</span><span class='line'>git commit -m 'message' #will just add a message</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Workflow to pull down the most updated verison:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git fetch upstream
-</span><span class='line'>♕ git rebase upstream/master
-</span><span class='line'>First, rewinding head to replay your work on top of it...
-</span><span class='line'>error: The following untracked working tree files would be overwritten by checkout:
-</span><span class='line'>  .DS_Store
-</span><span class='line'>  images/.DS_Store
-</span><span class='line'>Please move or remove them before you can switch branches.
-</span><span class='line'>Aborting
-</span><span class='line'>could not detach HEAD
-</span><span class='line'>[19:02:04] (master) students.flatironschool.com
-</span><span class='line'>♕ rm .DS_Store
-</span><span class='line'>♕ rm images/.DS_Store
-</span><span class='line'>♕ git rebase upstream/master
-</span><span class='line'>♕ git add aviflombaum.html
-</span><span class='line'>♕ git rebase --continue
-</span><span class='line'>♕ subl .</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/10/01/podcasts/">Podcasts</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-01T11:26:00-04:00" pubdate data-updated="true">Oct 1<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://feeds.feedburner.com/se-radio">Software Engineer Radio</a></p>
-
-<ul>
-<li><p><a href="http://www.se-radio.net/2007/04/episode-52-dsl-development-in-ruby/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+se-radio+%28Software+Engineering+Radio%29&amp;utm_content=FeedBurner">DSL Dev in ruby</a></p></li>
-<li><p><a href="http://www.se-radio.net/2008/06/episode-102-relational-databases/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+se-radio+%28Software+Engineering+Radio%29&amp;utm_content=FeedBurner">relation DBs</a></p></li>
-<li><p><a href="http://www.se-radio.net/2009/06/episode-137-sql-with-jim-melton/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+se-radio+%28Software+Engineering+Radio%29&amp;utm_content=FeedBurner">SQL</a></p></li>
-<li><p><a href="http://www.se-radio.net/2009/08/episode-143-api-design-with-jim-des-rivieres/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+se-radio+%28Software+Engineering+Radio%29&amp;utm_content=FeedBurner">API Design</a></p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/10/01/cheatsheets/">Cheat Sheets</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-01T11:17:00-04:00" pubdate data-updated="true">Oct 1<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://richardjh.org/blog/sqlite3-cheat-sheet/">SQLite3 cheat sheet</a></p>
-
-<p><a href="http://rogerdudler.github.com/git-guide/">Git cheat sheet</a>
-<a href="http://ndpsoftware.com/git-cheatsheet.html">Interactive Git cheatsheet</a></p>
-
-<p><a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/">Markdown language cheat sheet</a>
-<a href="http://packetlife.net/media/library/16/Markdown.pdf">Another markdown language cheat sheet</a></p>
-
-<p><a href="http://blog.wiemann.name/mongoid-cheat-sheet">Mongoid cheat sheet</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/09/29/kent-beck/">Kent Beck</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-29T23:34:00-04:00" pubdate data-updated="true">Sep 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://blog.iterate.no/2012/06/20/programming-like-kent-beck/">http://blog.iterate.no/2012/06/20/programming-like-kent-beck/</a></p>
-
-<p><a href="http://pragprog.com/screencasts/v-kbtdd/test-driven-development">TDD vids with Kent Beck</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/09/28/ruby-rogue-notes/">Ruby Rogue Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-28T19:57:00-04:00" pubdate data-updated="true">Sep 28<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>DCI
-data, context, interactions</p>
-
-<p><a href="http://en.wikipedia.org/wiki/Dunbar's_number">Dunbar number</a></p>
-
-<p><a href="http://piotrsarnacki.com/2010/06/18/rails-internals-railties/">Railties</a></p>
-
-<p><a href="http://blog.plataformatec.com.br/2012/06/why-your-web-framework-should-not-adopt-rack-api/">Why not to adopt Rack</a></p>
-
-<p><a href="http://vimeo.com/22053820">Design video dealing with irrational customers</a></p>
-
-<p><a href="http://weblog.rubyonrails.org/2012/3/21/strong-parameters/">Strong parameters</a></p>
-
-<p>Git blame- you can annotate the file with git blame to see when each line of the method was last edited and by whom</p>
-
-<p><a href="http://www.screenr.com/QOd">Amazing prices at priceline</a></p>
-
-<p><a href="http://timelessrepo.com/haters-gonna-hateoas">HATEOAS</a>
-Contrast with SOA (Service Oriented Architecture)</p>
-
-<p>Domain model pattern versus active record</p>
-
-<p><a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">Execution in the kindom of nouns</a></p>
-
-<p>TO READ:
-<a href="https://github.com/avdi/keyword_params">keyword params code</a></p>
-
-<p><a href="http://vimeo.com/42622511">hashrocket lunch and learn</a></p>
-
-<p><a href="http://objectsonrails.com/#sec-1">Avdi Grimm- Objects on rails</a></p>
-
-<p><a href="http://www.amazon.com/Restful-Web-Services-Leonard-Richardson/dp/0596529260">RESTful Webservices</a></p>
-
-<p>Reading for when I am grown up:
-<a href="http://www.amazon.com/gp/product/0136301045/ref=as_li_ss_tl?ie=UTF8&amp;tag=chamaxwoo-20&amp;linkCode=as2&amp;camp=217145&amp;creative=399373&amp;creativeASIN=0136301045">Class Construction in C and C++: Object-Oriented Programming Fundamentals</a></p>
-
-<p>Gems:
-carrierwave over paperclip <a href="https://www.ruby-toolbox.com/search?utf8=%E2%9C%93&amp;q=carrierwave">carrierwave</a>
-Kaminari over will_paginate
-<a href="http://railscasts.com/episodes/254-pagination-with-kaminari">Pagination with Kaminari</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/09/26/learn-sql-the-hard-way/">Learn Sql the Hard Way</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-26T12:53:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Schema:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ sqlite3 ex3.db .schema
-</span><span class='line'>/* OR */
-</span><span class='line'>♕ sqlite3 ex3.db
-</span><span class='line'>SQLite version 3.7.7 2011-06-25 16:35:1
-</span><span class='line'>Enter ".help" for instructions
-</span><span class='line'>Enter SQL statements terminated with a ";"
-</span><span class='line'>sqlite&gt; .schema
-</span><span class='line'>CREATE TABLE person (
-</span><span class='line'>  id INTEGER PRIMARY KEY,
-</span><span class='line'>  first_name TEXT,
-</span><span class='line'>  last_name TEXT,</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In the first line I just make ex3.db from the ex2.sql file. Then I add the -echo argument to sqlite3 so that it prints out what it is doing. After that the data is in the database and ready to query.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sqlite3 ex3.db &lt; ex2.sql
-</span><span class='line'>$ sqlite3 -echo ex3.db &lt; ex3.sql 
-</span><span class='line'>INSERT INTO person (id, first_name, last_name, age)
-</span><span class='line'>    VALUES (0, "Zed", "Shaw", 37);
-</span><span class='line'>INSERT INTO pet (id, name, breed, age, dead) 
-</span><span class='line'>    VALUES (0, "Fluffy", "Unicorn", 1000, 0); 
-</span><span class='line'>INSERT INTO pet VALUES (1, "Gigantor", "Robot", 1, 1);</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Important</strong>
-Always remember this: SQL ONLY KNOWS TABLES. In programming you deal in graphs and in SQL you deal in tables. They&#8217;re related concepts, but the mental model is different.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/* I only want some columns from pet so I am explicit rather than using the '*' */
-</span><span class='line'>SELECT pet.id, pet.name, pet.age, pet.dead
-</span><span class='line'>/* To connect person and pet I use the person_pet JOIN table */
-</span><span class='line'>  FROM pet, person_pet, person
-</span><span class='line'>  WHERE
-</span><span class='line'>      #connect person and pet by the related id columns
-</span><span class='line'>      #now the DB can search for only the rows where the ID columns all match
-</span><span class='line'>  pet.id = person_pet.pet_id AND
-</span><span class='line'>      #connect person and person_pet in the same way
-</span><span class='line'>  person_pet.person.id = person.id AND
-</span><span class='line'>      #ask for only the pets that I own
-</span><span class='line'>  person.first_name = "Adam";</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Delete</strong>
-DELETE is like SELECT but it removes rows from the table.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>DELETE FROM pet WHERE id IN (
-</span><span class='line'>  SELECT pet.id
-</span><span class='line'>  FROM pet, person_pet, person
-</span><span class='line'>  WHERE
-</span><span class='line'>  person.id = person_pet.person_id AND
-</span><span class='line'>  pet.id = person_pet.pet.id AND
-</span><span class='line'>  person.first_name = "Zed"
-</span><span class='line'>);
-</span><span class='line'>
-</span><span class='line'>  SELECT * FROM pet; 
-</span><span class='line'>  SELECT * FROM person_pet;
-</span><span class='line'>  
-</span><span class='line'>  DELETE FROM person_pet
-</span><span class='line'>      WHERE pet_id NOT IN ( 
-</span><span class='line'>          SELECT id FROM pet
-</span><span class='line'>      );
-</span><span class='line'>  
-</span><span class='line'>  SELECT * FROM person_pet;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The WHERE clause uses an IN to match the id columns in pet to the table that&#8217;s returned in the subquery. The subquery (also called a subselect) is then a normal SELECT.</p>
-
-<p>How SQL does this is with the following process:
-1. Runs the subquery in the parenthesis at the end and build a table with all the columns just like a normal SELECT.
-2. Treats this table as a kind of temporary table to match pet.id columns against.
-3. Goes through the pet table and deletes any row that has an id IN this temporary table.</p>
-
-<p><em>REPLACE</em></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/* We can force it by doing an INSERT OR REPLACE. */ 
-</span><span class='line'>INSERT OR REPLACE INTO person (id, first_name, last_name, age) 
-</span><span class='line'>    VALUES (0, 'Frank', 'Smith', 100);
-</span><span class='line'>
-</span><span class='line'>SELECT * FROM person; 
-</span><span class='line'>
-</span><span class='line'>/* And shorthand for that is just REPLACE. */ 
-</span><span class='line'>REPLACE INTO person (id, first_name, last_name, age) 
-</span><span class='line'>    VALUES (0, 'Zed', 'Shaw', 37);</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>DROP TABLE</em></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  /* Only drop table if it exists. Use the IF EXISTS modifier and the table will be dropped only if it's already there. This suppresses the error you get when running you .sql script on a fresh database that has no tables. */
-</span><span class='line'> DROP TABLE IF EXISTS person;
-</span><span class='line'>   
-</span><span class='line'>  /* Create again to work with it. */
-</span><span class='line'>  CREATE TABLE person ( 
-</span><span class='line'>      id INTEGER PRIMARY KEY,
-</span><span class='line'>      first_name TEXT,
-</span><span class='line'>      last_name TEXT, 
-</span><span class='line'>      age INTEGER
-</span><span class='line'>  );
-</span><span class='line'>   
-</span><span class='line'>  /* Rename the table to peoples. */ 
-</span><span class='line'>  ALTER TABLE person RENAME TO peoples;
-</span><span class='line'>   
-</span><span class='line'>  /* Add a hatred column to peoples. */ 
-</span><span class='line'>  ALTER TABLE peoples ADD COLUMN hatred INTEGER;
-</span><span class='line'>     
-</span><span class='line'>  /* Rename peoples back to person. */
-</span><span class='line'>  ALTER TABLE peoples RENAME TO person; 
-</span><span class='line'>  
-</span><span class='line'>  .schema person
-</span><span class='line'> 
-</span><span class='line'>  /* We don't need that. */
-</span><span class='line'>  DROP TABLE person;</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/09/24/rspec/">RSpec</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-24T13:21:00-04:00" pubdate data-updated="true">Sep 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;has no brains&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>  <span class="c1">#modifier is should</span>
-</span><span class='line'>  <span class="c1">#matcher is the less than sign</span>
-</span><span class='line'>  <span class="n">zombie</span><span class="o">.</span><span class="n">brains</span><span class="o">.</span><span class="n">should</span> <span class="o">&lt;</span> <span class="mi">1</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Matchers and Modifiers</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s1">&#39;Ash&#39;</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">alive</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">false</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">rotting</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">true</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should</span> <span class="o">&gt;</span> <span class="mi">5</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should</span> <span class="o">&gt;=</span> <span class="mi">5</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should</span> <span class="o">&lt;</span> <span class="mi">5</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should_not</span> <span class="o">==</span> <span class="mi">5</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Predicate &#8216;be&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Tweet</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;without a leading @ symbol should be public&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">tweet</span> <span class="o">=</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">status</span><span class="p">:</span> <span class="s1">&#39;Nom nom nom&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">tweet</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">should</span> <span class="n">be_true</span>
-</span><span class='line'>    <span class="c1">#this is equivalent to tweet.status.should == true</span>
-</span><span class='line'>    <span class="c1">#the predicate is a better way though</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Mark as Pending</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;is named Ash&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#to mark it as pending</span>
-</span><span class='line'><span class="n">xit</span> <span class="s2">&quot;is named Ash&quot;</span> <span class="k">do</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#OR</span>
-</span><span class='line'><span class="n">it</span> <span class="s2">&quot;is named Ash&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">pending</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Should be</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Tweet</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;truncates the status to 140 characters&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">tweet</span> <span class="o">=</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">status</span><span class="p">:</span> <span class="s1">&#39;Nom nom nom&#39;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
-</span><span class='line'>    <span class="c1"># notice the space between the &#39;should&#39; and &#39;be&#39;</span>
-</span><span class='line'>    <span class="n">tweet</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">should</span> <span class="n">be</span> <span class="o">&lt;=</span> <span class="mi">140</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Installing RSpec</p>
-
-<figure class='code'><figcaption><span>Should be</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rspec</span>
-</span><span class='line'><span class="n">rspec</span> <span class="o">--</span><span class="n">init</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#in rails</span>
-</span><span class='line'><span class="n">rails</span> <span class="n">generate</span> <span class="n">rspec</span><span class="ss">:install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Matchers: include</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;includes a tweet&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">tweet</span> <span class="o">=</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tweets</span><span class="p">:</span> <span class="o">[</span><span class="n">tweet</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Matchers: have</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#this</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">weapons</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">2</span>
-</span><span class='line'><span class="c1">#is better written as</span>
-</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">have</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">weapons</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;increases the number of tweets&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Ash&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="s2">&quot;Arrrgggggggghhhhh&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">have</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tweets</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#can also have</span>
-</span><span class='line'><span class="n">have</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</span><span class='line'><span class="n">have_at_least</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</span><span class='line'><span class="n">have_at_most</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Expect Block and Change Methods</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;gains 3 IQ points by eating brains&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>    <span class="n">expect</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span> <span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">change</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="p">}</span><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#can also use</span>
-</span><span class='line'><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</span><span class='line'><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</span><span class='line'><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</span><span class='line'><span class="c1">#and they can be chained</span>
-</span><span class='line'><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Raise_error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;raises a Zombie::NotSmartEnoughError if not able to make a decision&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>    <span class="n">expect</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">make_decision!</span> <span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">raise_error</span><span class="p">(</span>
-</span><span class='line'>      <span class="no">StandardError</span>
-</span><span class='line'>      <span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#these modifiers also work</span>
-</span><span class='line'><span class="n">to</span>
-</span><span class='line'><span class="n">not_to</span>
-</span><span class='line'><span class="n">to_not</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>More Matchers</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">respond_to</span><span class="p">(</span><span class="n">hungry?</span><span class="p">)</span>
-</span><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_within</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="mi">33</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span>
-</span><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">exist</span>
-</span><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">satisfy</span> <span class="p">{</span> <span class="o">|</span><span class="n">zombie</span><span class="o">|</span> <span class="n">zombie</span><span class="o">.</span><span class="n">hungry?</span> <span class="p">}</span>
-</span><span class='line'><span class="vi">@hungry_zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_kind_of</span><span class="p">(</span><span class="no">Zombie</span><span class="p">)</span> <span class="c1">#Inheritance: HungryZombie &lt; Zombie</span>
-</span><span class='line'><span class="vi">@status</span><span class="o">.</span><span class="n">should</span> <span class="n">be_an_instance_of</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Subject</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#this</span>
-</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should not be a genius&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_genius</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#can be simplified to</span>
-</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should not be a genius&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">subject</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_genius</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#this can be further simplified to</span>
-</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should not be a genius&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1">#implicit subject</span>
-</span><span class='line'>    <span class="n">should_not</span> <span class="n">be_genius</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is only going to work if using a describe block with a class in it&#8230;</p>
-
-<figure class='code'><figcaption><span>it</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">subject</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s1">&#39;Ash&#39;</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>its</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should have an iq of zero&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">subject</span><span class="o">.</span><span class="n">iq</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#can simplify it all the way to</span>
-</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:iq</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>its examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="s1">&#39;Ash&#39;</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:weapons</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">weapon</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:brain</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="n">be_nil</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="s1">&#39;tweet.size&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Refactoring with Context</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">should_not</span> <span class="n">be_genius</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:iq</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should be_genius with high iq&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_genius</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should have a brains_eaten_count of 1 with high iq&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">brains_eaten_count</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#Refactored with context and subject and its</span>
-</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">should_not</span> <span class="n">be_genius</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:iq</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">context</span> <span class="s2">&quot;with high iq&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">subject</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">should</span> <span class="n">be_genius</span> <span class="p">}</span>
-</span><span class='line'>    <span class="n">its</span><span class="p">(</span><span class="ss">:brains_eaten_count</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Let</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:tweet</span><span class="p">)</span> <span class="p">{</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span> <span class="p">}</span>
-</span><span class='line'>      <span class="n">subject</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tweets</span><span class="p">:</span> <span class="o">[</span><span class="n">tweet</span><span class="o">]</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="o">[</span><span class="n">zombie</span><span class="o">]</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>      <span class="c1">#moved zombie to its own let</span>
-</span><span class='line'>      <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:tweets</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:latest_tweet</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="n">tweet</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Let!</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">context</span> <span class="s2">&quot;with high iq&quot;</span> <span class="k">do</span>
-</span><span class='line'>     <span class="n">let!</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Anna&#39;</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>     <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="n">it</span> <span class="s2">&quot;should be returned with genius&quot;</span> <span class="k">do</span>
-</span><span class='line'>       <span class="no">Zombie</span><span class="o">.</span><span class="n">genius</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">zombie</span><span class="p">)</span>
-</span><span class='line'>     <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="n">it</span> <span class="s2">&quot;should have a genius count of 1&quot;</span> <span class="k">do</span>
-</span><span class='line'>       <span class="no">Zombie</span><span class="o">.</span><span class="n">genius</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
-</span><span class='line'>     <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Hooks</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span>
-</span><span class='line'><span class="n">before</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span>
-</span><span class='line'><span class="n">after</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span>
-</span><span class='line'><span class="n">aftter</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">hungry!</span> <span class="p">}</span>
-</span><span class='line'><span class="c1">#by default, a before clock runs each time before an example is about to run</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>Before Hook</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is not a dummy zombie&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_dummy</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is a genius zombie&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_genius</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1"># refactored as</span>
-</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is not a dummy zombie&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_dummy</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is a genius zombie&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_genius</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">context</span> <span class="s1">&#39;with a dummy zombie&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="p">}</span>
-</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">should</span> <span class="n">be_dummy</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">context</span> <span class="s1">&#39;with a smart zombie&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">}</span>
-</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">should_not</span> <span class="n">be_dummy</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Shared Examples</h3>
-
-<figure class='code'><figcaption><span>Shared Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#used to call shared examples</span>
-</span><span class='line'><span class="n">it_behaves_like</span> <span class="s1">&#39;yada yada yada&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#refers to the implicit subject</span>
-</span><span class='line'><span class="n">shared_examples_for</span> <span class="s1">&#39;the undead&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;does not have a pulse&#39;</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">subject</span><span class="o">.</span><span class="n">pulse</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">false</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1794,23 +1113,23 @@ DELETE is like SELECT but it removes rows from the table.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/10/23/gregg-pollack/">Gregg Pollack</a>
+        <a href="/blog/2012/10/26/fis-day17/">FIS Day17</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/10/23/3-reasons-to-quit-your-stupid-job-and-learn-to-code/">3 reasons to quit your job and learn to code</a>
+        <a href="/blog/2012/10/25/fis-day16/">FIS Day16</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/10/23/fis-day14/">FIS Day14</a>
+        <a href="/blog/2012/10/24/ruby-motion/">Ruby Motion</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/10/22/personal-design-patterns/">Personal Design Patterns and Gotchas</a>
+        <a href="/blog/2012/10/24/interview-questions/">Interview Questions</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/10/21/fis-day13/">FIS Day13</a>
+        <a href="/blog/2012/10/24/minitest-spec/">MiniTest::Spec</a>
       </li>
     
   </ul>
@@ -1818,8 +1137,9 @@ DELETE is like SELECT but it removes rows from the table.</p>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/fis/'>FIS (10)</a></li>
+    <li class='category'><a href='/blog/categories/fis/'>FIS (14)</a></li>
 <li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
+<li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
 <li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
 <li class='category'><a href='/blog/categories/agile/'>agile (1)</a></li>
 <li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
@@ -1849,6 +1169,7 @@ DELETE is like SELECT but it removes rows from the table.</p>
 <li class='category'><a href='/blog/categories/lambda/'>lambda (1)</a></li>
 <li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
+<li class='category'><a href='/blog/categories/minitest/'>minitest (1)</a></li>
 <li class='category'><a href='/blog/categories/modules/'>modules (1)</a></li>
 <li class='category'><a href='/blog/categories/mongodb/'>mongoDB (1)</a></li>
 <li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
@@ -1862,19 +1183,20 @@ DELETE is like SELECT but it removes rows from the table.</p>
 <li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
-<li class='category'><a href='/blog/categories/rails/'>rails (14)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (15)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
 <li class='category'><a href='/blog/categories/reading/'>reading (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
-<li class='category'><a href='/blog/categories/rspec/'>rspec (1)</a></li>
+<li class='category'><a href='/blog/categories/rspec/'>rspec (2)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (22)</a></li>
+<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (1)</a></li>
 <li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
 <li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
 <li class='category'><a href='/blog/categories/sinatra/'>sinatra (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
-<li class='category'><a href='/blog/categories/testing/'>testing (2)</a></li>
+<li class='category'><a href='/blog/categories/testing/'>testing (4)</a></li>
 
   </ul>
 </section>

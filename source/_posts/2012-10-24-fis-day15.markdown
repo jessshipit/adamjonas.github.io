@@ -1,0 +1,133 @@
+---
+layout: post
+title: "FIS Day15"
+date: 2012-10-24 09:41
+comments: true
+categories: FIS
+---
+
+Refactoring ruby by Jay Fields
+
+###POTD###
+Apache - most popular web server that powers 57% of the internet
+68% of the top 100 sites use apache
+
+LAMP - linux, apache, mysql, php
+
+[Rob McCool](http://en.wikipedia.org/wiki/User:Hobart/Robert_McCool)
+
+Named after Apache Native American tribe and also "A patchy server" 
+
+[code_swarm](http://code.google.com/p/codeswarm/)
+
+###Code Review###
+CLI- 
+The only thing that should be rescued are exceptional errors...
+- rescuing a non-exceptional search item.
+```ruby
+begin
+  # runs the code
+rescue
+  #resuces an error
+end
+```
+
+- [defensive programming](http://en.wikipedia.org/wiki/Defensive_programming)
+- [introspection](http://eimers.blogspot.com/2008/02/reflection-vs-introspection.html) - look in the DB and see what attributes I have
+- when something changes, you just need to trickle that change to a bunch of different places.
+
+```
+PRAMA table_info(students);
+#returns the headers of the table
+```
+
+###Debugger###
+gives you debugger prompt- type irb which will allow you to drop into IRB with the objects all ready loaded
+
+###Methods###
+
+- ??inject() do |incrementer, another param|
+  - it is the result of the block that keeps getting passed along.
+      - #needs review
+
+- ??each_with_object
+  - This needs review, passes in the object as the second argument, inject is the first. There is little diff other than that.
+
+- send(string_or_a_symbol, data[i])
+
+###Code Review###
+[jquery masonry](http://masonry.desandro.com/)
+
+dynamic dispatching
+
+**use the database to find stuff for you, not ruby**
+
+raw_results
+
+```ruby Send method example
+def self.new_from_db(raw_results)
+  Programmer.new.tap do |p|
+    raw_results.each_with_index do |a,i|
+      p.send("#{a}=", a[i]) #name of the attribute, value of the attribute
+    end
+  end
+end
+```
+**program with the initialize method or better yet, build on top of the new object**
+
+- drop db or just drop table? USE: database cleaner gem- drop the data (truncate it)
+
+- the .included method at the bottom of the module is like a callback or hook
+
+##Rails Lecture##
+- the rails command inside the the rails app folder is very different than outside the folder...
+
+- bundler - we call it a bundle, because it is a bundle of dependencies
+
+- all ruby web applications will respond to a rack application...
+- ActiveRecord is for relational databases (not MongoDB for example)
+
+###MVC###
+Models are our objects the CRUD
+**Models are always SINGULAR**
+
+Controller are about ferrying data from one place to another-> just business logic
+
+Views are display logic -> present data
+
+###Other Files###
+lib dir:
+
+  - for any modules that made my classes autocompletable for all songs and users
+   - anything that isn't part of the request cycle
+
+Public dir:
+
+ - whatever you put in the public dir will automatically be served (that is why it worked in sinatra)
+
+###Resources###
+a resource means that you have a model, controller, and a view
+
+###Migrations###
+apply any migrations all changes that have not been previously been uncommitted
+```
+rake db:migrate
+``` 
+rake is included in the standard library
+
+###TDD###
+[see](/blog/2012-10-24-test-driven-development)
+
+###Ruby###
+```ruby Hash.new
+@item = Hash.new(0) 
+#when something is instantiated its value will be 0
+@item = {0}
+```
+
+"anytime you see a private method you see a new class yearning to be born"
+
+```ruby Ruby Magic
+[1,2,3] & [3,4,5] #=> [3]
+[1,2,3] | [3,4,5] #=> [1,2,3,4,5]
+```

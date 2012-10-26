@@ -1,0 +1,186 @@
+---
+layout: post
+title: "FIS Day16"
+date: 2012-10-25 09:39
+comments: true
+categories: FIS rails
+---
+###POTD###
+Linus Torvalds
+
+##Rails##
+rails assigns attr_accessors 
+
+```ruby Active Record Queries
+song.limit(2).last #=> this is the second to last song
+Song.find(1)
+Song.find_by_name
+Song.find_by_anyattrributename
+Song.find_all_by_name #=> sweet
+```
+
+###ORM ~> Object Relational Mapping###
+- **A ruby class is to a databse table as instances of that class are to a row in that table**
+  - the form field should map to the column name
+- activerecord's exists to accomplish CRUD
+- active record pattern [proposed by Martin Fowler](http://books.google.com/books?id=FyWZt5DdvFkC&lpg=PA1&dq=Patterns%20of%20Enterprise%20Application%20Architecture%20by%20Martin%20Fowler&pg=PT187#v=onepage&q=active%20record&f=false)
+
+```ruby Persistence
+new_song = Song.new
+new_song.persisted? #=> false
+new_song.new_record? #=> true
+new_song.save
+new_song.persisted? #=> true
+new_song.new_record? #=> false
+```
+```ruby ORM Awareness
+new_song.name = "new"
+s.changed? #=> true
+s.changes #=> {"name=> ["whatever", "new"]}
+s.name_changed? #=> true
+s.duration_changed #=> false
+```
+```ruby
+song.destroy #=> will destroy the record
+song.delete #=> don't use this for now
+```
+
+###REST###
+Identification of a resource
+Individual resources that are identified in the requests, for example using the URIs sin web-based REST systems.
+
+REST- the url address should mirror the http verb and url action
+
+- *What do you mean by a representation?*
+ - these objects have different representations depending on their name
+ - .xml should return the xml and .json and return the json
+ - the objects should be devoid of your form until you ask for them
+
+###Routes###
+```ruby Routes File syntax
+get '/welcome' => 'application#welcome'
+# same as ApplcationController.welcome
+=> {controller => 'application', :action => 'welcome'}
+resources :songs #is a macro that is calling 7 methods for you
+```
+
+- the routes file are evaluated with lazy evaluation. Which allows you to put the most specific patterns on top and let them trickle down...
+- 7 restful routes: get, create, update, delete, show, etc. 
+- *url endpoint*- the very last thing that is executed after a url request- the last application run is the action in the controller
+
+- **URL request cascade through a rails app:**
+  1. web server gets request
+  2. send it through the rack
+  3. last stop, routes file
+  4. match a  route
+  5. request = SongContoller.new
+  6. response = request.index
+
+Rails was the first to have implicit rendering...
+```ruby Implicit Rendering
+def index
+  @index = Song.all
+end
+#this will implicitly render the index page
+#could also add ~> render 'artist/index' <~ which will over-write the implicitly render
+#'artist/index' is a method called on self
+```
+
+class variable can inherit down the inheritance tree
+a class instance var is private to the class
+
+```ruby 
+def initialize
+    @songs = []
+    @genres = []
+    Artist.all << self??
+  end
+```
+
+VPS- Virtual Private server
+
+Linux distribution - ubuntu
+server - nginx
+unicorn
+DB- postgres
+
+###Visualization###
+- how does a partition actually work?
+  - 2 cores or 4 cores?? i don't know what a core is.
+- hardware usually out-paces software
+  - we have had *multi-core processors* before we had software to take advantage of it.
+- vocab:
+  - slice, a box, a vps, are pretty much synonymous
+
+- dediserve is the server we are using
+- RAM has fast access. 
+- [capistrano](http://vimeo.com/15882917)
+
+
+```
+ssh root@96.8ipaddress
+#will get an error saying that you can't connect
+#say yes
+#next insert your password: 
+
+#create a new user instead of root
+useradd #to get access to instructons
+man useradd
+useradd -m -s /bin/bash -G sudo ajonas
+#sudo says anyone in sudo group can use sudo adam
+#userdel will delete a user
+
+passwd ajonas
+#enter password:
+ssh root@96.8ipaddress will get you in
+
+sudo apt-get update #for updating indexes and downloading packages, like homebrew
+sudo apt-get upgrade
+build-apt-install build-essential
+
+#install your packages with apt-get
+```
+
+###Capistrano###
+- handles your [release management](http://en.wikipedia.org/wiki/Release_management) throw the entire code base on your server every time you deploy. Copy code off of Github or server and apply it. This will maintain revisions, roll back easily, compile the CSS in your assets. It can't happen manually.
+```
+cap deploy
+```
+will do this for you. It's script-able and automatic.
+
+- This is run locally. 
+- cap is what you use to interact with capistrano from the outside (like rails new from outside a rails project)
+- capify is how you interact with the gem (like rails generate inside the project folder)
+
+###Web Servers###
+- apache was the market leader for best of breed of web server
+- ngenx - can handle lots of requests and tries to stay really small
+  - has much smaller memory footprint
+  - has some features that are better suited for rails 
+  - ngenx is also a really good load balancer
+  - config file is much easier to understand than ngenx
+
+- Four functions in the config/deploy.rb DSL
+  - set: capistrano variables
+  - role: 
+
+###Further reading###
+- backups
+- log rotations - when your log gets too big, it is going to zip it up and send it to some long term storage. The first thing hackers will do is go through the logs.
+
+###Reading in prep:###
+- Capistrano reads its instructions from a capfile.
+- many server clusters are hidden behind NATs (Network address translation) and firewalls, to prevent direct access. 
+  - NATs - the process of modifying IP address information in IP packet headers while in transit across a traffic routing device.
+- Tasks are the foundation of a Capistrano setup; collections of tasks are typically called Recipes.
+- Daemons are special system applications which typically execute continuously in the background and await requests for the functions they provide from other applications. 
+
+- *From lowest to highest, the layers of the internet protocol suite are:*
+1. The link layer (commonly Ethernet) contains communication technologies for a local network.
+2. The internet layer (IP) connects local networks, thus establishing internetworking.
+3. The transport layer (TCP) handles host-to-host communication.
+4. The application layer (for example HTTP) contains all protocols for specific data communications services on a process-to-process level (for example how a web browser communicates with a web server).
+
+- Stateless firewalls require less memory, and can be faster for simple filters that require less time to filter than to look up a session.
+
+- Modern firewalls can filter traffic based on many packet attributes like source IP address, source port, destination IP address or port, destination service like WWW or FTP. 

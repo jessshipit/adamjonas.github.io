@@ -3,7 +3,7 @@ layout: post
 title: "3 reasons to quit your job and learn to code"
 date: 2012-10-23 13:38
 comments: true
-categories: 
+categories: FIS
 ---
 
 In the first five minutes of my first programming class I knew I was in trouble. I didn't know what a method was. I didn't know what an array was. My teacher babbled on about controllers and TCP packets as I nervously glanced around wondering if I was the only with that terrible pit in my stomach.
@@ -21,6 +21,6 @@ Unless you are the beneficiary of exceptional privilege, you probably wish that 
 **3. You don't have to be a leecher anymore...**
 Since my Dad first popped in that AOL floppy disk around 1995, I have been a consumer of the internet. I've sucked down untold hours of [baseball news](http://mlb.com) and [dog videos](http://gawker.com/5952338/had-a-ruff-day-this-dog-video-is-guaranteed-to-improve-your-mood). [{% img right /images/aoldisk.jpg 250 AOL Floppy %}](http://www.flickr.com/photos/alanchan/) I've used web applications to communicate with my family, conduct business, and plan my social life. I've logged onto the internet nearly every day of the second-half of my life. I decided last year that I was done being a suck on the system. [Mldraft](http://mldraft.com) was my first attempt to contribute something and it wasn't great. The experience did, however, fundamentally change my perspective on being a consumer. I'll be a leecher no more and neither should you.
 
->"The time for ideas is over."  - [Joe Devenuta, Flatiron School '12](https://twitter.com/dhh)
+>"The time for ideas is over."  - [Joseph Devenuta, Flatiron School '12](https://twitter.com/dhh)
 
-There are so many resources to get started. There are limitless [online tutorials](http://ajonas.herokuapp.com/blog/2012/10/10/code-school-vs-treehouse-vs-code-academy/) and [Meetups](http://www.meetup.com/nyc-on-rails/). You don't need to be a math whiz or a hermit to be a programmer. If you have ever learned a foreign language; if you have ever spent hours at a time mastering a song on guitar; if you have ever spent a full afternoon improving your free-throw you can learn to code. [Do it.](http://www.youtube.com/watch?v=4npR4QZp_5M)
+There are so many resources to get started. There are limitless [online tutorials](/blog/2012/10/10/code-school-vs-treehouse-vs-code-academy/) and [Meetups](http://www.meetup.com/nyc-on-rails/). You don't need to be a math whiz or a hermit to be a programmer. If you have ever learned a foreign language; if you have ever spent hours at a time mastering a song on guitar; if you have ever spent a full afternoon improving your free-throw you can learn to code. [Do it.](http://www.youtube.com/watch?v=4npR4QZp_5M)
