@@ -4,7 +4,7 @@
   <title><![CDATA[Category: errors | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/errors/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-10-26T16:33:16-04:00</updated>
+  <updated>2012-11-03T13:22:14-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -20,7 +20,7 @@
     <id>http://ajonas.herokuapp.com/blog/2012/07/18/the-clues-errors-provide</id>
     <content type="html"><![CDATA[<p>When you get a stack trace and it's part of rails you can ignore it because you created the file NOT rails.</p>
 
-<p>``` ruby Here's the code in the sessions controller
+<p>```ruby Here's the code in the sessions controller
 def create</p>
 
 <pre><code>user = User.find_by_email_address(params[:email_address])
@@ -28,14 +28,16 @@ if user &amp;&amp; user.authenticate(params[:password])
  #blah blah blah
 </code></pre>
 
-<p>  end
-<code>
-</code> ruby The Error
-undefined method `authenticate' for nil:NilClass
-```
-This means that the method was called on a receiver that is nil. Meaning that it's not the right object...</p>
+<p>  end</p>
 
-<p>``` ruby Here's the code in the sessions controller
+<h1>ERROR</h1>
+
+<p>undefined method `authenticate' for nil:NilClass
+```
+This means that the method was called on a receiver that is nil. Meaning that <strong>the receiver not the right object or it's nil</strong></p>
+
+<p><strong>Undefined Method:</strong>
+```ruby Here's the code in the sessions controller
 def create</p>
 
 <pre><code>user = User.find_by_email_address(params[:email_address])
@@ -43,13 +45,23 @@ if user &amp;&amp; user.magic(params[:password])
 #blah blah blah
 </code></pre>
 
-<p>end
-```</p>
+<p>end</p>
 
-<p><code>ruby The Error
-undefined method `magic' for #&lt;User:0x007fa35e3e2fe8&gt;
-</code>
-This means that the method magic doesn't exist for that object.</p>
+<h1>The Error</h1>
+
+<p>undefined method `magic' for #&lt;User:0x007fa35e3e2fe8>
+```
+<strong>The method magic doesn't exist for that object.</strong></p>
+
+<p><strong>Expected an object but got an attribute in the form of a string, array, etc.</strong>
+<code>ruby AssociationTypeMismatch
+ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750)
+</code></p>
+
+<p><strong>This means that you have entered an infinite loop. e.g. you have called something on itself.</strong>
+<code>ruby
+SystemStackError: stack level too deep
+</code></p>
 
 <h3>DB Errors</h3>
 
@@ -62,9 +74,6 @@ This means that the method magic doesn't exist for that object.</p>
 <li>When you can't save it, send it '.save!' and it will throw off the errors.</li>
 </ul>
 
-
-<p>"SystemStackError: stack level too deep"
-This means that you have entered an infinite loop. e.g. you have called something on itself.</p>
 ]]></content>
   </entry>
   

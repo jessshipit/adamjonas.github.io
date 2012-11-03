@@ -1,0 +1,187 @@
+---
+layout: post
+title: "FIS Day18"
+date: 2012-11-01 13:42
+comments: true
+categories: FIS
+---
+###POTD
+- Edsgar Dijkstra
+  - inventor of structured programming
+  - came up with "for, while, until, case"
+  - computer science is not about machines and equipment management
+ 
+ - If you use more of a bad tool, it won't fix it.
+  >About the use of language; it is impossible to sharpen a pencil with a blunt axe. It is equally vain to try to do it with ten blunt axes instead.
+       
+  - Programming is just about communicating clearly.
+  - Once it is teachable it is concrete.
+
+###Ruby Tidbit
+```ruby Semi-Colon Deliminates a Line
+def create;end
+#the semi-colon deliminates the info on two lines
+```
+
+##Rails Lecture
+```ruby link to unless current
+<%= link_to_unless_current %> #this is slick for nav!
+```
+
+**Routes**
+```ruby Routes File
+match '/name' => 'songs#name'
+#not as specific and therefore as good as
+get '/name' => 'songs#name'
+
+get 'site/about' #rails will assume that site is the controller and about is the action
+```
+
+```ruby Generate a Controller
+rails generate controller CreditCard open debit credit close
+#this will create a credit_card_controller with 4 actions
+```
+??have to delete rm-rf public/index.html
+
+```ruby Rendering Templates
+class Sessions Controller < ApplicationController
+
+render :action
+render :template
+#in practice
+render 'under_construction' #this is the action in the sessions controller
+render 'shared/under_construction' #this is a full relative path
+#and more instructional of where to find the template
+```
+
+###Private and public methods
+```ruby Private Method e.g.
+class Dog
+  def bark
+    case stomach_volume
+    when :very
+      puts "woof woof!"
+    when :not_at_all
+      puts "woof"
+    end
+  end
+
+private #it would also break if this was protected.
+
+  def stomach_volume
+    :very
+  end
+end
+
+fido = Dog.new
+fido.stomach_volume #this is not going to work.
+```
+private, public, and protected all create keyword scope -> created limited, predicted interfaces
+
+if a method is private it can only be called on an implicit receiver- can't call call on an explicit receiver
+
+**protected** -> can only be called on self.
+
+```ruby When Private Methods Become Useful in the Controller
+class SomeController
+
+def new
+  under_construction
+end
+
+def create
+  under_constructions
+end
+
+private
+
+def under_construction
+  render 'shared/under_construction'
+end
+
+end
+```
+
+###In the migration
+  - def change for when the reverse can be assumed
+  - def up and down for things like renaming columns -> because rails wouldn't be able to infer what the reverse would be.
+
+  - t.timestamps - is a created at and updated at
+
+###Signups
+when you login, you are creating a session between you and the website.
+when you signup you are creating a user on their system-- that lives in their DB
+```ruby Routes
+get '/signup' => 'users#new'
+post '/signup' => 'users#create'
+```
+
+**Mass assignment => when you assign initialization properties during assingment.**
+
+- Migrations 
+  - define and edit schema
+
+- Models -ORM
+  - insert rows /update
+  - database
+
+- Routes
+  maps URLs to actions in the controller
+
+- controllers
+  - contains the business logic
+
+- views
+  - the actual interface
+
+-> In sinatra the routes are built into controllers.
+
+```ruby This must be how form_for works
+def form_for(obj, &block)
+  f = FormBuilder.new(obj)
+  yield f
+end
+```
+
+*In your controller helper...*
+```ruby Rolling My Own Form Builder
+<%= form_for(@song, :builder = > SongHelper::SongForm) %>
+#in the controller helper
+
+module SongsHelper
+  class SongForm < ActionView::Helpers::FormBuilder
+
+    def full_name_field
+      label(:first_name) + 
+      text_field :first_name
+
+      label(:last_name) + 
+      text_field :last_name
+    end
+  end
+end
+```
+Customizing the forms and encapsulate in the controller helpers...
+
+###Test::Unit to RSpec
+
+change out the libraries
+add rspec to the gem file
+rip out test folder
+
+rails g install rspec
+
+[changing from minitest to rspec](http://stackoverflow.com/questions/9884033/ruby-on-rails-switch-from-test-unit-to-rspec) [or](http://stackoverflow.com/questions/5072662/how-to-remove-unit-test-and-replace-it-with-rspec)
+
+
+"when i generated the scaffold, it generated the specs for me..."
+
+###Posting Info to an object
+1. instantiate an instance
+2. collect the form data
+3. and you populate the instance attribute with the proper data
+
+If I want to use form_for I need an active record instance.
+
+###Read this...
+[Understand parameter naming conventions](http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions)

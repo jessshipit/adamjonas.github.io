@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-10-26T16:33:16-04:00</updated>
+  <updated>2012-11-03T13:22:14-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Accepts Nested Attributes For]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/10/31/accepts-nested-attributes-for/"/>
+    <updated>2012-10-31T16:14:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/10/31/accepts-nested-attributes-for</id>
+    <content type="html"><![CDATA[<p>So accepts nested attributes is really about writing to an attribute of a class.</p>
+
+<p>In my case a location belongs_to a user. I was then trying to set the location.street1 through the user, but it wouldn't write. This is because it needs the accepts_nested_attributes method in the model.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[FIS Day16]]></title>
@@ -528,245 +539,6 @@ validates :name, :uniqueness => { :scope => :song_id}
 
 <p>try to reduce abstraction
 -actually need to debug the problem at hand</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 5- Rails]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails/"/>
-    <updated>2012-07-22T14:18:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/22/lecture-5-rails</id>
-    <content type="html"><![CDATA[<p>HOMEWORK:</p>
-
-<p>In the migration:
-``` ruby In the migration
-def change
-  add_column :songs, :album_id, :integer</p>
-
-<h1>should probably make the below code in the rake tasks (in seed/tasks)</h1>
-
-<p>  songs = Song.all</p>
-
-<p>  songs.each do |s|</p>
-
-<pre><code>album= Album.find_or_create_by_name(s.album_name.string)
-#update those songs to relate to that album
-puts "UPdating song #{s.id} to album #{album.id}..."
-s.album= album
-s.save
-</code></pre>
-
-<p>  end
-  remove_column :songs, :album_name
- end
-end
-```</p>
-
-<p>Some other methods:</p>
-
-<p>find_each method: look it up in guides <a href="http://guides.rubyonrails.org/active_record_querying.html">here</a>.
-find_each yields each individual object one at a time
-find_in_batches it yields songs</p>
-
-<p>in the seeds file:
-``` ruby Examples
-aretha = Song.create :name => "Aretha Franklin"
-respect = aretha.songs.build :name => "Respect"
-aretha.save</p>
-
-<h1>many to one, the reverse of above</h1>
-
-<p>monster = Song.create :name => "Monster"
-monster.build_artist name => "Kanye West"
-monster.save</p>
-
-<p>aretha.songs &lt;&lt; Song.new(:name => "Natural Woman")</p>
-
-<h1>unintentional performance issue here because it loads the full array</h1>
-
-<h1>in order to push one song into it</h1>
-
-<p>kanye = Artist.find_by_name => "Kanye West"
-kanye.songs &lt;&lt; Song.new(:name => "Home")</p>
-
-<p>michael = Artist.create :name => "Michael Jackson"</p>
-
-<p>michael.songs &lt;&lt; ("Black and white", "Thriller", "beat it").collect do |song_name|</p>
-
-<h1>need collect instead of each method b/c need the return</h1>
-
-<p>  song.create :name => song_name
-end</p>
-
-<p>michael.songs.delete(Song.find_by_name("Black and white", "Thriller", "beat it"))
-end
-```</p>
-
-<p>This will output the log output of the rake tasks:
-<code>
-tail -f log/development.log
-</code></p>
-
-<p>update the forms in the application (2:50)</p>
-
-<p>Shortcut: cmd D shortcut to highlight similar words to edit</p>
-
-<p>errors:
-when you get a stack trace and it's part of rails you can ignore it because you created the file NOT rails.</p>
-
-<h3>has_many :through</h3>
-
-<p>(2:58)
-artists have many albums through their songs
-- a many to many association</p>
-
-<p>if a model has 2 :belongs_to associations means that it is a join table
-even though it is a join model is has all the same behaviors as a has_many assoc</p>
-
-<p>INNER JOIN is SQL:
-The INNER JOIN keyword return rows when there is at least one match in both tables.</p>
-
-<h3>Foreign Key/ belongs_to RULE</h3>
-
-<p>if it belongs_to xyz it is a foreign key. if it is a foreign key than it belongs_to xyz.</p>
-
-<p>``` ruby Seeds File from the lab
-  avi = User.create :name => "Avi"
-  favorites = Mixtape.create :name => "Avi's favs"</p>
-
-<p>  avi.mixtapes &lt;&lt; favorites</p>
-
-<p>  black_and_white = michael.songs.first
-  black_and_white.genres.build #when it's a many it is genres.build
-  #singular is build_genre
-  black_and_white.save</p>
-
-<p>  favorites.songs &lt;&lt; black_and_white
-  favorites.mixtape_songs.build :song => Song.find_by_name("Thriller")
-  #(4:34)
-  #if you understand :belongs_to and has_many it doesn't matter if it's a :through</p>
-
-<p>  UserMixtape.create(</p>
-
-<pre><code>:user =&gt; User.create(:name =&gt; "Roland"),
-:mixtape =&gt; favorites
-)
-</code></pre>
-
-<p>```</p>
-
-<h3>Forms</h3>
-
-<p><strong>How do we build forms that give users the same abilities we have through forms?</strong>
-If a field name end in an [], it will allow multiple fields and rails will treat it as unique values and glob them together in a params array (4:46)
-- If you want to have multiple fields anem it with an empty array</p>
-
-<p>in the mixtapes_controller
-``` ruby
-@mixtape.songs &lt;&lt; Song.find(params[:song_ids])</p>
-
-<h1>this would also work</h1>
-
-<p>params[:song_ids].each do |song_id|
-  @mixtape.mixtape_songs.build :song => song_id
-end
-```</p>
-
-<p>Next level of abstraction up... (4:55)
-in the html we want to pass in:
-mixtape[song_ids][]</p>
-
-<p>??Mass assignment is this accordian of ____
-a writer method implies an attribute of a model
-<strong>Main goal as a programmer</strong> name your data so that it is easily accessbile in params</p>
-
-<p>TODO (5:03)
-HTML:
-scope, attribute, attribute kind</p>
-
-<h3>form_tag helper</h3>
-
-<p>NEXT: <em>A rails implementation: form_tag helper</em>, a low level rails helper
-all these methods do is generate html for you. not all that railsy.
-<code>
-&lt;%= form_tag mixtapes_path do %&gt;
-</code>
-At least we aren't writing HTML here now... this level of implementation gives you lots of flexibility and control but at the expense of maintainability and explicitness.</p>
-
-<h3>form helper builders</h3>
-
-<p><em>html, form_tag helpers family, form helpers in order of low level of abstraction to higher</em>
-want to bind the active record object to the form element
-e.g. text_field, label
-(5:17)
-<code>ruby
-&lt;%= label :mixtape, :name %&gt; #:mixtape represents @mixtape, but rails doesn't support @mixtape
-&lt;%= text_field :mixtape, :name %&gt;
-</code></p>
-
-<h3>form_for</h3>
-
-<p>We want to bind the instance var to the form itself
-- the problem with text_field is that hte form is still built without any knowledge of the active record instance behind the form --> it should be an extension of the object
-- these are the way our scaffolds normally work</p>
-
-<p>form_for method yields a form builderthat knows the model the form is about</p>
-
-<p>mixtape_form.object would return the mixtape object because it has knowledge of the form object</p>
-
-<p>you also get access to <em>fields_for</em> -
-<code>ruby
-mixtape_form.fields_for :mixtape_songs, @mixtape.mixtape_songs.build, :index =&gt; 0 do
-|mixtape_songs_field| #index option will increment them automatically
-  mixtape_songs_fields_for.label :song_id
-  mixtape_songs_fields_for.text_field :song_id
- end
-</code>
-Does your model implement a method called "mixtape_songs_attributes="
-``` ruby
-accepts_nested_attributes_for :mixtape_songs</p>
-
-<h1>builds this method:</h1>
-
-<p> def mixtape_songs_attributes=(attributes)
-   attributes.each do |attribute_has|
-   MixtapeSong.build.attribute_has
- end</p>
-
-<h1>this assigns the attributes of the mixtape_songs</h1>
-
-<h1>this is the same as</h1>
-
-<p>def mixtape_songs_attributes=(attributes)
-   attributes.each do |index, mixtape_song_attributes|</p>
-
-<pre><code> MixtapeSong.new :song_id = mixtape_song_attributes[:song_id]
-</code></pre>
-
-<p>   end
-end
-```</p>
-
-<p><a href="http://masonoise.wordpress.com/2010/07/23/rails-and-forms-using-accepts_nested_attributes_for/">Read</a>
-<a href="http://railscasts.com/episodes/196-nested-model-form-part-1">railscast</a>
-<a href="http://asciicasts.com/episodes/196-nested-model-form-part-1">ascii casts</a></p>
-
-<p><strong>an attribute has a getter and setter method called the name of the attribute</strong></p>
-
-<p>Rails Casts on this subject:
-<a href="http://railscasts.com/episodes/47-two-many-to-many/">Many to Many</a></p>
-
-<p><a href="http://railscasts.com/episodes/73-complex-forms-part-1/">Complex Forms - 1</a></p>
-
-<p><a href="http://railscasts.com/episodes/74-complex-forms-part-2/">Complex Forms - 2</a></p>
-
-<p><a href="http://railscasts.com/episodes/75-complex-forms-part-3">Complex Forms - 3</a></p>
-
-<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested models 1</a></p>
-
-<p><a href="http://railscasts.com/episodes/196-nested-model-form-revised">Nested Models- revised</a></p>
-
-<p><a href="http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html">API reading</a></p>
 ]]></content>
   </entry>
   

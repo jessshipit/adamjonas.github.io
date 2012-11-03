@@ -1,0 +1,134 @@
+---
+layout: post
+title: "FIS Day19"
+date: 2012-11-02 11:57
+comments: true
+categories: FIS
+---
+###Virtual Attributes:
+There are two rails casts on this... [#16](http://railscasts.com/episodes/16-virtual-attributes-revised) and [#167](http://railscasts.com/episodes/167-more-on-virtual-attributes).
+
+###Rails Lecture
+the name attribute of the HTML determines how it is processed by the server
+
+form_vars pass in the query string since it isn't in the 
+
+```ruby [Rack Does the Parsing](http://guides.rubyonrails.org/form_helpers.html#understanding-parameter-naming-conventions)
+Rack::Utils.parse_query "name=fred&phone=0123456789"
+# => {"name"=>"fred", "phone"=>"0123456789"}
+```
+
+```ruby This is NOT mass assignment
+def create
+  @song = Song.new(params[:song].except(:artist_name))
+  @song.artist_name = params[:song][:artist_name] 
+end
+```
+
+###Attribute Accessbile
+  - attr_protected is the opposite of attr_accessbile
+  - attr_protected whitelists everything except the attributes that are explicitly whitelisted
+
+###Associations
+If it has a belongs_to -> you know it has a foreign_key that points to the table it belongs_to
+If it has_many -> you know that that thing has a foreign_key that points to the parent table
+
+```ruby
+Song.all.collect{ |s| s.artist_name}.uniq.each do |a|
+  artist = Artist.create(:name => a )
+  Song.find_all_by_artist_name(a).each do |s|
+    s.artist_id = a.id
+    s.save
+  end
+  #TODO: Refactor to use Song.update_all
+end
+```
+
+expected Artist, but got String
+
+```ruby Assigning the artist to a song
+m = Artist.create(:name => "Mike Jackson")
+s.artist = m
+s.save
+```
+
+```ruby Use Build Not New
+queen.songs.build
+queen.songs.build(:name => "song name")
+#to persist you can save queen OR you can save the song.
+mmm_bop.build_artist(:name => "Hanson")
+```
+
+has_many(name, options = {}, &extension)
+In the documentation the model names are replaced by the word collection. In the docs it shows all the methods that can be called on it. [For example](http://apidock.com/rails/ActiveRecord/Associations/ClassMethods/has_many)
+  
+  - Note: collection is replaced with the symbol passed as the first argument, so has_many :clients would add among others clients.empty?.)
+
+>Build is to new, as create is to create
+
+  - There is no Artist.build, but there is an Artist.create
+
+?? could you add a macro that ran a migration to add the id for the belongs_to table 
+
+##Seed Task
+The push method returns an array of all the objects in the array while the build method just returns that one song that you are building...
+
+From the many it is songs.build and from the belongs it is song.build_artist
+
+You can skip the save on the one to many save...
+
+build is alias to new.
+
+delete is for nullifying associations
+destroy is for destroying objects
+
+Look at end of file for clearing artists and songs.
+
+```ruby Seed Task
+desc "Create a bunch of seed data for artists and songs"
+
+task :seed_artists_and_songs => [:environment, :clear_artists_and_songs] do
+  # Build Song Off Artist
+  # Given a Song called R.E.S.P.E.C.T
+  # build the Aretha Franklin Artist
+
+  s = Song.create(:name => "R.E.S.P.E.C.T")
+  s.build_artist(:name => "Aretha Franklin")
+  s.save
+  
+  #Create an Artist
+  #Build a Song for that Artist
+  #Save the Artist
+  a = Artist.new
+  a.songs.build(:name => "Natural Woman")
+  a.save
+  #from the many it is songs.build and from the belongs it is song.build_artist
+
+
+  # Build a Song for that Artist
+  # build song Natural Woman
+
+  # Manually Create Artist Kanye West
+
+  # Push a Song Onto an Artist
+  # push a song onto Kanye West
+
+  # Create Michael Jackson Artist
+  # Make 3 Michael Jackson Songs
+  # push all songs by Michael Jackson
+  mike = Artist.create(:name => "MJ")
+  mike.songs << [Song.new, Song.new, Song.new]
+
+  # Delete one michael song off of michael
+  # Remove a Song from Artist
+  mike.songs.delete(mike.songs.first) # this won't destroy the object, it will delete the association
+
+end
+
+task :clear_artists_and_songs => [:environment] do
+  puts "Deleting all Artists and Songs...."
+
+  Artist.delete_all
+  Song.delete_all
+end
+```

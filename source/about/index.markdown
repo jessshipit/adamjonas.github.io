@@ -7,7 +7,7 @@ sharing: false
 footer: true
 ---
 
-**I also live at...**
+#I also live at...#
 
 * [github](https://github.com/ajonas04)
 
@@ -19,3 +19,7 @@ footer: true
 
 * [StackOverflow](http://stackoverflow.com/users/1496757/a-jonas)
 
+
+###Stuff Everyone should read...###
+  - [Learnable Programming](http://worrydream.com/LearnableProgramming/)
+  - [How I Explained REST to My Wife](http://tomayko.com/writings/rest-to-my-wife)

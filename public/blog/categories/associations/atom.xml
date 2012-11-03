@@ -4,7 +4,7 @@
   <title><![CDATA[Category: associations | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/associations/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-10-26T16:33:16-04:00</updated>
+  <updated>2012-11-03T13:22:14-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -21,7 +21,8 @@
     <content type="html"><![CDATA[<h3>Polymorphism</h3>
 
 <ul>
-<li>“is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour.” (wikipedia)
+<li>Nouns are resources and polymorphism is "a geeky way of saying that different nouns can have the same verb applied to them." <a href="http://tomayko.com/writings/rest-to-my-wife">(how I explained REST to my wife)</a></li>
+<li>"is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour." (wikipedia)
 -is a language feature that allows the same function call to be associated with different definitions during the same execution, by delaying the binding of the call to run-time. <a href="http://cs.calvin.edu/curriculum/cs/214/adams/labs/10/">here</a></li>
 </ul>
 
@@ -136,6 +137,74 @@ has_many :comments, :as => :commentable</p>
 There is a video on this <a href="http://www.youtube.com/watch?v=vEo6hmHTvS4">here</a>.</p>
 
 <p><a href="http://robots.thoughtbot.com/post/159809241/whats-the-deal-with-rails-polymorphic-associations">The beginning of this is worth a read</a>... even if it's from 2006.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[association station]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/07/20/association-station/"/>
+    <updated>2012-07-20T17:30:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/07/20/association-station</id>
+    <content type="html"><![CDATA[<p>4.1.2.2 :class_name</p>
+
+<blockquote><p>If the name of the other model cannot be derived from the association name, you can use the :class_name option to supply the model name. For example, if an order belongs to a customer, but the actual name of the model containing customers is Patron, you’d set things up this way:</p></blockquote>
+
+<p><a href="http://guides.rubyonrails.org/association_basics.html">From the assoication guide</a>
+<code>ruby
+class Order &lt; ActiveRecord::Base
+  belongs_to :customer, :class_name =&gt; "Patron"
+end
+</code></p>
+
+<h3>One-to-many relationships</h3>
+
+<blockquote><p>The most common relationship used when creating relational databases.  A row in a table in a database can be associated with one or (likely) more rows in another table.  An example of a one-to-many relationship is a single order has many items on that order.  And since relationships work both ways it is not uncommon to hear reference to many-to-one-relationships as well.</p></blockquote>
+
+<ul>
+<li>most common kind
+<a href="http://www.maakal.com/maakalDB/ERD_Examples2.htm">e.g.</a></li>
+</ul>
+
+
+<h3>One-to-one relationship</h3>
+
+<blockquote><p>A row in a table is associated to one and only one row in another table.  An example of a one-to-one relationship is a person can have one social security number and a social security number can only be assigned to one person.</p></blockquote>
+
+<ul>
+<li>In most cases there is no need for a one-to-one relationship as the contents of the two tables can be combined into one table.</li>
+</ul>
+
+
+<p><a href="http://www.maakal.com/maakalDB/ERD_Examples.htm">e.g.</a></p>
+
+<h3>Many-to-many relationships</h3>
+
+<blockquote><p>When one or more rows in a table are associated with one or more rows in another table.  An example of a many-to-many relationship is a table of customers can purchase many products and many customers can purchase a product.</p></blockquote>
+
+<p><a href="http://help.filemaker.com/app/answers/detail/a_id/9922/~/understanding-and-creating-many-to-many-relationships-in-filemaker-pro">Source</a></p>
+
+<h3>Self joins</h3>
+
+<p>In designing a data model, you will sometimes find a model that should have a relation to itself. For example, you may want to store all employees in a single database model, but be able to trace relationships such as between manager and subordinates. This situation can be modeled with self-joining associations:
+```ruby
+class Employee &lt; ActiveRecord::Base
+  has_many :subordinates, :class_name => "Employee",</p>
+
+<pre><code>:foreign_key =&gt; "manager_id"
+</code></pre>
+
+<p>  belongs_to :manager, :class_name => "Employee"
+end
+```
+With this setup, you can retrieve @employee.subordinates and @employee.manager</p>
+
+<p>There is another rails cast on <a href="http://railscasts.com/episodes/163-self-referential-association">self-referential-association</a>. Ryan Bates is amazing.</p>
+
+<ul>
+<li>Reading:
+<a href="http://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420">patterns of enterprise application architecture</a></li>
+</ul>
+
 ]]></content>
   </entry>
   

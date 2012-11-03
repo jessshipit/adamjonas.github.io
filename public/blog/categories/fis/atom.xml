@@ -4,7 +4,7 @@
   <title><![CDATA[Category: FIS | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/fis/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-10-26T16:33:16-04:00</updated>
+  <updated>2012-11-03T13:22:14-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,449 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day19]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/11/02/fis-day19/"/>
+    <updated>2012-11-02T11:57:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/11/02/fis-day19</id>
+    <content type="html"><![CDATA[<h3>Virtual Attributes:</h3>
+
+<p>There are two rails casts on this... <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">#16</a> and <a href="http://railscasts.com/episodes/167-more-on-virtual-attributes">#167</a>.</p>
+
+<h3>Rails Lecture</h3>
+
+<p>the name attribute of the HTML determines how it is processed by the server</p>
+
+<p>form_vars pass in the query string since it isn't in the</p>
+
+<p>```ruby <a href="http://guides.rubyonrails.org/form_helpers.html#understanding-parameter-naming-conventions">Rack Does the Parsing</a>
+Rack::Utils.parse_query "name=fred&amp;phone=0123456789"</p>
+
+<h1>=> {"name"=>"fred", "phone"=>"0123456789"}</h1>
+
+<p>```</p>
+
+<p><code>ruby This is NOT mass assignment
+def create
+  @song = Song.new(params[:song].except(:artist_name))
+  @song.artist_name = params[:song][:artist_name]
+end
+</code></p>
+
+<h3>Attribute Accessbile</h3>
+
+<ul>
+<li>attr_protected is the opposite of attr_accessbile</li>
+<li>attr_protected whitelists everything except the attributes that are explicitly whitelisted</li>
+</ul>
+
+
+<h3>Associations</h3>
+
+<p>If it has a belongs_to -> you know it has a foreign_key that points to the table it belongs_to
+If it has_many -> you know that that thing has a foreign_key that points to the parent table</p>
+
+<p>```ruby
+Song.all.collect{ |s| s.artist_name}.uniq.each do |a|
+  artist = Artist.create(:name => a )
+  Song.find_all_by_artist_name(a).each do |s|</p>
+
+<pre><code>s.artist_id = a.id
+s.save
+</code></pre>
+
+<p>  end
+  #TODO: Refactor to use Song.update_all
+end
+```</p>
+
+<p>expected Artist, but got String</p>
+
+<p><code>ruby Assigning the artist to a song
+m = Artist.create(:name =&gt; "Mike Jackson")
+s.artist = m
+s.save
+</code></p>
+
+<p>```ruby Use Build Not New
+queen.songs.build
+queen.songs.build(:name => "song name")</p>
+
+<h1>to persist you can save queen OR you can save the song.</h1>
+
+<p>mmm_bop.build_artist(:name => "Hanson")
+```</p>
+
+<p>has_many(name, options = {}, &amp;extension)
+In the documentation the model names are replaced by the word collection. In the docs it shows all the methods that can be called on it. <a href="http://apidock.com/rails/ActiveRecord/Associations/ClassMethods/has_many">For example</a></p>
+
+<ul>
+<li>Note: collection is replaced with the symbol passed as the first argument, so has_many :clients would add among others clients.empty?.)</li>
+</ul>
+
+
+<blockquote><p>Build is to new, as create is to create</p></blockquote>
+
+<ul>
+<li>There is no Artist.build, but there is an Artist.create</li>
+</ul>
+
+
+<p>?? could you add a macro that ran a migration to add the id for the belongs_to table</p>
+
+<h2>Seed Task</h2>
+
+<p>The push method returns an array of all the objects in the array while the build method just returns that one song that you are building...</p>
+
+<p>From the many it is songs.build and from the belongs it is song.build_artist</p>
+
+<p>You can skip the save on the one to many save...</p>
+
+<p>build is alias to new.</p>
+
+<p>delete is for nullifying associations
+destroy is for destroying objects</p>
+
+<p>Look at end of file for clearing artists and songs.</p>
+
+<p>```ruby Seed Task
+desc "Create a bunch of seed data for artists and songs"</p>
+
+<p>task :seed_artists_and_songs => [:environment, :clear_artists_and_songs] do
+  # Build Song Off Artist
+  # Given a Song called R.E.S.P.E.C.T
+  # build the Aretha Franklin Artist</p>
+
+<p>  s = Song.create(:name => "R.E.S.P.E.C.T")
+  s.build_artist(:name => "Aretha Franklin")
+  s.save</p>
+
+<p>  #Create an Artist
+  #Build a Song for that Artist
+  #Save the Artist
+  a = Artist.new
+  a.songs.build(:name => "Natural Woman")
+  a.save
+  #from the many it is songs.build and from the belongs it is song.build_artist</p>
+
+<p>  # Build a Song for that Artist
+  # build song Natural Woman</p>
+
+<p>  # Manually Create Artist Kanye West</p>
+
+<p>  # Push a Song Onto an Artist
+  # push a song onto Kanye West</p>
+
+<p>  # Create Michael Jackson Artist
+  # Make 3 Michael Jackson Songs
+  # push all songs by Michael Jackson
+  mike = Artist.create(:name => "MJ")
+  mike.songs &lt;&lt; [Song.new, Song.new, Song.new]</p>
+
+<p>  # Delete one michael song off of michael
+  # Remove a Song from Artist
+  mike.songs.delete(mike.songs.first) # this won't destroy the object, it will delete the association</p>
+
+<p>end</p>
+
+<p>task :clear_artists_and_songs => [:environment] do
+  puts "Deleting all Artists and Songs...."</p>
+
+<p>  Artist.delete_all
+  Song.delete_all
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day18]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/11/01/fis-day18/"/>
+    <updated>2012-11-01T13:42:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/11/01/fis-day18</id>
+    <content type="html"><![CDATA[<h3>POTD</h3>
+
+<ul>
+<li><p>Edsgar Dijkstra</p>
+
+<ul>
+<li>inventor of structured programming</li>
+<li>came up with "for, while, until, case"</li>
+<li>computer science is not about machines and equipment management</li>
+</ul>
+</li>
+<li><p>If you use more of a bad tool, it won't fix it.</p>
+
+<blockquote><p>About the use of language; it is impossible to sharpen a pencil with a blunt axe. It is equally vain to try to do it with ten blunt axes instead.</p></blockquote></li>
+<li><p>Programming is just about communicating clearly.</p></li>
+<li>Once it is teachable it is concrete.</li>
+</ul>
+
+
+<h3>Ruby Tidbit</h3>
+
+<p>```ruby Semi-Colon Deliminates a Line
+def create;end</p>
+
+<h1>the semi-colon deliminates the info on two lines</h1>
+
+<p>```</p>
+
+<h2>Rails Lecture</h2>
+
+<p><code>ruby link to unless current
+&lt;%= link_to_unless_current %&gt; #this is slick for nav!
+</code></p>
+
+<p><strong>Routes</strong>
+```ruby Routes File
+match '/name' => 'songs#name'</p>
+
+<h1>not as specific and therefore as good as</h1>
+
+<p>get '/name' => 'songs#name'</p>
+
+<p>get 'site/about' #rails will assume that site is the controller and about is the action
+```</p>
+
+<p>```ruby Generate a Controller
+rails generate controller CreditCard open debit credit close</p>
+
+<h1>this will create a credit_card_controller with 4 actions</h1>
+
+<p>```
+??have to delete rm-rf public/index.html</p>
+
+<p>```ruby Rendering Templates
+class Sessions Controller &lt; ApplicationController</p>
+
+<p>render :action
+render :template</p>
+
+<h1>in practice</h1>
+
+<p>render 'under_construction' #this is the action in the sessions controller
+render 'shared/under_construction' #this is a full relative path</p>
+
+<h1>and more instructional of where to find the template</h1>
+
+<p>```</p>
+
+<h3>Private and public methods</h3>
+
+<p>```ruby Private Method e.g.
+class Dog
+  def bark</p>
+
+<pre><code>case stomach_volume
+when :very
+  puts "woof woof!"
+when :not_at_all
+  puts "woof"
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>private #it would also break if this was protected.</p>
+
+<p>  def stomach_volume</p>
+
+<pre><code>:very
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>fido = Dog.new
+fido.stomach_volume #this is not going to work.
+```
+private, public, and protected all create keyword scope -> created limited, predicted interfaces</p>
+
+<p>if a method is private it can only be called on an implicit receiver- can't call call on an explicit receiver</p>
+
+<p><strong>protected</strong> -> can only be called on self.</p>
+
+<p>```ruby When Private Methods Become Useful in the Controller
+class SomeController</p>
+
+<p>def new
+  under_construction
+end</p>
+
+<p>def create
+  under_constructions
+end</p>
+
+<p>private</p>
+
+<p>def under_construction
+  render 'shared/under_construction'
+end</p>
+
+<p>end
+```</p>
+
+<h3>In the migration</h3>
+
+<ul>
+<li>def change for when the reverse can be assumed</li>
+<li><p>def up and down for things like renaming columns -> because rails wouldn't be able to infer what the reverse would be.</p></li>
+<li><p>t.timestamps - is a created at and updated at</p></li>
+</ul>
+
+
+<h3>Signups</h3>
+
+<p>when you login, you are creating a session between you and the website.
+when you signup you are creating a user on their system-- that lives in their DB
+<code>ruby Routes
+get '/signup' =&gt; 'users#new'
+post '/signup' =&gt; 'users#create'
+</code></p>
+
+<p><strong>Mass assignment => when you assign initialization properties during assingment.</strong></p>
+
+<ul>
+<li><p>Migrations</p>
+
+<ul>
+<li>define and edit schema</li>
+</ul>
+</li>
+<li><p>Models -ORM</p>
+
+<ul>
+<li>insert rows /update</li>
+<li>database</li>
+</ul>
+</li>
+<li><p>Routes
+maps URLs to actions in the controller</p></li>
+<li><p>controllers</p>
+
+<ul>
+<li>contains the business logic</li>
+</ul>
+</li>
+<li><p>views</p>
+
+<ul>
+<li>the actual interface</li>
+</ul>
+</li>
+</ul>
+
+
+<p>-> In sinatra the routes are built into controllers.</p>
+
+<p><code>ruby This must be how form_for works
+def form_for(obj, &amp;block)
+  f = FormBuilder.new(obj)
+  yield f
+end
+</code></p>
+
+<p><em>In your controller helper...</em>
+```ruby Rolling My Own Form Builder
+&lt;%= form_for(@song, :builder = > SongHelper::SongForm) %></p>
+
+<h1>in the controller helper</h1>
+
+<p>module SongsHelper
+  class SongForm &lt; ActionView::Helpers::FormBuilder</p>
+
+<pre><code>def full_name_field
+  label(:first_name) + 
+  text_field :first_name
+
+  label(:last_name) + 
+  text_field :last_name
+end
+</code></pre>
+
+<p>  end
+end
+```
+Customizing the forms and encapsulate in the controller helpers...</p>
+
+<h3>Test::Unit to RSpec</h3>
+
+<p>change out the libraries
+add rspec to the gem file
+rip out test folder</p>
+
+<p>rails g install rspec</p>
+
+<p><a href="http://stackoverflow.com/questions/9884033/ruby-on-rails-switch-from-test-unit-to-rspec">changing from minitest to rspec</a> <a href="http://stackoverflow.com/questions/5072662/how-to-remove-unit-test-and-replace-it-with-rspec">or</a></p>
+
+<p>"when i generated the scaffold, it generated the specs for me..."</p>
+
+<h3>Posting Info to an object</h3>
+
+<ol>
+<li>instantiate an instance</li>
+<li>collect the form data</li>
+<li>and you populate the instance attribute with the proper data</li>
+</ol>
+
+
+<p>If I want to use form_for I need an active record instance.</p>
+
+<h3>Read this...</h3>
+
+<p><a href="http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions">Understand parameter naming conventions</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day17andahalf]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/10/31/fis-day17andahalf/"/>
+    <updated>2012-10-31T18:40:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/10/31/fis-day17andahalf</id>
+    <content type="html"><![CDATA[<h3><a href="http://www.rubygeocoder.com/">Geocoder</a></h3>
+
+<p>This gem is amazing. I can calucalate the latitude and longitude of anywhere by an address and so much more. Not surprisingly there is a great <a href="http://railscasts.com/episodes/273-geocoder">railscast</a> on the subject.</p>
+
+<ul>
+<li>Ryan Bates also suggested that I look at <a href="https://github.com/apneadiving/Google-Maps-for-Rails">Google-Maps-for-Rails</a></li>
+</ul>
+
+
+<h3>Authentication</h3>
+
+<p>I had broken the authentication system in my <a href="http://gearshare.herokuapp.com/">gearshare app</a>. <a href="http://railscasts.com/episodes/241-simple-omniauth">Ryan Bates</a> to the rescue once again.</p>
+
+<h3>Sessions Issues</h3>
+
+<p>I was having some trouble killing the session. Avi added this code in the sessions_controller.</p>
+
+<p><code>ruby In the sessions controller
+def destroy
+  session[:user_id] = nil
+  reset_session #this was the key....
+  redirect_to root_url, :notice =&gt; "Signed out!"
+end
+</code></p>
+
+<h3>Git Rebase</h3>
+
+<p>I also rebased a branch using the following command...
+<code>
+$ git rebase master
+</code>
+This rebased the up-to-date master underneath my branch that was ahead by a few commits, but had a broken authentication system. There is a complete explanation of this and more in the <a href="http://git-scm.com/book/en/Git-Branching-Rebasing">git book</a>.</p>
+
+<h3>Stripe</h3>
+
+<p>Met Richard who walked me through the <a href="https://stripe.com/">stripe</a> that makes payments silly easy. Very exciting to integrate this into the bounty open-source idea...</p>
+
+<h3>Podcast</h3>
+
+<p>I should start listening to this... Peter Cooper and Jason Seifer-- it's got to be pretty solid.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[FIS Day17]]></title>
@@ -443,264 +886,6 @@ will do this for you. It's script-able and automatic.</p></li>
 <li><p>The application layer (for example HTTP) contains all protocols for specific data communications services on a process-to-process level (for example how a web browser communicates with a web server).</p></li>
 <li><p>Stateless firewalls require less memory, and can be faster for simple filters that require less time to filter than to look up a session.</p></li>
 <li><p>Modern firewalls can filter traffic based on many packet attributes like source IP address, source port, destination IP address or port, destination service like WWW or FTP.</p></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day15]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/24/fis-day15/"/>
-    <updated>2012-10-24T09:41:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/24/fis-day15</id>
-    <content type="html"><![CDATA[<p>Refactoring ruby by Jay Fields</p>
-
-<h3>POTD</h3>
-
-<p>Apache - most popular web server that powers 57% of the internet
-68% of the top 100 sites use apache</p>
-
-<p>LAMP - linux, apache, mysql, php</p>
-
-<p><a href="http://en.wikipedia.org/wiki/User:Hobart/Robert_McCool">Rob McCool</a></p>
-
-<p>Named after Apache Native American tribe and also "A patchy server"</p>
-
-<p><a href="http://code.google.com/p/codeswarm/">code_swarm</a></p>
-
-<h3>Code Review</h3>
-
-<p>CLI-
-The only thing that should be rescued are exceptional errors...
-- rescuing a non-exceptional search item.
-<code>ruby
-begin
-  # runs the code
-rescue
-  #resuces an error
-end
-</code></p>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Defensive_programming">defensive programming</a></li>
-<li><a href="http://eimers.blogspot.com/2008/02/reflection-vs-introspection.html">introspection</a> - look in the DB and see what attributes I have</li>
-<li>when something changes, you just need to trickle that change to a bunch of different places.</li>
-</ul>
-
-
-<p>```
-PRAMA table_info(students);</p>
-
-<h1>returns the headers of the table</h1>
-
-<p>```</p>
-
-<h3>Debugger</h3>
-
-<p>gives you debugger prompt- type irb which will allow you to drop into IRB with the objects all ready loaded</p>
-
-<h3>Methods</h3>
-
-<ul>
-<li><p>??inject() do |incrementer, another param|</p>
-
-<ul>
-<li>it is the result of the block that keeps getting passed along.
-
-<ul>
-<li><h1>needs review</h1></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>??each_with_object</p>
-
-<ul>
-<li>This needs review, passes in the object as the second argument, inject is the first. There is little diff other than that.</li>
-</ul>
-</li>
-<li><p>send(string_or_a_symbol, data[i])</p></li>
-</ul>
-
-
-<h3>Code Review</h3>
-
-<p><a href="http://masonry.desandro.com/">jquery masonry</a></p>
-
-<p>dynamic dispatching</p>
-
-<p><strong>use the database to find stuff for you, not ruby</strong></p>
-
-<p>raw_results</p>
-
-<p>```ruby Send method example
-def self.new_from_db(raw_results)
-  Programmer.new.tap do |p|</p>
-
-<pre><code>raw_results.each_with_index do |a,i|
-  p.send("#{a}=", a[i]) #name of the attribute, value of the attribute
-end
-</code></pre>
-
-<p>  end
-end
-```
-<strong>program with the initialize method or better yet, build on top of the new object</strong></p>
-
-<ul>
-<li><p>drop db or just drop table? USE: database cleaner gem- drop the data (truncate it)</p></li>
-<li><p>the .included method at the bottom of the module is like a callback or hook</p></li>
-</ul>
-
-
-<h2>Rails Lecture</h2>
-
-<ul>
-<li><p>the rails command inside the the rails app folder is very different than outside the folder...</p></li>
-<li><p>bundler - we call it a bundle, because it is a bundle of dependencies</p></li>
-<li><p>all ruby web applications will respond to a rack application...</p></li>
-<li>ActiveRecord is for relational databases (not MongoDB for example)</li>
-</ul>
-
-
-<h3>MVC</h3>
-
-<p>Models are our objects the CRUD
-<strong>Models are always SINGULAR</strong></p>
-
-<p>Controller are about ferrying data from one place to another-> just business logic</p>
-
-<p>Views are display logic -> present data</p>
-
-<h3>Other Files</h3>
-
-<p>lib dir:</p>
-
-<ul>
-<li>for any modules that made my classes autocompletable for all songs and users</li>
-<li> anything that isn't part of the request cycle</li>
-</ul>
-
-
-<p>Public dir:</p>
-
-<ul>
-<li>whatever you put in the public dir will automatically be served (that is why it worked in sinatra)</li>
-</ul>
-
-
-<h3>Resources</h3>
-
-<p>a resource means that you have a model, controller, and a view</p>
-
-<h3>Migrations</h3>
-
-<p>apply any migrations all changes that have not been previously been uncommitted
-<code>
-rake db:migrate
-</code>
-rake is included in the standard library</p>
-
-<h3>TDD</h3>
-
-<p><a href="/blog/2012-10-24-test-driven-development">see</a></p>
-
-<h3>Ruby</h3>
-
-<p>```ruby Hash.new
-@item = Hash.new(0)</p>
-
-<h1>when something is instantiated its value will be 0</h1>
-
-<p>@item = {0}
-```</p>
-
-<p>"anytime you see a private method you see a new class yearning to be born"</p>
-
-<p><code>ruby Ruby Magic
-[1,2,3] &amp; [3,4,5] #=&gt; [3]
-[1,2,3] | [3,4,5] #=&gt; [1,2,3,4,5]
-</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[3 reasons to quit your job and learn to code]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/23/3-reasons-to-quit-your-stupid-job-and-learn-to-code/"/>
-    <updated>2012-10-23T13:38:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/23/3-reasons-to-quit-your-stupid-job-and-learn-to-code</id>
-    <content type="html"><![CDATA[<p>In the first five minutes of my first programming class I knew I was in trouble. I didn't know what a method was. I didn't know what an array was. My teacher babbled on about controllers and TCP packets as I nervously glanced around wondering if I was the only with that terrible pit in my stomach.</p>
-
-<p>After class, I went up to <a href="http://flatironschool.com/#people">Avi</a> and told him of my situation. He offered two choices: a refund <strong><em>or</em></strong> I could push through and take the class as many times as needed. At this point, I don't think I'll be getting my money back...</p>
-
-<p><a href="http://www.flickr.com/photos/adambindslev/4804939869/sizes/m/in/photostream/"><img class="right" src="/images/bored.jpg" width="250" title="Don't be Boring" ></a></p>
-
-<h2>Why you should consider a change</h2>
-
-<p><strong>1. You probably aren't very happy with your job.</strong>
-There are lots of people who are perfectly happy with their jobs. The chances are, you aren't one of them. I can't believe how many of the people in my life complain about something they spend a minimum of 8 hours a day doing. Few take action to make a change. Don't let your future be defined by inaction.</p>
-
-<p><strong>2. Tech is about as close to a meritocracy as you are going to find.</strong>
-Unless you are the beneficiary of exceptional privilege, you probably wish that people would judge you on your merits rather than your: race, origin, sexual orientation, gender, hairstyle, or the color of your socks. In tech, people actually care about your skills. One's pedigree means little in the absence of substance. It is how life should be. The best teacher <em>should</em> get paid the most. The best actors <em>should</em> get the leading roles. The best candidate <em>should</em> get the job. In tech, this <em>actually</em> happens.</p>
-
-<p><strong>3. You don't have to be a leecher anymore...</strong>
-Since my Dad first popped in that AOL floppy disk around 1995, I have been a consumer of the internet. I've sucked down untold hours of <a href="http://mlb.com">baseball news</a> and <a href="http://gawker.com/5952338/had-a-ruff-day-this-dog-video-is-guaranteed-to-improve-your-mood">dog videos</a>. <a href="http://www.flickr.com/photos/alanchan/"><img class="right" src="/images/aoldisk.jpg" width="250" title="AOL Floppy" ></a> I've used web applications to communicate with my family, conduct business, and plan my social life. I've logged onto the internet nearly every day of the second-half of my life. I decided last year that I was done being a suck on the system. <a href="http://mldraft.com">Mldraft</a> was my first attempt to contribute something and it wasn't great. The experience did, however, fundamentally change my perspective on being a consumer. I'll be a leecher no more and neither should you.</p>
-
-<blockquote><p>"The time for ideas is over."  - <a href="https://twitter.com/dhh">Joseph Devenuta, Flatiron School '12</a></p></blockquote>
-
-<p>There are so many resources to get started. There are limitless <a href="/blog/2012/10/10/code-school-vs-treehouse-vs-code-academy/">online tutorials</a> and <a href="http://www.meetup.com/nyc-on-rails/">Meetups</a>. You don't need to be a math whiz or a hermit to be a programmer. If you have ever learned a foreign language; if you have ever spent hours at a time mastering a song on guitar; if you have ever spent a full afternoon improving your free-throw you can learn to code. <a href="http://www.youtube.com/watch?v=4npR4QZp_5M">Do it.</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day13]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/21/fis-day13/"/>
-    <updated>2012-10-21T19:18:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/21/fis-day13</id>
-    <content type="html"><![CDATA[<blockquote><p>"It is much easier to optimize correct code than it is to correct optimized code."</p></blockquote>
-
-<h3>POTD Uncle Bob</h3>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Robert_Cecil_Martin">Wikipedia</a></li>
-<li><a href="http://agilemanifesto.org/">Agile manifesto</a></li>
-</ul>
-
-
-<h3>Nate Westheimer</h3>
-
-<ul>
-<li>? What kind of startups would you like to work at?</li>
-<li>? Since we are starting with a blank slate, what would you spend your time learning? Mobile? What skills will ensure you will be valuable for the next few years?</li>
-<li>? why choose mysql over other db options, how do you make other architectural decisions since you may not have a bird's eye view?</li>
-<li>? controlling feature creep - where i live based on the photos-- necessary? A: intuition</li>
-</ul>
-
-
-<p><strong>Mentions:</strong></p>
-
-<ul>
-<li><a href="http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html">comparing pictures</a></li>
-<li>imagemagick- gem for manipulating photos</li>
-<li><a href="http://stu.mp/2004/06/a-quick-bitmask-howto-for-programmers.html">bit mask</a></li>
-<li>vertical color palette is spits out top 5 colors out my <a href="http://www.imagemagick.org/script/index.php">imagemagick</a></li>
-<li><a href="http://www.merbivore.com/">merb</a>- a product people love because it's simple</li>
-<li><a href="http://digital-photography-school.com/using-exif-data">exif</a> data in the photos</li>
-<li><a href="http://www.amazon.com/iWoz-Computer-Invented-Personal-Co-Founded/dp/0393330435/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1350920465&amp;sr=1-1&amp;keywords=iwoz">IWOZ</a> by Steve Wozniak</li>
-<li><a href="http://www.amazon.com/Soul-New-Machine-Tracy-Kidder/dp/0316491977">soul of the new machine</a></li>
-</ul>
-
-
-<h3>TDD</h3>
-
-<p>Setup and tear down methods come with every test suite.</p>
-
-<ul>
-<li>CLI application for the dynamic</li>
-<li>test the job board classes, using SQL joins-- class called job and a class called company</li>
-<li>test the student class in the dynamic site</li>
-<li>focus on Sinatra- put a front end on the job board</li>
-<li>find what they scraped and build an end all be all of job scrapers.</li>
 </ul>
 
 ]]></content>

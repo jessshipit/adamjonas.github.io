@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Documenting all this...]]></title>
   <link href="http://ajonas.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-10-26T16:33:16-04:00</updated>
+  <updated>2012-11-03T13:22:14-04:00</updated>
   <id>http://ajonas.herokuapp.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dynamic Dispatching &amp; Send]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/10/29/dynamic-dispatching-and-send/"/>
+    <updated>2012-10-29T15:32:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/10/29/dynamic-dispatching-and-send</id>
+    <content type="html"><![CDATA[<p>Given a file with...
+<code>
+admin : Bill
+title : Rubyland
+topic : Ruby and more
+</code>
+You could build a method that maps the keys and values with dynamic dispatching...
+```ruby</p>
+
+<h1>Load configuration if any</h1>
+
+<p>if conf.rc and File.exists?( conf.rc )
+  YAML.load_file(conf.rc).each do |k,v|</p>
+
+<pre><code>conf.send("#{k}=", v) #the beauty of dynamic dispatching in motion
+</code></pre>
+
+<p>  end
+end
+```
+(this e.g. is from page 68 of the Prag Programmer's Metapramming Book)</p>
+
+<p>```ruby This code needs to be much more DRY
+class Computer
+  def initialize(computer_id, data_source)</p>
+
+<pre><code>@id = computer_id
+@data_source = data_source
+</code></pre>
+
+<p>  end</p>
+
+<p>  def mouse</p>
+
+<pre><code>info = @data_source.get_mouse_info(@id)
+price = @data_source.get_mouse_price(@id)
+result = "Mouse: #{info} ($#{price})"
+return "* #{result}" if price &gt;= 100
+result
+</code></pre>
+
+<p>  end</p>
+
+<p>  def cpu</p>
+
+<pre><code>info = @data_source.get_cpu_info(@id)
+price = @data_source.get_cpu_price(@id)
+result = "Cpu: #{info} ($#{price})"
+return "* #{result}" if price &gt;= 100
+result
+</code></pre>
+
+<p>  end</p>
+
+<p>  def keyboard</p>
+
+<pre><code>info = @data_source.get_keyboard_info(@id)
+price = @data_source.get_keyboard_price(@id)
+result = "Keyboard: #{info} ($#{price})"
+return "* #{result}" if price &gt;= 100
+result
+</code></pre>
+
+<p>  end</p>
+
+<p>  # ...
+end
+```</p>
+
+<p>This is much cleaner
+```ruby Refactored with simple interpolation
+class Computer
+  def initialize(computer_id, data_source)</p>
+
+<pre><code>@id = computer_id
+@data_source = data_source
+</code></pre>
+
+<p>  end</p>
+
+<p>  def self.define_component(name)</p>
+
+<pre><code>define_method(name) do
+  info = @data_source.send "get_#{name}_info", @id
+  price = @data_source.send "get_#{name}_price", @id
+  result = "#{name.to_s.capitalize}: #{info} ($#{price})"
+  return "* #{result}" if price &gt;= 100
+  result
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  define_component :mouse
+  define_component :cpu
+  define_component :keyboard
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ternary Operator]]></title>
+    <link href="http://ajonas.herokuapp.com/blog/2012/10/29/ternary-operator/"/>
+    <updated>2012-10-29T14:21:00-04:00</updated>
+    <id>http://ajonas.herokuapp.com/blog/2012/10/29/ternary-operator</id>
+    <content type="html"><![CDATA[<p>Ternary operators are simply a short form of an if-else statement in one line.</p>
+
+<p>The following sample will print “The variable is 10″ if var is equal to 10. Otherwise it will print “The variable is Not 10″.
+<code>ruby An example
+print “The variable is ” + (var == 10 ? “10″ : “Not 10″)
+</code>
+Ruby evaluates the expression to the left of the question mark. If that expression is true then it returns the expression between the question mark and the colon, if the expression is false, it returns what comes after the colon.
+```ruby Ternary Operator
+age = 15</p>
+
+<h1>will output teenager</h1>
+
+<p>puts (13...19).include?(age) ? "teenager" : "not a teenager"</p>
+
+<h1>can also do assignment</h1>
+
+<p>age = 23
+person = (13...19).include?(age) ? "teenager" : "not a teenager"
+puts person # => "not a teenager"
+```</p>
+
+<p>The part before the question mark is the "if condition". the part behind it is the code to be run if the condition matches. the ":" respresents "else", and the code behind it the code to be run if the condition does not maztch.</p>
+
+<p>```ruby Ternary Operator in the view</p>
+
+<h3>Name:</h3>
+
+
+<p>&lt;% if @user.name %>
+&lt;%= @user.name %>
+&lt;% else %>
+<em>[no name set]</em>
+&lt;% end %></p>
+
+<h1>can be refactored as</h1>
+
+<h3>Name:</h3>
+
+
+<p>&lt;%= @user.name ? @user.name : "<em>[no name set]</em>" %>
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[FIS Day7]]></title>
@@ -321,68 +476,6 @@ p hash  #   =>  {"11"=>11, "7"=>7, "13"=>13, "1"=>1, "3"=>3, "5"=>5}
     <updated>2012-10-06T14:54:00-04:00</updated>
     <id>http://ajonas.herokuapp.com/blog/2012/10/06/assignment1</id>
     <content type="html"><![CDATA[<p><a href="https://gist.github.com/3856174">Assignment 1</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FizzBuzz]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/06/fizzbuzz/"/>
-    <updated>2012-10-06T14:39:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/06/fizzbuzz</id>
-    <content type="html"><![CDATA[<p><a href="https://gist.github.com/3856188">Gist</a></p>
-
-<p>```ruby Slick FizzBuzz
-for i in 0...100</p>
-
-<pre><code>puts (i%3 == 0) ? ((i%5 == 0) ? "FizzBuzz" : "Buzz") : ((i%5 == 0) ? "Fizz" : i)
-</code></pre>
-
-<p>end
-```</p>
-
-<p>Some background of FizzBuzz</p>
-
-<ul>
-<li><a href="http://www.codinghorror.com/blog/2007/02/fizzbuzz-the-programmers-stairway-to-heaven.html">If you can't do FizzBuzz you aren't a programmer</a></li>
-<li><a href="http://www.codinghorror.com/blog/2007/02/why-cant-programmers-program.html">The majority of comp sci grads can't do fizzbuzz</a></li>
-<li><a href="http://dave.fayr.am/posts/2012-10-4-finding-fizzbuzz.html">proper implementations of fizzbuzz</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FISday3]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/05/fisday3/"/>
-    <updated>2012-10-05T16:48:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/05/fisday3</id>
-    <content type="html"><![CDATA[<p>Programs are:</p>
-
-<p><em>idealized components</em>... not bound by degradation of use.</p>
-
-<p><em>infinite complexity</em>... because nothing is stopping us from building it.</p>
-
-<p><em>Method signature</em> is the first line of the method (e.g. def method_name(*arg))</p>
-
-<p><em>Parameters</em> are the adverbs. Parameters allow us to make a method dynamic.</p>
-
-<p>To the computer, there is no difference between a local variable and a method.</p>
-
-<p>'==' => value equality
-'===' => object equality</p>
-
-<p>A computationally efficient language will compile down faster than</p>
-
-<p><em>lazy evaluation</em>- the program will stop as soon as an if or elsif is satisfied. It won't execute any more statements.</p>
-
-<p><a href="http://www.bartleby.com/103/6.html">Ode</a> by Arthur O'Shaughnessy</p>
-
-<p>sqlite 3.4.12 is the first version to support multi-line inserts.</p>
-
-<p>?? Are there languages with more syntactic sugar than ruby?
-?? is it really not possible to write a program in SQL
-Does <a href="http://www.simple-talk.com/blogs/2005/12/30/a-sql-game/">this</a> qualify as a program?
-<a href="http://www.red-gate.com/downloads/CreateTheMazeGame.txt">SQL code:</a></p>
 ]]></content>
   </entry>
   

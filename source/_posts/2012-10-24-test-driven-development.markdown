@@ -10,7 +10,7 @@ categories: TDD rspec testing
 
 *Difference between mock, stub, and fixture?* They are all a mechanisms to decouple data from the database. If your DB is down, you couldn't run your test suite. 
 
-*Fixtures and factories* sort of relate to each other so that you don't have to instantiate a bunch of objects.
+*Fixtures and factories* sort of relate to each other so that you don't have to instantiate a bunch of objects. *Fixtures-* are stable data to be used in the test environment. Fixtures are written in YAML.
 
 *mocks and stubs*: connect to the FB api, but you don't need to, so you create something that responses with canned data like it is the facebook api.
 

@@ -7,7 +7,6 @@ categories: shortcuts
 ---
 
 
-
 shift, cmd, T -- open the last tab closed in chrome and FF
 
 And of course [shortcut foo](https://www.shortcutfoo.com/) is awesome too!
@@ -30,6 +29,7 @@ In Chrome:
 ###Sublime Shortcuts###
 [Good list here](http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/)
 ⌘T or ⌘R will allow you to jump to files really quickly
+option, ⌘, . -> will close an html tag
 
 ###Terminal###
 ⌘K clears the screen
