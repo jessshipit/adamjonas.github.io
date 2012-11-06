@@ -16,3 +16,5 @@ Smalltalk best practice patterns
   - Bastards Book, Github Ruby Style guide, bash guide, 
 
 - [rails ready script](https://github.com/joshfng/railsready)
+
+- [reading list](http://www.codinghorror.com/blog/2004/02/recommended-reading-for-developers.html) from Jeff Atwood

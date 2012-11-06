@@ -5,17 +5,16 @@ date: 2012-10-29 09:25
 comments: true
 categories: 
 ---
-
 change the hotkeys in terminal to switch through the windows like sublime.
 
 How the web works: HTTP and CGI explained
 - cgi vs. api?
 
-- Learn to Program 3
+##Learn to Program 3
   - Required * in the builder label in the f.label and then use validation or create a new tag?
   - :builder argument in form_form
   - <% for award in student award %>
-  - @student.awards.build(params[:id]), diff pattern of new?
+  - @student.awards.build(params[:id])
   - unprocessessbile_entity
   - options_from_collection_for_select helper method
   - how do migrations work with a shared repo... lots of people pushing up. If you run rake db:migrate it can't run other's unapplied migrations. How is this handled?
@@ -28,7 +27,6 @@ How the web works: HTTP and CGI explained
     - standard lifetime to set for a cookie? privacy vs. functionality?
   - <%=h  %> what tag is that with the h in it?
   - CookieStore (rails default -- all the info goes in the session object) vs ActiveRecord SessionStore (just the identifier and the rest in the DB) 
-  - when would you use url_for?
    
   - SQL injection
   - HTML safe is needed in what context? related to cross-site scripting. Why not use in every tag? rails 3 does this automatically?
@@ -38,7 +36,6 @@ How the web works: HTTP and CGI explained
   - whiny_nils
   - rails enterprise, ruby enterprise
   - is sanitize necessary any longer? examples?
-  
 
 - Notes:
   - belongs_to and has_many are method names that take parameters
@@ -54,7 +51,7 @@ How the web works: HTTP and CGI explained
   - dom_id helper lets you put identifiers into HTML documents.
   - before_filter :check_login -> creating a check_login method is the standard way to work on authorization after you have created authentication
   - rake routes | grep root is an easy way to get the route you are looking for.
-  - [globbing](http://guides.rubyonrails.org/routing.html#route-globbing) route extensions using an asterisk. 
+  - [globbing](http://guides.rubyonrails.org/routing.html#route-globbing) route extensions using an asterisk
   - Sprockets started shipping with Rails 3.1 for compiling and serving web assets like javascript and css files.
   - gem 'gemname', '~> 2.11.12' --> only update the last number in the version number
   - gem 'gemname', '>= 2.11.12' --> only load 2.11.12 or higher
@@ -88,7 +85,6 @@ match 'photos/show' => 'photos#show', :via => :get
 Sassy CSS
 $ is for variable names
 & is for nesting
-
 ```
 a {
 color: #0b90834
@@ -100,11 +96,10 @@ color : #DB4327
 #the ampersand means that it is nested in the above class
 ```
 
-
-MIT Lecture:
+###MIT Lecture:
 layer the level of abstraction ~> like Ohm's Law
 
-[How the web works](http://www.garshol.priv.no/download/text/http-tut.html)- reading:
+###[How the web works](http://www.garshol.priv.no/download/text/http-tut.html)- reading:
 
 >Uniform Resource Indicator (URIs) embodies both URLs and URNs
   >Uniform Resource Locator (URLs)- is what you think it is.
@@ -132,7 +127,7 @@ layer the level of abstraction ~> like Ohm's Law
   - If the data can be long (more than 256 characters) it is a bit risky to use GET as the URL can end up being snipped in transit. 
 
 
-- [Symbol video](http://www.youtube.com/watch?v=mBXGBbEbXZY) with Peter Cooper
+###[Symbol video](http://www.youtube.com/watch?v=mBXGBbEbXZY) with Peter Cooper
   - "If the textual context is important, use a string."
   - "If the identity of the object is important use a symbol." - Jim Weirich
 ```ruby
@@ -142,6 +137,7 @@ layer the level of abstraction ~> like Ohm's Law
 words.map(&:upcase) #=> symbol to proc
 ```
 
+###Gem File
 - way to [call a gem in your gemfile](http://gembundler.com/gemfile.html)
 
 ###Guides Reading:###

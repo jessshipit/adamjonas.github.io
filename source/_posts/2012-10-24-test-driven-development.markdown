@@ -13,6 +13,7 @@ categories: TDD rspec testing
 *Fixtures and factories* sort of relate to each other so that you don't have to instantiate a bunch of objects. *Fixtures-* are stable data to be used in the test environment. Fixtures are written in YAML.
 
 *mocks and stubs*: connect to the FB api, but you don't need to, so you create something that responses with canned data like it is the facebook api.
+[See mocks aren't stubs by Martin Fowler](http://martinfowler.com/articles/mocksArentStubs.html)
 
 why does a spec folder hold the tests? This outlines the specifications? 
   - A specification is an explicit set of requirements to be satisfied by a material, product, or service.
@@ -23,11 +24,11 @@ why does a spec folder hold the tests? This outlines the specifications?
 
 only open the browser when you need to focus on UI. Otherwise use tests.
 
-[capybara](https://github.com/jnicklas/capybara) to simulate the user
+- [capybara](https://github.com/jnicklas/capybara) to simulate the user
 factory-girl instead of fixtures -> where you store your factories
-guard
+- guard
 
-integeration_test
+- integeration_test
 
 ```ruby Capybara DSL Methods
 visit login_path

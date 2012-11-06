@@ -16,7 +16,7 @@ Procs and lambdas are basically blocks that have been assigned to variables.
 
 - Need to pass a block in as a parameter when creating a block (even if it is an empty block)
 
-```ruby
+```ruby Procs
 my_proc = Proc.new {}
 #OR
 my_proc = proc {}
@@ -32,7 +32,7 @@ my_proc.call #=> "Hello, "
 my_proc.call("Adam") #=> "Hello, Adam"
 ```
 
-Very standard to pass along a code block to the each method
+It is standard to pass along a code block to the each method
 
 block_given? --> method to check whether a block was given to a method or not
 
@@ -54,7 +54,7 @@ end
 ```
 You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.
 
-``` ruby E.G.
+```ruby E.G.
 Def run_two_procs (a, b)
   a.call
   b.call
@@ -163,17 +163,12 @@ Returns:
 - A proc returns only what is executed INSIDE the proc.
 
 
-[Video](http://www.youtube.com/watch?v=VBC-G6hahWA)
+###SOME MORE READING:
+  - [Skorks- best explanation out there](http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/)
+  - [Learn to program- chapter 10](http://pine.fm/LearnToProgram/?Chapter=10)
+  - [Also](http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html)
+  - [Pragmatic Programmer Dave's explanation](http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html)
 
-[DOCUMENTATION](http://www.ruby-doc.org/core-1.9.3/Proc.html)
-
-
-SOME MORE READING:
-
-<http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/>
-
-[Learns to program- chapter 10](http://pine.fm/LearnToProgram/?Chapter=10)
-
-<http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html>
-
-<http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html>
+###Other Resources
+  - [Video](http://www.youtube.com/watch?v=VBC-G6hahWA)
+  - [DOCUMENTATION](http://www.ruby-doc.org/core-1.9.3/Proc.html)

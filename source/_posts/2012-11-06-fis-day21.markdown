@@ -1,0 +1,141 @@
+---
+layout: post
+title: "FIS Day21"
+date: 2012-11-06 13:57
+comments: true
+categories: FIS
+---
+
+***Generate a model that is singular-- ALWAYS***
+
+'self' means the receiver of this method call
+
+[**never ever have a nested attributes for belongs_to ONLY has has_many**
+](http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/)
+
+```ruby song.rb Model
+Class Song
+
+  def add_genre(genre)
+    genre = Genre.find_or_create_by_name(genre) if genre.is_a?(String) 
+    self.song_genres.create(:genre => genre).genre
+  end
+
+end
+```
+
+```ruby song_spec.rb Unit Test
+require 'spec_helper'
+
+describe Song do
+  context '.add_genre' do
+    before(:each) do
+      let(:song){Song.create(:name => "Thriller")} 
+      let(:genre){Genre.create(:name => "Pop")} #this creates the genre method that executes the block that follows it.
+
+      it "should add the genre" do
+        song.add_genre(genre)
+
+        song.genres.should include(genre)
+      end
+
+      it "should return the newly added genre" do
+        song.add_genre(genre) should == genre #this means it won't return a full array like a push method return
+      end
+
+      it 'should accept an existing genre name do'
+        genre = Genre.create(:name => "Techno")
+        song.add_genre("Techno").should == genre
+      end
+
+      it 'should accept a genre name' do
+        song.add_genre("Pop").should == genre
+      end
+
+      it "should add only unique genres" do
+        #if I add the same genre twice, it should still 
+        song.add_genre(genre)
+        song.add_genre(genre)
+
+        song.genres.count.should == 1
+      end
+
+  end
+end
+```
+Rspec runs its tests in isolation, by running each test in a transaction. After each test, it rollbacks all the writes.
+
+LOGS:
+```
+tail -f #open the end of the file and keep it open. 
+```
+
+If you are building associated data outside of your model, then you haven't encapsulated enough.
+
+- Tests Hierarchy in ascending levels of abstraction
+  - unit tests
+  - controller tests
+  - integration tests
+
+```ruby Controller Test
+require 'spec_helper'
+
+describe SongsController do
+  describe 'POST /songs' do
+
+    it 'should create a song with a name do'
+      post :create, {:song => {:name => "Thriller"}}
+      #create action in the song controller with post or request parameters that you 
+      #want to send along with it
+      
+     # Song.find_by_name("Thriller").should be_true
+     assigns(:song).name.should == "Thriller"
+    end
+
+    it 'should create a song with an artist name'
+      post :create, {:song => {:name => "Thriller", :artist_name => "Michael Jackson"}}}
+      #this makes artist_name a first class citizen in the params hash.
+
+      #we killed this because we are assigning a string, not an artist object--> post :create, {:song => {:name => "Thriller", :artist => {:name => "Michael Jackson"}}} 
+      
+      #create action in the song controller with post or request parameters that you 
+      #want to send along with it
+      
+      #Song.find_by_name("Thriller").should be_true
+      assigns(:song).artist.name.should == "Michael Jackson"
+    end
+
+  end
+end
+```
+
+```ruby song_spec.rb
+context '.artist_name' do
+  it "should have an artist_name method" do
+    song.should respond_to(:artist_name)
+  end
+
+  it 'should return a songs artist' do
+    song.artist = Artist.create(:name => "Michael Jackson")
+    song.artst_name.should == "Michael Jackson"
+  end
+end
+  
+  context '.artist_name=' do
+    it "should assign the artist via the name" do
+      song.artist_name = "Michael Jackson"
+      song.artist.should be_a(Artist)
+      song.artist_name.should == "Michael Jackson"
+    end
+  end
+```
+
+```ruby Song.rb Model
+  def artist_name
+    self.artist.name if self.artist
+  end
+
+  def artist_name=(string)
+    self.artist = Artist.find_or_create_by_name(string)
+  end
+```

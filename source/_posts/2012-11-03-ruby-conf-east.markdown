@@ -20,6 +20,19 @@ Takeaway:
 
 ValueStruct
 
-[flyer talk](http://www.flyertalk.com/)
-[Mile Point](http://milepoint.com/)
-[Ita software](http://www.itasoftware.com/)
+###Hacking 
+- [flyer talk](http://www.flyertalk.com/)
+- [Mile Point](http://milepoint.com/)
+- [Ita software](http://www.itasoftware.com/)
+
+###Jeffrey Baird from [Medivo](http://www.medivo.com/)
+  - rails trained, when do you get to work on mobile? or branch out? 
+  - if they have made a commitment to your learning, and 
+  - [Elm](http://elm-lang.org/) and haskell
+    - [learning elm](https://github.com/evancz/Elm/wiki)
+  - [Online Haskell book](http://learnyouahaskell.com/chapters)
+
+###
+  - [Brian Marick on 4 Challenges and 5 Guiding Values of Agile Software Development](http://www.infoq.com/presentations/4-challenges-5-values)
+  - Listov Substitution
+    - you should be able to take the concreation anywhere an abstraction is used.
