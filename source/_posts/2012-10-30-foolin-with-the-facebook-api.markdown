@@ -29,5 +29,4 @@ Gathering a hash of friends' location wasn't a killer, though it did take some t
 friends_location = get_connections("me", "friends", :fields => "name, id, location")
 ```
 
-
-So I can do much of this using a query string, but I'm not sure how that is quite done with an app. I need some help with this... 
+What I need is a FQL wrapper and to create a lib within my own app that just passes the parameters to the models and emcompasses all the interaction with the external FB open graph.

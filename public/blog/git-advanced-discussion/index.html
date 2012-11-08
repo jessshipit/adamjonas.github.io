@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Git advanced discussion - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Remotes 1
+2
+3
+4
+5
+6
+7
+8
+git remote -v, which shows you the URL that Git has stored for the shortname to be expanded to: $ git remote -v
+origin git:// &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.blog.adamjonas.com/blog/git-advanced-discussion/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.blog.adamjonas.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Git Advanced Discussion</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-08T17:19:00-04:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>Remotes</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote -v, which shows you the URL that Git has stored for the shortname to be expanded to:
+</span><span class='line'>
+</span><span class='line'>$ git remote -v
+</span><span class='line'>origin  git://github.com/schacon/ticgit.git
+</span><span class='line'>
+</span><span class='line'>$ git remote add [shortname] [url]
+</span><span class='line'>$ git remote rm [shortname]
+</span><span class='line'>$ git remote rename [oldname] [new name]</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Fetch</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git fetch [remote-name]</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>It’s important to note that the <strong>fetch</strong> command pulls the data to your local repository — it doesn’t automatically merge it with any of your work or modify what you’re currently working on. You have to merge it manually into your work when you’re ready.</li>
+<li>The <em>git pull</em> command to automatically fetch and then merge a remote branch into your current branch.</li>
+</ul>
+
+
+<h3>Pushes</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git push [remote-name] [branch-name]</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Branches</h3>
+
+<p>You can delete a remote branch using the rather obtuse syntax &#8216;$ git push [remotename] :[branch]&#8217;. If you want to delete your serverfix branch from the server, you run the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git push origin &lt;:branch name&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git branch -d &lt;branch name&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Rebasing</h3>
+
+<p>In Git, there are two main ways to integrate changes from one branch into another: the <em>merge</em> and the <em>rebase.</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase master</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It works by going to the common ancestor of the two branches (the one you’re on and the one you’re rebasing onto), getting the diff introduced by each commit of the branch you’re on, saving those diffs to temporary files, resetting the current branch to the same commit as the branch you are rebasing onto, and finally applying each change in turn.</p>
+
+<p><strong>Important:</strong>
+Do not rebase commits that you have pushed to a public repository.</p>
+
+<h3>Git real review</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git commi­t --ame­nd -m 'addi­ng new' #ammend to last commit
+</span><span class='line'>$ git reset­ --sof­t HEAD^­ #erase last commit and rewind to HEAD
+</span><span class='line'>$ git reset­ --sof­t HEAD^­^ #erase the last TWO commits
+</span><span class='line'>$ git push -u origi­n maste­r #-u to indicate this is the default push for the future
+</span><span class='line'>$ git branc­h -r #show all the branches on the remote
+</span><span class='line'>$ git push origi­n :weas­el #deletes the weasel branch on the remote
+</span><span class='line'>
+</span><span class='line'>$ git remot­e show origi­n #Specify a ­remote to ­see specif­ic informa­tion about­ that remo­te. The gi­t remote c­ommand wil­l show you­ available­ remotes.
+</span><span class='line'>$ git remot­e prune­ origi­n #clean up local repo  
+</span><span class='line'>
+</span><span class='line'>$ git tag #list all tags
+</span><span class='line'>$ git tag -a v1.3.2 -m 'new versi­on' #create new tag
+</span><span class='line'>$ git push --tags
+</span><span class='line'>$ git check­out v1.3.1
+</span><span class='line'>
+</span><span class='line'>$ git rebas­e maste­r 
+</span><span class='line'>
+</span><span class='line'>$ git add -u #stages all new files AS WELL AS deletions
+</span><span class='line'>
+</span><span class='line'>$ git diff maste­r eleph­ant 
+</span><span class='line'>
+</span><span class='line'>$ git log -p #diff and log
+</span><span class='line'>
+</span><span class='line'>$ git confi­g user.email "admi­n@example.­com"
+</span><span class='line'>
+</span><span class='line'>$ git confi­g --glo­bal user.­name "blah­ blah"
+</span><span class='line'>
+</span><span class='line'>$ git confi­g --glo­bal alias­.commit pushi­t </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Questions</h3>
+
+<p>What is a reasonable number of commits per branch?
+How often do you commit?
+Working on the same file&#8230; strategies?
+fast forward vs no fast forward</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-08T17:19:00-04:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>git</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.blog.adamjonas.com/blog/git-advanced-discussion/" data-via="adamcjonas" data-counturl="http://www.blog.adamjonas.com/blog/git-advanced-discussion/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/koans-lessons/" title="Previous Post: Koans Lessons">&laquo; Koans Lessons</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/fis-day4/" title="Next Post: FIS Day4">FIS Day4 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/fis-day23/">FIS Day23</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/fis-day22/">FIS Day22</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/fis-day21/">FIS Day21</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-smells-and-refactoring/">code smells and refactoring</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/anatomy-of-web-requests/">Anatomy of Web Requests</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/fis/'>FIS (26)</a></li>
+<li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
+<li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
+<li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
+<li class='category'><a href='/blog/categories/agile/'>agile (1)</a></li>
+<li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
+<li class='category'><a href='/blog/categories/associations/'>associations (2)</a></li>
+<li class='category'><a href='/blog/categories/authentication/'>authentication (1)</a></li>
+<li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
+<li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
+<li class='category'><a href='/blog/categories/cheatsheet/'>cheatsheet (1)</a></li>
+<li class='category'><a href='/blog/categories/cli/'>cli (1)</a></li>
+<li class='category'><a href='/blog/categories/code/'>code (1)</a></li>
+<li class='category'><a href='/blog/categories/codeschool/'>codeschool (2)</a></li>
+<li class='category'><a href='/blog/categories/css/'>css (1)</a></li>
+<li class='category'><a href='/blog/categories/databases/'>databases (1)</a></li>
+<li class='category'><a href='/blog/categories/design/'>design (1)</a></li>
+<li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (3)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (6)</a></li>
+<li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
+<li class='category'><a href='/blog/categories/heroku/'>heroku (3)</a></li>
+<li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
+<li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
+<li class='category'><a href='/blog/categories/javascript/'>javascript (1)</a></li>
+<li class='category'><a href='/blog/categories/jquery/'>jquery (1)</a></li>
+<li class='category'><a href='/blog/categories/kentbeck/'>kentbeck (1)</a></li>
+<li class='category'><a href='/blog/categories/lambda/'>lambda (1)</a></li>
+<li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
+<li class='category'><a href='/blog/categories/minitest/'>minitest (1)</a></li>
+<li class='category'><a href='/blog/categories/modules/'>modules (1)</a></li>
+<li class='category'><a href='/blog/categories/mongodb/'>mongoDB (1)</a></li>
+<li class='category'><a href='/blog/categories/namespacing/'>namespacing (1)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
+<li class='category'><a href='/blog/categories/omniauth/'>omniauth (1)</a></li>
+<li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
+<li class='category'><a href='/blog/categories/patterns/'>patterns (1)</a></li>
+<li class='category'><a href='/blog/categories/podcasts/'>podcasts (1)</a></li>
+<li class='category'><a href='/blog/categories/postgresql/'>postgresql (1)</a></li>
+<li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
+<li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (18)</a></li>
+<li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
+<li class='category'><a href='/blog/categories/reading/'>reading (2)</a></li>
+<li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
+<li class='category'><a href='/blog/categories/refactoring/'>refactoring (1)</a></li>
+<li class='category'><a href='/blog/categories/rspec/'>rspec (2)</a></li>
+<li class='category'><a href='/blog/categories/ruby/'>ruby (24)</a></li>
+<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (1)</a></li>
+<li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
+<li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
+<li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
+<li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (1)</a></li>
+<li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
+<li class='category'><a href='/blog/categories/testing/'>testing (4)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("adamcjonas", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/adamcjonas" class="twitter-follow-button" data-show-count="false">Follow @adamcjonas</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.blog.adamjonas.com/blog/git-advanced-discussion/';
+        var disqus_url = 'http://www.blog.adamjonas.com/blog/git-advanced-discussion/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

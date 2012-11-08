@@ -16,36 +16,34 @@ rake routes | grep mixtape
 ```
 Will only show the routes that match this resource.
 
-###Indents in text editors###
-cmd [ to move it <- 
-and cmd ] to move it -> in both textmate and sublime
 
-In Chrome:
-⌥⌘I (Command - Option - I) keys to open Developer Tools
-⌥⌘J (Command - Option - J) to open Developer Tools and bring focus to the Console.
-⇧⌘C (Command - Shift - C) to toggle Inspect Element mode.
+###Chrome:
+  - ⌥⌘I (Command - Option - I) keys to open Developer Tools
+  - ⌥⌘J (Command - Option - J) to open Developer Tools and bring focus to the Console.
+  - ⇧⌘C (Command - Shift - C) to toggle Inspect Element mode.
 
 
 ###Sublime Shortcuts###
-[Good list here](http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/)
-⌘T or ⌘R will allow you to jump to files really quickly
-option, ⌘, . -> will close an html tag
+  - [Good list here](http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/)
+  - ⌘T or ⌘R will allow you to jump to files really quickly
+  - option, ⌘, . -> will close an html tag
+  - ⌘P to create a new partial, ⇧⌘P to create and open a new partial ~> need to install this package
 
 ###Terminal###
-⌘K clears the screen
-cmd, shift, -> or <- to move between windows in the terminal
-pwd #=> will output the full path
-~ #=> home directory
+  - ⌘K clears the screen
+  - cmd, shift, -> or <- to move between windows in the terminal
+  - pwd #=> will output the full path
+  - ~ #=> home directory
 
 ###Sublime Text 2###
-⌘shift P allows you to install nearly any package on sublime text 2 
-⌘shift c color picker
-cntrl + shift + . to scroll through .erb [see here](https://github.com/eddorre/SublimeERB)
-⌘shift d - duplicate the line and paste in the line below
-option + cntrl + -> or <- to jump by word
+  - ⌘shift P allows you to install nearly any package on sublime text 2 
+  - ⌘shift c color picker
+  - cntrl + shift + . to scroll through .erb [see here](https://github.com/eddorre/SublimeERB)
+  - ⌘shift d - duplicate the line and paste in the line below
+  - option + cntrl + -> or <- to jump by word
 
 ###GIT###
-git clean -f => [Removing untracked files from your git working copy](http://stackoverflow.com/questions/61212/removing-untracked-files-from-your-git-working-copy)
+  - git clean -f => [Removing untracked files from your git working copy](http://stackoverflow.com/questions/61212/removing-untracked-files-from-your-git-working-copy)
 
 ###Mac###
-⌘shift 3 - screen shot
+  - ⌘shift 3 - screen shot

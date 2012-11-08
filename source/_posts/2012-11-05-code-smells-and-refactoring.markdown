@@ -6,6 +6,8 @@ comments: true
 categories: refactoring
 ---
 
+decomposition and synthesis
+
 - [Code smells](http://www.codinghorror.com/blog/2006/05/code-smells.html) Jeff Atwood.
 - [Summary](http://www.cs.usfca.edu/~parrt/course/601/lectures/refactoring/refactoring.html)
 - http://c2.com/cgi/wiki?RefactoringImprovingTheDesignOfExistingCode
@@ -52,3 +54,26 @@ improve internal structure, but don't change the external behavior
   lego versus playdoh slide 9 <http://www.slideshare.net/NeilGreen1/the-roi-of-refactoring-lego-vs-playdoh>
 
   Everything I need to know about refactoring I learned in kindergarden
+
+   “I'm not a great programmer; I'm just a good programmer with great habits.”- Kent Beck
+
+###Law of demeter?
+  Get into this?
+   
+###E.g.s
+- Inline class- <http://www.refactoring.com/catalog/inlineClass.html>
+- Decompost conditional-  <http://www.refactoring.com/catalog/decomposeConditional.html>
+- Extract Class - <http://www.refactoring.com/catalog/extractClass.html>
+- Inline Method
+- Replace Conditional with Polymorphism
+- Replace Parameter with Method
+
+- God class
+
+<http://www.refactoring.com/catalog/>
+
+###Code smells
+<http://en.wikipedia.org/wiki/Code_smell>
+
+extraction pattern- anti-pattern:
+<http://blog.jayfields.com/2007/04/ruby-anti-pattern-extract-module-to.html>

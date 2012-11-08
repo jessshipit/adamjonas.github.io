@@ -1,0 +1,175 @@
+---
+layout: post
+title: "FIS Day22"
+date: 2012-11-07 10:10
+comments: true
+categories: FIS rails forms
+---
+
+###HTTParty
+  - [On github](https://github.com/jnunemaker/httparty)
+  - [Treehouse blog post](http://blog.teamtreehouse.com/its-time-to-httparty)
+
+###Rant
+- [Conway's law](http://en.wikipedia.org/wiki/Conway%27s_law)
+  - organizational communication will be reflected in the product
+
+seagull architect - 
+>comes in, shits all over your code and then leaves
+
+[Insufficiency of good design](https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design)
+
+Open source: def up and down in migration.rb in rails can be refactored
+
+###POTD
+[Joseph Weizenbaum](http://en.wikipedia.org/wiki/Joseph_Weizenbaum)
+
+##Rails Lecture
+```ruby Controller Test Continued from Day21...
+require 'spec_helper'
+
+describe SongsController do
+  describe 'POST /songs' do
+
+    it 'should create a song with a name' do
+      post :create, {:song => {:name => "Thriller"}}
+
+      assigns(:song).name.should == "Thriller"
+    end
+
+    it 'should create a song with an artist name' do
+      post :create, {:song => {:name => "Thriller", :artist_name => "Michael Jackson"}}
+
+      assigns(:song).artist_name.should == "Michael Jackson"
+    end
+
+    it "should create a song with a genre string" do
+      post :create, {:song => {:name => "Thriller", :genre_names => "Pop"}}
+
+      assigns(:song).genre_names.should include("Pop")
+    end
+
+
+    it "should create a song with a genres from a CSV string" do
+      post :create, {:song => {:name => "Thriller", :genre_names => "Pop, Techno"}}
+
+      assigns(:song).genre_names.should include("Pop")
+    end
+
+    it "should create a song with a genre array containing CSV string" do
+      post :create, {:song => {:name => "Thriller", :genre_names => ["Pop, Techno", "Rap"]}}
+
+      assigns(:song).genre_names.should include("Pop")
+    end
+
+  end
+end
+```
+
+```ruby song_spec.rb Unit Test
+require 'spec_helper'
+
+describe Song do
+  let(:song){Song.new(:name => "Thriller")}
+
+  context 'with genres' do
+    let(:genre){Genre.create(:name => "Pop")}
+
+    context '.genre_names' do
+      it "should return an array of genre names" do
+        song.genres << genre
+        song.save
+
+
+        song.genre_names.should be_an_instance_of(Array)
+        song.genre_names.should include("Pop")
+      end
+
+      it "should accept a genre name and add that genre" do
+        song.genre_names = "Techno"
+        song.save
+
+        song.genre_names.should include("Techno")
+      end
+
+      it "should accept a comma delimited list of genre names" do
+        song.genre_names = "Techno, Pop"
+        song.save
+
+        song.genre_names.should include("Techno", "Pop")
+      end
+
+      it "should accept an array containing comma delimited list of genre names" do
+        song.genre_names = ["Techno, Pop", "Rap"]
+        song.save
+
+        song.genre_names.should include("Techno", "Pop", "Rap")
+      end
+
+      it "should only add unique genres" do
+        song.genre_names = ["Pop", "Pop"]
+        song.save
+
+        song.genre_names.count.should == 1
+      end
+
+    end
+```
+rake spec:models
+
+
+
+```ruby gem file
+group [:development, :test] do
+  gem 'debugger'
+end
+```
+
+  - detect returns nil if there is not match
+  - select returns an empty array when no match
+
+[**to_sentence method in rails**](http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions)
+
+###HTML < form_tag lower < form_for
+[form_tag](http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag)
+
+```
+<form action="/songs" id="new_song" class="new_song"> <form>
+
+<%= form_tag(songs_path, :id => "new song") do %>
+  <%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
+  <%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
+  <%= submit_tag "Create Song", :id => "create_song" %>
+<% end %>
+
+<%= form_for(@song) do |f| %>
+  <%= f.text_field :name %>
+  <%= f.text_field :artist_name %>
+  <%= f.submit %>
+<% end %>
+```
+[text_field_tag docs](http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag)
+
+###Integration test / Acceptance Test
+ - [Railscast 187](http://railscasts.com/episodes/187-testing-exceptions)
+
+ - [Railscast 257](http://railscasts.com/episodes/257-request-specs-and-capybara)
+  - [launchy gem](https://github.com/copiousfreetime/launchy) to see that page that capybara filled out - useful for creating fixtures
+  - post_via_redirect 
+
+      - get => response
+      - visit => page
+
+
+###Continuous Integration / Testing
+  - autotest
+  - guard
+    - [gem guard-rspec](https://github.com/guard/guard)
+  - rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved
+  - growl extension or terminal notifier on the [guard gem page](https://github.com/guard/guard#terminal-notifier)
+  - [capybara](https://github.com/jnicklas/capybara)
+
+**receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will**
+
+###Pull down the other app
+git merge upstream/master

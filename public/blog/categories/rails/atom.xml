@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: rails | Documenting all this...]]></title>
-  <link href="http://ajonas.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
-  <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-11-03T13:22:14-04:00</updated>
-  <id>http://ajonas.herokuapp.com/</id>
+  <title><![CDATA[Category: rails | Hack hack hack...]]></title>
+  <link href="http://www.blog.adamjonas.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://www.blog.adamjonas.com/"/>
+  <updated>2012-11-08T09:54:26-05:00</updated>
+  <id>http://www.blog.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
     
@@ -14,21 +14,417 @@
 
   
   <entry>
+    <title type="html"><![CDATA[FIS Day22]]></title>
+    <link href="http://www.blog.adamjonas.com/blog/fis-day22/"/>
+    <updated>2012-11-07T10:10:00-05:00</updated>
+    <id>http://www.blog.adamjonas.com/blog/fis-day22</id>
+    <content type="html"><![CDATA[<h3>HTTParty</h3>
+
+<ul>
+<li><a href="https://github.com/jnunemaker/httparty">On github</a></li>
+<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">Treehouse blog post</a></li>
+</ul>
+
+
+<h3>Rant</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Conway%27s_law">Conway's law</a>
+
+<ul>
+<li>organizational communication will be reflected in the product</li>
+</ul>
+</li>
+</ul>
+
+
+<p>seagull architect -</p>
+
+<blockquote><p>comes in, shits all over your code and then leaves</p></blockquote>
+
+<p><a href="https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design">Insufficiency of good design</a></p>
+
+<p>Open source: def up and down in migration.rb in rails can be refactored</p>
+
+<h3>POTD</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph Weizenbaum</a></p>
+
+<h2>Rails Lecture</h2>
+
+<p>```ruby Controller Test Continued from Day21...
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+
+  assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}
+
+  assigns(:song).artist_name.should == "Michael Jackson"
+end
+
+it "should create a song with a genre string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+
+it "should create a song with a genres from a CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop, Techno"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+it "should create a song with a genre array containing CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; ["Pop, Techno", "Rap"]}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  let(:song){Song.new(:name => "Thriller")}</p>
+
+<p>  context 'with genres' do</p>
+
+<pre><code>let(:genre){Genre.create(:name =&gt; "Pop")}
+
+context '.genre_names' do
+  it "should return an array of genre names" do
+    song.genres &lt;&lt; genre
+    song.save
+
+
+    song.genre_names.should be_an_instance_of(Array)
+    song.genre_names.should include("Pop")
+  end
+
+  it "should accept a genre name and add that genre" do
+    song.genre_names = "Techno"
+    song.save
+
+    song.genre_names.should include("Techno")
+  end
+
+  it "should accept a comma delimited list of genre names" do
+    song.genre_names = "Techno, Pop"
+    song.save
+
+    song.genre_names.should include("Techno", "Pop")
+  end
+
+  it "should accept an array containing comma delimited list of genre names" do
+    song.genre_names = ["Techno, Pop", "Rap"]
+    song.save
+
+    song.genre_names.should include("Techno", "Pop", "Rap")
+  end
+
+  it "should only add unique genres" do
+    song.genre_names = ["Pop", "Pop"]
+    song.save
+
+    song.genre_names.count.should == 1
+  end
+
+end
+</code></pre>
+
+<p>```
+rake spec:models</p>
+
+<p><code>ruby gem file
+group [:development, :test] do
+  gem 'debugger'
+end
+</code></p>
+
+<ul>
+<li>detect returns nil if there is not match</li>
+<li>select returns an empty array when no match</li>
+</ul>
+
+
+<p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions"><strong>to_sentence method in rails</strong></a></p>
+
+<h3>HTML &lt; form_tag lower &lt; form_for</h3>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag">form_tag</a></p>
+
+<p>```
+<form action="/songs" id="new_song" class="new_song"> <form></p>
+
+<p>&lt;%= form_tag(songs_path, :id => "new song") do %>
+  &lt;%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
+  &lt;%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
+  &lt;%= submit_tag "Create Song", :id => "create_song" %>
+&lt;% end %></p>
+
+<p>&lt;%= form_for(@song) do |f| %>
+  &lt;%= f.text_field :name %>
+  &lt;%= f.text_field :artist_name %>
+  &lt;%= f.submit %>
+&lt;% end %>
+```
+<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag">text_field_tag docs</a></p>
+
+<h3>Integration test / Acceptance Test</h3>
+
+<ul>
+<li><p><a href="http://railscasts.com/episodes/187-testing-exceptions">Railscast 187</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/257-request-specs-and-capybara">Railscast 257</a></p></li>
+<li><a href="https://github.com/copiousfreetime/launchy">launchy gem</a> to see that page that capybara filled out - useful for creating fixtures</li>
+<li><p>post_via_redirect</p>
+
+<ul>
+<li>get => response</li>
+<li>visit => page</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Continuous Integration / Testing</h3>
+
+<ul>
+<li>autotest</li>
+<li>guard
+
+<ul>
+<li><a href="https://github.com/guard/guard">gem guard-rspec</a></li>
+</ul>
+</li>
+<li>rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved</li>
+<li>growl extension or terminal notifier on the <a href="https://github.com/guard/guard#terminal-notifier">guard gem page</a></li>
+<li><a href="https://github.com/jnicklas/capybara">capybara</a></li>
+</ul>
+
+
+<p><strong>receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will</strong></p>
+
+<h3>Pull down the other app</h3>
+
+<p>git merge upstream/master</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day21]]></title>
+    <link href="http://www.blog.adamjonas.com/blog/fis-day21/"/>
+    <updated>2012-11-06T13:57:00-05:00</updated>
+    <id>http://www.blog.adamjonas.com/blog/fis-day21</id>
+    <content type="html"><![CDATA[<p><strong><em>Generate a model that is singular-- ALWAYS</em></strong></p>
+
+<p>'self' means the receiver of this method call</p>
+
+<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong>never ever have a nested attributes for belongs_to ONLY has has_many</strong>
+</a></p>
+
+<p>```ruby song.rb Model
+Class Song</p>
+
+<p>  def add_genre(genre)</p>
+
+<pre><code>genre = Genre.find_or_create_by_name(genre) if genre.is_a?(String) 
+self.song_genres.create(:genre =&gt; genre).genre
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  context '.add_genre' do</p>
+
+<pre><code>before(:each) do
+  let(:song){Song.create(:name =&gt; "Thriller")} 
+  let(:genre){Genre.create(:name =&gt; "Pop")} #this creates the genre method that executes the block that follows it.
+
+  it "should add the genre" do
+    song.add_genre(genre)
+
+    song.genres.should include(genre)
+  end
+
+  it "should return the newly added genre" do
+    song.add_genre(genre) should == genre #this means it won't return a full array like a push method return
+  end
+
+  it 'should accept an existing genre name do'
+    genre = Genre.create(:name =&gt; "Techno")
+    song.add_genre("Techno").should == genre
+  end
+
+  it 'should accept a genre name' do
+    song.add_genre("Pop").should == genre
+  end
+
+  it "should add only unique genres" do
+    #if I add the same genre twice, it should still 
+    song.add_genre(genre)
+    song.add_genre(genre)
+
+    song.genres.count.should == 1
+  end
+</code></pre>
+
+<p>  end
+end
+```
+Rspec runs its tests in isolation, by running each test in a transaction. After each test, it rollbacks all the writes.</p>
+
+<p>LOGS:
+<code>
+tail -f #open the end of the file and keep it open.
+</code></p>
+
+<p>If you are building associated data outside of your model, then you haven't encapsulated enough.</p>
+
+<ul>
+<li>Tests Hierarchy in ascending levels of abstraction
+
+<ul>
+<li>unit tests</li>
+<li>controller tests</li>
+<li>integration tests</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```ruby Controller Test
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name do'
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+  #create action in the song controller with post or request parameters that you 
+  #want to send along with it
+
+ # Song.find_by_name("Thriller").should be_true
+ assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name'
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}}
+  #this makes artist_name a first class citizen in the params hash.
+
+  #we killed this because we are assigning a string, not an artist object--&gt; post :create, {:song =&gt; {:name =&gt; "Thriller", :artist =&gt; {:name =&gt; "Michael Jackson"}}} 
+
+  #create action in the song controller with post or request parameters that you 
+  #want to send along with it
+
+  #Song.find_by_name("Thriller").should be_true
+  assigns(:song).artist.name.should == "Michael Jackson"
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb
+context '.artist_name' do
+  it "should have an artist_name method" do</p>
+
+<pre><code>song.should respond_to(:artist_name)
+</code></pre>
+
+<p>  end</p>
+
+<p>  it 'should return a songs artist' do</p>
+
+<pre><code>song.artist = Artist.create(:name =&gt; "Michael Jackson")
+song.artst_name.should == "Michael Jackson"
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>  context '.artist_name=' do</p>
+
+<pre><code>it "should assign the artist via the name" do
+  song.artist_name = "Michael Jackson"
+  song.artist.should be_a(Artist)
+  song.artist_name.should == "Michael Jackson"
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>```ruby Song.rb Model
+  def artist_name</p>
+
+<pre><code>self.artist.name if self.artist
+</code></pre>
+
+<p>  end</p>
+
+<p>  def artist_name=(string)</p>
+
+<pre><code>self.artist = Artist.find_or_create_by_name(string)
+</code></pre>
+
+<p>  end
+```</p>
+
+<h3>SOLID</h3>
+
+<p>Procedural code- solutions for very specific problems</p>
+
+<p>dependencies will kill your code, but design will save it</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Accepts Nested Attributes For]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/31/accepts-nested-attributes-for/"/>
+    <link href="http://www.blog.adamjonas.com/blog/accepts-nested-attributes-for/"/>
     <updated>2012-10-31T16:14:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/31/accepts-nested-attributes-for</id>
+    <id>http://www.blog.adamjonas.com/blog/accepts-nested-attributes-for</id>
     <content type="html"><![CDATA[<p>So accepts nested attributes is really about writing to an attribute of a class.</p>
 
 <p>In my case a location belongs_to a user. I was then trying to set the location.street1 through the user, but it wouldn't write. This is because it needs the accepts_nested_attributes method in the model.</p>
+
+<p><code>ruby If I want to manage questions through my surveys forms...
+class Survey &lt; ActiveRecord::Base
+  has_many :questions, :dependent =&gt; :destroy
+  accepts_nested_attributes_for :questions, allow_destroy: true
+end
+</code>
+<a href="http://railscasts.com/episodes/196-nested-model-form-revised">Railscast</a>
+  - min 6 javascript</p>
+
+<p>destroy -> allow_destroy: true</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[FIS Day16]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/25/fis-day16/"/>
+    <link href="http://www.blog.adamjonas.com/blog/fis-day16/"/>
     <updated>2012-10-25T09:39:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/25/fis-day16</id>
+    <id>http://www.blog.adamjonas.com/blog/fis-day16</id>
     <content type="html"><![CDATA[<h3>POTD</h3>
 
 <p>Linus Torvalds</p>
@@ -289,9 +685,9 @@ will do this for you. It's script-able and automatic.</p></li>
   
   <entry>
     <title type="html"><![CDATA[Asset Pipeline]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/09/10/asset-pipeline/"/>
+    <link href="http://www.blog.adamjonas.com/blog/asset-pipeline/"/>
     <updated>2012-09-10T14:31:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/09/10/asset-pipeline</id>
+    <id>http://www.blog.adamjonas.com/blog/asset-pipeline</id>
     <content type="html"><![CDATA[<p>Manifest - tells the app what to include</p>
 
 <p>in an app, it tells the app what .js and .css files to include</p>
@@ -332,213 +728,6 @@ go into the manifest file and add the jquery token or add it itself.</p>
 
 <p>Gem
 has it's own asset pipeline and add it's own asset pipeline</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 7 -Rails]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/29/lecture-7-rails/"/>
-    <updated>2012-07-29T14:20:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/29/lecture-7-rails</id>
-    <content type="html"><![CDATA[<p>``` ruby Song class
-def genre_name
-  self.genres.collect{|g| g.name.join(",")}
-end</p>
-
-<p>def genre_name=(str)
-  str.split(",").collect{|s| s.downcase.strip}.</p>
-
-<pre><code>SongGenre.new(:genre =&gt; Genre.find_or_create_by_name(genre_name))
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>an album has many songs... which means the accepts nested attributes for will be a good fit</p>
-
-<h3>Nested Resource</h3>
-
-<p>begins with the routes</p>
-
-<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested Model Form Rails Cast</a></p>
-
-<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong><em>Dont' use nested attributes for a belongs_to association</em></strong></a></p>
-
-<p>mass assignment and the .build(params[:user_name])</p>
-
-<p>Form_for (2:40)</p>
-
-<h3>Layouts and Sub-layouts</h3>
-
-<p><code>ruby On the Index Page
-&lt;% content_for :sub_nav do %&gt;
-  &lt;%= link_to "New Song", new_song_path %&gt;
- &lt;% end %&gt;
- # this could also be on the show page so they would share this sub_nav
- &lt;nav class="sub_nav"&gt;
-  &lt;%= yield :sub_nav %&gt;
- &lt;% end %&gt;
- # this works because you create another yield in the app besides the body
-</code>
-you can open up a sublayout as many times as you want to add links...</p>
-
-<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to_unless_current">link_to_unless_current</a>- it just creates the title, not the link to its own page... useful for nav bars</p>
-
-<p>polymorphic interfaces: depending on the argument that you send it, it has different behavior
-when you send @mixtape it looks up:
-<code>ruby
-mixtape_path(@mixtape) #=&gt; '/mixtapes/1'
-</code>
-real life e.g.s
-subway slot can accept a metrocard and a credit card-- depending on what you send it, it has differnt behavior
-a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.</p>
-
-<p>render is another flexible polymorphic object-
-``` ruby Rending Partials in a Collection- very important
-&lt;%= render @mixtape.songs %></p>
-
-<h1>Down a level of abstraction since it reveals the collection and partial:</h1>
-
-<p>&lt;%= render :collection => @mixtape.songs, :partial => songs/song_li', :as => :song %>
-```</p>
-
-<p><code>ruby Cast Variables
-&lt;%= render 'songs/fields', :f =&gt; song_form %&gt;
-</code>
-If skip album name is true, then
-(3:40)
-``` ruby
-&lt;% if include_album_name %>
-  <div class="field"></p>
-
-<pre><code>&lt;% f.label :album %&gt; &lt;br /&gt;#more code....
-</code></pre>
-
-<p>```</p>
-
-<p><a href="http://guides.rubyonrails.org/layouts_and_rendering.html#asset-tag-helpers">Passing Local Variables into Partials</a>... need to scroll down a little</p>
-
-<p>write_attribute</p>
-
-<p><a href="http://www.davidverhasselt.com/2011/06/28/5-ways-to-set-attributes-in-activerecord/">5 ways to set attributes in ActiveRecord</a></p>
-
-<p>Could use callbacks and lifecycle hooks to normalize as well...
-```ruby
-before_validate :normalize_name</p>
-
-<p>def normalize_name
-  self.name = self.name.downcase.strip
-end
-```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lecture 6- Rails]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/07/23/lecture-6-rails/"/>
-    <updated>2012-07-23T19:08:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/07/23/lecture-6-rails</id>
-    <content type="html"><![CDATA[<p>if it has a belongs_to it has a foreign key...
-e.g. songs belong to an artist, so it must have an artist_id</p>
-
-<p>``` ruby</p>
-
-<h1>the return value of this is all the songs</h1>
-
-<p>aretha.song &lt;&lt; Song.new(:name => "Natural Woman")</p>
-
-<h1>this is just one song</h1>
-
-<p>respect = aretha.songs.build(:name => "Respect")
-```</p>
-
-<p>7:27
-``` ruby
-favorites.mixtape_songs.build :song => Song.find_by_name("Thriller")</p>
-
-<h1>these accomplish the same thing, but above is more expressive</h1>
-
-<p>favorites.songs &lt;&lt; Song.first
-```</p>
-
-<p>the first level of keys in the params hash is usually scope.</p>
-
-<p>what is params?
-- user passes in data through forms
-- rails takes that data and makes it easy to access through forms</p>
-
-<p>so <em>accepts_nested_attributes</em> is a way for you to specify that this model should accept data for its associations</p>
-
-<p>field_for
-f.fields_for :song_genres
-is accessing params[:song][:song_genres]</p>
-
-<h3>Select Boxes</h3>
-
-<p>select(method, choices, options = {}, html_options = {})
-<code>ruby
-&lt;%= song_genre.select :genre_id, [
-  ["Rap", 1]
-  ["Pop", 2]
-  ["Whatever", 3]
-  ] %&gt;
-</code>
-<strong>Text Boxes</strong>:
-adding functionalty</p>
-
-<p><strong><em>classes are data and behavior</em></strong>
-we have added behavior to the song_genre model because this is the only place the genre_id is being stored.</p>
-
-<p><em>LookUp</em> Ruby try method</p>
-
-<p>``` ruby Delegate
-delegate :name, :to => :genre, :prefix => true, :allow_nils => true</p>
-
-<h1>the above macro is the same as the method below method.</h1>
-
-<p>def genre_name
-  genre.name if genre
-end
-```</p>
-
-<h3>Normalization</h3>
-
-<p>the incision point for normalization are easy to do on writer. but if you are using a vanilla writer, then don't write a normalizer just to normalize. Use a gem or something.</p>
-
-<p><code>
-:uniq
-If true, duplicates will be omitted from the collection. Useful in conjunction with :through.
-</code>
-in general this goes on the through model... which doesn't make all that much sense, but that's how it goes on many to many relationships
-This isn't preventing the creation of duplicates, it's just treating duplicates as singular-- total crap</p>
-
-<p>8:15
-Allow destroy
-with a checkbox</p>
-
-<h3>Validations</h3>
-
-<p>```</p>
-
-<h1>following valdiation rule is a constraint on the following attribute</h1>
-
-<p>validates :name, :length => {:minimum => 2, :maximum => 12}
-validates :name, :uniqueness => { :scope => :song_id}
-```
-<a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html">See rails guides validations</a>
-<a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html#uniqueness">specifically uniqueness</a></p>
-
-<h3>Technical Debt</h3>
-
-<p>Technical debt (also known as design debt or code debt) is a neologistic metaphor referring to the eventual consequences of poor or evolving software architecture and software development within a codebase. The debt can be thought of as work that needs to be done before a particular job can be considered complete.</p>
-
-<p>in console can call .valid? to debug and see if an object is valid.</p>
-
-<h3>When debugging...</h3>
-
-<p>try to reduce abstraction
--actually need to debug the problem at hand</p>
 ]]></content>
   </entry>
   

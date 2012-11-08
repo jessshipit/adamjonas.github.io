@@ -9,7 +9,7 @@ categories:
 ###Spike Driven Design
 Jonathan Berger
 
-spike:
+spike development:
 >a short investigation into a technique or a problem. The goal is learing and this will be thrown away.
 
 Takeaway:
@@ -32,7 +32,7 @@ ValueStruct
     - [learning elm](https://github.com/evancz/Elm/wiki)
   - [Online Haskell book](http://learnyouahaskell.com/chapters)
 
-###
+###SOLID principles
   - [Brian Marick on 4 Challenges and 5 Guiding Values of Agile Software Development](http://www.infoq.com/presentations/4-challenges-5-values)
   - Listov Substitution
     - you should be able to take the concreation anywhere an abstraction is used.

@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>inject - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Learning inject has been on my TODO list for a while&#8230; I want to use inject anytime I am building an object a piece at a time. In the case of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.blog.adamjonas.com/blog/inject/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.blog.adamjonas.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Inject</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-07T11:33:00-04:00" pubdate data-updated="true">Oct 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Learning inject has been on my TODO list for a while&#8230;</p>
+
+<p>I want to use inject anytime I am building an object a piece at a time. In the case of summing, creating a hash, or an array I&#8217;m building a result by applying changes based on the elements of the enumerable.</p>
+
+<figure class='code'><figcaption><span>Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">total_visits</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">stat</span><span class="o">|</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">visit_count</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#just for fun let&#39;s sum all the numbers from 1 to, oh, say a million</span>
+</span><span class='line'><span class="n">sum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">1000000</span><span class="p">)</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">){</span><span class="o">|</span><span class="n">cummulative</span><span class="p">,</span><span class="n">n</span><span class="o">|</span> <span class="n">cummulative</span><span class="o">+</span><span class="n">n</span><span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">sum</span>   <span class="o">=&gt;</span><span class="mi">500000500000</span>
+</span><span class='line'><span class="c1">#you can do interesting things like build hashes</span>
+</span><span class='line'><span class="n">primes</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">13</span><span class="o">]</span>
+</span><span class='line'><span class="nb">hash</span> <span class="o">=</span> <span class="n">primes</span><span class="o">.</span><span class="n">inject</span><span class="p">({})</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span> <span class="p">{</span> <span class="n">e</span><span class="o">.</span><span class="n">to_s</span> <span class="o">=&gt;</span> <span class="n">e</span> <span class="p">}</span> <span class="p">)</span> <span class="p">}</span>
+</span><span class='line'><span class="nb">p</span> <span class="nb">hash</span>  <span class="c1">#   =&gt;  {&quot;11&quot;=&gt;11, &quot;7&quot;=&gt;7, &quot;13&quot;=&gt;13, &quot;1&quot;=&gt;1, &quot;3&quot;=&gt;3, &quot;5&quot;=&gt;5}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Reading:
+<a href="http://blog.jayfields.com/2008/03/ruby-inject.html">The inject method</a>
+<a href="http://www.fincher.org/tips/Languages/Ruby/">Code e.g. - #21e</a>
+<a href="http://teachmetocode.com/screencasts/rubys-enumerable-module-the-inject-method/">Charles Max Wood Video</a>
+<a href="http://blog.teamtreehouse.com/ruby-arrays">Treehouse explains the inject method</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-07T11:33:00-04:00" pubdate data-updated="true">Oct 7<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.blog.adamjonas.com/blog/inject/" data-via="adamcjonas" data-counturl="http://www.blog.adamjonas.com/blog/inject/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/assignment1/" title="Previous Post: Assignments">&laquo; Assignments</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/koans-lessons/" title="Next Post: Koans Lessons">Koans Lessons &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/fis-day23/">FIS Day23</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/fis-day22/">FIS Day22</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/fis-day21/">FIS Day21</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-smells-and-refactoring/">code smells and refactoring</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/anatomy-of-web-requests/">Anatomy of Web Requests</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/fis/'>FIS (26)</a></li>
+<li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
+<li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
+<li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
+<li class='category'><a href='/blog/categories/agile/'>agile (1)</a></li>
+<li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
+<li class='category'><a href='/blog/categories/associations/'>associations (2)</a></li>
+<li class='category'><a href='/blog/categories/authentication/'>authentication (1)</a></li>
+<li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
+<li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
+<li class='category'><a href='/blog/categories/cheatsheet/'>cheatsheet (1)</a></li>
+<li class='category'><a href='/blog/categories/cli/'>cli (1)</a></li>
+<li class='category'><a href='/blog/categories/code/'>code (1)</a></li>
+<li class='category'><a href='/blog/categories/codeschool/'>codeschool (2)</a></li>
+<li class='category'><a href='/blog/categories/css/'>css (1)</a></li>
+<li class='category'><a href='/blog/categories/databases/'>databases (1)</a></li>
+<li class='category'><a href='/blog/categories/design/'>design (1)</a></li>
+<li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (3)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (6)</a></li>
+<li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
+<li class='category'><a href='/blog/categories/heroku/'>heroku (3)</a></li>
+<li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
+<li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
+<li class='category'><a href='/blog/categories/javascript/'>javascript (1)</a></li>
+<li class='category'><a href='/blog/categories/jquery/'>jquery (1)</a></li>
+<li class='category'><a href='/blog/categories/kentbeck/'>kentbeck (1)</a></li>
+<li class='category'><a href='/blog/categories/lambda/'>lambda (1)</a></li>
+<li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
+<li class='category'><a href='/blog/categories/minitest/'>minitest (1)</a></li>
+<li class='category'><a href='/blog/categories/modules/'>modules (1)</a></li>
+<li class='category'><a href='/blog/categories/mongodb/'>mongoDB (1)</a></li>
+<li class='category'><a href='/blog/categories/namespacing/'>namespacing (1)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
+<li class='category'><a href='/blog/categories/omniauth/'>omniauth (1)</a></li>
+<li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
+<li class='category'><a href='/blog/categories/patterns/'>patterns (1)</a></li>
+<li class='category'><a href='/blog/categories/podcasts/'>podcasts (1)</a></li>
+<li class='category'><a href='/blog/categories/postgresql/'>postgresql (1)</a></li>
+<li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
+<li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (18)</a></li>
+<li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
+<li class='category'><a href='/blog/categories/reading/'>reading (2)</a></li>
+<li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
+<li class='category'><a href='/blog/categories/refactoring/'>refactoring (1)</a></li>
+<li class='category'><a href='/blog/categories/rspec/'>rspec (2)</a></li>
+<li class='category'><a href='/blog/categories/ruby/'>ruby (24)</a></li>
+<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (1)</a></li>
+<li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
+<li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
+<li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
+<li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (1)</a></li>
+<li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
+<li class='category'><a href='/blog/categories/testing/'>testing (4)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("adamcjonas", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/adamcjonas" class="twitter-follow-button" data-show-count="false">Follow @adamcjonas</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.blog.adamjonas.com/blog/inject/';
+        var disqus_url = 'http://www.blog.adamjonas.com/blog/inject/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

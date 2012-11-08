@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: FIS | Documenting all this...]]></title>
-  <link href="http://ajonas.herokuapp.com/blog/categories/fis/atom.xml" rel="self"/>
-  <link href="http://ajonas.herokuapp.com/"/>
-  <updated>2012-11-03T13:22:14-04:00</updated>
-  <id>http://ajonas.herokuapp.com/</id>
+  <title><![CDATA[Category: FIS | Hack hack hack...]]></title>
+  <link href="http://www.blog.adamjonas.com/blog/categories/fis/atom.xml" rel="self"/>
+  <link href="http://www.blog.adamjonas.com/"/>
+  <updated>2012-11-08T09:54:26-05:00</updated>
+  <id>http://www.blog.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
     
@@ -14,10 +14,628 @@
 
   
   <entry>
+    <title type="html"><![CDATA[FIS Day22]]></title>
+    <link href="http://www.blog.adamjonas.com/blog/fis-day22/"/>
+    <updated>2012-11-07T10:10:00-05:00</updated>
+    <id>http://www.blog.adamjonas.com/blog/fis-day22</id>
+    <content type="html"><![CDATA[<h3>HTTParty</h3>
+
+<ul>
+<li><a href="https://github.com/jnunemaker/httparty">On github</a></li>
+<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">Treehouse blog post</a></li>
+</ul>
+
+
+<h3>Rant</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Conway%27s_law">Conway's law</a>
+
+<ul>
+<li>organizational communication will be reflected in the product</li>
+</ul>
+</li>
+</ul>
+
+
+<p>seagull architect -</p>
+
+<blockquote><p>comes in, shits all over your code and then leaves</p></blockquote>
+
+<p><a href="https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design">Insufficiency of good design</a></p>
+
+<p>Open source: def up and down in migration.rb in rails can be refactored</p>
+
+<h3>POTD</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph Weizenbaum</a></p>
+
+<h2>Rails Lecture</h2>
+
+<p>```ruby Controller Test Continued from Day21...
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+
+  assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}
+
+  assigns(:song).artist_name.should == "Michael Jackson"
+end
+
+it "should create a song with a genre string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+
+it "should create a song with a genres from a CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop, Techno"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+it "should create a song with a genre array containing CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; ["Pop, Techno", "Rap"]}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  let(:song){Song.new(:name => "Thriller")}</p>
+
+<p>  context 'with genres' do</p>
+
+<pre><code>let(:genre){Genre.create(:name =&gt; "Pop")}
+
+context '.genre_names' do
+  it "should return an array of genre names" do
+    song.genres &lt;&lt; genre
+    song.save
+
+
+    song.genre_names.should be_an_instance_of(Array)
+    song.genre_names.should include("Pop")
+  end
+
+  it "should accept a genre name and add that genre" do
+    song.genre_names = "Techno"
+    song.save
+
+    song.genre_names.should include("Techno")
+  end
+
+  it "should accept a comma delimited list of genre names" do
+    song.genre_names = "Techno, Pop"
+    song.save
+
+    song.genre_names.should include("Techno", "Pop")
+  end
+
+  it "should accept an array containing comma delimited list of genre names" do
+    song.genre_names = ["Techno, Pop", "Rap"]
+    song.save
+
+    song.genre_names.should include("Techno", "Pop", "Rap")
+  end
+
+  it "should only add unique genres" do
+    song.genre_names = ["Pop", "Pop"]
+    song.save
+
+    song.genre_names.count.should == 1
+  end
+
+end
+</code></pre>
+
+<p>```
+rake spec:models</p>
+
+<p><code>ruby gem file
+group [:development, :test] do
+  gem 'debugger'
+end
+</code></p>
+
+<ul>
+<li>detect returns nil if there is not match</li>
+<li>select returns an empty array when no match</li>
+</ul>
+
+
+<p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions"><strong>to_sentence method in rails</strong></a></p>
+
+<h3>HTML &lt; form_tag lower &lt; form_for</h3>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag">form_tag</a></p>
+
+<p>```
+<form action="/songs" id="new_song" class="new_song"> <form></p>
+
+<p>&lt;%= form_tag(songs_path, :id => "new song") do %>
+  &lt;%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
+  &lt;%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
+  &lt;%= submit_tag "Create Song", :id => "create_song" %>
+&lt;% end %></p>
+
+<p>&lt;%= form_for(@song) do |f| %>
+  &lt;%= f.text_field :name %>
+  &lt;%= f.text_field :artist_name %>
+  &lt;%= f.submit %>
+&lt;% end %>
+```
+<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag">text_field_tag docs</a></p>
+
+<h3>Integration test / Acceptance Test</h3>
+
+<ul>
+<li><p><a href="http://railscasts.com/episodes/187-testing-exceptions">Railscast 187</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/257-request-specs-and-capybara">Railscast 257</a></p></li>
+<li><a href="https://github.com/copiousfreetime/launchy">launchy gem</a> to see that page that capybara filled out - useful for creating fixtures</li>
+<li><p>post_via_redirect</p>
+
+<ul>
+<li>get => response</li>
+<li>visit => page</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Continuous Integration / Testing</h3>
+
+<ul>
+<li>autotest</li>
+<li>guard
+
+<ul>
+<li><a href="https://github.com/guard/guard">gem guard-rspec</a></li>
+</ul>
+</li>
+<li>rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved</li>
+<li>growl extension or terminal notifier on the <a href="https://github.com/guard/guard#terminal-notifier">guard gem page</a></li>
+<li><a href="https://github.com/jnicklas/capybara">capybara</a></li>
+</ul>
+
+
+<p><strong>receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will</strong></p>
+
+<h3>Pull down the other app</h3>
+
+<p>git merge upstream/master</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day21]]></title>
+    <link href="http://www.blog.adamjonas.com/blog/fis-day21/"/>
+    <updated>2012-11-06T13:57:00-05:00</updated>
+    <id>http://www.blog.adamjonas.com/blog/fis-day21</id>
+    <content type="html"><![CDATA[<p><strong><em>Generate a model that is singular-- ALWAYS</em></strong></p>
+
+<p>'self' means the receiver of this method call</p>
+
+<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong>never ever have a nested attributes for belongs_to ONLY has has_many</strong>
+</a></p>
+
+<p>```ruby song.rb Model
+Class Song</p>
+
+<p>  def add_genre(genre)</p>
+
+<pre><code>genre = Genre.find_or_create_by_name(genre) if genre.is_a?(String) 
+self.song_genres.create(:genre =&gt; genre).genre
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  context '.add_genre' do</p>
+
+<pre><code>before(:each) do
+  let(:song){Song.create(:name =&gt; "Thriller")} 
+  let(:genre){Genre.create(:name =&gt; "Pop")} #this creates the genre method that executes the block that follows it.
+
+  it "should add the genre" do
+    song.add_genre(genre)
+
+    song.genres.should include(genre)
+  end
+
+  it "should return the newly added genre" do
+    song.add_genre(genre) should == genre #this means it won't return a full array like a push method return
+  end
+
+  it 'should accept an existing genre name do'
+    genre = Genre.create(:name =&gt; "Techno")
+    song.add_genre("Techno").should == genre
+  end
+
+  it 'should accept a genre name' do
+    song.add_genre("Pop").should == genre
+  end
+
+  it "should add only unique genres" do
+    #if I add the same genre twice, it should still 
+    song.add_genre(genre)
+    song.add_genre(genre)
+
+    song.genres.count.should == 1
+  end
+</code></pre>
+
+<p>  end
+end
+```
+Rspec runs its tests in isolation, by running each test in a transaction. After each test, it rollbacks all the writes.</p>
+
+<p>LOGS:
+<code>
+tail -f #open the end of the file and keep it open.
+</code></p>
+
+<p>If you are building associated data outside of your model, then you haven't encapsulated enough.</p>
+
+<ul>
+<li>Tests Hierarchy in ascending levels of abstraction
+
+<ul>
+<li>unit tests</li>
+<li>controller tests</li>
+<li>integration tests</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```ruby Controller Test
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name do'
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+  #create action in the song controller with post or request parameters that you 
+  #want to send along with it
+
+ # Song.find_by_name("Thriller").should be_true
+ assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name'
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}}
+  #this makes artist_name a first class citizen in the params hash.
+
+  #we killed this because we are assigning a string, not an artist object--&gt; post :create, {:song =&gt; {:name =&gt; "Thriller", :artist =&gt; {:name =&gt; "Michael Jackson"}}} 
+
+  #create action in the song controller with post or request parameters that you 
+  #want to send along with it
+
+  #Song.find_by_name("Thriller").should be_true
+  assigns(:song).artist.name.should == "Michael Jackson"
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb
+context '.artist_name' do
+  it "should have an artist_name method" do</p>
+
+<pre><code>song.should respond_to(:artist_name)
+</code></pre>
+
+<p>  end</p>
+
+<p>  it 'should return a songs artist' do</p>
+
+<pre><code>song.artist = Artist.create(:name =&gt; "Michael Jackson")
+song.artst_name.should == "Michael Jackson"
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>  context '.artist_name=' do</p>
+
+<pre><code>it "should assign the artist via the name" do
+  song.artist_name = "Michael Jackson"
+  song.artist.should be_a(Artist)
+  song.artist_name.should == "Michael Jackson"
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>```ruby Song.rb Model
+  def artist_name</p>
+
+<pre><code>self.artist.name if self.artist
+</code></pre>
+
+<p>  end</p>
+
+<p>  def artist_name=(string)</p>
+
+<pre><code>self.artist = Artist.find_or_create_by_name(string)
+</code></pre>
+
+<p>  end
+```</p>
+
+<h3>SOLID</h3>
+
+<p>Procedural code- solutions for very specific problems</p>
+
+<p>dependencies will kill your code, but design will save it</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Anatomy of Web Requests]]></title>
+    <link href="http://www.blog.adamjonas.com/blog/anatomy-of-web-requests/"/>
+    <updated>2012-11-05T12:58:00-05:00</updated>
+    <id>http://www.blog.adamjonas.com/blog/anatomy-of-web-requests</id>
+    <content type="html"><![CDATA[<h3><a href="http://johndbritton.com/">John Britton</a></h3>
+
+<h3>Requests are like</h3>
+
+<ul>
+<li>driving a car</li>
+<li><p>shipping containers</p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/OSI_model">OSI model</a></p></li>
+</ul>
+
+
+<p>  sounds a lot like mvc- in terms of abstraction</p>
+
+<p>  HTTP: the language that your browser speaks
+  - The webpage is a document</p>
+
+<h3>URI:</h3>
+
+<ul>
+<li><p>Rendering</p>
+
+<ul>
+<li>HTML structure</li>
+<li>CSS style</li>
+<li><p>JS behavior</p></li>
+<li><p>ports are a concept</p></li>
+<li>ftp 21</li>
+<li>ssl 53</li>
+<li>0-1024 -> are assigned</li>
+<li>1024-49151 -> are available</li>
+<li><p>49152+</p></li>
+<li><p>if listening on 80- that means that route every request on port 80 to this program</p></li>
+</ul>
+</li>
+<li><p><a href="http://jsfiddle.net/">JS Fiddle</a></p></li>
+<li><p>HTTP: methods/verbs</p>
+
+<ul>
+<li>GET - grab some stuff and bring it down</li>
+<li>POST - anything you are altering the state of the app with is probably a post request</li>
+<li>PUT</li>
+<li>DELETE</li>
+<li>others: HEAD, PATCH, TRACE, OPTIONS, CONNECT</li>
+</ul>
+</li>
+<li><p>curl- works just like a browser on the command line.</p></li>
+</ul>
+
+
+<h3>Where do those requests go?</h3>
+
+<ul>
+<li>what is the ip address of the resource I am looking for</li>
+<li><p>if nothing is cached anywhere</p>
+
+<ul>
+<li>13 root nameservers</li>
+<li>TLD nameserver- authoritative for .coms for example</li>
+<li>A record - I found the place to go for github, but I need the actual IP address</li>
+<li><p>IP address</p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/BIND">BIND</a> is the most widely used DNS software on the Internet.</p></li>
+<li><p>TTL- <a href="http://en.wikipedia.org/wiki/Time_to_live">time to live</a></p></li>
+<li><p>Networks: nodes that can talk to each other directly</p></li>
+<li>Interface</li>
+<li><p>Network addresses:</p>
+
+<ul>
+<li>defines all the address that can talk to each other</li>
+<li>a.b.c.d/n (n= network mask /subnet)</li>
+<li>Private (non routable) network
+
+<ul>
+<li>10.0.0.0/8</li>
+<li>172.16.0.0/12 -> identifies which part is</li>
+<li>192.168.0.0/16 -> private networks namespaced for private networks</li>
+</ul>
+
+
+<p>255.255.255.0 -> subnet mask -> 24 bits ->
+192.168.1.N and n can't exceed 255 people.</p>
+
+<p>10101100.0001 -> this is the network address -> the first 16 bits, the rest would be the node of the network</p>
+
+<ul>
+<li>you can have a lot more machines on an 8 bit network identifier, than a 16 bit. But you wouldn't want to waste a bunch of nodes that aren't going to be used.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Maximum number of address minus two</p>
+
+<ul>
+<li>192.168.1.255 -> broadcast address</li>
+</ul>
+</li>
+<li><p>Network Hardware</p>
+
+<ul>
+<li>Hub - dumb -> connects everyone's ports to each other -> every machine's send is connected to everyone's receive -> lowest level</li>
+<li>Switch - smarter -> knows what addresses are connected to what ports - lowers network traffic, sending something once and remembering who responds</li>
+<li>Router - smartest -> connects <a href="http://www.merriam-webster.com/dictionary/disparate">disparate</a> networks. Hub and switch talk to each other, for a router, we go through another point -> knows about disparate networks and IP addresses</li>
+</ul>
+</li>
+</ul>
+
+
+<p>-Network Protocols</p>
+
+<ul>
+<li>Operating system knows about the <strong>transport</strong>.
+
+<ul>
+<li>Something reliable it will write in <strong>TCP</strong>
+
+<ul>
+<li>It has to all get there or the file will be corrupt</li>
+<li>there is a control mechanism. If the packets I'm not sending</li>
+</ul>
+</li>
+<li><strong>UDP</strong> - don't want a reliable transport.
+
+<ul>
+<li>I don't care if it all gets there. Deliver it in order.</li>
+<li>You don't want a second of video that was sent out of order, you don't want to patch it together out of order. Streaming would use UDP.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Routing - my machine doesn't know about them.
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Routing_Information_Protocol">RIP</a> -</li>
+<li><a href="http://en.wikipedia.org/wiki/Open_Shortest_Path_First">OSPF</a> - Open Shortest Path First- a concept of links and weight of links. If you have two possible routes, it will go on</li>
+</ul>
+</li>
+<li><p>Network Address Translation</p>
+
+<ul>
+<li>maps traffic coming from an internal network and makes sure the appropriate machine gets the info it requested.</li>
+</ul>
+</li>
+<li><p>traceroute
+<code>
+traceroute github.com
+whois adamjonas.com
+ping google.com
+curl google.com
+</code></p></li>
+</ul>
+</li>
+<li><p>nmap
+brew install nmap
+nmap #map the network</p>
+
+<h1>could run this against port 22 which is all the ssh</h1></li>
+<li><p><a href="http://whatismyipaddress.com/">wireshark</a></p></li>
+<li><p>hazel- rules based apps</p></li>
+<li>cueing in rails</li>
+<li><p><a href="http://progrium.com/localtunnel/">local tunnel</a></p></li>
+<li><p>blobs, tags, branches, commits</p>
+
+<ul>
+<li>blob is just a file -> any data</li>
+<li>git hash-object README</li>
+</ul>
+</li>
+<li><p>tree</p>
+
+<ul>
+<li>brew install tree</li>
+</ul>
+</li>
+<li><p>Divy or breeze: window arranging</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day20]]></title>
+    <link href="http://www.blog.adamjonas.com/blog/fis-day20/"/>
+    <updated>2012-11-05T08:55:00-05:00</updated>
+    <id>http://www.blog.adamjonas.com/blog/fis-day20</id>
+    <content type="html"><![CDATA[<h3>UMLs</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Unified_Modeling_Language">Unified Model Language</a></li>
+<li>Monolithic user classes
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/3179396/what-does-monolithic-mean">definition of monolithic</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>SQL</h3>
+
+<ul>
+<li>A has_many :through type query
+<code>
+SELECT * FROM song_genres INNER JOIN genres ON genre.id = genre_id FROM song_genre WHERE song_id = 1
+</code></li>
+</ul>
+
+
+<h3>Avoiding has_and_belongs_to_many</h3>
+
+<ul>
+<li>if you name a column order, connection, attribute, etc., you will run into issues, because those words are reserved</li>
+<li><a href="http://archive.culann.com/2008/03/the-evil-unnecessary-has_and_belongs_to_many">don't user HABTM</a></li>
+<li><a href="http://blog.hasmanythrough.com/2006/4/20/many-to-many-dance-off">Jose Susser isn't as adamant</a></li>
+</ul>
+
+
+<h3>Lessons Learned</h3>
+
+<ul>
+<li><p>Parameters in a method HAVE TO BE comma delimited:
+<code>ruby
+form_tag(url_for_options = {}, options = {}, &amp;block)
+</code></p></li>
+<li><p>When using build, you just need to save the parent.</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[FIS Day19]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/11/02/fis-day19/"/>
+    <link href="http://www.blog.adamjonas.com/blog/fis-day19/"/>
     <updated>2012-11-02T11:57:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/11/02/fis-day19</id>
+    <id>http://www.blog.adamjonas.com/blog/fis-day19</id>
     <content type="html"><![CDATA[<h3>Virtual Attributes:</h3>
 
 <p>There are two rails casts on this... <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">#16</a> and <a href="http://railscasts.com/episodes/167-more-on-virtual-attributes">#167</a>.</p>
@@ -165,729 +783,6 @@ desc "Create a bunch of seed data for artists and songs"</p>
   Song.delete_all
 end
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day18]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/11/01/fis-day18/"/>
-    <updated>2012-11-01T13:42:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/11/01/fis-day18</id>
-    <content type="html"><![CDATA[<h3>POTD</h3>
-
-<ul>
-<li><p>Edsgar Dijkstra</p>
-
-<ul>
-<li>inventor of structured programming</li>
-<li>came up with "for, while, until, case"</li>
-<li>computer science is not about machines and equipment management</li>
-</ul>
-</li>
-<li><p>If you use more of a bad tool, it won't fix it.</p>
-
-<blockquote><p>About the use of language; it is impossible to sharpen a pencil with a blunt axe. It is equally vain to try to do it with ten blunt axes instead.</p></blockquote></li>
-<li><p>Programming is just about communicating clearly.</p></li>
-<li>Once it is teachable it is concrete.</li>
-</ul>
-
-
-<h3>Ruby Tidbit</h3>
-
-<p>```ruby Semi-Colon Deliminates a Line
-def create;end</p>
-
-<h1>the semi-colon deliminates the info on two lines</h1>
-
-<p>```</p>
-
-<h2>Rails Lecture</h2>
-
-<p><code>ruby link to unless current
-&lt;%= link_to_unless_current %&gt; #this is slick for nav!
-</code></p>
-
-<p><strong>Routes</strong>
-```ruby Routes File
-match '/name' => 'songs#name'</p>
-
-<h1>not as specific and therefore as good as</h1>
-
-<p>get '/name' => 'songs#name'</p>
-
-<p>get 'site/about' #rails will assume that site is the controller and about is the action
-```</p>
-
-<p>```ruby Generate a Controller
-rails generate controller CreditCard open debit credit close</p>
-
-<h1>this will create a credit_card_controller with 4 actions</h1>
-
-<p>```
-??have to delete rm-rf public/index.html</p>
-
-<p>```ruby Rendering Templates
-class Sessions Controller &lt; ApplicationController</p>
-
-<p>render :action
-render :template</p>
-
-<h1>in practice</h1>
-
-<p>render 'under_construction' #this is the action in the sessions controller
-render 'shared/under_construction' #this is a full relative path</p>
-
-<h1>and more instructional of where to find the template</h1>
-
-<p>```</p>
-
-<h3>Private and public methods</h3>
-
-<p>```ruby Private Method e.g.
-class Dog
-  def bark</p>
-
-<pre><code>case stomach_volume
-when :very
-  puts "woof woof!"
-when :not_at_all
-  puts "woof"
-end
-</code></pre>
-
-<p>  end</p>
-
-<p>private #it would also break if this was protected.</p>
-
-<p>  def stomach_volume</p>
-
-<pre><code>:very
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>fido = Dog.new
-fido.stomach_volume #this is not going to work.
-```
-private, public, and protected all create keyword scope -> created limited, predicted interfaces</p>
-
-<p>if a method is private it can only be called on an implicit receiver- can't call call on an explicit receiver</p>
-
-<p><strong>protected</strong> -> can only be called on self.</p>
-
-<p>```ruby When Private Methods Become Useful in the Controller
-class SomeController</p>
-
-<p>def new
-  under_construction
-end</p>
-
-<p>def create
-  under_constructions
-end</p>
-
-<p>private</p>
-
-<p>def under_construction
-  render 'shared/under_construction'
-end</p>
-
-<p>end
-```</p>
-
-<h3>In the migration</h3>
-
-<ul>
-<li>def change for when the reverse can be assumed</li>
-<li><p>def up and down for things like renaming columns -> because rails wouldn't be able to infer what the reverse would be.</p></li>
-<li><p>t.timestamps - is a created at and updated at</p></li>
-</ul>
-
-
-<h3>Signups</h3>
-
-<p>when you login, you are creating a session between you and the website.
-when you signup you are creating a user on their system-- that lives in their DB
-<code>ruby Routes
-get '/signup' =&gt; 'users#new'
-post '/signup' =&gt; 'users#create'
-</code></p>
-
-<p><strong>Mass assignment => when you assign initialization properties during assingment.</strong></p>
-
-<ul>
-<li><p>Migrations</p>
-
-<ul>
-<li>define and edit schema</li>
-</ul>
-</li>
-<li><p>Models -ORM</p>
-
-<ul>
-<li>insert rows /update</li>
-<li>database</li>
-</ul>
-</li>
-<li><p>Routes
-maps URLs to actions in the controller</p></li>
-<li><p>controllers</p>
-
-<ul>
-<li>contains the business logic</li>
-</ul>
-</li>
-<li><p>views</p>
-
-<ul>
-<li>the actual interface</li>
-</ul>
-</li>
-</ul>
-
-
-<p>-> In sinatra the routes are built into controllers.</p>
-
-<p><code>ruby This must be how form_for works
-def form_for(obj, &amp;block)
-  f = FormBuilder.new(obj)
-  yield f
-end
-</code></p>
-
-<p><em>In your controller helper...</em>
-```ruby Rolling My Own Form Builder
-&lt;%= form_for(@song, :builder = > SongHelper::SongForm) %></p>
-
-<h1>in the controller helper</h1>
-
-<p>module SongsHelper
-  class SongForm &lt; ActionView::Helpers::FormBuilder</p>
-
-<pre><code>def full_name_field
-  label(:first_name) + 
-  text_field :first_name
-
-  label(:last_name) + 
-  text_field :last_name
-end
-</code></pre>
-
-<p>  end
-end
-```
-Customizing the forms and encapsulate in the controller helpers...</p>
-
-<h3>Test::Unit to RSpec</h3>
-
-<p>change out the libraries
-add rspec to the gem file
-rip out test folder</p>
-
-<p>rails g install rspec</p>
-
-<p><a href="http://stackoverflow.com/questions/9884033/ruby-on-rails-switch-from-test-unit-to-rspec">changing from minitest to rspec</a> <a href="http://stackoverflow.com/questions/5072662/how-to-remove-unit-test-and-replace-it-with-rspec">or</a></p>
-
-<p>"when i generated the scaffold, it generated the specs for me..."</p>
-
-<h3>Posting Info to an object</h3>
-
-<ol>
-<li>instantiate an instance</li>
-<li>collect the form data</li>
-<li>and you populate the instance attribute with the proper data</li>
-</ol>
-
-
-<p>If I want to use form_for I need an active record instance.</p>
-
-<h3>Read this...</h3>
-
-<p><a href="http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions">Understand parameter naming conventions</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day17andahalf]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/31/fis-day17andahalf/"/>
-    <updated>2012-10-31T18:40:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/31/fis-day17andahalf</id>
-    <content type="html"><![CDATA[<h3><a href="http://www.rubygeocoder.com/">Geocoder</a></h3>
-
-<p>This gem is amazing. I can calucalate the latitude and longitude of anywhere by an address and so much more. Not surprisingly there is a great <a href="http://railscasts.com/episodes/273-geocoder">railscast</a> on the subject.</p>
-
-<ul>
-<li>Ryan Bates also suggested that I look at <a href="https://github.com/apneadiving/Google-Maps-for-Rails">Google-Maps-for-Rails</a></li>
-</ul>
-
-
-<h3>Authentication</h3>
-
-<p>I had broken the authentication system in my <a href="http://gearshare.herokuapp.com/">gearshare app</a>. <a href="http://railscasts.com/episodes/241-simple-omniauth">Ryan Bates</a> to the rescue once again.</p>
-
-<h3>Sessions Issues</h3>
-
-<p>I was having some trouble killing the session. Avi added this code in the sessions_controller.</p>
-
-<p><code>ruby In the sessions controller
-def destroy
-  session[:user_id] = nil
-  reset_session #this was the key....
-  redirect_to root_url, :notice =&gt; "Signed out!"
-end
-</code></p>
-
-<h3>Git Rebase</h3>
-
-<p>I also rebased a branch using the following command...
-<code>
-$ git rebase master
-</code>
-This rebased the up-to-date master underneath my branch that was ahead by a few commits, but had a broken authentication system. There is a complete explanation of this and more in the <a href="http://git-scm.com/book/en/Git-Branching-Rebasing">git book</a>.</p>
-
-<h3>Stripe</h3>
-
-<p>Met Richard who walked me through the <a href="https://stripe.com/">stripe</a> that makes payments silly easy. Very exciting to integrate this into the bounty open-source idea...</p>
-
-<h3>Podcast</h3>
-
-<p>I should start listening to this... Peter Cooper and Jason Seifer-- it's got to be pretty solid.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day17]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/26/fis-day17/"/>
-    <updated>2012-10-26T09:37:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/26/fis-day17</id>
-    <content type="html"><![CDATA[<h3>POTD</h3>
-
-<p>Roy Fielding</p>
-
-<p>HTTP- it's all about representations of data, not the data itself</p>
-
-<p>urls are to represent a resouce. They should be stateless and you should get multiple representations of it (different data types for example).</p>
-
-<p><a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a> is "like knocking on your neighbors' door and ask them to send a message to a guy down the street."</p>
-
-<h3>Blogs</h3>
-
-<p><code>ruby
-User.all #=&gt; you want to return an empty array so that you can run an iteration on it.
-</code></p>
-
-<p>```ruby Refactor
-def assign_artist(artist_name)
-  artist = Artist.all.select{|artist| artist.name == artist_name}
-  if  artist.length > 0</p>
-
-<pre><code>  artist[0]
-</code></pre>
-
-<p>  else</p>
-
-<pre><code>  Artist.new.tap{|artist| artist.name = artist_name}
-end
-</code></pre>
-
-<p>  end</p>
-
-<h1>can be refactored as</h1>
-
-<p>def assign_artist(artist_name)
-  Artist.all.select{|artist| artist.name == artist_name} ||
-  Artist.new.tap{|artist| artist.name = artist_name}
-end
-```</p>
-
-<h2>Spinning Up My First Server</h2>
-
-<p>??swap disk space</p>
-
-<ul>
-<li><p><strong>Passenger</strong> knows how to run your app, <strong>nginx</strong> does not</p>
-
-<ul>
-<li>nginx sends your request to a Passenger instance
-
-<ul>
-<li>nginx is managing the load to Passenger</li>
-<li>Passenger is actually running the application ~> managing starting up your app and serving it
-
-<ul>
-<li>it could run up to 20 instances of the app on a single server (the default is 5)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>nginx</strong> is the actual webserver. It's a piece of software that speaks HTTP, is very high performance and sits between your application and the internet.</p></li>
-<li><p>The tutorial is very detailed</p>
-
-<ul>
-<li>Not on the tutorial- <a href="https://help.github.com/articles/generating-ssh-keys">adding the SSH key from the server</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Lessons Learned From the Server Work</h3>
-
-<ul>
-<li>Problem: So I couldn't deploy for hours... I went and reconfigured like 3 times. Renamed the name of the application and going through the nginx config file on the server. It sucked.</li>
-<li>Answer: I had my database in my .gitignore file, which meant that it was in the deploy from the github. AHHHH!!! I never would have gotten that one.</li>
-</ul>
-
-
-<h2>Ruby</h2>
-
-<ul>
-<li><p>Opposites</p>
-
-<ul>
-<li>Enumerable#reject
-
-<ul>
-<li>Returns an array for all elements of enum for which block is false (see alsoEnumerable#find_all).</li>
-</ul>
-</li>
-<li>Enumerable#select
-
-<ul>
-<li>Returns an array containing all elements of enum for which block is not false (see alsoEnumerable#reject).</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Equivalent, different order for pipes</p>
-
-<ul>
-<li>Enumerable#each_with_object
-
-<ul>
-<li>Iterates the given block for each element with an arbitrary object given, and returns the initially given object.
-
-<ul>
-<li>[1, 2, 3, 4].each_with_object([]) { |element, result| result &lt;&lt; element }</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Enumerable#inject</p>
-
-<ul>
-<li>Combines all elements of enum by applying a binary operation, specified by a block or a symbol that names a method or operator.
-
-<ul>
-<li>[1, 2, 3, 4].inject([]) { |result, element| result &lt;&lt; element }</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Rails</h3>
-
-<ul>
-<li>link_to is a great example of a polymorphic interface
-
-<ul>
-<li>if it receives an object (an instance of active record), it can create the correct link</li>
-<li>if it receives a string it can create the correct link out of that</li>
-</ul>
-</li>
-</ul>
-
-
-<p>```ruby Routes Shortcuts
-get '/about/:action' => 'about' # the action would map directly to the action in the about controller</p>
-
-<h1>this is dangerous but only on the controller level so it would need to be controlled for there...</h1>
-
-<p>get '/about/:action(/:company)' # this means that the company part of the url is optional
-  :company => "whatever" # this additional means that "whatever" will be default value
-```</p>
-
-<p>urls that have parameters in them like songs/:genre ~> you need to pass a paramter so that it can match it ~> songs/:genre/:year needs two parameters</p>
-
-<p><code>ruby In the view
-&lt;% link_to 'Avi', avi_path("flombaum", "flatiron", :foo =&gt; "baz") %&gt; #will add parameter
-</code></p>
-
-<p>```ruby Mass Assignment
-Song.new(:name => "call me maybe")</p>
-
-<h1>intialize the song with this default attribute</h1>
-
-<p>```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day16]]></title>
-    <link href="http://ajonas.herokuapp.com/blog/2012/10/25/fis-day16/"/>
-    <updated>2012-10-25T09:39:00-04:00</updated>
-    <id>http://ajonas.herokuapp.com/blog/2012/10/25/fis-day16</id>
-    <content type="html"><![CDATA[<h3>POTD</h3>
-
-<p>Linus Torvalds</p>
-
-<h2>Rails</h2>
-
-<p>rails assigns attr_accessors</p>
-
-<p><code>ruby Active Record Queries
-song.limit(2).last #=&gt; this is the second to last song
-Song.find(1)
-Song.find_by_name
-Song.find_by_anyattrributename
-Song.find_all_by_name #=&gt; sweet
-</code></p>
-
-<h3>ORM ~> Object Relational Mapping</h3>
-
-<ul>
-<li><strong>A ruby class is to a databse table as instances of that class are to a row in that table</strong>
-
-<ul>
-<li>the form field should map to the column name</li>
-</ul>
-</li>
-<li>activerecord's exists to accomplish CRUD</li>
-<li>active record pattern <a href="http://books.google.com/books?id=FyWZt5DdvFkC&amp;lpg=PA1&amp;dq=Patterns%20of%20Enterprise%20Application%20Architecture%20by%20Martin%20Fowler&amp;pg=PT187#v=onepage&amp;q=active%20record&amp;f=false">proposed by Martin Fowler</a></li>
-</ul>
-
-
-<p><code>ruby Persistence
-new_song = Song.new
-new_song.persisted? #=&gt; false
-new_song.new_record? #=&gt; true
-new_song.save
-new_song.persisted? #=&gt; true
-new_song.new_record? #=&gt; false
-</code>
-<code>ruby ORM Awareness
-new_song.name = "new"
-s.changed? #=&gt; true
-s.changes #=&gt; {"name=&gt; ["whatever", "new"]}
-s.name_changed? #=&gt; true
-s.duration_changed #=&gt; false
-</code>
-<code>ruby
-song.destroy #=&gt; will destroy the record
-song.delete #=&gt; don't use this for now
-</code></p>
-
-<h3>REST</h3>
-
-<p>Identification of a resource
-Individual resources that are identified in the requests, for example using the URIs sin web-based REST systems.</p>
-
-<p>REST- the url address should mirror the http verb and url action</p>
-
-<ul>
-<li><em>What do you mean by a representation?</em></li>
-<li>these objects have different representations depending on their name</li>
-<li>.xml should return the xml and .json and return the json</li>
-<li>the objects should be devoid of your form until you ask for them</li>
-</ul>
-
-
-<h3>Routes</h3>
-
-<p>```ruby Routes File syntax
-get '/welcome' => 'application#welcome'</p>
-
-<h1>same as ApplcationController.welcome</h1>
-
-<p>=> {controller => 'application', :action => 'welcome'}
-resources :songs #is a macro that is calling 7 methods for you
-```</p>
-
-<ul>
-<li>the routes file are evaluated with lazy evaluation. Which allows you to put the most specific patterns on top and let them trickle down...</li>
-<li>7 restful routes: get, create, update, delete, show, etc.</li>
-<li><p><em>url endpoint</em>- the very last thing that is executed after a url request- the last application run is the action in the controller</p></li>
-<li><p><strong>URL request cascade through a rails app:</strong></p>
-
-<ol>
-<li>web server gets request</li>
-<li>send it through the rack</li>
-<li>last stop, routes file</li>
-<li>match a  route</li>
-<li>request = SongContoller.new</li>
-<li>response = request.index</li>
-</ol>
-</li>
-</ul>
-
-
-<p>Rails was the first to have implicit rendering...
-```ruby Implicit Rendering
-def index
-  @index = Song.all
-end</p>
-
-<h1>this will implicitly render the index page</h1>
-
-<h1>could also add ~> render 'artist/index' &lt;~ which will over-write the implicitly render</h1>
-
-<h1>'artist/index' is a method called on self</h1>
-
-<p>```</p>
-
-<p>class variable can inherit down the inheritance tree
-a class instance var is private to the class</p>
-
-<p>```ruby
-def initialize</p>
-
-<pre><code>@songs = []
-@genres = []
-Artist.all &lt;&lt; self??
-</code></pre>
-
-<p>  end
-```</p>
-
-<p>VPS- Virtual Private server</p>
-
-<p>Linux distribution - ubuntu
-server - nginx
-unicorn
-DB- postgres</p>
-
-<h3>Visualization</h3>
-
-<ul>
-<li>how does a partition actually work?
-
-<ul>
-<li>2 cores or 4 cores?? i don't know what a core is.</li>
-</ul>
-</li>
-<li>hardware usually out-paces software
-
-<ul>
-<li>we have had <em>multi-core processors</em> before we had software to take advantage of it.</li>
-</ul>
-</li>
-<li><p>vocab:</p>
-
-<ul>
-<li>slice, a box, a vps, are pretty much synonymous</li>
-</ul>
-</li>
-<li><p>dediserve is the server we are using</p></li>
-<li>RAM has fast access.</li>
-<li><a href="http://vimeo.com/15882917">capistrano</a></li>
-</ul>
-
-
-<p>```
-ssh root@96.8ipaddress</p>
-
-<h1>will get an error saying that you can't connect</h1>
-
-<h1>say yes</h1>
-
-<h1>next insert your password:</h1>
-
-<h1>create a new user instead of root</h1>
-
-<p>useradd #to get access to instructons
-man useradd
-useradd -m -s /bin/bash -G sudo ajonas</p>
-
-<h1>sudo says anyone in sudo group can use sudo adam</h1>
-
-<h1>userdel will delete a user</h1>
-
-<p>passwd ajonas</p>
-
-<h1>enter password:</h1>
-
-<p>ssh root@96.8ipaddress will get you in</p>
-
-<p>sudo apt-get update #for updating indexes and downloading packages, like homebrew
-sudo apt-get upgrade
-build-apt-install build-essential</p>
-
-<h1>install your packages with apt-get</h1>
-
-<p>```</p>
-
-<h3>Capistrano</h3>
-
-<ul>
-<li><p>handles your <a href="http://en.wikipedia.org/wiki/Release_management">release management</a> throw the entire code base on your server every time you deploy. Copy code off of Github or server and apply it. This will maintain revisions, roll back easily, compile the CSS in your assets. It can't happen manually.
-<code>
-cap deploy
-</code>
-will do this for you. It's script-able and automatic.</p></li>
-<li><p>This is run locally.</p></li>
-<li>cap is what you use to interact with capistrano from the outside (like rails new from outside a rails project)</li>
-<li>capify is how you interact with the gem (like rails generate inside the project folder)</li>
-</ul>
-
-
-<h3>Web Servers</h3>
-
-<ul>
-<li>apache was the market leader for best of breed of web server</li>
-<li><p>ngenx - can handle lots of requests and tries to stay really small</p>
-
-<ul>
-<li>has much smaller memory footprint</li>
-<li>has some features that are better suited for rails</li>
-<li>ngenx is also a really good load balancer</li>
-<li>config file is much easier to understand than ngenx</li>
-</ul>
-</li>
-<li><p>Four functions in the config/deploy.rb DSL</p>
-
-<ul>
-<li>set: capistrano variables</li>
-<li>role:</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Further reading</h3>
-
-<ul>
-<li>backups</li>
-<li>log rotations - when your log gets too big, it is going to zip it up and send it to some long term storage. The first thing hackers will do is go through the logs.</li>
-</ul>
-
-
-<h3>Reading in prep:</h3>
-
-<ul>
-<li>Capistrano reads its instructions from a capfile.</li>
-<li>many server clusters are hidden behind NATs (Network address translation) and firewalls, to prevent direct access.
-
-<ul>
-<li>NATs - the process of modifying IP address information in IP packet headers while in transit across a traffic routing device.</li>
-</ul>
-</li>
-<li>Tasks are the foundation of a Capistrano setup; collections of tasks are typically called Recipes.</li>
-<li><p>Daemons are special system applications which typically execute continuously in the background and await requests for the functions they provide from other applications.</p></li>
-<li><p><em>From lowest to highest, the layers of the internet protocol suite are:</em></p></li>
-<li>The link layer (commonly Ethernet) contains communication technologies for a local network.</li>
-<li>The internet layer (IP) connects local networks, thus establishing internetworking.</li>
-<li>The transport layer (TCP) handles host-to-host communication.</li>
-<li><p>The application layer (for example HTTP) contains all protocols for specific data communications services on a process-to-process level (for example how a web browser communicates with a web server).</p></li>
-<li><p>Stateless firewalls require less memory, and can be faster for simple filters that require less time to filter than to look up a session.</p></li>
-<li><p>Modern firewalls can filter traffic based on many packet attributes like source IP address, source port, destination IP address or port, destination service like WWW or FTP.</p></li>
-</ul>
-
 ]]></content>
   </entry>
   
