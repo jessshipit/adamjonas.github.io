@@ -4,7 +4,7 @@
   <title><![CDATA[Category: refactoring | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/refactoring/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2012-11-09T10:16:51-05:00</updated>
+  <updated>2012-11-16T11:49:21-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,199 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Refactoring Ruby Edition Notes]]></title>
+    <link href="http://www.adamjonas.com/blog/refactoring-ruby-edition-notes/"/>
+    <updated>2012-11-10T11:22:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/refactoring-ruby-edition-notes</id>
+    <content type="html"><![CDATA[<h3>Replacing the Conditional Logic on Price Code with Polymorphism [p.32]</h3>
+
+<blockquote><p>Replacing the Conditional Logic on Price Code with Polymorphism
+The first part of this problem is that case statement. It is a bad idea to do a case based on an attribute of another object. If you must use a case statement, it should be on your own data, not on someone else’s.
+  - <a href="http://robots.thoughtbot.com/post/31728620503/refactoring-replace-conditional-with-polymorphism">Thoughtbot Reading</a></p></blockquote>
+
+<p>??Receiver on page 35?</p>
+
+<h3>Refactoring is... [p.53]</h3>
+
+<blockquote><p>(noun) A change made to the internal structure of software to make it easier to understand and cheaper to modify with- out changing its observable behavior.</p></blockquote>
+
+<ul>
+<li><p>Programming in about saying exactly what you want. But there is another user of your source code. Someone will try to read your code in a few months’ time to make some changes. We easily forget that extra user of the code, yet that user is actually the most important.</p>
+
+<ul>
+<li>Who cares if the computer takes a few more cycles to execute something? It does matter if it takes a programmer a week to make a change that would have taken only an hour if she had understood your code.</li>
+<li>when you are trying to get the program to work, you are not thinking about that future developer.
+
+<ul>
+<li>Often this future developer is me. [p. 55]</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Kent Beck often makes about himself, “I’m not a great programmer; I’m just a good programmer with great habits.” [p. 56]</p></li>
+<li>Don Roberts: The first time you do something, you just do it. The second time you do something similar, you wince at the duplica- tion, but you do the duplicate thing anyway. The third time you do something similar, you refactor. [p. 57]</li>
+</ul>
+
+
+<h3>Problems with refactoring [p. 63]</h3>
+
+<ul>
+<li>takes a while to create nothing</li>
+<li>performance deoptimization</li>
+<li>changing behavior</li>
+</ul>
+
+
+<h3>Code Smells</h3>
+
+<ul>
+<li>Duplicated Code [p. 74]</li>
+<li>Long Method [p. 74-75]
+
+<ul>
+<li>A heuristic we follow is that whenever we feel the need to com- ment something, we write a method instead.</li>
+<li>Conditionals and loops also give signs for extractions.</li>
+</ul>
+</li>
+<li>Large Class [p. 76]
+
+<ul>
+<li>When a class is trying to do too much, it often shows up as too many instance variables. When a class has too many instance variables, duplicated code cannot be far behind.</li>
+</ul>
+</li>
+<li>Long Parameter List [p. 76]</li>
+<li>Divergent Change [p. 77]
+
+<ul>
+<li>When we make a change we want to be able to jump to a single clear point in the system and make the change. When you can’t do this you are smell- ing one of two closely related pungencies.</li>
+</ul>
+</li>
+<li>Shotgun Surgery
+
+<ul>
+<li>Every time you make a kind of change, you have to make a lot of little changes to a lot of different classes.</li>
+<li>opposite of divergent change</li>
+</ul>
+</li>
+<li>Feature Envy [p. 78]
+
+<ul>
+<li>a method that seems more interested in a class other than the one it actually is in.</li>
+</ul>
+</li>
+<li></li>
+</ul>
+
+
+<h3>Extract Method [p. 102]</h3>
+
+<ul>
+<li>You have a code fragment that can be grouped together.
+
+<ul>
+<li>Turn the fragment into a method whose name explains the purpose of the method.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Inline Temp [p. 110]</h3>
+
+<ul>
+<li>You have a temp that is assigned to once with a simple expression, and the temp is getting in the way of other refactorings.
+
+<ul>
+<li>Replace all references to that temp with the expression.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Replace With Query [p. 111]</h3>
+
+<ul>
+<li>You are using a temporary variable to hold the result of an expression.
+
+<ul>
+<li>Extract the expression into a method. Replace all references to the temp with the expression. The new method can then be used in other methods.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Replace Loop with Conditional</h3>
+
+<p><code>ruby
+managers = []
+employees.each do |e|
+  managers &lt;&lt; e if e.manager?
+end
+</code></p>
+
+<h3>Lazy Initialized Attribute</h3>
+
+<ul>
+<li>Initialize an attribute on access instead of at construction time.</li>
+</ul>
+
+
+<p>```ruby
+class Employee
+  def initialize</p>
+
+<pre><code>@emails = []
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>becomes</h1>
+
+<p>class Employee
+  def emails</p>
+
+<pre><code>@emails ||= []
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h2>Chapter 9: Simplifying Conditional Expressions</h2>
+
+<h3>Replace the conditional code with the more idiomatic Ruby construct.</h3>
+
+<ul>
+<li>Encapsulate if/else, and/or logic in their own methods
+```ruby
+parameters = params ? params : []
+
+<h1>becomes</h1>
+
+<p>parameters = params || []
+```</p></li>
+<li>Use &amp;&amp; instead of multiple ifs
+```ruby
+if on_vacation?
+if length_of_service > 10
+return 1
+end
+end
+0.5
+
+<h1>This would be changed to</h1>
+
+<p>if on_vacation? &amp;&amp; length_of_service > 10
+return 1
+end
+0.5
+```</p></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[code smells and refactoring]]></title>
@@ -72,7 +265,9 @@
 
 <p>  William C. Wake : "Refactoring is the art of safely improving the design of existing code“.</p>
 
-<p>  RefactoringThe goal of refactoring is NOT to add new functionalityThe goal is refactoring is to make code easier to maintain in the futureThe process of refactoring involves the removal of duplication, the simplification of complex logic, and the clarification of unclear code.</p>
+<p>  The goal of refactoring is NOT to add new functionality.
+  The goal is refactoring is to make code easier to maintain in the future.
+  The process of refactoring involves the removal of duplication, the simplification of complex logic, and the clarification of unclear code.</p>
 
 <p>  refactoring versus rewriting</p>
 
@@ -107,6 +302,9 @@
 
 <p>extraction pattern- anti-pattern:
 <a href="http://blog.jayfields.com/2007/04/ruby-anti-pattern-extract-module-to.html">http://blog.jayfields.com/2007/04/ruby-anti-pattern-extract-module-to.html</a></p>
+
+<p>Refactoring:
+Even noobs know that refactoring is important. This presentation, inspired by <em>Refactoring: Ruby Edition</em>, will cover the whys, whens, and hows of refactoring using examples.</p>
 ]]></content>
   </entry>
   

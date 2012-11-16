@@ -30,3 +30,7 @@ friends_location = get_connections("me", "friends", :fields => "name, id, locati
 ```
 
 What I need is a FQL wrapper and to create a lib within my own app that just passes the parameters to the models and emcompasses all the interaction with the external FB open graph.
+
+###Koala
+- [FQL](https://github.com/arsduo/koala/blob/master/lib/koala/api/graph_api.rb)
+- [self.make_request](https://github.com/arsduo/koala/blob/master/lib/koala/http_service.rb) line 59

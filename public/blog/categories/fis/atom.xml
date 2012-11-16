@@ -4,7 +4,7 @@
   <title><![CDATA[Category: FIS | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/fis/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2012-11-09T10:16:51-05:00</updated>
+  <updated>2012-11-16T11:49:21-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -14,678 +14,1020 @@
 
   
   <entry>
-    <title type="html"><![CDATA[FIS Day23]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day23/"/>
-    <updated>2012-11-08T09:50:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day23</id>
-    <content type="html"><![CDATA[<h3>Blog Configuration</h3>
-
-<p><code>
-♕ heroku domains:add adamjonas.com
-Adding adamjonas.com to ajonas... done
-♕ heroku domains:add blog.adamjonas.com
-Adding blog.adamjonas.com to ajonas... done
-</code></p>
-
-<p>```
-HOST NAME IP ADDRESS/ URL RECORD TYPE MX PREF TTL
-  @       Heroku IPs              A(address)
-  @       Heroku IPs              A(address)
-  @       Heroku IPs              A(address)
-  www      ajonas.heroku  CNAME</p>
-
-<p>SUB-DOMAIN SETTINGS
-  blog   ajonas.heroku   CNAME
-```
-Explanation of heroku side <a href="https://devcenter.heroku.com/articles/custom-domains">is here</a>.</p>
-
-<h3>POTD</h3>
-
-<ul>
-<li>Jeff Raskin</li>
+    <title type="html"><![CDATA[FIS Day29]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day29/"/>
+    <updated>2012-11-15T09:44:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day29</id>
+    <content type="html"><![CDATA[<ul>
+<li><a href="http://jsonlint.com/">JSON link</a> a JSON parser</li>
 </ul>
 
 
-<h3>Morning Code</h3>
+<h3>CanCan</h3>
 
-<p><code>ruby
-rails generate rspec:install
+<ul>
+<li><a href="http://railscasts.com/episodes/192-authorization-with-cancan">Rails Cast</a></li>
+<li><a href="https://github.com/ryanb/cancan">CanCan Source Code</a></li>
+<li><a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">CanCan Wiki</a></li>
+</ul>
+
+
+<p>```ruby</p>
+
+<h1>If a user.git_nickname == repo.owner_name -> the user is an owner.</h1>
+
+<p>&lt;%= if can? :put, @issue %> #can only see the links if you authorized</p>
+
+<h1>also need to add restrictions in the controller</h1>
+
+<p>load_and_authorize_resource :nested => :repo</p>
+
+<h1>this is funky</h1>
+
+<p>```</p>
+
+<p>```ruby ability.rb
+class Ability
+  include CanCan::Ability</p>
+
+<p>  def initialize(user)
+  user ||= User.new # guest user that comes to the site and doesn't have an acct yet</p>
+
+<p>  if user.role? :admin</p>
+
+<pre><code>  can :manage, :all #manage emcompasses every action
+else 
+#this is for every day users
+  can :read, :all 
+  can :create, Comment
+  can :update, Comment do |comment|
+    comment.try(:user) == user || user.role?(:moderator)
+    #eqivalent to comment &amp;&amp; comment.user == user
+  end
+  if user.role?(:author)
+    can :create, Article
+    can :update, Article do |article|
+      article.try(:user) == user
+    end
+  end
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby user.rb</p>
+
+<h1>add roles in user model</h1>
+
+<p>```</p>
+
+<p><code>ruby application_controller.rb
+rescue_from CanCan::AccessDenied do |exception|
+  flash[:error] = "Access denied."
+  redirect_to root_url
+end
 </code></p>
 
-<p>a class is what describes how objects are similar to eachother
-instances describe how objects are different</p>
+<h3>Jquery lecture John</h3>
 
-<h3>Rails</h3>
+<p>```javascript
+//hide
+  $("#b1").click(function(){</p>
 
-<p>form builders - ActionView</p>
+<pre><code>$("#p1").hide(1000);
+</code></pre>
 
-<p>acceptance -> virtual attribute</p>
+<p>  });</p>
 
-<p>@instance_variables only can be accessed within the same action</p>
+<p>  //show
+  $("#b2").click(function(){</p>
 
-<p><code>ruby Every time you run a migration
-rake db:test:prepare
-</code></p>
+<pre><code>$("#p1").show(2000); //this makes it look like it is writing it out
+//with a longer duration
+</code></pre>
 
-<p>shoulda_matchers</p>
+<p>  });</p>
+
+<p>  //toggle
+  $("#b3").click(function(){</p>
+
+<pre><code>$("#p1").toggle(1000);
+</code></pre>
+
+<p>  });
+```</p>
+
+<ul>
+<li>Fade Toggle, fade down, slide up, slide down, slide toggle</li>
+</ul>
+
+
+<p>```javascript
+//animate
+  $("#b19").click(function(){</p>
+
+<pre><code>$(".box-animate").animate({height:"200px"},500);
+$(".box-animate").animate({width:"200px"},500);
+$(".box-animate").animate({height:"50px"},500);
+$(".box-animate").animate({width:"50px"},500);
+$(".box-animate").animate({width:"100px"},500);
+$(".box-animate").animate({height:"100px"},500);
+</code></pre>
+
+<p>  });
+```</p>
+
+<p>```javascript Fancy Box Example
+$(document).ready(function(){</p>
+
+<p>  /<em> LETS USE FUNCTIONS TO MAKE AN INSTANCE OF INTERACTING WITH THE DOM REPEATABLE </em>/</p>
+
+<p>  //first I want to fade out all the fruit pictures.
+  $('#gallery img').fadeTo(100,0.2); //fadeTo(delay in miliseconds, opacity)</p>
+
+<p>  //next I want to create a function that will only run when someone hovers over a fruit image.
+  function mouseOn(){</p>
+
+<pre><code>$(this).fadeTo(200,1); //the keyword 'this' refers to the element that is calling the function in our case it is the individual image that the user has their mouse over top of.
+</code></pre>
+
+<p>  }</p>
+
+<p>  //mouse off funtion
+  function mouseOff(){</p>
+
+<pre><code>$(this).fadeTo(500,0.2);
+</code></pre>
+
+<p>  }</p>
+
+<p>  //lastly I want to check if the user is hovering their mouse and call the apropriate function.
+  $('#gallery img').hover(mouseOn,mouseOff);</p>
+
+<p>  //add rel attribute to gallery links to add arrow functionality to fancybox plugin
+  $('#gallery a').attr('rel','fruits');</p>
+
+<p>  //apply fancybox plugin
+  $('#gallery a').fancybox();</p>
+
+<p>});
+```</p>
+
+<h3>When installing a plugin</h3>
+
+<ul>
+<li>does it have css?</li>
+<li>load styleheet above my own, so that it won't over-ride my styling</li>
+<li><p>put js sheet BELOW jquery plugin files</p></li>
+<li><p>js fiddle -> minifies</p></li>
+</ul>
+
+
+<h3>Semi Colons</h3>
+
+<ul>
+<li>if, else and function def don't requiring a semi-colon</li>
+<li>would never put a semi-colon after a curly brace except for object instantiation
+
+<ul>
+<li>`var myObject = { };</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Jquery Misc</h3>
+
+<ul>
+<li><a href="http://oscarotero.com/jquery/">Jquery cheat sheet</a></li>
+</ul>
+
+
+<p>Content delivery network -> a CDN</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>Best practices from backend devs. What can we do to help you?
+
+<ul>
+<li>semantic use of naming things like IDs</li>
+</ul>
+</li>
+<li>some of your favorite plugins? source for finding really cool plugins
+
+<ul>
+<li><a href="http://fancybox.net/">fancybox.net</a></li>
+<li><a href="http://popcornjs.org/">popcorn.js</a></li>
+<li><a href="http://www.jquery4u.com/">Jquery4u</a></li>
+</ul>
+</li>
+<li>tests in javascript?
+
+<ul>
+<li>some mvc have tests built in like backbone.</li>
+</ul>
+</li>
+<li>debugging in JS?
+
+<ul>
+<li>write code in short snippets, comment out sections</li>
+<li>js lint -> shows errors and styles</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Color Stuff</h3>
+
+<ul>
+<li>Digital color meter
+
+<ul>
+<li>copy with cmd, shift c and you can paste is</li>
+</ul>
+</li>
+<li><a href="https://kuler.adobe.com">color matching</a>
+
+<ul>
+<li>automatically color coordinates</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```javascript
+$.each
+  data.results[0].from_user_name</p>
+
+<p>.getJson //pretty important
+```</p>
+
+<p>```javascript Get JSON from Twitter example
+$(document).ready(function(){</p>
+
+<p>  var keywordInput = $('#keyword'),</p>
+
+<pre><code>searchButton = $('#search'),
+displayFeed = $('#feed'),
+keyword = '',
+content = '';
+</code></pre>
+
+<p>  //CLEAR
+  keywordInput.focus(function(){</p>
+
+<pre><code>displayFeed.empty(); //clears results
+keywordInput.val(''); //clears input box when return to type new key words. 
+</code></pre>
+
+<p>  });//end clear</p>
+
+<p>  //SEARCH &amp; DISPLAY
+  searchButton.click(function(){</p>
+
+<pre><code>keyword = keywordInput.val(); //retrieves keyword(s) typed.
+
+$.getJSON('http://search.twitter.com/search.json?callback=?&amp;q='+keyword,function(data){ //display JSON feed using keyword(s) typed
+//callback shifts to padded json, which is neccessary for this call
+//data is an arbitrary variable that store the info
+
+  console.log(data); //see if results came in...
+
+  console.log(data.results[0].from_user); //if only there were a way to go into the array results and loop over each element/value and report back the data I want... What about loops?
+
+  //loop -&gt; for each object result retrieve the data and display
+  $.each(data.results, function(index, value){
+  // tell each what we want to iterate over
+    //data.results -&gt; is an array within the json
+        var content = '&lt;p&gt;&lt;a href="http://twitter.com/'+value.from_user+'" target="_blank"&gt;&lt;img src="'+value.profile_image_url+'" alt="picture of '+value.from_user+'"&gt;&lt;/a&gt; &amp;quot;'+value.text+'&amp;quot; -'+value.from_user+' &lt;span class="date"&gt;['+value.created_at+']&lt;/span&gt;&lt;/p&gt;';
+
+        displayFeed.append(content); //displays each result inside feed area.
+        //opposite is prepend
+        displayFeed.find('p').highlight(keyword); //highlight matching terms using highlight plugin.
+
+  });//end each
+
+});//end getJSON
+</code></pre>
+
+<p>  });//end Search</p>
+
+<p>});//end document ready
+```</p>
+
+<ul>
+<li>tutsplus-> learn jquery 30 days
+
+<ul>
+<li>30 min videos</li>
+<li>free</li>
+</ul>
+</li>
+<li><h2>backbone tutorial</h2></li>
+<li><a href="http://it-ebooks.info/">http://it-ebooks.info/</a>
+
+<ul>
+<li><a href="http://www.manning.com/bibeault/">jquery in action</a></li>
+</ul>
+</li>
+</ul>
+
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[FIS Day22]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day22/"/>
-    <updated>2012-11-07T10:10:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day22</id>
-    <content type="html"><![CDATA[<h3>HTTParty</h3>
+    <title type="html"><![CDATA[FIS Day28]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day28/"/>
+    <updated>2012-11-14T10:10:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day28</id>
+    <content type="html"><![CDATA[<h2>Authentication</h2>
 
 <ul>
-<li><a href="https://github.com/jnunemaker/httparty">On github</a></li>
-<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">Treehouse blog post</a></li>
+<li>http is stateless</li>
+<li><p>we pass along with the request is our cookie</p>
+
+<ul>
+<li>the cookie lives on the client, which means we can't trust it</li>
 </ul>
-
-
-<h3>Rant</h3>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Conway%27s_law">Conway's law</a>
+</li>
+<li><p>cookie has a lot of raw data</p>
 
 <ul>
-<li>organizational communication will be reflected in the product</li>
+<li>you don't really want to put data on the client</li>
+<li>except the token: which is just a primary key for their session on my server</li>
+</ul>
+</li>
+<li><p>session id in the cookie identifies the session</p></li>
+<li><p>cookies on the browser/sessions are on the server</p>
+
+<ul>
+<li>the cookie is used to access the session</li>
+</ul>
+</li>
+<li><p>Form_for requires an ActiveRecord instance -> it needs a model</p>
+
+<ul>
+<li>form_tag(sessions_path)</li>
 </ul>
 </li>
 </ul>
 
 
-<p>seagull architect -</p>
+<p>```ruby Session Controller
+skip_before_filter :login_required, :only => :new, :create</p>
 
-<blockquote><p>comes in, shits all over your code and then leaves</p></blockquote>
+<h1>this is needed you will need to login before you login. #Need to do this in the user controller as well.</h1>
 
-<p><a href="https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design">Insufficiency of good design</a></p>
+<p>def create
+  user = User.find_by_email(params[:email])</p>
 
-<p>Open source: def up and down in migration.rb in rails can be refactored</p>
+<p>  if user</p>
 
-<h3>POTD</h3>
-
-<p><a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph Weizenbaum</a></p>
-
-<h2>Rails Lecture</h2>
-
-<p>```ruby Controller Test Continued from Day21...
-require 'spec_helper'</p>
-
-<p>describe SongsController do
-  describe 'POST /songs' do</p>
-
-<pre><code>it 'should create a song with a name' do
-  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
-
-  assigns(:song).name.should == "Thriller"
-end
-
-it 'should create a song with an artist name' do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}
-
-  assigns(:song).artist_name.should == "Michael Jackson"
-end
-
-it "should create a song with a genre string" do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop"}}
-
-  assigns(:song).genre_names.should include("Pop")
-end
-
-
-it "should create a song with a genres from a CSV string" do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop, Techno"}}
-
-  assigns(:song).genre_names.should include("Pop")
-end
-
-it "should create a song with a genre array containing CSV string" do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; ["Pop, Techno", "Rap"]}}
-
-  assigns(:song).genre_names.should include("Pop")
-end
+<pre><code>session[:user_id] = @user.id
 </code></pre>
 
-<p>  end
-end
-```</p>
+<p>  else</p>
 
-<p>```ruby song_spec.rb Unit Test
-require 'spec_helper'</p>
-
-<p>describe Song do
-  let(:song){Song.new(:name => "Thriller")}</p>
-
-<p>  context 'with genres' do</p>
-
-<pre><code>let(:genre){Genre.create(:name =&gt; "Pop")}
-
-context '.genre_names' do
-  it "should return an array of genre names" do
-    song.genres &lt;&lt; genre
-    song.save
-
-
-    song.genre_names.should be_an_instance_of(Array)
-    song.genre_names.should include("Pop")
-  end
-
-  it "should accept a genre name and add that genre" do
-    song.genre_names = "Techno"
-    song.save
-
-    song.genre_names.should include("Techno")
-  end
-
-  it "should accept a comma delimited list of genre names" do
-    song.genre_names = "Techno, Pop"
-    song.save
-
-    song.genre_names.should include("Techno", "Pop")
-  end
-
-  it "should accept an array containing comma delimited list of genre names" do
-    song.genre_names = ["Techno, Pop", "Rap"]
-    song.save
-
-    song.genre_names.should include("Techno", "Pop", "Rap")
-  end
-
-  it "should only add unique genres" do
-    song.genre_names = ["Pop", "Pop"]
-    song.save
-
-    song.genre_names.count.should == 1
-  end
-
-end
-</code></pre>
-
-<p>```
-rake spec:models</p>
-
-<p><code>ruby gem file
-group [:development, :test] do
-  gem 'debugger'
-end
-</code></p>
-
-<ul>
-<li>detect returns nil if there is not match</li>
-<li>select returns an empty array when no match</li>
-</ul>
-
-
-<p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions"><strong>to_sentence method in rails</strong></a></p>
-
-<h3>HTML &lt; form_tag lower &lt; form_for</h3>
-
-<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag">form_tag</a></p>
-
-<p>```
-<form action="/songs" id="new_song" class="new_song"> <form></p>
-
-<p>&lt;%= form_tag(songs_path, :id => "new song") do %>
-  &lt;%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
-  &lt;%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
-  &lt;%= submit_tag "Create Song", :id => "create_song" %>
-&lt;% end %></p>
-
-<p>&lt;%= form_for(@song) do |f| %>
-  &lt;%= f.text_field :name %>
-  &lt;%= f.text_field :artist_name %>
-  &lt;%= f.submit %>
-&lt;% end %>
-```
-<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag">text_field_tag docs</a></p>
-
-<h3>Integration test / Acceptance Test</h3>
-
-<ul>
-<li><p><a href="http://railscasts.com/episodes/187-testing-exceptions">Railscast 187</a></p></li>
-<li><p><a href="http://railscasts.com/episodes/257-request-specs-and-capybara">Railscast 257</a></p></li>
-<li><a href="https://github.com/copiousfreetime/launchy">launchy gem</a> to see that page that capybara filled out - useful for creating fixtures</li>
-<li><p>post_via_redirect</p>
-
-<ul>
-<li>get => response</li>
-<li>visit => page</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Continuous Integration / Testing</h3>
-
-<ul>
-<li>autotest</li>
-<li>guard
-
-<ul>
-<li><a href="https://github.com/guard/guard">gem guard-rspec</a></li>
-</ul>
-</li>
-<li>rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved</li>
-<li>growl extension or terminal notifier on the <a href="https://github.com/guard/guard#terminal-notifier">guard gem page</a></li>
-<li><a href="https://github.com/jnicklas/capybara">capybara</a></li>
-</ul>
-
-
-<p><strong>receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will</strong></p>
-
-<h3>Pull down the other app</h3>
-
-<p>git merge upstream/master</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day21]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day21/"/>
-    <updated>2012-11-06T13:57:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day21</id>
-    <content type="html"><![CDATA[<p><strong><em>Generate a model that is singular-- ALWAYS</em></strong></p>
-
-<p>'self' means the receiver of this method call</p>
-
-<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong>never ever have a nested attributes for belongs_to ONLY has has_many</strong>
-</a></p>
-
-<p>```ruby song.rb Model
-Class Song</p>
-
-<p>  def add_genre(genre)</p>
-
-<pre><code>genre = Genre.find_or_create_by_name(genre) if genre.is_a?(String) 
-self.song_genres.create(:genre =&gt; genre).genre
-</code></pre>
-
-<p>  end</p>
-
-<p>end
-```</p>
-
-<p>```ruby song_spec.rb Unit Test
-require 'spec_helper'</p>
-
-<p>describe Song do
-  context '.add_genre' do</p>
-
-<pre><code>before(:each) do
-  let(:song){Song.create(:name =&gt; "Thriller")} 
-  let(:genre){Genre.create(:name =&gt; "Pop")} #this creates the genre method that executes the block that follows it.
-
-  it "should add the genre" do
-    song.add_genre(genre)
-
-    song.genres.should include(genre)
-  end
-
-  it "should return the newly added genre" do
-    song.add_genre(genre) should == genre #this means it won't return a full array like a push method return
-  end
-
-  it 'should accept an existing genre name do'
-    genre = Genre.create(:name =&gt; "Techno")
-    song.add_genre("Techno").should == genre
-  end
-
-  it 'should accept a genre name' do
-    song.add_genre("Pop").should == genre
-  end
-
-  it "should add only unique genres" do
-    #if I add the same genre twice, it should still 
-    song.add_genre(genre)
-    song.add_genre(genre)
-
-    song.genres.count.should == 1
-  end
-</code></pre>
-
-<p>  end
-end
-```
-Rspec runs its tests in isolation, by running each test in a transaction. After each test, it rollbacks all the writes.</p>
-
-<p>LOGS:
-<code>
-tail -f #open the end of the file and keep it open.
-</code></p>
-
-<p>If you are building associated data outside of your model, then you haven't encapsulated enough.</p>
-
-<ul>
-<li>Tests Hierarchy in ascending levels of abstraction
-
-<ul>
-<li>unit tests</li>
-<li>controller tests</li>
-<li>integration tests</li>
-</ul>
-</li>
-</ul>
-
-
-<p>```ruby Controller Test
-require 'spec_helper'</p>
-
-<p>describe SongsController do
-  describe 'POST /songs' do</p>
-
-<pre><code>it 'should create a song with a name do'
-  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
-  #create action in the song controller with post or request parameters that you 
-  #want to send along with it
-
- # Song.find_by_name("Thriller").should be_true
- assigns(:song).name.should == "Thriller"
-end
-
-it 'should create a song with an artist name'
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}}
-  #this makes artist_name a first class citizen in the params hash.
-
-  #we killed this because we are assigning a string, not an artist object--&gt; post :create, {:song =&gt; {:name =&gt; "Thriller", :artist =&gt; {:name =&gt; "Michael Jackson"}}} 
-
-  #create action in the song controller with post or request parameters that you 
-  #want to send along with it
-
-  #Song.find_by_name("Thriller").should be_true
-  assigns(:song).artist.name.should == "Michael Jackson"
-end
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>```ruby song_spec.rb
-context '.artist_name' do
-  it "should have an artist_name method" do</p>
-
-<pre><code>song.should respond_to(:artist_name)
-</code></pre>
-
-<p>  end</p>
-
-<p>  it 'should return a songs artist' do</p>
-
-<pre><code>song.artist = Artist.create(:name =&gt; "Michael Jackson")
-song.artst_name.should == "Michael Jackson"
+<pre><code>flash[:notice] =&gt; 'login failed'
+redirect :new
 </code></pre>
 
 <p>  end
 end</p>
 
-<p>  context '.artist_name=' do</p>
-
-<pre><code>it "should assign the artist via the name" do
-  song.artist_name = "Michael Jackson"
-  song.artist.should be_a(Artist)
-  song.artist_name.should == "Michael Jackson"
+<p>def destroy
+  session[:user_id] = nil
+  reset_session
 end
-</code></pre>
-
-<p>  end
 ```</p>
 
-<p>```ruby Song.rb Model
-  def artist_name</p>
+<p>```ruby Application Controller
+class Application Controller
+  def login_required</p>
 
-<pre><code>self.artist.name if self.artist
+<pre><code>unless current_user
+  redirect_url login_path, :notice =&gt; "please login"
 </code></pre>
 
 <p>  end</p>
 
-<p>  def artist_name=(string)</p>
+<p>  def current_user</p>
 
-<pre><code>self.artist = Artist.find_or_create_by_name(string)
+<pre><code>@current_user ||= User.find_by_id(session[:user_id])
 </code></pre>
 
 <p>  end
+  helper_method :current_user</p>
+
+<p>  def logged_in?</p>
+
+<pre><code>true if current_user
+</code></pre>
+
+<p>  end
+  helper_method :logged_in?</p>
+
+<p>end
 ```</p>
 
-<h3>SOLID</h3>
+<ul>
+<li><p>In user model: has_secure_password</p>
 
-<p>Procedural code- solutions for very specific problems</p>
+<ul>
+<li>bcrypt</li>
+<li>password confirmation is optional with has_secure_password</li>
+<li>if a hacker gains access to your logs and you don't have the password field filtered, they can see all the passwords</li>
+</ul>
+</li>
+<li><p><a href="http://www.dshield.org/diary.html?storyid=11110">hashing passwords</a></p></li>
+</ul>
 
-<p>dependencies will kill your code, but design will save it</p>
+
+<p>```ruby update attributes
+Order.update(12, :name => "Barney", :email => "barney@bedrock.com")</p>
+
+<h1>is equivalent to</h1>
+
+<p>Order.find(12).update_attributes(:name => "Barney", :email => "barney@bedrock.com")
+```</p>
+
+<h3>MISC</h3>
+
+<ul>
+<li><a href="http://chrispederick.com/work/web-developer/features/">Web dev tool</a></li>
+<li><a href="https://makandracards.com/makandra/621-git-delete-a-branch-local-or-remote">delete local and remote branches</a></li>
+<li><a href="http://pusher.com/tutorials">pusher</a> better than socket.io
+
+<ul>
+<li><a href="https://github.com/tarnfeld/PusherChat-Rails">pusher chat</a></li>
+</ul>
+</li>
+<li><a href="http://socrates.io/">socrates.io</a></li>
+</ul>
+
+
+<p><code>ruby Throw this at the top for a place for flash notices
+&lt;%= notice %&gt;
+</code></p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Anatomy of Web Requests]]></title>
-    <link href="http://www.adamjonas.com/blog/anatomy-of-web-requests/"/>
-    <updated>2012-11-05T12:58:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/anatomy-of-web-requests</id>
-    <content type="html"><![CDATA[<h3><a href="http://johndbritton.com/">John Britton</a></h3>
-
-<h3>Requests are like</h3>
+    <title type="html"><![CDATA[FIS Day27]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day27/"/>
+    <updated>2012-11-13T09:21:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day27</id>
+    <content type="html"><![CDATA[<h3>POTD Jesse James Garrett</h3>
 
 <ul>
-<li>driving a car</li>
-<li><p>shipping containers</p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/OSI_model">OSI model</a></p></li>
-</ul>
-
-
-<p>  sounds a lot like mvc- in terms of abstraction</p>
-
-<p>  HTTP: the language that your browser speaks
-  - The webpage is a document</p>
-
-<h3>URI:</h3>
+<li>Author of <a href="http://www.jjg.net/elements/">elements of user experience</a>
 
 <ul>
-<li><p>Rendering</p>
-
-<ul>
-<li>HTML structure</li>
-<li>CSS style</li>
-<li><p>JS behavior</p></li>
-<li><p>ports are a concept</p></li>
-<li>ftp 21</li>
-<li>ssl 53</li>
-<li>0-1024 -> are assigned</li>
-<li>1024-49151 -> are available</li>
-<li><p>49152+</p></li>
-<li><p>if listening on 80- that means that route every request on port 80 to this program</p></li>
+<li>elements of style</li>
 </ul>
 </li>
-<li><p><a href="http://jsfiddle.net/">JS Fiddle</a></p></li>
-<li><p>HTTP: methods/verbs</p>
+<li><a href="http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications">Ajax essay</a>
 
 <ul>
-<li>GET - grab some stuff and bring it down</li>
-<li>POST - anything you are altering the state of the app with is probably a post request</li>
-<li>PUT</li>
-<li>DELETE</li>
-<li>others: HEAD, PATCH, TRACE, OPTIONS, CONNECT</li>
-</ul>
-</li>
-<li><p>curl- works just like a browser on the command line.</p></li>
-</ul>
-
-
-<h3>Where do those requests go?</h3>
-
-<ul>
-<li>what is the ip address of the resource I am looking for</li>
-<li><p>if nothing is cached anywhere</p>
-
-<ul>
-<li>13 root nameservers</li>
-<li>TLD nameserver- authoritative for .coms for example</li>
-<li>A record - I found the place to go for github, but I need the actual IP address</li>
-<li><p>IP address</p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/BIND">BIND</a> is the most widely used DNS software on the Internet.</p></li>
-<li><p>TTL- <a href="http://en.wikipedia.org/wiki/Time_to_live">time to live</a></p></li>
-<li><p>Networks: nodes that can talk to each other directly</p></li>
-<li>Interface</li>
-<li><p>Network addresses:</p>
-
-<ul>
-<li>defines all the address that can talk to each other</li>
-<li>a.b.c.d/n (n= network mask /subnet)</li>
-<li>Private (non routable) network
-
-<ul>
-<li>10.0.0.0/8</li>
-<li>172.16.0.0/12 -> identifies which part is</li>
-<li>192.168.0.0/16 -> private networks namespaced for private networks</li>
-</ul>
-
-
-<p>255.255.255.0 -> subnet mask -> 24 bits ->
-192.168.1.N and n can't exceed 255 people.</p>
-
-<p>10101100.0001 -> this is the network address -> the first 16 bits, the rest would be the node of the network</p>
-
-<ul>
-<li>you can have a lot more machines on an 8 bit network identifier, than a 16 bit. But you wouldn't want to waste a bunch of nodes that aren't going to be used.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Maximum number of address minus two</p>
-
-<ul>
-<li>192.168.1.255 -> broadcast address</li>
-</ul>
-</li>
-<li><p>Network Hardware</p>
-
-<ul>
-<li>Hub - dumb -> connects everyone's ports to each other -> every machine's send is connected to everyone's receive -> lowest level</li>
-<li>Switch - smarter -> knows what addresses are connected to what ports - lowers network traffic, sending something once and remembering who responds</li>
-<li>Router - smartest -> connects <a href="http://www.merriam-webster.com/dictionary/disparate">disparate</a> networks. Hub and switch talk to each other, for a router, we go through another point -> knows about disparate networks and IP addresses</li>
+<li>asynchronous model</li>
 </ul>
 </li>
 </ul>
 
 
-<p>-Network Protocols</p>
+<h3>Gitbo</h3>
 
 <ul>
-<li>Operating system knows about the <strong>transport</strong>.
+<li><a href="https://github.com/tute/merit">merit</a>/<a href="http://railscasts.com/episodes/364-active-record-reputation-system">reputation</a></li>
+<li><a href="https://github.com/javan/whenever">whenever</a></li>
+</ul>
+
+
+<h2>JS With Justin Moses</h2>
 
 <ul>
-<li>Something reliable it will write in <strong>TCP</strong>
+<li><p>learn some Haskell, lisp -> functional programming</p></li>
+<li><p>JS fiddle</p></li>
+<li><p><a href="http://jsbin.com/welcome/1/edit">JS Bin</a></p></li>
+<li><p>span is an inline div</p></li>
+<li><p>when a document is loaded in the browser. it first calls a method on itself called ready.</p>
 
 <ul>
-<li>It has to all get there or the file will be corrupt</li>
-<li>there is a control mechanism. If the packets I'm not sending</li>
+<li>program events onto these objects</li>
+<li>find objects within the document and add more events to them</li>
+<li>if you try to load it linearly, then you need to wait until the document has full compiled.</li>
 </ul>
 </li>
-<li><strong>UDP</strong> - don't want a reliable transport.
+<li>think about buttons as button objects and you can bind methods and other objects to that button object</li>
+<li>src="http://www.adamjonas.com//code.jquery.com/"
+
+<h2>- put the script tags in the head is good form</h2></li>
+</ul>
+
+
+<p>```</p>
+
+<script>
+    function runthis() {
+    alert(this);
+  }
+</script>
+
+
+<p>```
+$ -> jquery shortcut</p>
+
+<p>When the DOM is loaded get going....
+```javascript
+$(function)(){</p>
+
+<p>}
+```</p>
+
+<p>```javascript
+$(function)(){
+  //alert(this);</p>
+
+<p>  alert($('.btn').html("test123"));
+  //matching functions and matching it to all buttons</p>
+
+<p>});
+```
+document.querySelectorAll('.button') -> is the javascript equivalent to $('.button')</p>
+
+<p>```javascript
+$(function)(){</p>
+
+<p>  $('.btn').click(function() {</p>
+
+<pre><code>$('body').append('&lt;button class="btn"&gt;my button&lt;/button&gt;');
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>```javascript
+$(function)(){</p>
+
+<p>  $('body').on('click', function()
+  {</p>
+
+<pre><code>  $('body').append('&lt;button class="btn"&gt;my button&lt;/button&gt;');
+</code></pre>
+
+<p>  });
+});
+```</p>
 
 <ul>
-<li>I don't care if it all gets there. Deliver it in order.</li>
-<li>You don't want a second of video that was sent out of order, you don't want to patch it together out of order. Streaming would use UDP.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Routing - my machine doesn't know about them.
+<li><a href="http://api.jquery.com/on/">.on() event</a></li>
+<li>every move, every click these are all reported events
 
 <ul>
-<li><a href="http://en.wikipedia.org/wiki/Routing_Information_Protocol">RIP</a> -</li>
-<li><a href="http://en.wikipedia.org/wiki/Open_Shortest_Path_First">OSPF</a> - Open Shortest Path First- a concept of links and weight of links. If you have two possible routes, it will go on</li>
-</ul>
-</li>
-<li><p>Network Address Translation</p>
+<li>event bubbling -> fire event with that div, in the body, in the window
 
 <ul>
-<li>maps traffic coming from an internal network and makes sure the appropriate machine gets the info it requested.</li>
+<li>target -> event clicked on</li>
+<li>event delegation in js -> allows you quickly bind events that don't exist yet</li>
 </ul>
 </li>
-<li><p>traceroute
+</ul>
+</li>
+</ul>
+
+
+<h3>AJAX</h3>
+
+<p><code>XMLHttpRequest == $.ajax</code></p>
+
+<p>```javascript AJAX
+$(function() {
+  var promise = $.ajax({</p>
+
+<pre><code>url:"http://jsbin.com/iyijag.js"
+</code></pre>
+
+<p>  }).
+  promise.done(function(data){
+  //show user data
+  alert(data); //alert box with json data
+  }).
+  promise.fail(function(err){
+  // on fail
+  }).
+  promise.always(function(data){
+  //always called
+  });
+});</p>
+
+<p>```
+AJAX by default is get, but
+jquery deferred -> chaining things together without certainty of the event</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>debugging in your app. single click on line with chrome will drop in a debugger object.
+
+<ul>
+<li>can then see the object in console</li>
+</ul>
+</li>
+<li>if you use it once -> you don't need to name the function, if you want to reuse, you probably want to</li>
+</ul>
+
+
+<h3>Other stuff</h3>
+
+<ul>
+<li><a href="http://colorblendy.com/">colorblendy</a></li>
+<li><a href="http://mouapp.com/">markdown editor</a></li>
+<li><a href="http://www.khanacademy.org/cs">khan academy</a></li>
+<li>node inspector for server side</li>
+<li><a href="https://npmjs.org">NPM for node</a>- is like ruby gems - server side modules</li>
+<li>HTML5 and websockets and threads</li>
+</ul>
+
+
+<h2>Avi Rant</h2>
+
+<ul>
+<li>rails works nicely with ember</li>
+<li>javascript provides you</li>
+</ul>
+
+
+<h3>Avi Javascript Lecture</h3>
+
+<ul>
+<li>if you want to do anything to an object, you need to first grab it from the DOM</li>
+<li>document.baseURI</li>
+<li>document - returns the whole window</li>
+<li>{} in javascript is an object</li>
+</ul>
+
+
+<p>```javascript Building an Object in Javascript
+o = {}
+//instantiating an object
+o.first_name = "avi"
+o.last_name = "flom"
+o.full_name = function(){this.first_name + " " + this.last_name}
+//like self.first_name + " " + self.last_name in ruby</p>
+
+<p>//can see what this is in the log
+o.full_name = function(){console.log(this)};</p>
+
+<p>//could do this, but it isn't object oriented
+function full_name(object){
+  return object.first_name + object.last_name
+}
 <code>
-traceroute github.com
-whois adamjonas.com
-ping google.com
-curl google.com
-</code></p></li>
-</ul>
-</li>
-<li><p>nmap
-brew install nmap
-nmap #map the network</p>
+`$ sign == jQuery`
+</code>javascript
+document.onready = function(){
+  $("form a")
+}</p>
 
-<h1>could run this against port 22 which is all the ssh</h1></li>
-<li><p><a href="http://whatismyipaddress.com/">wireshark</a></p></li>
-<li><p>hazel- rules based apps</p></li>
-<li>cueing in rails</li>
-<li><p><a href="http://progrium.com/localtunnel/">local tunnel</a></p></li>
-<li><p>blobs, tags, branches, commits</p>
+<p>document.onready();</p>
+
+<p>//This means that when the document is loaded, fire this.
+$(function(){
+  $("form a").click(function(x){</p>
+
+<pre><code>alert(x.clientX + "," x.clientY")
+return false; //stop the normal event -&gt; like following a link
+//this would work like x.preventDeafult();
+</code></pre>
+
+<p>  })
+});</p>
+
+<p>//x is the event in this case
+//$("form a") is almost like a yield from a block, that you will be able to access
+<code>
+</code>javascript
+$(this) // a full blown object that knows about its parent
+this // is just a return of DOM. This doesn't have much info</p>
+
+<p>//.attr("href") is like accessing an attribute or key of the object
+window.location = $(this).attr("href") +"?source=flatironschool"
+```</p>
 
 <ul>
-<li>blob is just a file -> any data</li>
-<li>git hash-object README</li>
+<li>You are hooking into events. You are dependent on the browser and when events are loaded. It's not about linear execution. It's about the browser API.</li>
+<li>applying a bind to an element will always happen in a ready box</li>
+<li>current target, the thing that was actually clicked</li>
+<li>handleObj - the actual event, event type -> both might be a click event</li>
 </ul>
-</li>
-<li><p>tree</p>
+
+
+<p>```javascript
+$(function)(){
+  $("form a").click(function(e){</p>
+
+<p>  e.preventDefault;</p>
+
+<p>  //select the object</p>
+
+<p>  //$select = $('#mixtape_mixtape_songs_attributes_0_song');
+  $select = $('form select:last'); //grab the last element with a pseudo selector
+  //duplicate code
+  $new_select = $select.clone();</p>
+
+<p>  console.log($new_select);</p>
+
+<p>  //edit's name
+  $next_name = $select.attr("name")
+  console.log($next_name)</p>
+
+<p>  next_int = parseInt(next_name.
+  replace("mixtape[mixtape_songs_attribute][", "").
+  replace("]song_id"))+1;</p>
+
+<p>  new_select.attr("name", next_name)
+  //insert it back into the DOM</p>
+
+<p>  $("div.actions")
+  return false;
+  })
+});</p>
+
+<p>//can have a document object that hasn't been inserted into the view yet
+```</p>
+
+<p>```javascript
+$("a").click(function(){alert("test")});</p>
+
+<p>//equal to
+t = function(){alert("test")}; -> this loaded into memory and run when ready.
+// t = alert("test") -> this is literal and will be called immediately.
+$("a").click(t);
+```</p>
+
+<h3>Methods</h3>
 
 <ul>
-<li>brew install tree</li>
-</ul>
-</li>
-<li><p>Divy or breeze: window arranging</p></li>
+<li>key press event</li>
+<li>blur(), change(), click()</li>
+<li>handler() -> the function you want to run when this change occurs</li>
+<li>hover is the combo of focus and blur</li>
+<li>every keypress comes with two events key down and key up</li>
+<li>live -> attaching the event to the body</li>
 </ul>
 
+
+<p>```javascript MouseMove
+$(function)(){
+  $("form").mousemove(function(e){</p>
+
+<pre><code>console.log(e)
+</code></pre>
+
+<p>})
+```</p>
+
+<ul>
+<li>spyjax</li>
+</ul>
+
+
+<h3>Odemeter</h3>
+
+<p><a href="http://uvumitools.com/odometer.html">http://uvumitools.com/odometer.html</a></p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[FIS Day20]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day20/"/>
-    <updated>2012-11-05T08:55:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day20</id>
-    <content type="html"><![CDATA[<h3>UMLs</h3>
+    <title type="html"><![CDATA[FIS Day25]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day25/"/>
+    <updated>2012-11-11T14:16:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day25</id>
+    <content type="html"><![CDATA[<h2>Nested Forms</h2>
 
 <ul>
-<li><a href="http://en.wikipedia.org/wiki/Unified_Modeling_Language">Unified Model Language</a></li>
-<li>Monolithic user classes
+<li>need writers to handle the</li>
+</ul>
+
+
+<p>```
+<select name='mixtape[mixtape_song_attributes][][song_id]'>
+&lt;% Song.all.each do |song| %>
+  <option value='<%= song.id %>'> &lt;%= song.name %></option>
+&lt;% end %>
+</select></p>
+
+<p>&lt;%= select_tag('mixtape[mixtape_songs_attributes][][song_id]',
+options_for_select(Song.all.collect{|s| [s.name, s.id]})) %></p>
+
+<h1>need a song in memory</h1>
+
+<p>@mixtape.mixtape_songs.build</p>
+
+<p>&lt;%= f.fields_for :mixtape_songs do |mixtape_song_builder| %>
+  &lt;%= mixtape_song_builder.select :song_id, songs_for_select %>
+&lt;% end %></p>
+
+<h1>songs_for_select logic in a helper</h1>
+
+<p>```</p>
 
 <ul>
-<li><a href="http://stackoverflow.com/questions/3179396/what-does-monolithic-mean">definition of monolithic</a></li>
+<li>add a scope to your form with fields for</li>
+</ul>
+
+
+<h3>Pass in local variables and change that local variable's name in the context of the new partial</h3>
+
+<p><code>ruby when rendering a partial -&gt; how do I pass in the f. variable.
+&lt;%= render 'songs/fields', :f =&gt; :song_form %&gt;
+</code></p>
+
+<ul>
+<li><p><strong>f.object_name</strong> -> gives you the path of what f is</p>
+
+<ul>
+<li>This was valuable with specifying a :name => ["#{f.object_name}"][genre_name][]</li>
+</ul>
+</li>
+<li><p>settings represents the edit form for a user</p></li>
+<li><p>instead of throwing it away-> label depreciated and put into a folder, since you might need that code later</p></li>
+<li><p>HAML is whitespace sensitive, it's very strict</p>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/39-customize-field-error">customizing field error</a></li>
+<li><p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#class-attributes">field_error_proc</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/263-client-side-validations">client side validation</a></p></li>
 </ul>
 </li>
 </ul>
 
 
-<h3>SQL</h3>
+<h3>Adding search to our application</h3>
 
-<ul>
-<li>A has_many :through type query
-<code>
-SELECT * FROM song_genres INNER JOIN genres ON genre.id = genre_id FROM song_genre WHERE song_id = 1
-</code></li>
-</ul>
+<p>```ruby Implementing Search</p>
+
+<h1>in routes</h1>
+
+<p>resources :songs do
+  collection do</p>
+
+<pre><code>get :search
+</code></pre>
+
+<p>  end
+end</p>
+
+<h3>Search Songs</h3>
 
 
-<h3>Avoiding has_and_belongs_to_many</h3>
+<p>&lt;%= form_tag(search_songs_path, :method => :get) do %>
+  &lt;%= text_field_tag :query %>
+&lt;%= submit_tag :search %>
+&lt;% end %></p>
 
-<ul>
-<li>if you name a column order, connection, attribute, etc., you will run into issues, because those words are reserved</li>
-<li><a href="http://archive.culann.com/2008/03/the-evil-unnecessary-has_and_belongs_to_many">don't user HABTM</a></li>
-<li><a href="http://blog.hasmanythrough.com/2006/4/20/many-to-many-dance-off">Jose Susser isn't as adamant</a></li>
-</ul>
+<h1>in songs controller -> fuzzy search</h1>
 
+<p>def search
+  #@songs = Song.find_all_by_name(params[:query])</p>
 
-<h3>Lessons Learned</h3>
+<p>  #should put this in the model
+  @songs = Song.where("name LIKE ?", "%#{query}%")
+  render :action => 'index'
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day24]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day24/"/>
+    <updated>2012-11-09T11:26:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day24</id>
+    <content type="html"><![CDATA[<h3>Nested Attributes</h3>
 
-<ul>
-<li><p>Parameters in a method HAVE TO BE comma delimited:
-<code>ruby
-form_tag(url_for_options = {}, options = {}, &amp;block)
-</code></p></li>
-<li><p>When using build, you just need to save the parent.</p></li>
-</ul>
+<p>accepts_nested_attributes_for -> creates a writer</p>
 
+<p>```ruby What Nested Attributes Must do
+def mixtape_songs_attributes=(attributes)
+  #attributes is an array of hashes where each individual hash
+  #represents the atributes of a mixtape_song for this mixtape
+  #=> [{:song_id => 1}, {:song_id => 2}]
+  attributes.each do |mixtape_song_attr|</p>
+
+<pre><code>self.mixtape_song_attr.build(mixtape_song_attributes)
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby Nested Attributes
+name= "mixtape[mixtape_songs_attr][][song_id]" #we want many mixtape_song values
+name= "mixtape_songs_attr][][position]" #yield the position</p>
+
+<h1>NOT -> name= "mixtape[mixtape_songs_attr][song_id][]"</h1>
+
+<h1>=> this is a bunch of song_ids, not mixtape_songs_attr parameters</h1>
+
+<h1>THIS WORKS!! It understands the order</h1>
+
+<p>name= "mixtape[mixtape_songs_attr][0][song_id]"
+name= "mixtape[mixtape_songs_attr][1][song_id]"</p>
+
+<p>name= "mixtape_songs_attr][1][position]"
+name= "mixtape_songs_attr][0][position]"
+```</p>
+
+<p>```ruby The fields_for level of abstraction
+&lt;%= f.fields_for :mixtape_songs do |mixtape_song_form| %>
+  &lt;%= mixtape_song_form.text_field :song_id %>
+&lt;% end %></p>
+
+<h1>names it perfectly => mixtape[mixtape_songs_attr][0][song_id]</h1>
+
+<h1>in the controller you need to build the association.</h1>
+
+<p>@mixtape.mixtape_songs.build</p>
+
+<h1>or this can be done directly in the form</h1>
+
+<p>&lt;%= f.fields_for :mixtape_songs, @mixtape.mixtape_songs.build do |mixtape_song_form| %></p>
+
+<h1>in a compartmentalized div</h1>
+
+<p>&lt;%= fields_for 'mixtape_songs[]', MixtapeSong.new, :index => 0 do |mixtape_song_form| %>
+  &lt;%= mixtape_song_form.text_field :song_id %>
+&lt;% end %></p>
+
+<h1>the 'mixtape_songs[]' communicates that this the first of many</h1>
+
+<p>&lt;% 1.upto(10).each do %>
+  <input type="text" name="mixtape_songs[][song_id]" >
+&lt;% end %>
+```</p>
+
+<p>```
+raw(fields_for</p>
+
+<h1>a bunch of html)</h1>
+
+<p>fields_for(
+).html_safe
+```</p>
+
+<p>Don't access the params hash into the model--> you will have broken MVC. This is the right way to do it:
+```ruby Mass Assignment Logic in the Model
+mass assignment will call a method
+def songs_to_add=(song_ids)
+  songs_ids.each do |song_id|</p>
+
+<pre><code>self.mixtape_songs.build(song_id =&gt; song_id)
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>mixtape.new :songs_to_add => {a bunch of songs}</h1>
+
+<h1>params will attempt to call_this_method=</h1>
+
+<h1>and you can put this logic in the model</h1>
+
+<p>```</p>
+
+<p>git rebase master -> from a checked out branch will checkout master for that branch</p>
+
+<p>```ruby Nested Resources</p>
+
+<h1>routes</h1>
+
+<p>resources :mixtape do
+  resources :songs, :controller => 'mixtape/songs' , :only => [:new, :create]
+end</p>
+
+<h1>Make a nested controller for a nested</h1>
+
+<p>&lt;%= form_for(@song, :url => mixtape_songs_path(@mixtape)) do |f| %>
+```</p>
+
+<h3>When Heroku Crashed</h3>
+
+<p>```
+heroku logs --tail
+heroku run rake db:migrate</p>
+
+<h1>caught this</h1>
+
+<p>ActiveRecord::StatementInvalid (PG::Error: ERROR:  value too long for type character varying(255)</p>
+
+<h1>solution- change repo description attr and issue body attr to text from strings</h1>
+
+<p>```</p>
 ]]></content>
   </entry>
   

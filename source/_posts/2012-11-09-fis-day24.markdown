@@ -1,0 +1,103 @@
+---
+layout: post
+title: "FIS Day24"
+date: 2012-11-09 11:26
+comments: true
+categories: FIS rails_forms
+---
+
+###Nested Attributes
+accepts_nested_attributes_for -> creates a writer
+
+```ruby What Nested Attributes Must do
+def mixtape_songs_attributes=(attributes)
+  #attributes is an array of hashes where each individual hash
+  #represents the atributes of a mixtape_song for this mixtape
+  #=> [{:song_id => 1}, {:song_id => 2}]
+  attributes.each do |mixtape_song_attr|
+    self.mixtape_song_attr.build(mixtape_song_attributes)
+  end
+end
+```
+
+```ruby Nested Attributes
+name= "mixtape[mixtape_songs_attr][][song_id]" #we want many mixtape_song values
+name= "mixtape_songs_attr][][position]" #yield the position
+
+#NOT -> name= "mixtape[mixtape_songs_attr][song_id][]" 
+#=> this is a bunch of song_ids, not mixtape_songs_attr parameters
+
+#THIS WORKS!! It understands the order
+name= "mixtape[mixtape_songs_attr][0][song_id]"
+name= "mixtape[mixtape_songs_attr][1][song_id]"
+
+name= "mixtape_songs_attr][1][position]"
+name= "mixtape_songs_attr][0][position]"
+```
+
+```ruby The fields_for level of abstraction
+<%= f.fields_for :mixtape_songs do |mixtape_song_form| %>
+  <%= mixtape_song_form.text_field :song_id %>
+<% end %>
+#names it perfectly => mixtape[mixtape_songs_attr][0][song_id]
+
+#in the controller you need to build the association.
+@mixtape.mixtape_songs.build
+#or this can be done directly in the form
+<%= f.fields_for :mixtape_songs, @mixtape.mixtape_songs.build do |mixtape_song_form| %>
+
+#in a compartmentalized div
+<%= fields_for 'mixtape_songs[]', MixtapeSong.new, :index => 0 do |mixtape_song_form| %>
+  <%= mixtape_song_form.text_field :song_id %>
+<% end %>
+#the 'mixtape_songs[]' communicates that this the first of many
+
+<% 1.upto(10).each do %>
+  <input type="text" name="mixtape_songs[][song_id]" >
+<% end %>
+```
+
+```
+raw(fields_for
+#a bunch of html)
+
+fields_for(
+).html_safe
+```
+
+Don't access the params hash into the model--> you will have broken MVC. This is the right way to do it:
+```ruby Mass Assignment Logic in the Model
+mass assignment will call a method 
+def songs_to_add=(song_ids)
+  songs_ids.each do |song_id|
+    self.mixtape_songs.build(song_id => song_id)
+  end
+end
+
+#mixtape.new :songs_to_add => {a bunch of songs}
+#params will attempt to call_this_method=
+#and you can put this logic in the model
+```
+
+git rebase master -> from a checked out branch will checkout master for that branch
+
+
+```ruby Nested Resources
+#routes
+resources :mixtape do
+  resources :songs, :controller => 'mixtape/songs' , :only => [:new, :create]
+end
+#Make a nested controller for a nested
+
+<%= form_for(@song, :url => mixtape_songs_path(@mixtape)) do |f| %>
+```
+
+###When Heroku Crashed
+```
+heroku logs --tail
+heroku run rake db:migrate
+
+#caught this
+ActiveRecord::StatementInvalid (PG::Error: ERROR:  value too long for type character varying(255)
+#solution- change repo description attr and issue body attr to text from strings
+```

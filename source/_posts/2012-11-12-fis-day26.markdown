@@ -1,0 +1,141 @@
+---
+layout: post
+title: "FIS Day26"
+date: 2012-11-12 10:13
+comments: true
+categories: rails asset_pipeline
+---
+
+###POTD
+  - Jeffery Zeldman
+  - Dan Benjamin
+  - Jason Santa Maria
+  - Simplebits.com
+
+###Gitbo
+  - Popularity index
+  - [sidekiq](http://railscasts.com/episodes/366-sidekiq)
+  - nested issues in repos
+  - slugs wiht friendly_id
+
+###Rails Lecture
+ - sub-yields or sub-layouts
+
+```ruby
+#in layouts/application.html.erb
+<% content_for :page-navigation %>
+
+#at the top of the pages that need it
+<%= yield :page-navigation %>
+```
+
+  - Applicaiton level layout
+  - controller level layout
+  - action level layout
+
+```ruby  Action Level Layout
+respond_to do |format|
+  format.html {render :layout => 'application'}
+```
+
+- content for will allow you to append to the outter layer
+
+###Application.css
+- The manifest file
+  - require tree . -> require all files at the same level of this file (dot means current dir, .. means dir above)
+  - [sprocket directives](https://github.com/sstephenson/sprockets/blob/master/lib/sprockets/directive_processor.rb) tells the app what to include and maintain
+  - files are loaded in order
+  - in production, all the assets will be packed
+
+###Compiling
+- rake assets:precompile
+
+- rails s --environment=production
+  - shortcut
+    - rails s -e production
+
+###Pre-processors
+- css: doesn't allow css variables
+  - [scss and sass](http://sass-lang.com/)
+    - scss is backwards compatible with css
+  - sass adds lots of css like variables
+- coffeescript 
+  - makes the syntax nicer than javascript
+  - not backwards compatible with javascript
+- less
+  - dynamic stylesheet
+- HAML
+  - HMTL preprocessor
+
+###locales/application.rb
+  - want to be sure that all finger prints are new -> config.assets.version = '1.1'
+  - config.assets.compile = false /true -> will precompile assets on the first request
+
+###Pictures in asset pipeline
+  - Need image-url to trigger the asset pipeline
+
+```
+h1.logo{
+  url: image-url('/whatever.png');
+}
+#NOT
+h1.logo{
+  url: url('/assets/whatever.png');
+}
+```
+In order to use image-url, it needs to be a scss file
+
+###Managing Version Asset files
+  - can manage versions with bundler
+  - declare jquery rails engine means that the app's asset path will be loaded autmatically
+    - jquery-rails has a vendor dir, so that it adds it when I compile by vendor dir
+  
+###Bootstrap
+  - rails generate bookstrap:install
+  - tell manifest file to actually include the js
+  - in app.css 
+    - require bootstrap_and_overides
+  - rails g bootstrap:layouts
+
+  - <http://wrapbootstrap.com>
+  - <http://bootsnipp.com/>
+  - <http://dresssed.com/>
+
+###Friendly URLs
+Sweet [rails cast](http://railscasts.com/episodes/314-pretty-urls-with-friendlyid?autoplay=true) on beautiful slugs and slugifying ids
+
+###What's left
+  - AR Callbacks
+  - Controller Filters
+  - Application Controller Helpers
+  - Authentication
+  - Sessions / Cookies
+  - Authorization
+  - Rendering Collections
+  - AREL / Includes and Joins
+  - Scopes / Class Methods
+  - Formatted Responses
+  - ActionView Helpers -> cycle, truncate, except
+  - Asset Pipeline
+  - SASS
+  - CoffeeScript
+  - Javascript Events
+    - jQuery
+    - AJAX
+  - Route Options
+  - Securing Rails
+  - Optimization
+  - Caching / Memcached
+  - Observers
+  - Association Options -> dependent destroy, class
+  - Polymorphic Models
+
+- Common Gems
+  - Pagination
+  - OmniAuth
+  - CanCan
+  - Uploads
+  - ActionMailer
+  - Subdomains
+  - Background Jobs
+  - <http://www.intridea.com/blog/2011/5/13/rails3-gems>

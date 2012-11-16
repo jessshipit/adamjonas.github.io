@@ -41,6 +41,11 @@ Fixtures
 Idempotent
 >is the property of certain operations in mathematics and computer science, that they can be applied multiple times without changing the result beyond the initial application.
 
+Indirection
+>the ability to reference something using a name, reference, or container instead of the value itself. For example, accessing a variable through the use of a pointer.
+  - Object-oriented programming makes use of indirection extensively, a simple example being dynamic dispatch.
+  - Delegation is another classic example of an indirection pattern.
+
 Kata
 >is a Japanese word describing detailed choreographed patterns of movements practiced either solo or in pairs. The term form is used for the corresponding concept in non-Japanese martial arts in general.
 

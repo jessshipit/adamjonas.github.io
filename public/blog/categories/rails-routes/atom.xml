@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails_routes | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/rails-routes/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2012-11-16T11:49:21-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day22]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day22/"/>
+    <updated>2012-11-07T10:10:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day22</id>
+    <content type="html"><![CDATA[<h3>HTTParty</h3>
+
+<ul>
+<li><a href="https://github.com/jnunemaker/httparty">On github</a></li>
+<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">Treehouse blog post</a></li>
+</ul>
+
+
+<h3>Rant</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Conway%27s_law">Conway's law</a>
+
+<ul>
+<li>organizational communication will be reflected in the product</li>
+</ul>
+</li>
+</ul>
+
+
+<p>seagull architect -</p>
+
+<blockquote><p>comes in, shits all over your code and then leaves</p></blockquote>
+
+<p><a href="https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design">Insufficiency of good design</a></p>
+
+<p>Open source: def up and down in migration.rb in rails can be refactored</p>
+
+<h3>POTD</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph Weizenbaum</a></p>
+
+<h2>Rails Lecture</h2>
+
+<p>```ruby Controller Test Continued from Day21...
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+
+  assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}
+
+  assigns(:song).artist_name.should == "Michael Jackson"
+end
+
+it "should create a song with a genre string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+
+it "should create a song with a genres from a CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop, Techno"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+it "should create a song with a genre array containing CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; ["Pop, Techno", "Rap"]}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  let(:song){Song.new(:name => "Thriller")}</p>
+
+<p>  context 'with genres' do</p>
+
+<pre><code>let(:genre){Genre.create(:name =&gt; "Pop")}
+
+context '.genre_names' do
+  it "should return an array of genre names" do
+    song.genres &lt;&lt; genre
+    song.save
+
+
+    song.genre_names.should be_an_instance_of(Array)
+    song.genre_names.should include("Pop")
+  end
+
+  it "should accept a genre name and add that genre" do
+    song.genre_names = "Techno"
+    song.save
+
+    song.genre_names.should include("Techno")
+  end
+
+  it "should accept a comma delimited list of genre names" do
+    song.genre_names = "Techno, Pop"
+    song.save
+
+    song.genre_names.should include("Techno", "Pop")
+  end
+
+  it "should accept an array containing comma delimited list of genre names" do
+    song.genre_names = ["Techno, Pop", "Rap"]
+    song.save
+
+    song.genre_names.should include("Techno", "Pop", "Rap")
+  end
+
+  it "should only add unique genres" do
+    song.genre_names = ["Pop", "Pop"]
+    song.save
+
+    song.genre_names.count.should == 1
+  end
+
+end
+</code></pre>
+
+<p>```
+rake spec:models</p>
+
+<p><code>ruby gem file
+group [:development, :test] do
+  gem 'debugger'
+end
+</code></p>
+
+<ul>
+<li>detect returns nil if there is not match</li>
+<li>select returns an empty array when no match</li>
+</ul>
+
+
+<p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions"><strong>to_sentence method in rails</strong></a></p>
+
+<h3>HTML &lt; form_tag lower &lt; form_for</h3>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag">form_tag</a></p>
+
+<p>```
+<form action="/songs" id="new_song" class="new_song"> <form></p>
+
+<p>&lt;%= form_tag(songs_path, :id => "new song") do %>
+  &lt;%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
+  &lt;%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
+  &lt;%= submit_tag "Create Song", :id => "create_song" %>
+&lt;% end %></p>
+
+<p>&lt;%= form_for(@song) do |f| %>
+  &lt;%= f.text_field :name %>
+  &lt;%= f.text_field :artist_name %>
+  &lt;%= f.submit %>
+&lt;% end %>
+```
+<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag">text_field_tag docs</a></p>
+
+<h3>Integration test / Acceptance Test</h3>
+
+<ul>
+<li><p><a href="http://railscasts.com/episodes/187-testing-exceptions">Railscast 187</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/257-request-specs-and-capybara">Railscast 257</a></p></li>
+<li><a href="https://github.com/copiousfreetime/launchy">launchy gem</a> to see that page that capybara filled out - useful for creating fixtures</li>
+<li><p>post_via_redirect</p>
+
+<ul>
+<li>get => response</li>
+<li>visit => page</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Continuous Integration / Testing</h3>
+
+<ul>
+<li>autotest</li>
+<li>guard
+
+<ul>
+<li><a href="https://github.com/guard/guard">gem guard-rspec</a></li>
+</ul>
+</li>
+<li>rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved</li>
+<li>growl extension or terminal notifier on the <a href="https://github.com/guard/guard#terminal-notifier">guard gem page</a></li>
+<li><a href="https://github.com/jnicklas/capybara">capybara</a></li>
+</ul>
+
+
+<p><strong>receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will</strong></p>
+
+<h3>Pull down the other app</h3>
+
+<p>git merge upstream/master</p>
+]]></content>
+  </entry>
+  
+</feed>

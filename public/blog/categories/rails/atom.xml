@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2012-11-09T10:16:51-05:00</updated>
+  <updated>2012-11-16T11:49:21-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -14,387 +14,484 @@
 
   
   <entry>
-    <title type="html"><![CDATA[FIS Day22]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day22/"/>
-    <updated>2012-11-07T10:10:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day22</id>
-    <content type="html"><![CDATA[<h3>HTTParty</h3>
+    <title type="html"><![CDATA[FIS Day26]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day26/"/>
+    <updated>2012-11-12T10:13:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day26</id>
+    <content type="html"><![CDATA[<h3>POTD</h3>
 
 <ul>
-<li><a href="https://github.com/jnunemaker/httparty">On github</a></li>
-<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">Treehouse blog post</a></li>
+<li>Jeffery Zeldman</li>
+<li>Dan Benjamin</li>
+<li>Jason Santa Maria</li>
+<li>Simplebits.com</li>
 </ul>
 
 
-<h3>Rant</h3>
+<h3>Gitbo</h3>
 
 <ul>
-<li><a href="http://en.wikipedia.org/wiki/Conway%27s_law">Conway's law</a>
-
-<ul>
-<li>organizational communication will be reflected in the product</li>
-</ul>
-</li>
+<li>Popularity index</li>
+<li><a href="http://railscasts.com/episodes/366-sidekiq">sidekiq</a></li>
+<li>nested issues in repos</li>
+<li>slugs wiht friendly_id</li>
 </ul>
 
 
-<p>seagull architect -</p>
+<h3>Rails Lecture</h3>
 
-<blockquote><p>comes in, shits all over your code and then leaves</p></blockquote>
-
-<p><a href="https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design">Insufficiency of good design</a></p>
-
-<p>Open source: def up and down in migration.rb in rails can be refactored</p>
-
-<h3>POTD</h3>
-
-<p><a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph Weizenbaum</a></p>
-
-<h2>Rails Lecture</h2>
-
-<p>```ruby Controller Test Continued from Day21...
-require 'spec_helper'</p>
-
-<p>describe SongsController do
-  describe 'POST /songs' do</p>
-
-<pre><code>it 'should create a song with a name' do
-  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
-
-  assigns(:song).name.should == "Thriller"
-end
-
-it 'should create a song with an artist name' do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}
-
-  assigns(:song).artist_name.should == "Michael Jackson"
-end
-
-it "should create a song with a genre string" do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop"}}
-
-  assigns(:song).genre_names.should include("Pop")
-end
+<ul>
+<li>sub-yields or sub-layouts</li>
+</ul>
 
 
-it "should create a song with a genres from a CSV string" do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop, Techno"}}
+<p>```ruby</p>
 
-  assigns(:song).genre_names.should include("Pop")
-end
+<h1>in layouts/application.html.erb</h1>
 
-it "should create a song with a genre array containing CSV string" do
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; ["Pop, Techno", "Rap"]}}
+<p>&lt;% content_for :page-navigation %></p>
 
-  assigns(:song).genre_names.should include("Pop")
-end
-</code></pre>
+<h1>at the top of the pages that need it</h1>
 
-<p>  end
-end
+<p>&lt;%= yield :page-navigation %>
 ```</p>
 
-<p>```ruby song_spec.rb Unit Test
-require 'spec_helper'</p>
-
-<p>describe Song do
-  let(:song){Song.new(:name => "Thriller")}</p>
-
-<p>  context 'with genres' do</p>
-
-<pre><code>let(:genre){Genre.create(:name =&gt; "Pop")}
-
-context '.genre_names' do
-  it "should return an array of genre names" do
-    song.genres &lt;&lt; genre
-    song.save
+<ul>
+<li>Applicaiton level layout</li>
+<li>controller level layout</li>
+<li>action level layout</li>
+</ul>
 
 
-    song.genre_names.should be_an_instance_of(Array)
-    song.genre_names.should include("Pop")
-  end
-
-  it "should accept a genre name and add that genre" do
-    song.genre_names = "Techno"
-    song.save
-
-    song.genre_names.should include("Techno")
-  end
-
-  it "should accept a comma delimited list of genre names" do
-    song.genre_names = "Techno, Pop"
-    song.save
-
-    song.genre_names.should include("Techno", "Pop")
-  end
-
-  it "should accept an array containing comma delimited list of genre names" do
-    song.genre_names = ["Techno, Pop", "Rap"]
-    song.save
-
-    song.genre_names.should include("Techno", "Pop", "Rap")
-  end
-
-  it "should only add unique genres" do
-    song.genre_names = ["Pop", "Pop"]
-    song.save
-
-    song.genre_names.count.should == 1
-  end
-
-end
-</code></pre>
-
-<p>```
-rake spec:models</p>
-
-<p><code>ruby gem file
-group [:development, :test] do
-  gem 'debugger'
-end
+<p><code>ruby  Action Level Layout
+respond_to do |format|
+  format.html {render :layout =&gt; 'application'}
 </code></p>
 
 <ul>
-<li>detect returns nil if there is not match</li>
-<li>select returns an empty array when no match</li>
+<li>content for will allow you to append to the outter layer</li>
 </ul>
 
 
-<p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions"><strong>to_sentence method in rails</strong></a></p>
+<h3>Application.css</h3>
 
-<h3>HTML &lt; form_tag lower &lt; form_for</h3>
+<ul>
+<li>The manifest file
 
-<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag">form_tag</a></p>
+<ul>
+<li>require tree . -> require all files at the same level of this file (dot means current dir, .. means dir above)</li>
+<li><a href="https://github.com/sstephenson/sprockets/blob/master/lib/sprockets/directive_processor.rb">sprocket directives</a> tells the app what to include and maintain</li>
+<li>files are loaded in order</li>
+<li>in production, all the assets will be packed</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Compiling</h3>
+
+<ul>
+<li><p>rake assets:precompile</p></li>
+<li><p>rails s --environment=production</p>
+
+<ul>
+<li>shortcut
+
+<ul>
+<li>rails s -e production</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Pre-processors</h3>
+
+<ul>
+<li>css: doesn't allow css variables
+
+<ul>
+<li><a href="http://sass-lang.com/">scss and sass</a>
+
+<ul>
+<li>scss is backwards compatible with css</li>
+</ul>
+</li>
+<li>sass adds lots of css like variables</li>
+</ul>
+</li>
+<li>coffeescript
+
+<ul>
+<li>makes the syntax nicer than javascript</li>
+<li>not backwards compatible with javascript</li>
+</ul>
+</li>
+<li>less
+
+<ul>
+<li>dynamic stylesheet</li>
+</ul>
+</li>
+<li>HAML
+
+<ul>
+<li>HMTL preprocessor</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>locales/application.rb</h3>
+
+<ul>
+<li>want to be sure that all finger prints are new -> config.assets.version = '1.1'</li>
+<li>config.assets.compile = false /true -> will precompile assets on the first request</li>
+</ul>
+
+
+<h3>Pictures in asset pipeline</h3>
+
+<ul>
+<li>Need image-url to trigger the asset pipeline</li>
+</ul>
+
 
 <p>```
-<form action="/songs" id="new_song" class="new_song"> <form></p>
+h1.logo{
+  url: image-url('/whatever.png');
+}</p>
 
-<p>&lt;%= form_tag(songs_path, :id => "new song") do %>
-  &lt;%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
-  &lt;%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
-  &lt;%= submit_tag "Create Song", :id => "create_song" %>
-&lt;% end %></p>
+<h1>NOT</h1>
 
-<p>&lt;%= form_for(@song) do |f| %>
-  &lt;%= f.text_field :name %>
-  &lt;%= f.text_field :artist_name %>
-  &lt;%= f.submit %>
-&lt;% end %>
+<p>h1.logo{
+  url: url('/assets/whatever.png');
+}
 ```
-<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag">text_field_tag docs</a></p>
+In order to use image-url, it needs to be a scss file</p>
 
-<h3>Integration test / Acceptance Test</h3>
-
-<ul>
-<li><p><a href="http://railscasts.com/episodes/187-testing-exceptions">Railscast 187</a></p></li>
-<li><p><a href="http://railscasts.com/episodes/257-request-specs-and-capybara">Railscast 257</a></p></li>
-<li><a href="https://github.com/copiousfreetime/launchy">launchy gem</a> to see that page that capybara filled out - useful for creating fixtures</li>
-<li><p>post_via_redirect</p>
+<h3>Managing Version Asset files</h3>
 
 <ul>
-<li>get => response</li>
-<li>visit => page</li>
+<li>can manage versions with bundler</li>
+<li>declare jquery rails engine means that the app's asset path will be loaded autmatically
+
+<ul>
+<li>jquery-rails has a vendor dir, so that it adds it when I compile by vendor dir</li>
 </ul>
 </li>
 </ul>
 
 
-<h3>Continuous Integration / Testing</h3>
+<h3>Bootstrap</h3>
 
 <ul>
-<li>autotest</li>
-<li>guard
+<li>rails generate bookstrap:install</li>
+<li>tell manifest file to actually include the js</li>
+<li>in app.css
 
 <ul>
-<li><a href="https://github.com/guard/guard">gem guard-rspec</a></li>
+<li>require bootstrap_and_overides</li>
 </ul>
 </li>
-<li>rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved</li>
-<li>growl extension or terminal notifier on the <a href="https://github.com/guard/guard#terminal-notifier">guard gem page</a></li>
-<li><a href="https://github.com/jnicklas/capybara">capybara</a></li>
+<li><p>rails g bootstrap:layouts</p></li>
+<li><p><a href="http://wrapbootstrap.com">http://wrapbootstrap.com</a></p></li>
+<li><a href="http://bootsnipp.com/">http://bootsnipp.com/</a></li>
+<li><a href="http://dresssed.com/">http://dresssed.com/</a></li>
 </ul>
 
 
-<p><strong>receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will</strong></p>
+<h3>Friendly URLs</h3>
 
-<h3>Pull down the other app</h3>
+<p>Sweet <a href="http://railscasts.com/episodes/314-pretty-urls-with-friendlyid?autoplay=true">rails cast</a> on beautiful slugs and slugifying ids</p>
 
-<p>git merge upstream/master</p>
+<h3>What's left</h3>
+
+<ul>
+<li>AR Callbacks</li>
+<li>Controller Filters</li>
+<li>Application Controller Helpers</li>
+<li>Authentication</li>
+<li>Sessions / Cookies</li>
+<li>Authorization</li>
+<li>Rendering Collections</li>
+<li>AREL / Includes and Joins</li>
+<li>Scopes / Class Methods</li>
+<li>Formatted Responses</li>
+<li>ActionView Helpers -> cycle, truncate, except</li>
+<li>Asset Pipeline</li>
+<li>SASS</li>
+<li>CoffeeScript</li>
+<li>Javascript Events
+
+<ul>
+<li>jQuery</li>
+<li>AJAX</li>
+</ul>
+</li>
+<li>Route Options</li>
+<li>Securing Rails</li>
+<li>Optimization</li>
+<li>Caching / Memcached</li>
+<li>Observers</li>
+<li>Association Options -> dependent destroy, class</li>
+<li><p>Polymorphic Models</p></li>
+<li><p>Common Gems</p>
+
+<ul>
+<li>Pagination</li>
+<li>OmniAuth</li>
+<li>CanCan</li>
+<li>Uploads</li>
+<li>ActionMailer</li>
+<li>Subdomains</li>
+<li>Background Jobs</li>
+<li><a href="http://www.intridea.com/blog/2011/5/13/rails3-gems">http://www.intridea.com/blog/2011/5/13/rails3-gems</a></li>
+</ul>
+</li>
+</ul>
+
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[FIS Day21]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day21/"/>
-    <updated>2012-11-06T13:57:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day21</id>
-    <content type="html"><![CDATA[<p><strong><em>Generate a model that is singular-- ALWAYS</em></strong></p>
-
-<p>'self' means the receiver of this method call</p>
-
-<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong>never ever have a nested attributes for belongs_to ONLY has has_many</strong>
-</a></p>
-
-<p>```ruby song.rb Model
-Class Song</p>
-
-<p>  def add_genre(genre)</p>
-
-<pre><code>genre = Genre.find_or_create_by_name(genre) if genre.is_a?(String) 
-self.song_genres.create(:genre =&gt; genre).genre
-</code></pre>
-
-<p>  end</p>
-
-<p>end
-```</p>
-
-<p>```ruby song_spec.rb Unit Test
-require 'spec_helper'</p>
-
-<p>describe Song do
-  context '.add_genre' do</p>
-
-<pre><code>before(:each) do
-  let(:song){Song.create(:name =&gt; "Thriller")} 
-  let(:genre){Genre.create(:name =&gt; "Pop")} #this creates the genre method that executes the block that follows it.
-
-  it "should add the genre" do
-    song.add_genre(genre)
-
-    song.genres.should include(genre)
-  end
-
-  it "should return the newly added genre" do
-    song.add_genre(genre) should == genre #this means it won't return a full array like a push method return
-  end
-
-  it 'should accept an existing genre name do'
-    genre = Genre.create(:name =&gt; "Techno")
-    song.add_genre("Techno").should == genre
-  end
-
-  it 'should accept a genre name' do
-    song.add_genre("Pop").should == genre
-  end
-
-  it "should add only unique genres" do
-    #if I add the same genre twice, it should still 
-    song.add_genre(genre)
-    song.add_genre(genre)
-
-    song.genres.count.should == 1
-  end
-</code></pre>
-
-<p>  end
-end
-```
-Rspec runs its tests in isolation, by running each test in a transaction. After each test, it rollbacks all the writes.</p>
-
-<p>LOGS:
-<code>
-tail -f #open the end of the file and keep it open.
-</code></p>
-
-<p>If you are building associated data outside of your model, then you haven't encapsulated enough.</p>
+    <title type="html"><![CDATA[FIS Day18]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day18/"/>
+    <updated>2012-11-01T13:42:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day18</id>
+    <content type="html"><![CDATA[<h3>POTD</h3>
 
 <ul>
-<li>Tests Hierarchy in ascending levels of abstraction
+<li><p>Edsgar Dijkstra</p>
 
 <ul>
-<li>unit tests</li>
-<li>controller tests</li>
-<li>integration tests</li>
+<li>inventor of structured programming</li>
+<li>came up with "for, while, until, case"</li>
+<li>computer science is not about machines and equipment management</li>
 </ul>
 </li>
+<li><p>If you use more of a bad tool, it won't fix it.</p>
+
+<blockquote><p>About the use of language; it is impossible to sharpen a pencil with a blunt axe. It is equally vain to try to do it with ten blunt axes instead.</p></blockquote></li>
+<li><p>Programming is just about communicating clearly.</p></li>
+<li>Once it is teachable it is concrete.</li>
 </ul>
 
 
-<p>```ruby Controller Test
-require 'spec_helper'</p>
+<h3>Ruby Tidbit</h3>
 
-<p>describe SongsController do
-  describe 'POST /songs' do</p>
+<p>```ruby Semi-Colon Deliminates a Line
+def create;end</p>
 
-<pre><code>it 'should create a song with a name do'
-  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
-  #create action in the song controller with post or request parameters that you 
-  #want to send along with it
+<h1>the semi-colon deliminates the info on two lines</h1>
 
- # Song.find_by_name("Thriller").should be_true
- assigns(:song).name.should == "Thriller"
-end
+<p>```</p>
 
-it 'should create a song with an artist name'
-  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}}
-  #this makes artist_name a first class citizen in the params hash.
+<h2>Rails Lecture</h2>
 
-  #we killed this because we are assigning a string, not an artist object--&gt; post :create, {:song =&gt; {:name =&gt; "Thriller", :artist =&gt; {:name =&gt; "Michael Jackson"}}} 
+<p><code>ruby link to unless current
+&lt;%= link_to_unless_current %&gt; #this is slick for nav!
+</code></p>
 
-  #create action in the song controller with post or request parameters that you 
-  #want to send along with it
+<p><strong>Routes</strong>
+```ruby Routes File
+match '/name' => 'songs#name'</p>
 
-  #Song.find_by_name("Thriller").should be_true
-  assigns(:song).artist.name.should == "Michael Jackson"
-end
-</code></pre>
+<h1>not as specific and therefore as good as</h1>
 
-<p>  end
-end
+<p>get '/name' => 'songs#name'</p>
+
+<p>get 'site/about' #rails will assume that site is the controller and about is the action
 ```</p>
 
-<p>```ruby song_spec.rb
-context '.artist_name' do
-  it "should have an artist_name method" do</p>
+<p>```ruby Generate a Controller
+rails generate controller CreditCard open debit credit close</p>
 
-<pre><code>song.should respond_to(:artist_name)
+<h1>this will create a credit_card_controller with 4 actions</h1>
+
+<p>```
+??have to delete rm-rf public/index.html</p>
+
+<p>```ruby Rendering Templates
+class Sessions Controller &lt; ApplicationController</p>
+
+<p>render :action
+render :template</p>
+
+<h1>in practice</h1>
+
+<p>render 'under_construction' #this is the action in the sessions controller
+render 'shared/under_construction' #this is a full relative path</p>
+
+<h1>and more instructional of where to find the template</h1>
+
+<p>```</p>
+
+<h3>Private and public methods</h3>
+
+<p>```ruby Private Method e.g.
+class Dog
+  def bark</p>
+
+<pre><code>case stomach_volume
+when :very
+  puts "woof woof!"
+when :not_at_all
+  puts "woof"
+end
 </code></pre>
 
 <p>  end</p>
 
-<p>  it 'should return a songs artist' do</p>
+<p>private #it would also break if this was protected.</p>
 
-<pre><code>song.artist = Artist.create(:name =&gt; "Michael Jackson")
-song.artst_name.should == "Michael Jackson"
+<p>  def stomach_volume</p>
+
+<pre><code>:very
 </code></pre>
 
 <p>  end
 end</p>
 
-<p>  context '.artist_name=' do</p>
+<p>fido = Dog.new
+fido.stomach_volume #this is not going to work.
+```
+private, public, and protected all create keyword scope -> created limited, predicted interfaces</p>
 
-<pre><code>it "should assign the artist via the name" do
-  song.artist_name = "Michael Jackson"
-  song.artist.should be_a(Artist)
-  song.artist_name.should == "Michael Jackson"
+<p>if a method is private it can only be called on an implicit receiver- can't call call on an explicit receiver</p>
+
+<p><strong>protected</strong> -> can only be called on self.</p>
+
+<p>```ruby When Private Methods Become Useful in the Controller
+class SomeController</p>
+
+<p>def new
+  under_construction
+end</p>
+
+<p>def create
+  under_constructions
+end</p>
+
+<p>private</p>
+
+<p>def under_construction
+  render 'shared/under_construction'
+end</p>
+
+<p>end
+```</p>
+
+<h3>In the migration</h3>
+
+<ul>
+<li>def change for when the reverse can be assumed</li>
+<li><p>def up and down for things like renaming columns -> because rails wouldn't be able to infer what the reverse would be.</p></li>
+<li><p>t.timestamps - is a created at and updated at</p></li>
+</ul>
+
+
+<h3>Signups</h3>
+
+<p>when you login, you are creating a session between you and the website.
+when you signup you are creating a user on their system-- that lives in their DB
+<code>ruby Routes
+get '/signup' =&gt; 'users#new'
+post '/signup' =&gt; 'users#create'
+</code></p>
+
+<p><strong>Mass assignment => when you assign initialization properties during assingment.</strong></p>
+
+<ul>
+<li><p>Migrations</p>
+
+<ul>
+<li>define and edit schema</li>
+</ul>
+</li>
+<li><p>Models -ORM</p>
+
+<ul>
+<li>insert rows /update</li>
+<li>database</li>
+</ul>
+</li>
+<li><p>Routes
+maps URLs to actions in the controller</p></li>
+<li><p>controllers</p>
+
+<ul>
+<li>contains the business logic</li>
+</ul>
+</li>
+<li><p>views</p>
+
+<ul>
+<li>the actual interface</li>
+</ul>
+</li>
+</ul>
+
+
+<p>-> In sinatra the routes are built into controllers.</p>
+
+<p><code>ruby This must be how form_for works
+def form_for(obj, &amp;block)
+  f = FormBuilder.new(obj)
+  yield f
+end
+</code></p>
+
+<p><em>In your controller helper...</em>
+```ruby Rolling My Own Form Builder
+&lt;%= form_for(@song, :builder = > SongHelper::SongForm) %></p>
+
+<h1>in the controller helper</h1>
+
+<p>module SongsHelper
+  class SongForm &lt; ActionView::Helpers::FormBuilder</p>
+
+<pre><code>def full_name_field
+  label(:first_name) + 
+  text_field :first_name
+
+  label(:last_name) + 
+  text_field :last_name
 end
 </code></pre>
 
 <p>  end
-```</p>
+end
+```
+Customizing the forms and encapsulate in the controller helpers...</p>
 
-<p>```ruby Song.rb Model
-  def artist_name</p>
+<h3>Test::Unit to RSpec</h3>
 
-<pre><code>self.artist.name if self.artist
-</code></pre>
+<p>change out the libraries
+add rspec to the gem file
+rip out test folder</p>
 
-<p>  end</p>
+<p>rails g install rspec</p>
 
-<p>  def artist_name=(string)</p>
+<p><a href="http://stackoverflow.com/questions/9884033/ruby-on-rails-switch-from-test-unit-to-rspec">changing from minitest to rspec</a> <a href="http://stackoverflow.com/questions/5072662/how-to-remove-unit-test-and-replace-it-with-rspec">or</a></p>
 
-<pre><code>self.artist = Artist.find_or_create_by_name(string)
-</code></pre>
+<p>"when i generated the scaffold, it generated the specs for me..."</p>
 
-<p>  end
-```</p>
+<h3>Posting Info to an object</h3>
 
-<h3>SOLID</h3>
+<ol>
+<li>instantiate an instance</li>
+<li>collect the form data</li>
+<li>and you populate the instance attribute with the proper data</li>
+</ol>
 
-<p>Procedural code- solutions for very specific problems</p>
 
-<p>dependencies will kill your code, but design will save it</p>
+<p>If I want to use form_for I need an active record instance.</p>
+
+<h3>Read this...</h3>
+
+<p><a href="http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions">Understand parameter naming conventions</a></p>
 ]]></content>
   </entry>
   

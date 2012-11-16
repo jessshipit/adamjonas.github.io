@@ -12,3 +12,11 @@ categories:
 
 
 [front-end interview questions](https://github.com/darcyclarke/Front-end-Developer-Interview-Questions)
+
+###For employers:
+1. What are you looking for in a junior developer?
+2. What are your technology needs and goals? 
+3. Do you think I can help you reach those goals?
+
+###Reading
+- [Appacademy.io](http://hugomelo.com/post/35533342698/becoming-an-apprentice)

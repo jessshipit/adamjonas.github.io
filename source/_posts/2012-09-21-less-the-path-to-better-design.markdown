@@ -3,10 +3,10 @@ layout: post
 title: "The path to better code design"
 date: 2012-09-21 11:29
 comments: true
-categories: design
+categories: solid
 ---
 
-[Video](http://vimeo.com/26330100)
+[Video with Sandi Metz](http://vimeo.com/26330100)
 
 Design is the art of arranging code
 

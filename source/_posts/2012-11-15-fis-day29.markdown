@@ -1,0 +1,226 @@
+---
+layout: post
+title: "FIS Day29"
+date: 2012-11-15 09:44
+comments: true
+categories: FIS jquery
+---
+
+  - [JSON link](http://jsonlint.com/) a JSON parser
+
+###CanCan
+- [Rails Cast](http://railscasts.com/episodes/192-authorization-with-cancan)
+- [CanCan Source Code](https://github.com/ryanb/cancan)
+- [CanCan Wiki](https://github.com/ryanb/cancan/wiki/Role-Based-Authorization)
+
+```ruby
+#If a user.git_nickname == repo.owner_name -> the user is an owner.
+<%= if can? :put, @issue %> #can only see the links if you authorized
+
+#also need to add restrictions in the controller
+load_and_authorize_resource :nested => :repo
+#this is funky
+```
+
+```ruby ability.rb
+class Ability
+  include CanCan::Ability
+
+  def initialize(user)
+  user ||= User.new # guest user that comes to the site and doesn't have an acct yet
+
+  if user.role? :admin
+      can :manage, :all #manage emcompasses every action
+    else 
+    #this is for every day users
+      can :read, :all 
+      can :create, Comment
+      can :update, Comment do |comment|
+        comment.try(:user) == user || user.role?(:moderator)
+        #eqivalent to comment && comment.user == user
+      end
+      if user.role?(:author)
+        can :create, Article
+        can :update, Article do |article|
+          article.try(:user) == user
+        end
+      end
+    end
+  end
+end
+```
+
+```ruby user.rb
+#add roles in user model
+
+```
+
+```ruby application_controller.rb
+rescue_from CanCan::AccessDenied do |exception|
+  flash[:error] = "Access denied."
+  redirect_to root_url
+end
+```
+
+###Jquery lecture John
+```javascript
+//hide
+  $("#b1").click(function(){
+    $("#p1").hide(1000);
+  });
+    
+  //show
+  $("#b2").click(function(){
+    $("#p1").show(2000); //this makes it look like it is writing it out
+    //with a longer duration
+  });
+      
+  //toggle
+  $("#b3").click(function(){
+    $("#p1").toggle(1000);
+  });
+```
+
+- Fade Toggle, fade down, slide up, slide down, slide toggle
+
+```javascript
+//animate
+  $("#b19").click(function(){
+    $(".box-animate").animate({height:"200px"},500);
+    $(".box-animate").animate({width:"200px"},500);
+    $(".box-animate").animate({height:"50px"},500);
+    $(".box-animate").animate({width:"50px"},500);
+    $(".box-animate").animate({width:"100px"},500);
+    $(".box-animate").animate({height:"100px"},500);
+  });
+```
+
+```javascript Fancy Box Example
+$(document).ready(function(){
+  
+  /* LETS USE FUNCTIONS TO MAKE AN INSTANCE OF INTERACTING WITH THE DOM REPEATABLE */
+  
+  //first I want to fade out all the fruit pictures.
+  $('#gallery img').fadeTo(100,0.2); //fadeTo(delay in miliseconds, opacity)
+  
+  //next I want to create a function that will only run when someone hovers over a fruit image.
+  function mouseOn(){
+    $(this).fadeTo(200,1); //the keyword 'this' refers to the element that is calling the function in our case it is the individual image that the user has their mouse over top of.
+  }
+  
+  //mouse off funtion
+  function mouseOff(){
+    $(this).fadeTo(500,0.2);
+  }
+  
+  //lastly I want to check if the user is hovering their mouse and call the apropriate function.
+  $('#gallery img').hover(mouseOn,mouseOff);
+
+  //add rel attribute to gallery links to add arrow functionality to fancybox plugin
+  $('#gallery a').attr('rel','fruits');
+
+  //apply fancybox plugin
+  $('#gallery a').fancybox();
+
+});
+```
+###When installing a plugin
+  - does it have css?
+  - load styleheet above my own, so that it won't over-ride my styling
+  - put js sheet BELOW jquery plugin files
+
+  - js fiddle -> minifies
+
+###Semi Colons
+  - if, else and function def don't requiring a semi-colon
+  - would never put a semi-colon after a curly brace except for object instantiation
+    - `var myObject = { };
+
+###Jquery Misc
+- [Jquery cheat sheet](http://oscarotero.com/jquery/)
+
+Content delivery network -> a CDN
+
+
+###Questions
+- Best practices from backend devs. What can we do to help you?
+  - semantic use of naming things like IDs
+- some of your favorite plugins? source for finding really cool plugins
+  - [fancybox.net](http://fancybox.net/)
+  - [popcorn.js](http://popcornjs.org/)
+  - [Jquery4u](http://www.jquery4u.com/)
+- tests in javascript?
+  - some mvc have tests built in like backbone.
+- debugging in JS?
+  - write code in short snippets, comment out sections
+  - js lint -> shows errors and styles
+
+###Color Stuff
+  - Digital color meter
+    - copy with cmd, shift c and you can paste is 
+  - [color matching](https://kuler.adobe.com)
+    - automatically color coordinates
+
+```javascript
+$.each
+  data.results[0].from_user_name
+
+.getJson //pretty important
+```
+
+```javascript Get JSON from Twitter example
+$(document).ready(function(){
+  
+  var keywordInput = $('#keyword'),
+    searchButton = $('#search'),
+    displayFeed = $('#feed'),
+    keyword = '',
+    content = '';
+  
+  //CLEAR
+  keywordInput.focus(function(){
+  
+    displayFeed.empty(); //clears results
+    keywordInput.val(''); //clears input box when return to type new key words. 
+    
+  });//end clear
+  
+  //SEARCH & DISPLAY
+  searchButton.click(function(){
+  
+    keyword = keywordInput.val(); //retrieves keyword(s) typed.
+            
+    $.getJSON('http://search.twitter.com/search.json?callback=?&q='+keyword,function(data){ //display JSON feed using keyword(s) typed
+    //callback shifts to padded json, which is neccessary for this call
+    //data is an arbitrary variable that store the info
+
+      console.log(data); //see if results came in...
+
+      console.log(data.results[0].from_user); //if only there were a way to go into the array results and loop over each element/value and report back the data I want... What about loops?
+      
+      //loop -> for each object result retrieve the data and display
+      $.each(data.results, function(index, value){
+      // tell each what we want to iterate over
+        //data.results -> is an array within the json
+            var content = '<p><a href="http://twitter.com/'+value.from_user+'" target="_blank"><img src="'+value.profile_image_url+'" alt="picture of '+value.from_user+'"></a> &quot;'+value.text+'&quot; -'+value.from_user+' <span class="date">['+value.created_at+']</span></p>';
+            
+            displayFeed.append(content); //displays each result inside feed area.
+            //opposite is prepend
+            displayFeed.find('p').highlight(keyword); //highlight matching terms using highlight plugin.
+            
+      });//end each
+      
+    });//end getJSON
+     
+  });//end Search
+    
+});//end document ready
+```
+
+- tutsplus-> learn jquery 30 days
+  - 30 min videos
+  - free
+- backbone tutorial
+  -
+- <http://it-ebooks.info/>
+  - [jquery in action](http://www.manning.com/bibeault/)

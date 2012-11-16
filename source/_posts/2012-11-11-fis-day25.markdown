@@ -1,0 +1,77 @@
+---
+layout: post
+title: "FIS Day25"
+date: 2012-11-11 14:16
+comments: true
+categories: FIS rails_forms
+---
+##Nested Forms
+ - need writers to handle the
+
+```
+<select name='mixtape[mixtape_song_attributes][][song_id]'>
+<% Song.all.each do |song| %>
+  <option value='<%= song.id %>'> <%= song.name %></option>
+<% end %> 
+</select>
+
+<%= select_tag('mixtape[mixtape_songs_attributes][][song_id]',
+options_for_select(Song.all.collect{|s| [s.name, s.id]})) %>
+
+
+#need a song in memory 
+@mixtape.mixtape_songs.build
+
+<%= f.fields_for :mixtape_songs do |mixtape_song_builder| %>
+  <%= mixtape_song_builder.select :song_id, songs_for_select %>
+<% end %>
+
+#songs_for_select logic in a helper
+```
+
+  - add a scope to your form with fields for
+
+###Pass in local variables and change that local variable's name in the context of the new partial 
+```ruby when rendering a partial -> how do I pass in the f. variable.
+<%= render 'songs/fields', :f => :song_form %>
+```
+
+- **f.object_name** -> gives you the path of what f is
+  - This was valuable with specifying a :name => ["#{f.object_name}"][genre_name][]
+
+- settings represents the edit form for a user
+
+- instead of throwing it away-> label depreciated and put into a folder, since you might need that code later
+
+- HAML is whitespace sensitive, it's very strict
+
+  - [customizing field error](http://railscasts.com/episodes/39-customize-field-error)
+  - [field_error_proc](http://guides.rubyonrails.org/active_support_core_extensions.html#class-attributes)
+
+
+  - [client side validation](http://railscasts.com/episodes/263-client-side-validations)
+
+###Adding search to our application
+```ruby Implementing Search
+#in routes
+resources :songs do
+  collection do 
+    get :search
+  end
+end
+
+<h3>Search Songs</h3>
+<%= form_tag(search_songs_path, :method => :get) do %>
+  <%= text_field_tag :query %>
+<%= submit_tag :search %>
+<% end %>
+
+#in songs controller -> fuzzy search
+def search
+  #@songs = Song.find_all_by_name(params[:query])
+
+  #should put this in the model
+  @songs = Song.where("name LIKE ?", "%#{query}%") 
+  render :action => 'index'
+end
+```

@@ -47,7 +47,9 @@ improve internal structure, but don't change the external behavior
 
   William C. Wake : "Refactoring is the art of safely improving the design of existing code“.
 
-  RefactoringThe goal of refactoring is NOT to add new functionalityThe goal is refactoring is to make code easier to maintain in the futureThe process of refactoring involves the removal of duplication, the simplification of complex logic, and the clarification of unclear code.
+  The goal of refactoring is NOT to add new functionality.
+  The goal is refactoring is to make code easier to maintain in the future.
+  The process of refactoring involves the removal of duplication, the simplification of complex logic, and the clarification of unclear code.
 
   refactoring versus rewriting
 
@@ -77,3 +79,6 @@ improve internal structure, but don't change the external behavior
 
 extraction pattern- anti-pattern:
 <http://blog.jayfields.com/2007/04/ruby-anti-pattern-extract-module-to.html>
+
+Refactoring:
+Even noobs know that refactoring is important. This presentation, inspired by <em>Refactoring: Ruby Edition</em>, will cover the whys, whens, and hows of refactoring using examples.

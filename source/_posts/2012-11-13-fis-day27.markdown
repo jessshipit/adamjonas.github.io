@@ -1,0 +1,246 @@
+---
+layout: post
+title: "FIS Day27"
+date: 2012-11-13 09:21
+comments: true
+categories: FIS javascript jquery ajax
+---
+
+###POTD Jesse James Garrett
+  - Author of [elements of user experience](http://www.jjg.net/elements/)
+    - elements of style
+  - [Ajax essay](http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications)
+    - asynchronous model
+
+###Gitbo
+- [merit](https://github.com/tute/merit)/[reputation](http://railscasts.com/episodes/364-active-record-reputation-system)
+- [whenever](https://github.com/javan/whenever)
+
+##JS With Justin Moses
+  - learn some Haskell, lisp -> functional programming
+
+  - JS fiddle
+  - [JS Bin](http://jsbin.com/welcome/1/edit)
+
+  - span is an inline div
+
+  - when a document is loaded in the browser. it first calls a method on itself called ready.
+    - program events onto these objects
+    - find objects within the document and add more events to them
+    - if you try to load it linearly, then you need to wait until the document has full compiled.
+  - think about buttons as button objects and you can bind methods and other objects to that button object
+  - src="//code.jquery.com/"
+    - put the script tags in the head is good form
+    - 
+
+```
+<script>
+    function runthis() {
+    alert(this);
+  }
+</script>
+```
+$ -> jquery shortcut
+
+When the DOM is loaded get going....
+```javascript
+$(function)(){
+  
+}
+```
+
+```javascript
+$(function)(){
+  //alert(this);
+
+  alert($('.btn').html("test123"));
+  //matching functions and matching it to all buttons
+
+});
+```
+document.querySelectorAll('.button') -> is the javascript equivalent to $('.button')
+
+```javascript
+$(function)(){
+
+  $('.btn').click(function() {
+    $('body').append('<button class="btn">my button</button>');
+  });
+});
+```
+
+```javascript
+$(function)(){
+
+  $('body').on('click', function() 
+  {
+      $('body').append('<button class="btn">my button</button>');
+  });
+});
+```
+
+  - [.on() event](http://api.jquery.com/on/)
+  - every move, every click these are all reported events
+    - event bubbling -> fire event with that div, in the body, in the window
+      - target -> event clicked on
+      - event delegation in js -> allows you quickly bind events that don't exist yet
+
+###AJAX
+`XMLHttpRequest == $.ajax`
+
+```javascript AJAX
+$(function() {
+  var promise = $.ajax({ 
+    url:"http://jsbin.com/iyijag.js"
+  }).
+  promise.done(function(data){
+  //show user data
+  alert(data); //alert box with json data
+  }).
+  promise.fail(function(err){
+  // on fail
+  }).
+  promise.always(function(data){
+  //always called
+  });
+});
+
+```
+AJAX by default is get, but 
+jquery deferred -> chaining things together without certainty of the event
+
+###Questions
+  - debugging in your app. single click on line with chrome will drop in a debugger object. 
+    - can then see the object in console
+  - if you use it once -> you don't need to name the function, if you want to reuse, you probably want to 
+
+###Other stuff
+  - [colorblendy](http://colorblendy.com/)
+  - [markdown editor](http://mouapp.com/)
+  - [khan academy](http://www.khanacademy.org/cs)
+  - node inspector for server side
+  - [NPM for node](https://npmjs.org)- is like ruby gems - server side modules
+  - HTML5 and websockets and threads
+
+##Avi Rant
+  - rails works nicely with ember
+  - javascript provides you 
+
+###Avi Javascript Lecture
+  - if you want to do anything to an object, you need to first grab it from the DOM
+  - document.baseURI
+  - document - returns the whole window
+  - {} in javascript is an object
+
+```javascript Building an Object in Javascript
+o = {}
+//instantiating an object
+o.first_name = "avi"
+o.last_name = "flom"
+o.full_name = function(){this.first_name + " " + this.last_name}
+//like self.first_name + " " + self.last_name in ruby
+
+//can see what this is in the log
+o.full_name = function(){console.log(this)};
+
+//could do this, but it isn't object oriented
+function full_name(object){
+  return object.first_name + object.last_name
+}
+```
+`$ sign == jQuery`
+```javascript
+document.onready = function(){
+  $("form a")
+}
+
+document.onready();
+
+//This means that when the document is loaded, fire this.
+$(function(){
+  $("form a").click(function(x){
+    alert(x.clientX + "," x.clientY")
+    return false; //stop the normal event -> like following a link
+    //this would work like x.preventDeafult();
+  })
+});
+
+//x is the event in this case
+//$("form a") is almost like a yield from a block, that you will be able to access
+```
+```javascript
+$(this) // a full blown object that knows about its parent
+this // is just a return of DOM. This doesn't have much info
+
+//.attr("href") is like accessing an attribute or key of the object
+window.location = $(this).attr("href") +"?source=flatironschool"
+```
+
+  - You are hooking into events. You are dependent on the browser and when events are loaded. It's not about linear execution. It's about the browser API.
+  - applying a bind to an element will always happen in a ready box
+  - current target, the thing that was actually clicked
+  - handleObj - the actual event, event type -> both might be a click event
+  
+```javascript
+$(function)(){
+  $("form a").click(function(e){
+
+  e.preventDefault;
+
+  //select the object
+  
+  //$select = $('#mixtape_mixtape_songs_attributes_0_song');
+  $select = $('form select:last'); //grab the last element with a pseudo selector
+  //duplicate code
+  $new_select = $select.clone();
+
+  console.log($new_select);
+
+  //edit's name
+  $next_name = $select.attr("name")
+  console.log($next_name)
+
+  next_int = parseInt(next_name.
+  replace("mixtape[mixtape_songs_attribute][", "").
+  replace("]song_id"))+1;
+
+  new_select.attr("name", next_name)
+  //insert it back into the DOM
+
+  $("div.actions")
+  return false;
+  })
+});
+
+//can have a document object that hasn't been inserted into the view yet
+```
+
+```javascript
+$("a").click(function(){alert("test")});
+
+//equal to
+t = function(){alert("test")}; -> this loaded into memory and run when ready.
+// t = alert("test") -> this is literal and will be called immediately.
+$("a").click(t);
+```
+
+###Methods
+- key press event
+- blur(), change(), click()
+- handler() -> the function you want to run when this change occurs
+- hover is the combo of focus and blur
+- every keypress comes with two events key down and key up
+- live -> attaching the event to the body
+
+```javascript MouseMove
+$(function)(){
+  $("form").mousemove(function(e){
+    console.log(e)
+})
+```
+
+- spyjax
+
+  
+###Odemeter
+<http://uvumitools.com/odometer.html>

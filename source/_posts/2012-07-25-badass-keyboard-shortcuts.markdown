@@ -7,21 +7,11 @@ categories: shortcuts
 ---
 
 
-shift, cmd, T -- open the last tab closed in chrome and FF
-
-And of course [shortcut foo](https://www.shortcutfoo.com/) is awesome too!
-
-```
-rake routes | grep mixtape
-```
-Will only show the routes that match this resource.
-
-
 ###Chrome:
   - ⌥⌘I (Command - Option - I) keys to open Developer Tools
   - ⌥⌘J (Command - Option - J) to open Developer Tools and bring focus to the Console.
   - ⇧⌘C (Command - Shift - C) to toggle Inspect Element mode.
-
+  - shift ⌘ T -> open the last tab closed in chrome and FF
 
 ###Sublime Shortcuts###
   - [Good list here](http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/)
@@ -34,6 +24,7 @@ Will only show the routes that match this resource.
   - cmd, shift, -> or <- to move between windows in the terminal
   - pwd #=> will output the full path
   - ~ #=> home directory
+  - ps aux | grep ruby -> show all ruby processes
 
 ###Sublime Text 2###
   - ⌘shift P allows you to install nearly any package on sublime text 2 
@@ -47,3 +38,12 @@ Will only show the routes that match this resource.
 
 ###Mac###
   - ⌘shift 3 - screen shot
+
+###Rails Cmds
+```
+rake routes | grep mixtape
+```
+Will only show the routes that match this resource.
+
+###Notes:
+And of course [shortcut foo](https://www.shortcutfoo.com/) is awesome too!
