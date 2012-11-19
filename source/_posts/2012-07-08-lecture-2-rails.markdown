@@ -3,7 +3,7 @@ layout: post
 title: "Lecture 2 Rails"
 date: 2012-07-08 14:21
 comments: true
-categories: rails lecture notes
+categories: rails lecture_notes
 ---
 
 ***Lecture 2***

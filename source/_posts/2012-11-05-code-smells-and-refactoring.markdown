@@ -3,7 +3,7 @@ layout: post
 title: "code smells and refactoring"
 date: 2012-11-05 15:05
 comments: true
-categories: refactoring
+categories: refactoring lecture_notes
 ---
 
 decomposition and synthesis

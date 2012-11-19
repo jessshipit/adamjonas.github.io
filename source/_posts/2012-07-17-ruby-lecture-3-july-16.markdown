@@ -3,7 +3,7 @@ layout: post
 title: "ruby lecture 3"
 date: 2012-07-17 22:50
 comments: true
-categories: ruby lecture
+categories: ruby lecture_notes
 ---
 
 Programmer of the day:

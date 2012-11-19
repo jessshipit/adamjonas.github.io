@@ -3,7 +3,7 @@ layout: post
 title: "Lecture 5- Rails"
 date: 2012-07-22 14:18
 comments: true
-categories: rails lecture forms
+categories: rails lecture_notes forms
 ---
 
 HOMEWORK:

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: book_notes | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/book-notes/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2012-11-19T09:11:40-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Refactoring Ruby Edition Notes]]></title>
+    <link href="http://www.adamjonas.com/blog/refactoring-ruby-edition-notes/"/>
+    <updated>2012-11-10T11:22:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/refactoring-ruby-edition-notes</id>
+    <content type="html"><![CDATA[<h3>Replacing the Conditional Logic on Price Code with Polymorphism [p.32]</h3>
+
+<blockquote><p>Replacing the Conditional Logic on Price Code with Polymorphism
+The first part of this problem is that case statement. It is a bad idea to do a case based on an attribute of another object. If you must use a case statement, it should be on your own data, not on someone else’s.
+  - <a href="http://robots.thoughtbot.com/post/31728620503/refactoring-replace-conditional-with-polymorphism">Thoughtbot Reading</a></p></blockquote>
+
+<p>??Receiver on page 35?</p>
+
+<h3>Refactoring is... [p.53]</h3>
+
+<blockquote><p>(noun) A change made to the internal structure of software to make it easier to understand and cheaper to modify with- out changing its observable behavior.</p></blockquote>
+
+<ul>
+<li><p>Programming in about saying exactly what you want. But there is another user of your source code. Someone will try to read your code in a few months’ time to make some changes. We easily forget that extra user of the code, yet that user is actually the most important.</p>
+
+<ul>
+<li>Who cares if the computer takes a few more cycles to execute something? It does matter if it takes a programmer a week to make a change that would have taken only an hour if she had understood your code.</li>
+<li>when you are trying to get the program to work, you are not thinking about that future developer.
+
+<ul>
+<li>Often this future developer is me. [p. 55]</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Kent Beck often makes about himself, “I’m not a great programmer; I’m just a good programmer with great habits.” [p. 56]</p></li>
+<li>Don Roberts: The first time you do something, you just do it. The second time you do something similar, you wince at the duplica- tion, but you do the duplicate thing anyway. The third time you do something similar, you refactor. [p. 57]</li>
+</ul>
+
+
+<h3>Problems with refactoring [p. 63]</h3>
+
+<ul>
+<li>takes a while to create nothing</li>
+<li>performance deoptimization</li>
+<li>changing behavior</li>
+</ul>
+
+
+<h3>Code Smells</h3>
+
+<ul>
+<li>Duplicated Code [p. 74]</li>
+<li>Long Method [p. 74-75]
+
+<ul>
+<li>A heuristic we follow is that whenever we feel the need to com- ment something, we write a method instead.</li>
+<li>Conditionals and loops also give signs for extractions.</li>
+</ul>
+</li>
+<li>Large Class [p. 76]
+
+<ul>
+<li>When a class is trying to do too much, it often shows up as too many instance variables. When a class has too many instance variables, duplicated code cannot be far behind.</li>
+</ul>
+</li>
+<li>Long Parameter List [p. 76]</li>
+<li>Divergent Change [p. 77]
+
+<ul>
+<li>When we make a change we want to be able to jump to a single clear point in the system and make the change. When you can’t do this you are smell- ing one of two closely related pungencies.</li>
+</ul>
+</li>
+<li>Shotgun Surgery
+
+<ul>
+<li>Every time you make a kind of change, you have to make a lot of little changes to a lot of different classes.</li>
+<li>opposite of divergent change</li>
+</ul>
+</li>
+<li>Feature Envy [p. 78]
+
+<ul>
+<li>a method that seems more interested in a class other than the one it actually is in.</li>
+</ul>
+</li>
+<li></li>
+</ul>
+
+
+<h3>Extract Method [p. 102]</h3>
+
+<ul>
+<li>You have a code fragment that can be grouped together.
+
+<ul>
+<li>Turn the fragment into a method whose name explains the purpose of the method.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Inline Temp [p. 110]</h3>
+
+<ul>
+<li>You have a temp that is assigned to once with a simple expression, and the temp is getting in the way of other refactorings.
+
+<ul>
+<li>Replace all references to that temp with the expression.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Replace With Query [p. 111]</h3>
+
+<ul>
+<li>You are using a temporary variable to hold the result of an expression.
+
+<ul>
+<li>Extract the expression into a method. Replace all references to the temp with the expression. The new method can then be used in other methods.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Replace Loop with Conditional</h3>
+
+<p><code>ruby
+managers = []
+employees.each do |e|
+  managers &lt;&lt; e if e.manager?
+end
+</code></p>
+
+<h3>Lazy Initialized Attribute</h3>
+
+<ul>
+<li>Initialize an attribute on access instead of at construction time.</li>
+</ul>
+
+
+<p>```ruby Lazy Initialized Attribute
+class Employee
+  def initialize</p>
+
+<pre><code>@emails = []
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>becomes</h1>
+
+<p>class Employee
+  def emails</p>
+
+<pre><code>@emails ||= []
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h2>Chapter 9: Simplifying Conditional Expressions</h2>
+
+<h3>Replace the conditional code with the more idiomatic Ruby construct.</h3>
+
+<ul>
+<li>Encapsulate if/else, and/or logic in their own methods
+```ruby
+parameters = params ? params : []
+
+<h1>becomes</h1>
+
+<p>parameters = params || []
+```</p></li>
+<li>Use &amp;&amp; instead of multiple ifs
+```ruby
+if on_vacation?
+if length_of_service > 10
+return 1
+end
+end
+0.5
+
+<h1>This would be changed to</h1>
+
+<p>if on_vacation? &amp;&amp; length_of_service > 10
+return 1
+end
+0.5
+```</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Web Development with Rails]]></title>
+    <link href="http://www.adamjonas.com/blog/agile-web-development-with-rails/"/>
+    <updated>2012-10-30T10:33:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/agile-web-development-with-rails</id>
+    <content type="html"><![CDATA[<ul>
+<li>ORM libraries map database tables to classes, rows to objects, and columns to attributes of those objects.</li>
+<li>Class methods are used to perform table-level operations</li>
+<li>Instance methods are used to perform operations on individual rows.</li>
+<li>Modules server two purposes
+
+<ul>
+<li>namespace: letting you define methods whose names will not clash with those defined elsewhere</li>
+<li>And they allow you to share functionality between classes</li>
+</ul>
+</li>
+<li>a ||= b
+```ruby a operation= b is the same as a = a operation b
+count += 1
+
+<h1>same as</h1>
+
+<p>count = count + 1</p></li>
+</ul>
+
+
+<p>price *= discount</p>
+
+<h1>same as</h1>
+
+<p>price = price * discount</p>
+
+<p>count ||= 0</p>
+
+<h1>same as</h1>
+
+<p>count = count || 0
+```
+- lambda
+- numericality
+- catalog display is really just a glorified product listing.
+- every time a request comes in, we can recover the identity from the session and use it to find the cart in the database
+- dependent: :destroy -> indicates that the existence of line items is dependent on the existence of the cart
+- if a table has foreign keys, the corresponding model should have a belongs_to for each.
+- the default HTTP method for a link is a get, the default HTTP method for a button is a post.
+- @cart.line_items.build -> this causes a new line item relationship to be built between the @cart object and the product. You can build the relationship from either end.
+- Rails matches on is add_XXX_to_TABLE and remove_XXX_from_TABLE where the value XXX is ignored; what matters is the list of the column names and the types that appear after the migration name.
+- link_to_unless_current
+- if @person is just an empty object structure, form_form will work on the assumption that this is to create a new object. If @person actually contains data, however, form_for will assume that its form is editing that object and create a different looking form element, a hidden field to enable Rails' REST capabilities.
+- helpers are simply modules containing methods that assist a view.
+- link_to and link_to_if take a condition parameter
+- a flash is a bucket (actually closer to a hash) in which you can store stuff as you process a request.
+- you can pass parameters to a partial, so that the partial can render different results.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lessons from 97 things every programmer should know]]></title>
+    <link href="http://www.adamjonas.com/blog/lessons-from-97-things-every-programmer-should-know/"/>
+    <updated>2012-09-24T09:29:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/lessons-from-97-things-every-programmer-should-know</id>
+    <content type="html"><![CDATA[<h3>The boy scout rule (p.16)</h3>
+
+<ul>
+<li>"Always leave a campground cleaner than you found it."
+
+<ul>
+<li>"Always check in a module a little cleaner than when you checked it out."</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Don't repeat yourself (p.60)</h3>
+
+<ul>
+<li><p>Duplication is waste</p></li>
+<li><p>Repetition in process calls for automation</p></li>
+<li><p>Repetition in logic calls for abstraction</p></li>
+<li><p>A matter of principle: once and only once principle</p></li>
+</ul>
+
+
+<h3>Know your next commit (p.94)</h3>
+
+<ul>
+<li><p>Understanding your commit in the greater user story scope is valuable, but stay focused on your specific goal.</p></li>
+<li><p>Define a task that would constitute a productive step.</p></li>
+</ul>
+
+
+<h3>Learn to estimate (p.100)</h3>
+
+<ul>
+<li><p>An estimate is an approximate calculation or judgment of the value, number, quantity, or extent of something.</p></li>
+<li><p>A target is a statement of a desirable business objective.</p></li>
+<li><p>A commitment is a promise to deliver specified functionality as a certain level of quality by a certain date or event.</p></li>
+</ul>
+
+
+<h3>Make interfaces easy to use correctly and hard to use incorrectly (p.110)</h3>
+
+<ul>
+<li><p>A.K.A. defensive design</p></li>
+<li><p>Making interfaces hard to use incorrectly requires two things: first, you must anticipate errors users might make and find ways to prevent them. Second, you must observe how an interface is misused during early release and modify it to prevent such errors.</p></li>
+</ul>
+
+
+<h3>Missing opportunities for polymorphism (p.118)</h3>
+
+<ul>
+<li>Polymorphism, taken from Greek, means many (poly) forms (morph). In the context of programming, polymorphism refers to many forms of a particular class of objects or method.</li>
+</ul>
+
+
+<h3>The professional programmer (p.134)</h3>
+
+<ul>
+<li><p>pros are responsible for their own career</p></li>
+<li><p>pros take responsibility for the code they write</p></li>
+<li><p>pros are team players</p></li>
+<li><p>pros do not tolerate big bug lists</p></li>
+<li><p>pros do not make a mess.</p></li>
+</ul>
+
+
+<h3>Put down the mouse and step away from the keyboard (p.138)</h3>
+
+<ul>
+<li><p>Focus is good, but to get through a problem we often have to walk away from the problem.</p></li>
+<li><p>While you are coding, the logical part of the brain is active and the creative side is shut out. It can't present anything to you until the logical side takes a break.</p></li>
+</ul>
+
+
+<h3>Read code (p.140)</h3>
+
+<ul>
+<li>Write code so that it is readable for others. Read other people's code.</li>
+</ul>
+
+
+<h3>Read the humanities (p.142)</h3>
+
+<ul>
+<li>Coding is about communicating with others through experience. Understand metaphors and how to express your thoughts to others in terms they can understand.</li>
+</ul>
+
+
+<h3>Resist the temptation of the singleton pattern (p.146)</h3>
+
+<ul>
+<li>the singleton pattern is a design pattern that restricts the instantiation of a class to one object.</li>
+</ul>
+
+
+<h3>The single responsibility principle (p.152)</h3>
+
+<ul>
+<li><p>Gather together things that change for the same reason, and separate those things that change for different reasons.</p></li>
+<li><p>Good system design means that we separate the system into components that can be independently deployed. Independent deployment means that if we change one component, we do not have to redeploy any of the others.</p></li>
+</ul>
+
+
+<h3>Two heads are better than one (p.170)</h3>
+
+<ul>
+<li>Pair programming is more productive for learning and long term enjoyment of the profession.</li>
+</ul>
+
+
+<h3>Ubuntu coding for your friends (p.174)</h3>
+
+<ul>
+<li><p>"A person is a person through (other) persons."</p></li>
+<li><p>So it follows, "a developer is a developer through other developers."</p></li>
+<li><p>"Code is code through other code."</p></li>
+<li><p>The quality of the code I write affects the quality of the code you write.</p></li>
+<li><p>Zen is about the individual. Ubuntu is about the Zen a group of people. Very, very rarely do we create code for ourselves alone.</p></li>
+</ul>
+
+
+<h3>Unix tools > IDEs (p.176)</h3>
+
+<h3>WET dilutes performance bottlenecks (p.182)</h3>
+
+<ul>
+<li>WET (write every time) the antithesis of DRY</li>
+</ul>
+
+
+<h3>Write code as if you had to support it for the rest of your life (p.186)</h3>
+
+<ul>
+<li>The code your wrote many years ago still influences your career. People form opinions of you based on the code they see.</li>
+</ul>
+
+
+<h3>Write tests for people (p.190)</h3>
+
+<ul>
+<li>Good tests act as documentation for the code they are testing.</li>
+</ul>
+
+
+<h3>You gotta care about the code (p.192)</h3>
+
+<ul>
+<li><p>The difference between good and bad programmers is attitude.</p></li>
+<li><p>The code to hell is paved with good intentions. To be an excellent programmer, you need to rise above good intentions, and actually care about the code.</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

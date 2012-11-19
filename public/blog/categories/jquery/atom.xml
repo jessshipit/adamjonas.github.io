@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jquery | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/jquery/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2012-11-16T11:49:21-05:00</updated>
+  <updated>2012-11-19T09:11:40-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -76,12 +76,6 @@ end
 <p>  end
 end
 ```</p>
-
-<p>```ruby user.rb</p>
-
-<h1>add roles in user model</h1>
-
-<p>```</p>
 
 <p><code>ruby application_controller.rb
 rescue_from CanCan::AccessDenied do |exception|
@@ -666,71 +660,259 @@ $(function)(){
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[JQuery]]></title>
-    <link href="http://www.adamjonas.com/blog/jquery/"/>
-    <updated>2012-08-07T11:35:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/jquery</id>
-    <content type="html"><![CDATA[<h3>The DOM:</h3>
+    <title type="html"><![CDATA[HAW-day14]]></title>
+    <link href="http://www.adamjonas.com/blog/haw-day14/"/>
+    <updated>2012-08-20T12:10:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/haw-day14</id>
+    <content type="html"><![CDATA[<p>```javascript Debug Method
+console.log(allVals);</p>
 
-<p>the web browser remembers the HTML tags, their attributes, and the order in which they appear in the file—this representation of the page is called the Document Object Model, or DOM for short. (js and jquery the missing manual, p127)</p>
-
-<p><a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Repel</a> -
-read, evaluate, print, loop</p>
-
-<p>everything with remote true should have their submit button hijacked and exectured with ajax
-jquery is to rails what ruby is js</p>
-
-<p><code>html src
-&lt;source src="URL"&gt;
-</code></p>
-
-<p><code>javascript [XHR](https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest?redirectlocale=en-US&amp;redirectslug=XMLHttpRequest)
-//To create an instance of XMLHttpRequest, simply do this:
-var req = new XMLHttpRequest();
-</code>
-xhr- used to be just xml</p>
-
-<p>READ: <a href="http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications">ajax jesse james garrett</a>
-AJAX = Asynchronous JavaScript + XML
-Ajax incorporates:
-- standards-based presentation using XHTML and CSS;
-- dynamic display and interaction using the Document Object Model;
-- data interchange and manipulation using XML and XSLT;
-- asynchronous data retrieval using XMLHttpRequest;
-- and JavaScript binding everything together.</p>
-
-<p>adaptive path
-elements of user experience</p>
-
-<p>js is all an event model</p>
-
-<p>predictable DOM</p>
-
-<p><a href="http://css-tricks.com/the-difference-between-id-and-class/">###Difference between li/#b and li.b?###</a></p>
-
-<p>/# => ids --> IDs are unique
-- Each element can have only one ID
-- Each page can have only one element with that ID</p>
-
-<p>dot b => class names --> are NOT unique
-- You can use the same class on multiple elements.
-- You can use multiple classes on the same element.</p>
-
-<h3>Crazy Selector for our app</h3>
-
-<p>```javascript
-$("tr#error_&lt;%error.id %> input:submit[value='Noise']").click(function(){</p>
-
-<pre><code>confirm("Are you sure?");
-</code></pre>
-
-<p>})
-// input:submit[value='Noise']" are you kidding me?
+<p>// location.reload()
 ```</p>
 
-<h3>Solid Object Oriented Design</h3>
+<p>Look up dataTypes -- text, json, script (js), xml, html
+This the request type format that we want it in.</p>
 
-<p><a href="http://vimeo.com/12350535">Video of Sandi Metz</a></p>
+<h3>JQuery Token Input</h3>
+
+<p>http://railscasts.com/episodes/258-token-fields
+need to make sure the controller responds to .json
+-the default has it nested in an @tags key. To remove that we need to map it to its attributes like so--
+<code>format.json { render :json =&gt; @tags.collect{|t| t.attributes}  }</code></p>
+
+<ul>
+<li>prePoulation was an issue as well</li>
+</ul>
+
+
+<p><code>ruby Symobol to Proc
+[1,2].collect{|i| i.to_s} #=&gt; ["1", "2"]
+</code></p>
+
+<ul>
+<li>To Jquery plugin to gem
+
+<ul>
+<li>query isn't searching properly in the tags controller</li>
+<li>remove the submit button for tag tokens</li>
+</ul>
+</li>
+</ul>
+
+
+<p>'f.text_field options' for onAdd or on Remove</p>
+
+<ul>
+<li><p>put the ':controller => :error, :action => :resolve_on_airbrake' on the fix button
+or gather all the errors tagged with fixed and move this task to a background job...</p></li>
+<li><p>sidekiq runs on redis</p>
+
+<ul>
+<li>create a worker folder</li>
+<li>??needs to be serialized into redis?</li>
+<li>sidekiq will run if there is an error: can disable the retry option with an option</li>
+<li>pool thread limits the number of jobs that can be run</li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day12]]></title>
+    <link href="http://www.adamjonas.com/blog/haw-day12/"/>
+    <updated>2012-08-16T10:19:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/haw-day12</id>
+    <content type="html"><![CDATA[<ul>
+<li>js buttons on tag show pages</li>
+<li>fix checkboxes/mass assigning tags</li>
+</ul>
+
+
+<h3>respond_to</h3>
+
+<p>This is basically a glorified case statement...</p>
+
+<p>if no action is specified the default is the action of the namespace
+```ruby
+def tag</p>
+
+<pre><code>#some code
+respond_to do |f|
+  f.html {redirect_to :back}
+  f.js
+end
+</code></pre>
+
+<p>  end
+```
+So it looks for tag.js as the default...</p>
+
+<ul>
+<li><p>BUG:</p>
+
+<ul>
+<li>tell firefox not to autocomplete</li>
+</ul>
+</li>
+<li><p>checkboxes</p></li>
+<li>get all the values</li>
+<li><p>submit to server</p></li>
+<li><p>loop through the elements</p></li>
+<li>gather all the values (which are the ids)</li>
+<li>find errors by ids</li>
+<li>push in tag name signal</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[jquery-air-intermediate]]></title>
+    <link href="http://www.adamjonas.com/blog/jquery-air-intermediate/"/>
+    <updated>2012-08-15T15:35:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/jquery-air-intermediate</id>
+    <content type="html"><![CDATA[<p><code>javascript Retriving the href
+$('#tabs ul li:last a').attr('href')
+$('#tabs ul li:last a').data('flights') //this would be from an html5 data tag
+</code></p>
+
+<ul>
+<li>event delegation-</li>
+<li>it can be method chained and performs faster than live</li>
+<li>'$(document).delegate'</li>
+</ul>
+
+
+<p><strong><em>Don't forget the brackets on the selector!!</em></strong></p>
+
+<h3>eq selector</h3>
+
+<p><code>javascript eq(element#) - a selector
+$('ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3)').html­()
+</code></p>
+
+<p><code>javascript
+$('ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a').a­ttr('href'­);
+// to access the href you need to specify the a tag
+$('ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a').d­ata('seat'­);
+</code></p>
+
+<p><code>javascript
+$('div.seating-chart a.available').click(function (event){
+  event.preventDefault();
+  $('a.available').removeClass("selected")
+  $(this).addClass("selected")
+});
+</code></p>
+
+<h3>Bind Element</h3>
+
+<ul>
+<li>jQuery bind() function is used to attach an event handler to elements, while the unbind() is used to detached an existing event handler from elements.</li>
+</ul>
+
+
+<p><code>javascript
+$('div.seating-chart a.available').bind({
+  click: selectSeat
+});
+</code></p>
+
+<ul>
+<li>This allows you to list multiple events for each element. NOTE the different syntax, this becomes like a MAP now (very similar to a hash)</li>
+</ul>
+
+
+<h3>Unbind Element</h3>
+
+<ul>
+<li>Let’s imagine the following scenario...</li>
+<li>The user clicks on a “vote” button.</li>
+<li>Some AJAX calls are performed.</li>
+<li>After a successful AJAX call you setup a cookie to deny further votes from this machine.</li>
+<li><p>So one possible solution is to unbind the click event...</p></li>
+<li><p>Have something happen on a click event, but only once! Unbind the click handler after the element has been clicked once.</p></li>
+</ul>
+
+
+<p>```javascript Once and only once...
+$('#my-selector').bind('click', function() {</p>
+
+<pre><code>   $(this).unbind('click');
+   alert('Clicked and unbound!');
+</code></pre>
+
+<p>});
+<code>
+</code>javascript Jquery Air
+function selectSeat(e) {
+  e.preventDefault();
+  $('.selected').removeClass('selected');
+  $(this).addClass('selected').unbind("click", selectSeat);
+  $('#seatSelected').text($(this).data('seat'));
+  $('#confirm-seat').show();
+}</p>
+
+<p>$('div.seating-chart li a.available').click(selectSeat);
+```</p>
+
+<h3>Live Event</h3>
+
+<p><code>$('a.confirm-upgrade').live("click", confirmUpgrade);</code></p>
+
+<ul>
+<li>Bind binds to the event one time</li>
+<li>Live will look for that event now or in the future and will catch it and call the right function</li>
+</ul>
+
+
+<h3>Delegate</h3>
+
+<p><code>javascript Delegate &gt; live
+$('#flights a').live("click", selectFlight);
+// is the same as
+$(document).delegate("#flights a", "click", selectFlight);
+// this is too general. It would be better if you just checked inside a specific element
+$(#tabs div).delegate("#flights a", "click", selectFlight);
+// check inside the element rather than the entire page
+</code></p>
+
+<ul>
+<li>Delegate can be method chained and it is more performant</li>
+</ul>
+
+
+<h3>Ajax</h3>
+
+<ul>
+<li>Video2</li>
+<li>$.get and $.ajax are alternatives. $.ajax is slightly more</li>
+<li>cache: false option ensures that your browser won't cache the html for every request</li>
+<li>Error handling</li>
+<li>Loading div - call beforeSend the AJAX invoked then hide it in the complete:</li>
+<li>If it returns successfully - success: and if not - error:</li>
+</ul>
+
+
+<h3>Mistake I keep making</h3>
+
+<p>```javascript
+function fetchFirstClassConfirm() {
+  var flight_id = 815;
+  var url = '/flights/' + flight_id
+  $.ajax(url, {</p>
+
+<pre><code>success: function(result) {
+  $('#confirm-first-class').html(result).show();
+  //I have a big problem missing the '' in the selector!
+}
+</code></pre>
+
+<p>  });
+}
+```</p>
 ]]></content>
   </entry>
   

@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Rails Lecture 3- July 15 why use &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
--bc want to use http verbs to be more specific &hellip;">
+  <meta name="description" content="Rails Lecture 3- July 15 why use &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file? bc want to use http verbs to be more specific &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -118,17 +117,20 @@
   </header>
 
 
-  <div class="entry-content"><p><strong><em>Rails Lecture 3- July 15</em></strong></p>
+  <div class="entry-content"><h3>Rails Lecture 3- July 15</h3>
 
-<p>why use &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
--bc want to use http verbs to be more specific
--match is more vague, you should generally use specific verbs</p>
+<ul>
+<li>why use &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake routes CONTROLLER=SESSIONS</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>bc want to use http verbs to be more specific</li>
+<li>match is more vague, you should generally use specific verbs</li>
+</ul>
+</li>
+</ul>
 
 
-<p>will narrow output</p>
+<p><code>rake routes CONTROLLER=SESSIONS</code> will narrow output</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -140,22 +142,28 @@
 </span><span class='line'>render 'shared/under_construction' #=&gt; these 3 work the same now</span></code></pre></td></tr></table></div></figure>
 
 
-<p><strong>Private Methods</strong>(2:40)
-- about what object the receiver is on the method called&#8211; private methods can only be called on implicit receivers
-- a way to control scope
-- anything that is not an action, that isn&#8217;t an endpoint of a route should be private</p>
+<h3>Private Methods###(2:40)</h3>
 
-<p>routes: bridge between the browser, specifcially URLs, and the app</p>
+<ul>
+<li>about what object the receiver is on the method called&#8211; private methods can only be called on implicit receivers</li>
+<li>a way to control scope</li>
+<li><p>anything that is not an action, that isn&#8217;t an endpoint of a route should be private</p></li>
+<li><p>routes: bridge between the browser, specifcially URLs, and the app</p></li>
+</ul>
 
-<p>Polymorphic Interface(2:50)
-The link_to method&#8211;> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
+
+<h3>Polymorphic Interface(2:50)</h3>
+
+<p>The link_to method&#8211;> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
 -> if I send it an instance of active record, it&#8217;s behavior will change ==> it will become intelligent and it will understand that it is an instance of active record</p>
 
-<p><strong>Lecture</strong> (2:55)</p>
+<h3>Lecture### (2:55)</h3>
 
-<p>anything that starts with an underscore &#8216;_form.erb.html&#8217; for example is a snippet of code that is reused on multiple templates</p>
+<ul>
+<li><p>anything that starts with an underscore &#8216;_form.erb.html&#8217; for example is a snippet of code that is reused on multiple templates</p></li>
+<li><p>form_for(@song) &#8211;> knows whether the song is new or should be updated&#8230; obviously different verbs are required for those diff actions</p></li>
+</ul>
 
-<p>form_for(@song) &#8211;> knows whether the song is new or should be updated&#8230; obviously different verbs are required for those diff actions</p>
 
 <figure class='code'><figcaption><span>Form Helpers (3:09)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -183,8 +191,9 @@ The link_to method&#8211;> accepts two parameters. the first is the name of the 
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><strong>Params</strong> (3:20)
-params looks and behaves like a hash
+<h3>Params### (3:20)</h3>
+
+<p>params looks and behaves like a hash
 its a nested hash</p>
 
 <figure class='code'><figcaption><span>Assigning a name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -203,20 +212,26 @@ its a nested hash</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>(3:50) Nested hash testing</p>
+<h3>(3:50) Nested hash testing</h3>
 
 <figure class='code'><figcaption><span>Query string (3:57)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mldraft</span><span class="o">.</span><span class="n">com?person</span><span class="o">[</span><span class="nb">name</span><span class="o">]=</span><span class="n">adam</span><span class="o">&amp;</span><span class="n">person</span><span class="o">[</span><span class="n">email</span><span class="o">]=</span><span class="n">adam</span><span class="vi">@mldraft</span><span class="o">.</span><span class="n">com</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Can access the params hash in the same way as the form. So params[:person][:name] will equal adam</p>
+<ul>
+<li>Can access the params hash in the same way as the form. So params[:person][:name] will equal adam</li>
+</ul>
 
-<p>Mass Assignment Vulnability (4:05)
-- attr_accessible is a whitelist approach versus attr_protected which is a black list approach
-- this has nothing to do with the attr_accessor, reader, or writer</p>
 
-<p>Virtual attributes don&#8217;t persist to the database</p>
+<h3>Mass Assignment Vulnability (4:05)</h3>
+
+<ul>
+<li>attr_accessible is a whitelist approach versus attr_protected which is a black list approach</li>
+<li><p>this has nothing to do with the attr_accessor, reader, or writer</p></li>
+<li><p>Virtual attributes don&#8217;t persist to the database</p></li>
+</ul>
+
 </div>
   
   
@@ -1358,6 +1373,14 @@ rake preview</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/dynamic-method-definition/">Dynamic Method Definition</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/fis-day30/">FIS Day30</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/fis-day29/">FIS Day29</a>
       </li>
     
@@ -1369,29 +1392,22 @@ rake preview</p>
         <a href="/blog/fis-day27/">FIS Day27</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/fis-day26/">FIS Day26</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/fis-day25/">FIS Day25</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/fis/'>FIS (32)</a></li>
+    <li class='category'><a href='/blog/categories/fis/'>FIS (33)</a></li>
 <li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
 <li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
-<li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
+<li class='category'><a href='/blog/categories/todo/'>TODO (4)</a></li>
 <li class='category'><a href='/blog/categories/agile/'>agile (1)</a></li>
 <li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
-<li class='category'><a href='/blog/categories/ajax/'>ajax (1)</a></li>
+<li class='category'><a href='/blog/categories/ajax/'>ajax (3)</a></li>
 <li class='category'><a href='/blog/categories/asset-pipeline/'>asset_pipeline (1)</a></li>
 <li class='category'><a href='/blog/categories/associations/'>associations (3)</a></li>
 <li class='category'><a href='/blog/categories/authentication/'>authentication (2)</a></li>
+<li class='category'><a href='/blog/categories/book-notes/'>book_notes (3)</a></li>
 <li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
 <li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
 <li class='category'><a href='/blog/categories/cheatsheet/'>cheatsheet (1)</a></li>
@@ -1399,28 +1415,30 @@ rake preview</p>
 <li class='category'><a href='/blog/categories/code/'>code (1)</a></li>
 <li class='category'><a href='/blog/categories/codeschool/'>codeschool (2)</a></li>
 <li class='category'><a href='/blog/categories/css/'>css (1)</a></li>
-<li class='category'><a href='/blog/categories/databases/'>databases (1)</a></li>
 <li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
 <li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
-<li class='category'><a href='/blog/categories/forms/'>forms (2)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (4)</a></li>
 <li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
-<li class='category'><a href='/blog/categories/git/'>git (6)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (7)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
-<li class='category'><a href='/blog/categories/heroku/'>heroku (3)</a></li>
+<li class='category'><a href='/blog/categories/heroku/'>heroku (4)</a></li>
 <li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
 <li class='category'><a href='/blog/categories/javascript/'>javascript (2)</a></li>
-<li class='category'><a href='/blog/categories/jquery/'>jquery (3)</a></li>
+<li class='category'><a href='/blog/categories/jquery/'>jquery (7)</a></li>
 <li class='category'><a href='/blog/categories/kentbeck/'>kentbeck (1)</a></li>
 <li class='category'><a href='/blog/categories/lambda/'>lambda (1)</a></li>
-<li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
+<li class='category'><a href='/blog/categories/lecture-notes/'>lecture_notes (13)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
 <li class='category'><a href='/blog/categories/minitest/'>minitest (1)</a></li>
 <li class='category'><a href='/blog/categories/modules/'>modules (1)</a></li>
 <li class='category'><a href='/blog/categories/mongodb/'>mongoDB (1)</a></li>
+<li class='category'><a href='/blog/categories/mongoid/'>mongoid (1)</a></li>
 <li class='category'><a href='/blog/categories/namespacing/'>namespacing (1)</a></li>
-<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
-<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (2)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (1)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (1)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object_oriented (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/omniauth/'>omniauth (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
@@ -1430,43 +1448,26 @@ rake preview</p>
 <li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
-<li class='category'><a href='/blog/categories/rails/'>rails (18)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (17)</a></li>
 <li class='category'><a href='/blog/categories/rails-forms/'>rails_forms (3)</a></li>
 <li class='category'><a href='/blog/categories/rails-routes/'>rails_routes (1)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
-<li class='category'><a href='/blog/categories/reading/'>reading (2)</a></li>
+<li class='category'><a href='/blog/categories/reading/'>reading (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
-<li class='category'><a href='/blog/categories/refactoring/'>refactoring (2)</a></li>
+<li class='category'><a href='/blog/categories/refactoring/'>refactoring (4)</a></li>
 <li class='category'><a href='/blog/categories/rspec/'>rspec (4)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (24)</a></li>
 <li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (1)</a></li>
 <li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
-<li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
-<li class='category'><a href='/blog/categories/sinatra/'>sinatra (1)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (2)</a></li>
 <li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
 <li class='category'><a href='/blog/categories/testing/'>testing (4)</a></li>
 
   </ul>
 </section>
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("adamcjonas", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/adamcjonas" class="twitter-follow-button" data-show-count="false">Follow @adamcjonas</a>
-  
-</section>
-
 
 
 
@@ -1502,16 +1503,6 @@ rake preview</p>
 
 
 
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 

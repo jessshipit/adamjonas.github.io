@@ -3,7 +3,7 @@ layout: post
 title: "Octopress"
 date: 2012-07-05 10:54
 comments: true
-categories: octopress ruby setup
+categories: octopress ruby
 ---
 
 Follow directions here...

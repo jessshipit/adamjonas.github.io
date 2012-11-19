@@ -6,12 +6,14 @@ comments: true
 categories: cheatsheet
 ---
 
-[SQLite3 cheat sheet](http://richardjh.org/blog/sqlite3-cheat-sheet/)
+- [SQLite3 cheat sheet](http://richardjh.org/blog/sqlite3-cheat-sheet/)
 
-[Git cheat sheet](http://rogerdudler.github.com/git-guide/)
-[Interactive Git cheatsheet](http://ndpsoftware.com/git-cheatsheet.html)
+- [Git cheat sheet](http://rogerdudler.github.com/git-guide/)
+- [Interactive Git cheatsheet](http://ndpsoftware.com/git-cheatsheet.html)
 
-[Markdown language cheat sheet](http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/)
-[Another markdown language cheat sheet](http://packetlife.net/media/library/16/Markdown.pdf)
+- [Markdown language cheat sheet](http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet/)
+- [Another markdown language cheat sheet](http://packetlife.net/media/library/16/Markdown.pdf)
 
-[Mongoid cheat sheet](http://blog.wiemann.name/mongoid-cheat-sheet)
+- [Mongoid cheat sheet](http://blog.wiemann.name/mongoid-cheat-sheet)
+
+- [jQuery online](http://oscarotero.com/jquery/)

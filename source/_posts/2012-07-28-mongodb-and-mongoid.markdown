@@ -3,7 +3,7 @@ layout: post
 title: "MongoDB &amp; Mongoid"
 date: 2012-07-28 12:17
 comments: true
-categories: databases mongoDB
+categories: mongoDB
 ---
 
 [Mongo Cheat Sheet](http://blog.wiemann.name/mongoid-cheat-sheet)

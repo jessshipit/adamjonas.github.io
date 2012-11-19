@@ -3,7 +3,7 @@ layout: post
 title: "SOLID principles"
 date: 2012-07-18 16:05
 comments: true
-categories: object-oriented
+categories: object_oriented
 ---
 
 ###[Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion](http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29)###

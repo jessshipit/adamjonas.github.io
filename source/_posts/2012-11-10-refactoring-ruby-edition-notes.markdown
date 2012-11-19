@@ -3,7 +3,7 @@ layout: post
 title: "Refactoring Ruby Edition Notes"
 date: 2012-11-10 11:22
 comments: true
-categories: refactoring
+categories: refactoring book_notes
 ---
 
 ###Replacing the Conditional Logic on Price Code with Polymorphism [p.32]
@@ -69,7 +69,7 @@ end
 ###Lazy Initialized Attribute
   - Initialize an attribute on access instead of at construction time.
 
-```ruby
+```ruby Lazy Initialized Attribute
 class Employee
   def initialize
     @emails = []

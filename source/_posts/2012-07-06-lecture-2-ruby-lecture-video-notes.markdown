@@ -3,7 +3,7 @@ layout: post
 title: "Lecture 2 Ruby Lecture Video Notes"
 date: 2012-06-10 10:37
 comments: true
-categories: ruby notes lecture
+categories: ruby lecture_notes
 ---
 
 Programmer _Why

@@ -3,7 +3,7 @@ layout: post
 title: "Lecture 7 -Rails"
 date: 2012-07-29 14:20
 comments: true
-categories: rails lecture
+categories: rails lecture_notes
 ---
 
 ``` ruby Song class

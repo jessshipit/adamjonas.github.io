@@ -3,7 +3,7 @@ layout: post
 title: "Loading up a new Macbook Air"
 date: 2012-06-19 10:45
 comments: true
-categories: mac setup
+categories: mac
 ---
 
 Avi helped me get my new Macbook Air rolling this afternoon...

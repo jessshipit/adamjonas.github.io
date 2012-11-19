@@ -3,7 +3,7 @@ layout: post
 title: "Twitter Bootstrap"
 date: 2012-07-19 12:29
 comments: true
-categories: bootstrap rails
+categories: bootstrap
 ---
 
 Rails Cast for [twitter bootstrap:](http://railscasts.com/episodes/328-twitter-bootstrap-basics)

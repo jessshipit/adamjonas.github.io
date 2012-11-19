@@ -3,7 +3,7 @@ layout: post
 title: "Git initialization for a new repo"
 date: 2012-07-21 18:17
 comments: true
-categories: git TODO
+categories: git
 ---
 
 I know this is basic. I keep getting the steps wrong though. So I'm putting it here...

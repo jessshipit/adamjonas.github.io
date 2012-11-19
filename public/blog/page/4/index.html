@@ -9,7 +9,25 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="??browser testing? this falls under acceptance tests? Difference between mock, stub, and fixture? They are all a mechanisms to decouple data from the &hellip;">
+  <meta name="description" content="MiniTest Spec Matchers1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+obj.must_be(operator, expected) - for example, 10.must_be :&lt; , 11
+obj. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +104,104 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/minitest-spec/">MiniTest::Spec</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-24T13:30:00-04:00" pubdate data-updated="true">Oct 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>MiniTest Spec Matchers</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span> <span class="o">-</span> <span class="k">for</span> <span class="n">example</span><span class="p">,</span> <span class="mi">10</span><span class="o">.</span><span class="n">must_be</span> <span class="p">:</span><span class="o">&lt;</span> <span class="p">,</span> <span class="mi">11</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_close_to</span> <span class="o">-</span> <span class="n">the</span> <span class="n">equivalent</span> <span class="n">of</span> <span class="n">assert_in_delta</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_empty</span> <span class="o">-</span> <span class="no">Fails</span> <span class="k">unless</span> <span class="n">obj</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_instance_of</span><span class="p">(</span><span class="n">klass</span><span class="p">)</span> <span class="o">-</span> <span class="no">Fails</span> <span class="k">unless</span> <span class="n">obj</span><span class="o">.</span><span class="n">class</span> <span class="o">==</span> <span class="n">klass</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_kind_of</span><span class="p">(</span><span class="n">klass</span><span class="p">)</span> <span class="o">-</span> <span class="no">Fails</span> <span class="k">unless</span> <span class="n">obj</span> <span class="n">is</span> <span class="n">of</span> <span class="k">class</span> <span class="n">klass</span> <span class="ow">or</span> <span class="n">klass</span> <span class="n">is</span> <span class="n">one</span> <span class="n">of</span> <span class="n">its</span> <span class="n">superclasses</span><span class="o">.</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_nil</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_same_as</span> <span class="o">-</span> <span class="n">tests</span> <span class="k">for</span> <span class="kp">true</span> <span class="n">object</span> <span class="n">equality</span>
+</span><span class='line'><span class="nb">lambda</span> <span class="p">{}</span><span class="o">.</span><span class="n">must_be_silent</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_within_delta</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_within_epsilon</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_equal</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">-</span> <span class="no">Does</span> <span class="n">a</span> <span class="o">==</span><span class="sr">/eql? comparison between two objects.</span>
+</span><span class='line'><span class="sr">obj.must_include(other)</span>
+</span><span class='line'><span class="sr">obj.must_match(regex) - A regular expression match, e.g. &quot;hello&quot;.must_match /</span><span class="n">w</span><span class="o">+/</span>
+</span><span class='line'><span class="nb">lambda</span> <span class="p">{}</span><span class="o">.</span><span class="n">must_output</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="o">[</span><span class="n">stderr</span><span class="o">.</span><span class="n">.</span><span class="o">]</span><span class="p">)</span> <span class="o">-</span> <span class="no">The</span> <span class="n">block</span> <span class="n">should</span> <span class="n">have</span> <span class="n">certain</span> <span class="n">output</span> <span class="n">on</span> <span class="n">stdout</span> <span class="ow">or</span> <span class="n">stderr</span><span class="o">.</span> <span class="no">Set</span> <span class="n">stdout</span> <span class="n">to</span> <span class="kp">nil</span> <span class="n">just</span> <span class="n">to</span> <span class="n">check</span> <span class="n">stderr</span><span class="o">.</span>
+</span><span class='line'><span class="nb">lambda</span> <span class="p">{}</span><span class="o">.</span><span class="n">must_raise</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_respond_to</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_throw</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Negative Matchers too</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">wont_be</span>
+</span><span class='line'><span class="n">wont_be_empty</span>
+</span><span class='line'><span class="n">wont_be_instance_of</span>
+</span><span class='line'><span class="n">wont_be_kind_of</span>
+</span><span class='line'><span class="n">wont_be_nil</span>
+</span><span class='line'><span class="n">wont_be_same_as</span>
+</span><span class='line'><span class="n">wont_equal</span>
+</span><span class='line'><span class="n">wont_include</span>
+</span><span class='line'><span class="n">wont_match</span>
+</span><span class='line'><span class="n">wont_respond_to</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -622,14 +738,21 @@ Since my Dad first popped in that AOL floppy disk around 1995, I have been a con
   </header>
 
 
-  <div class="entry-content"><h3>POTD</h3>
+  <div class="entry-content"><h3>POTD DHH</h3>
 
-<p>DHH- you know who he is.</p>
+<ul>
+<li>DHH- you know who he is.</li>
+</ul>
 
-<p>Stubs:
-A method stub is an implementation that returns a pre-determined value. Method stubs can be declared on test doubles or real objects using the same syntax. rspec-mocks supports 3 forms for declaring method stubs:</p>
 
-<p><a href="http://www.martinfowler.com/articles/mocksArentStubs.html">Mocks aren&#8217;t stubs</a></p>
+<h3>Stubs:</h3>
+
+<blockquote><p>A method stub is an implementation that returns a pre-determined value. Method stubs can be declared on test doubles or real objects using the same syntax. rspec-mocks supports 3 forms for declaring method stubs:</p></blockquote>
+
+<ul>
+<li><a href="http://www.martinfowler.com/articles/mocksArentStubs.html">Mocks aren&#8217;t stubs</a></li>
+</ul>
+
 
 <figure class='code'><figcaption><span>RSpec Hooks</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -680,7 +803,10 @@ A method stub is an implementation that returns a pre-determined value. Method s
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><a href="https://www.relishapp.com/rspec/rspec-core/v/2-2/docs/hooks/before-and-after-hooks">before and after hooks</a></p>
+<ul>
+<li><a href="https://www.relishapp.com/rspec/rspec-core/v/2-2/docs/hooks/before-and-after-hooks">before and after hooks</a></li>
+</ul>
+
 
 <h3>Git Error</h3>
 
@@ -723,17 +849,22 @@ A method stub is an implementation that returns a pre-determined value. Method s
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><a href="http://stackoverflow.com/questions/11407161/cant-pull-without-saying-which-branch-to-rebase-against">see</a></p>
+<ul>
+<li><p><a href="http://stackoverflow.com/questions/11407161/cant-pull-without-saying-which-branch-to-rebase-against">see here</a></p></li>
+<li><p>hypertext was coined by<a href="http://en.wikipedia.org/wiki/Ted_Nelson">Ted Nelson</a></p></li>
+</ul>
 
-<p><a href="http://en.wikipedia.org/wiki/Ted_Nelson">hypertext was coined by</a></p>
 
 <h2>Rails Lecture</h2>
 
-<p>as a client you identify your attributes to a webserver in your headers
-in theory, you don&#8217;t need anything in the header.</p>
+<ul>
+<li><p>as a client you identify your attributes to a webserver in your headers.</p>
 
 <ul>
-<li>a request must have a url and a method</li>
+<li>In theory, you don&#8217;t need anything in the header.</li>
+</ul>
+</li>
+<li><p>a request must have a url and a method</p></li>
 <li>a response has it&#8217;s own headers
 
 <ul>
@@ -753,17 +884,25 @@ in theory, you don&#8217;t need anything in the header.</p>
 <li>put: update</li>
 <li>delete: delete this resource</li>
 <li>head: asks for response like a GET but without the body</li>
-<li>trace, options, connect, patch: we don&#8217;t care about</li>
+<li><p>trace, options, connect, patch: we don&#8217;t care about</p></li>
+<li><p><strong>HTTP is all about applying verbs to nouns.</strong></p></li>
 </ul>
 
 
 <h3>Convention over configuration</h3>
 
-<p><strong>Naming Scheme</strong>
-table: songs
-model: song.rb
-controller: songs_controller.rb
-views: songs/</p>
+<ul>
+<li><strong>Naming Scheme:</strong>
+
+<ul>
+<li>table: songs</li>
+<li>model: song.rb</li>
+<li>controller: songs_controller.rb</li>
+<li>views: songs/</li>
+</ul>
+</li>
+</ul>
+
 </div>
   
   
@@ -1177,134 +1316,6 @@ extend - is for the class methods</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/heroku-deployment/">Heroku Deployment</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-18T11:26:00-04:00" pubdate data-updated="true">Oct 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># Initialize the repository
-</span><span class='line'>$ git init
-</span><span class='line'>
-</span><span class='line'># Add new files to the repo
-</span><span class='line'>$ git add .
-</span><span class='line'>
-</span><span class='line'># See the status
-</span><span class='line'>$ git status
-</span><span class='line'>
-</span><span class='line'># Commit the changes with the commit message "testing"
-</span><span class='line'>$ git commit -m "testing"
-</span><span class='line'>
-</span><span class='line'># Create a new Heroku app
-</span><span class='line'>$ heroku create
-</span><span class='line'>
-</span><span class='line'># Rename the Heroku app
-</span><span class='line'># Example: $ heroku rename tom-messages
-</span><span class='line'>$ heroku rename &lt;name of url&gt;
-</span><span class='line'>
-</span><span class='line'># Add a (free) PostgreSQL database to your app
-</span><span class='line'>$ heroku addons:add heroku-postgresql
-</span><span class='line'>
-</span><span class='line'># See the details of your new database
-</span><span class='line'>$ heroku pg:info
-</span><span class='line'>
-</span><span class='line'># Promote your new database to the "DATABASE_URL" global constant
-</span><span class='line'># Example: $ heroku pg:promote HEROKU_POSTGRESQL_BRONZE_URL
-</span><span class='line'>$ heroku pg:promote &lt;YOUR_HEROKU_URL&gt;
-</span><span class='line'>
-</span><span class='line'># Push your repo to Heroku, start your app
-</span><span class='line'>$ git push heroku master
-</span><span class='line'>
-</span><span class='line'># Open the app in your browser
-</span><span class='line'>$ heroku open
-</span><span class='line'>
-</span><span class='line'># See your app's log, keep the stream open by using "--tail"
-</span><span class='line'>$ heroku logs --tail
-</span><span class='line'>
-</span><span class='line'># Set up the database for first use, running "DataMapper.auto_migrate!"
-</span><span class='line'># Example: $ http://ajonas.herokuapp.com/reset
-</span><span class='line'>$ http://&lt;project-name&gt;.herokuapp.com/reset
-</span><span class='line'>
-</span><span class='line'># See your messages!
-</span><span class='line'># Example: $ http://ajonas.herokuapp.com
-</span><span class='line'>$ http://&lt;project-name&gt;-messages.herokuapp.com</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1322,6 +1333,14 @@ extend - is for the class methods</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/dynamic-method-definition/">Dynamic Method Definition</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/fis-day30/">FIS Day30</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/fis-day29/">FIS Day29</a>
       </li>
     
@@ -1333,29 +1352,22 @@ extend - is for the class methods</p>
         <a href="/blog/fis-day27/">FIS Day27</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/fis-day26/">FIS Day26</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/fis-day25/">FIS Day25</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/fis/'>FIS (32)</a></li>
+    <li class='category'><a href='/blog/categories/fis/'>FIS (33)</a></li>
 <li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
 <li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
-<li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
+<li class='category'><a href='/blog/categories/todo/'>TODO (4)</a></li>
 <li class='category'><a href='/blog/categories/agile/'>agile (1)</a></li>
 <li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
-<li class='category'><a href='/blog/categories/ajax/'>ajax (1)</a></li>
+<li class='category'><a href='/blog/categories/ajax/'>ajax (3)</a></li>
 <li class='category'><a href='/blog/categories/asset-pipeline/'>asset_pipeline (1)</a></li>
 <li class='category'><a href='/blog/categories/associations/'>associations (3)</a></li>
 <li class='category'><a href='/blog/categories/authentication/'>authentication (2)</a></li>
+<li class='category'><a href='/blog/categories/book-notes/'>book_notes (3)</a></li>
 <li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
 <li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
 <li class='category'><a href='/blog/categories/cheatsheet/'>cheatsheet (1)</a></li>
@@ -1363,28 +1375,30 @@ extend - is for the class methods</p>
 <li class='category'><a href='/blog/categories/code/'>code (1)</a></li>
 <li class='category'><a href='/blog/categories/codeschool/'>codeschool (2)</a></li>
 <li class='category'><a href='/blog/categories/css/'>css (1)</a></li>
-<li class='category'><a href='/blog/categories/databases/'>databases (1)</a></li>
 <li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
 <li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
-<li class='category'><a href='/blog/categories/forms/'>forms (2)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (4)</a></li>
 <li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
-<li class='category'><a href='/blog/categories/git/'>git (6)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (7)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
-<li class='category'><a href='/blog/categories/heroku/'>heroku (3)</a></li>
+<li class='category'><a href='/blog/categories/heroku/'>heroku (4)</a></li>
 <li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
 <li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
 <li class='category'><a href='/blog/categories/javascript/'>javascript (2)</a></li>
-<li class='category'><a href='/blog/categories/jquery/'>jquery (3)</a></li>
+<li class='category'><a href='/blog/categories/jquery/'>jquery (7)</a></li>
 <li class='category'><a href='/blog/categories/kentbeck/'>kentbeck (1)</a></li>
 <li class='category'><a href='/blog/categories/lambda/'>lambda (1)</a></li>
-<li class='category'><a href='/blog/categories/lecture/'>lecture (12)</a></li>
+<li class='category'><a href='/blog/categories/lecture-notes/'>lecture_notes (13)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
 <li class='category'><a href='/blog/categories/minitest/'>minitest (1)</a></li>
 <li class='category'><a href='/blog/categories/modules/'>modules (1)</a></li>
 <li class='category'><a href='/blog/categories/mongodb/'>mongoDB (1)</a></li>
+<li class='category'><a href='/blog/categories/mongoid/'>mongoid (1)</a></li>
 <li class='category'><a href='/blog/categories/namespacing/'>namespacing (1)</a></li>
-<li class='category'><a href='/blog/categories/notes/'>notes (12)</a></li>
-<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (2)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (1)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (1)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object_oriented (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/omniauth/'>omniauth (1)</a></li>
 <li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
@@ -1394,43 +1408,26 @@ extend - is for the class methods</p>
 <li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
 <li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
-<li class='category'><a href='/blog/categories/rails/'>rails (18)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (17)</a></li>
 <li class='category'><a href='/blog/categories/rails-forms/'>rails_forms (3)</a></li>
 <li class='category'><a href='/blog/categories/rails-routes/'>rails_routes (1)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
-<li class='category'><a href='/blog/categories/reading/'>reading (2)</a></li>
+<li class='category'><a href='/blog/categories/reading/'>reading (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
-<li class='category'><a href='/blog/categories/refactoring/'>refactoring (2)</a></li>
+<li class='category'><a href='/blog/categories/refactoring/'>refactoring (4)</a></li>
 <li class='category'><a href='/blog/categories/rspec/'>rspec (4)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (24)</a></li>
 <li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (1)</a></li>
 <li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
-<li class='category'><a href='/blog/categories/setup/'>setup (2)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
-<li class='category'><a href='/blog/categories/sinatra/'>sinatra (1)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (2)</a></li>
 <li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
 <li class='category'><a href='/blog/categories/testing/'>testing (4)</a></li>
 
   </ul>
 </section>
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("adamcjonas", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/adamcjonas" class="twitter-follow-button" data-show-count="false">Follow @adamcjonas</a>
-  
-</section>
-
 
 
 
@@ -1466,16 +1463,6 @@ extend - is for the class methods</p>
 
 
 
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 

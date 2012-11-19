@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ajax | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/ajax/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2012-11-16T11:49:21-05:00</updated>
+  <updated>2012-11-19T09:11:40-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -337,6 +337,129 @@ $(function)(){
 <h3>Odemeter</h3>
 
 <p><a href="http://uvumitools.com/odometer.html">http://uvumitools.com/odometer.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day12]]></title>
+    <link href="http://www.adamjonas.com/blog/haw-day12/"/>
+    <updated>2012-08-16T10:19:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/haw-day12</id>
+    <content type="html"><![CDATA[<ul>
+<li>js buttons on tag show pages</li>
+<li>fix checkboxes/mass assigning tags</li>
+</ul>
+
+
+<h3>respond_to</h3>
+
+<p>This is basically a glorified case statement...</p>
+
+<p>if no action is specified the default is the action of the namespace
+```ruby
+def tag</p>
+
+<pre><code>#some code
+respond_to do |f|
+  f.html {redirect_to :back}
+  f.js
+end
+</code></pre>
+
+<p>  end
+```
+So it looks for tag.js as the default...</p>
+
+<ul>
+<li><p>BUG:</p>
+
+<ul>
+<li>tell firefox not to autocomplete</li>
+</ul>
+</li>
+<li><p>checkboxes</p></li>
+<li>get all the values</li>
+<li><p>submit to server</p></li>
+<li><p>loop through the elements</p></li>
+<li>gather all the values (which are the ids)</li>
+<li>find errors by ids</li>
+<li>push in tag name signal</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day5]]></title>
+    <link href="http://www.adamjonas.com/blog/haw-day5/"/>
+    <updated>2012-08-06T10:23:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/haw-day5</id>
+    <content type="html"><![CDATA[<p>GOALS:
+Refactor code, figure out the jquery ajax checkboxes.
+ship v1 by the end of the day</p>
+
+<p><a href="http://khelll.com/blog/ruby/ruby-dynamic-method-calling/">send method</a>
+<a href="http://philcrissman.com/2009/06/26/rubys-objectsend-can-call-private-and-protected-methods/">send method to call private method</a></p>
+
+<p>```ruby Code that finally worked...
+def self.import_from_airbrake</p>
+
+<pre><code>client = AirbrakeAPI::Client.new
+
+errors = client.errors
+actions = {:action =&gt; "action", :controller =&gt; "controller", :created_at =&gt; "airbrake_created_at", 
+           :error_class =&gt; "error_class", :error_message =&gt; "error_message", :file =&gt; "file",
+           :id =&gt; "airbrake_id", :line_number =&gt; "line_number", 
+           :most_recent_notice_at =&gt; "airbrake_most_recent_notice_at", 
+           :notice_hash =&gt; "notice_hash", :notices_count =&gt; "notices_count", 
+           :project_id =&gt; "project_id", :rails_env =&gt; "rails_env", :resolved =&gt; "airbrake_resolved",
+           :search_index_me =&gt; "search_index_me", :updated_at =&gt; "airbrake_updated_at"}
+
+ errors.collect do |error| #each error is a hash
+  airbrake_error = AirbrakeError.new #this needs to be outside the following loop or it will create a new object during every loop...
+  actions.each do |airbrake_action, our_action| #aa is a sym key, oa is a string value
+   airbrake_error.send("#{our_action}=".to_sym, error[airbrake_action])# SEND method here
+
+  airbrake_error.attribute_updater #see below
+  end
+  airbrake_error.save
+end
+</code></pre>
+
+<p>  end
+<code>
+</code>ruby Other use of send...
+def attribute_updater</p>
+
+<pre><code>@airbrake_errors = AirbrakeError.all
+
+updater_actions = ["notices_count", "action", "controller", "error_class", "file", "line_number",
+                  "airbrake_most_recent_notice_at", "notice_hash", "airbrake_resolved", 
+                  "airbrake_updated_at"]
+
+if @airbrake_errors.where(airbrake_id: self.airbrake_id).present?
+  original_error = @airbrake_errors.find_by(airbrake_id: self.airbrake_id)
+
+    updater_actions.each do |action|
+      original_error.send("#{action}=".to_sym, self["#{action}".to_sym])
+      original_error.save
+    end
+else     
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>TODO:
+inject method</p>
+
+<p>Per Dave:
+-one form that is ignore, one that signal, one that is the tags
+-remote true- a flag that going to submit the form via ajax</p>
+
+<p><a href="http://guides.rubyonrails.org/form_helpers.html">Remote True:</a>
+Unlike other forms making an asynchronous file upload form is not as simple as providing form_for with :remote => true. With an Ajax form the serialization is done by JavaScript running inside the browser and since JavaScript cannot read files from your hard drive the file cannot be uploaded. The most common workaround is to use an invisible iframe that serves as the target for the form submission.</p>
 ]]></content>
   </entry>
   

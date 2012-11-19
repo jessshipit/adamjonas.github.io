@@ -3,15 +3,13 @@ layout: post
 title: "Lecture 6- Rails"
 date: 2012-07-23 19:08
 comments: true
-categories: rails lecture
+categories: rails lecture_notes
 ---
 
 if it has a belongs_to it has a foreign key...
 e.g. songs belong to an artist, so it must have an artist_id
 
-
-
-``` ruby
+```ruby
 #the return value of this is all the songs 
 aretha.song << Song.new(:name => "Natural Woman")
 #this is just one song
@@ -19,7 +17,7 @@ respect = aretha.songs.build(:name => "Respect")
 ```
 
 7:27
-``` ruby 
+```ruby 
 favorites.mixtape_songs.build :song => Song.find_by_name("Thriller")
 #these accomplish the same thing, but above is more expressive
 favorites.songs << Song.first
@@ -54,7 +52,7 @@ we have added behavior to the song_genre model because this is the only place th
 
 *LookUp* Ruby try method
 
-``` ruby Delegate
+```ruby Delegate
 delegate :name, :to => :genre, :prefix => true, :allow_nils => true
 #the above macro is the same as the method below method.
 def genre_name
