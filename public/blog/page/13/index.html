@@ -9,7 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="4.1.2.2 :class_name If the name of the other model cannot be derived from the association name, you can use the :class_name option to supply the &hellip;">
+  <meta name="description" content="Error:
+&#8220;SystemStackError: stack level too deep&#8221;
+This means that you have entered an infinite loop. e.g. you have called something on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,7 +95,7 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/association-station/">Association Station</a></h1>
+        <h1 class="entry-title"><a href="/blog/haw-day4/">HAW-day4</a></h1>
       
     
     
@@ -110,336 +112,23 @@
   
 
 
-<time datetime="2012-07-20T17:30:00-04:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+<time datetime="2012-08-03T16:17:00-04:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>4.1.2.2 :class_name</p>
+  <div class="entry-content"><p>Error:
+&#8220;SystemStackError: stack level too deep&#8221;
+This means that you have entered an infinite loop. e.g. you have called something on itself.</p>
 
-<blockquote><p>If the name of the other model cannot be derived from the association name, you can use the :class_name option to supply the model name. For example, if an order belongs to a customer, but the actual name of the model containing customers is Patron, you’d set things up this way:</p></blockquote>
+<p>Need to understand inject&#8230;
+http://blog.jayfields.com/2008/03/ruby-inject.html</p>
 
-<p><a href="http://guides.rubyonrails.org/association_basics.html">From the assoication guide</a></p>
+<p>struggling with this&#8230;</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:customer</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Patron&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>One-to-many relationships</h3>
-
-<blockquote><p>The most common relationship used when creating relational databases.  A row in a table in a database can be associated with one or (likely) more rows in another table.  An example of a one-to-many relationship is a single order has many items on that order.  And since relationships work both ways it is not uncommon to hear reference to many-to-one-relationships as well.</p></blockquote>
-
-<ul>
-<li>most common kind
-<a href="http://www.maakal.com/maakalDB/ERD_Examples2.htm">e.g.</a></li>
-</ul>
-
-
-<h3>One-to-one relationship</h3>
-
-<blockquote><p>A row in a table is associated to one and only one row in another table.  An example of a one-to-one relationship is a person can have one social security number and a social security number can only be assigned to one person.</p></blockquote>
-
-<ul>
-<li>In most cases there is no need for a one-to-one relationship as the contents of the two tables can be combined into one table.</li>
-</ul>
-
-
-<p><a href="http://www.maakal.com/maakalDB/ERD_Examples.htm">e.g.</a></p>
-
-<h3>Many-to-many relationships</h3>
-
-<blockquote><p>When one or more rows in a table are associated with one or more rows in another table.  An example of a many-to-many relationship is a table of customers can purchase many products and many customers can purchase a product.</p></blockquote>
-
-<p><a href="http://help.filemaker.com/app/answers/detail/a_id/9922/~/understanding-and-creating-many-to-many-relationships-in-filemaker-pro">Source</a></p>
-
-<h3>Self joins</h3>
-
-<p>In designing a data model, you will sometimes find a model that should have a relation to itself. For example, you may want to store all employees in a single database model, but be able to trace relationships such as between manager and subordinates. This situation can be modeled with self-joining associations:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Employee</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:subordinates</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">:foreign_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;manager_id&quot;</span>
-</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:manager</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>With this setup, you can retrieve @employee.subordinates and @employee.manager</p>
-
-<p>There is another rails cast on <a href="http://railscasts.com/episodes/163-self-referential-association">self-referential-association</a>. Ryan Bates is amazing.</p>
-
-<ul>
-<li>Reading:
-<a href="http://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420">patterns of enterprise application architecture</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/twitter-bootstrap/">Twitter Bootstrap</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-19T12:29:00-04:00" pubdate data-updated="true">Jul 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Rails Cast for <a href="http://railscasts.com/episodes/328-twitter-bootstrap-basics">twitter bootstrap:</a></p>
-
-<p><strong>Note</strong>
-During install your can specify whether you want a <a href="https://github.com/seyhunak/twitter-bootstrap-rails#installing-to-app-using-generators">fixed or fluid layout</a></p>
-
-<p>LESS is a CSS precessor
-:  to get LESS working with rails you need the help of some gems</p>
-
-<p>I can download the source <a href="https://github.com/seyhunak/twitter-bootstrap-rails">here</a>. This is the preferred code not, <a href="https://github.com/twitter/bootstrap/">this one</a>.</p>
-
-<p>Change Gemfile</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'therubyracer', :platform =&gt; :ruby
-</span><span class='line'>gem 'twitter-bootstrap-rails'
-</span><span class='line'>gem 'chosen-rails'</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Install Twitter Bootstrap</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle
-</span><span class='line'>rails g bootstrap:install
-</span><span class='line'>rails g bootstrap:layout application fixed</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>A file that was generated is: app/assets/stylesheets/bootstrap_and_override.css.less
-This is where I would do the bulk of the customization
- - including if padding is needed between the body and the nav bar&#8230;</p>
-
-<figure class='code'><figcaption><span>For some padding at the top</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@import</span> <span class="s2">&quot;twitter/bootstrap/bootstrap&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="n">body</span> <span class="p">{</span> <span class="n">padding</span><span class="o">-</span><span class="n">top</span><span class="p">:</span> <span class="mi">60</span><span class="n">px</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="vi">@import</span> <span class="s2">&quot;twitter/bootstrap/responsive&quot;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Layout fixed makes it 940px and fluid makes it full screen. Both are responsive though.</p>
-
-<h3>When I generate new resources</h3>
-
-<figure class='code'><figcaption><span>For some padding at the top</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">scaffold</span> <span class="no">Post</span> <span class="n">title</span><span class="ss">:string</span> <span class="n">description</span><span class="ss">:text</span>
-</span><span class='line'><span class="n">rake</span> <span class="n">db</span><span class="ss">:migrate</span>
-</span><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">bootstrap</span><span class="ss">:themed</span> <span class="no">Posts</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Without the 3rd line it looks terrible so remember to run it!</p>
-
-<p>Further reading is <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">here.</a></p>
-
-<p>When I&#8217;m ready for it, Bates does a follow up rails cast on more <a href="http://railscasts.com/episodes/329-more-on-twitter-bootstrap">advanced twitter bootstrap</a>.</p>
-
-<p>NOTE: We went over twitter bootstrap in lecture 6 of ROR spring</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ruby-lecture-4/">Ruby Lecture 4</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T19:08:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Programmer of the day:
-Alan Kay</p>
-
-<h3>Object Orientation</h3>
-
-<p>once you have a user class, you can send it a message
-once you have a class you can teach the class how to do things like authenticate a user</p>
-
-<h3>Review</h3>
-
-<p>iteration: going through many things one at a time
-we refer to that character one at a time, as the iterator or yield</p>
-
-<p>.inspect allows you to look at an object that</p>
-
-<p>common to have nested iteration&#8211; iterate through them, by looping through enumerables within a loop</p>
-
-<p>Iterating a hash you get yielded two variables at once, the key first and the value second</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">alphabet</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">alphabet</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is the </span><span class="si">#{</span><span class="n">value</span><span class="si">}</span><span class="s2"> letter&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>.compact will get rid of any nil values
-.uniq will get rid of duplicates</p>
-
-<p>! methods will change the data set forever&#8230;</p>
-
-<p>.flatten will remove nesting from an array&#8211; will flatten all elements in array
-.reverse elements in the array</p>
-
-<p>side note: python believes there is one way to do something. Ruby believes there should be many ways to do it so that you can be more expressive.</p>
-
-<figure class='code'><figcaption><span>ordinalize is a integer method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">ordinalize</span>     <span class="c1"># =&gt; &quot;1st&quot;</span>
-</span><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">ordinalize</span>     <span class="c1"># =&gt; &quot;2nd&quot;</span>
-</span><span class='line'><span class="mi">1002</span><span class="o">.</span><span class="n">ordinalize</span>  <span class="c1"># =&gt; &quot;1002nd&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>multiple_of?(number)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#Check whether the integer is evenly divisible by the argument.</span>
-</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">#=&gt; true</span>
-</span><span class='line'><span class="mi">6</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1">#=&gt; false</span>
-</span><span class='line'><span class="mi">10</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Lab solution (8PM)</p>
-
-<p>hash structure with root or without root TODO</p>
-
-<p>.detect, .select and .reject methods are all useful array elements</p>
-
-<p>class CONSTANTS are really good for storing data about the class</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/rails-helpers/">Rails Helpers</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:58:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>&#8216;Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers are mainly for use in that context. Helpers are the only methods you can access, other than instance methods for an instance you have access to.&#8217; <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">except from</a></p>
-
-<p><a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">why this is important?</a>
-and <a href="/blog/2012/07/18/solid-principles/">my own write up of Dependency Inversion Principle</a></p>
-
-<p>Declare a controller method as a helper. For example, the following makes the current_user controller method available to the view. You</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Trying to make this work</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -450,440 +139,41 @@ and <a href="/blog/2012/07/18/solid-principles/">my own write up of Dependency I
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span><span class="p">,</span> <span class="ss">:logged_in?</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span><span class='line'>    <span class="n">client</span> <span class="o">=</span> <span class="no">AirbrakeAPI</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">errors</span>
+</span><span class='line'>    <span class="n">actions</span> <span class="o">=</span> <span class="o">[</span><span class="ss">:action</span> <span class="o">=&gt;</span> <span class="n">action</span><span class="p">,</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="n">controller</span><span class="p">,</span> <span class="ss">:created_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_created_at</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:error_class</span> <span class="o">=&gt;</span> <span class="n">error_class</span><span class="p">,</span> <span class="ss">:error_message</span> <span class="o">=&gt;</span> <span class="n">error_message</span><span class="p">,</span> <span class="ss">:file</span> <span class="o">=&gt;</span> <span class="n">file</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">airbrake_id</span><span class="p">,</span> <span class="ss">:line_number</span> <span class="o">=&gt;</span> <span class="n">line_number</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:most_recent_notice_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_most_recent_notice_at</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:notice_hash</span> <span class="o">=&gt;</span> <span class="n">notice_hash</span><span class="p">,</span> <span class="ss">:notices_count</span> <span class="o">=&gt;</span> <span class="n">notices_count</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:project_id</span> <span class="o">=&gt;</span> <span class="n">project_id</span><span class="p">,</span> <span class="ss">:rails_env</span> <span class="o">=&gt;</span> <span class="n">rails_env</span><span class="p">,</span> <span class="ss">:resolved</span> <span class="o">=&gt;</span> <span class="n">airbrake_resolved</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:search_index_me</span> <span class="o">=&gt;</span> <span class="n">search_index_me</span><span class="p">,</span> <span class="ss">:updated_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_updated_at</span><span class="o">]</span>
+</span><span class='line'>    <span class="n">actions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">airbrake_action</span><span class="p">,</span> <span class="n">our_action</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">errors</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">airbrake_error</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">our_action</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="n">airbrake_action</span><span class="o">]</span>
+</span><span class='line'>        <span class="n">airbrake_error</span><span class="o">.</span><span class="n">attribute_updater</span>
+</span><span class='line'>        <span class="n">airbrake_error</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="k">def</span> <span class="nf">logged_in?</span>
-</span><span class='line'>     <span class="n">current_user</span> <span class="o">!=</span> <span class="kp">nil</span>
-</span><span class='line'>   <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In a view:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">logged_in?</span> <span class="o">-</span><span class="sx">%&gt;Welcome, &lt;%= current_user.name %&gt;</span><span class="o">&lt;</span><span class="sx">% end </span><span class="o">-%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
 
-
-<p>Parameters
-method[, method] - A name or names of a method on the controller to be made available on the view.</p>
-
-<p>A solid beginner&#8217;s break-down (it&#8217;s a little old though) is <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">here</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/the-clues-errors-provide/">The Clues Errors Provide</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:35:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>     <span class="c1">#blah blah blah</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#ERROR</span>
-</span><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`authenticate&#39; for nil:NilClass</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This means that the method was called on a receiver that is nil. Meaning that <strong>the receiver not the right object or it&#8217;s nil</strong></p>
-
-<p><strong>Undefined Method:</strong></p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">magic</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="c1">#blah blah blah</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#The Error</span>
-</span><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`magic&#39; for #&lt;User:0x007fa35e3e2fe8&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>The method magic doesn&#8217;t exist for that object.</strong></p>
-
-<p><strong>Expected an object but got an attribute in the form of a string, array, etc.</strong></p>
-
-<figure class='code'><figcaption><span>AssociationTypeMismatch</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">AssociationTypeMismatch</span><span class="p">:</span> <span class="no">City</span><span class="p">(</span><span class="c1">#17815740) expected, got String(#1138750)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>This means that you have entered an infinite loop. e.g. you have called something on itself.</strong></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SystemStackError</span><span class="p">:</span> <span class="n">stack</span> <span class="n">level</span> <span class="n">too</span> <span class="n">deep</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>DB Errors</h3>
-
-<p>When the browser can&#8217;t locate a table that you know exists&#8211; <strong><em>make sure you migrate the DB!!</em></strong></p>
-
-<h3>Can&#8217;t save something to the DB</h3>
-
-<ul>
-<li>Open up console.</li>
-<li>When you can&#8217;t save it, send it &#8216;.save!&#8217; and it will throw off the errors.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/solid-principles/">SOLID Principles</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:05:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3><a href="http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion</a></h3>
-
-<p>Dependency inversion principle</p>
-
-<blockquote><p>one should “Depend upon Abstractions. Do not depend upon concretions.&#8221; (EDIT: Concretions, I can only assume mean the opposite of abstraction&#8211; as far as I can tell things isn&#8217;t a CS concept.)</p></blockquote>
-
-<p>This means that in the controller, it is better to define</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>  <span class="vi">@current_user</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>than using the instance variable because right now the instance var is concrete but you might want to add logic and redefine it:</p>
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">sessions</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/has-secured-password/">Has_secured_password</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T15:23:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://railscasts.com/episodes/270-authentication-in-rails-3-1">Rails Cast on Authentication Rails 3.1</a>
-also want to check out <a href="http://railscasts.com/episodes/250-authentication-from-scratch">Rails cast on Authentication from Scratch</a></p>
-
-<p>The user model rails allows you to call</p>
-
-<figure class='code'><figcaption><span>has_secure_password</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:password_confirmation</span>
-</span><span class='line'>  <span class="n">has_secure_password</span>
-</span><span class='line'>  <span class="n">validates_presence_of</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:on</span> <span class="o">=&gt;</span> <span class="ss">:create</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You will likely want to add validation for the email address as well, but that&#8217;s outside the scope of this&#8230;</p>
-
-<p>The has_secure_password setting automatically adds validation for mismatched password between the password and password confirmation fields.</p>
-
-<h3>Helper Methods: specifically :current_user</h3>
-
-<p>See the <a href="/blog/2012/07/18/rails-helpers/">post on this</a>.</p>
-
-<h3>SSL</h3>
-
-<p>can also add options for ssl with the simple line in the ApplicationController:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">protect_from_forgery</span>
-</span><span class='line'><span class="n">force_ssl</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will only be reflected in production and test environments NOT development&#8230;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ruby-lecture-3-july-16/">Ruby Lecture 3</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-17T22:50:00-04:00" pubdate data-updated="true">Jul 17<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Programmer of the day:
-Kent Beck</p>
-
-<p>FizzBuzz
-solutions on ?ruberque?</p>
-
-<p>TDD: able to write the code that you wish you had</p>
-
-<h3>Array Review:</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">empty</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;filled&quot;</span> <span class="c1">#=&gt; can assign slots one at a time</span>
-</span><span class='line'><span class="n">easy_as</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span> <span class="c1">#=&gt; can slice elements off, have elastic arrays --&gt; can add elements to an array without doing anything else</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Lecture:</h3>
-
-<p>Object orientation- we send object methods
-important to identify who the receiver is and what the method is
-part of dot notation: every method returns an object, so you can chain another method on it
-it&#8217;s the return of the previous method that is the receiver for the following method</p>
-
-<p>the strip method is part of the family of normalization</p>
-
-<p>gsub = global substitution
-sub will only replace the first occurrence it encounters</p>
-
-<p>== is the same as eql method</p>
-
-<p>methods that end with question marks &#8211;> the ? is part of the method name that indicates it returns a boolean value</p>
-
-<p>strings like arrays can be sliced</p>
-
-<p>match accepts a pattern of REGEX
-  -the string literal for patterns are /a/e/i/o/u
-  -check <a href="http://rubluar.com">http://rubluar.com</a></p>
-
-<p><strong>Iteration</strong> is a fancy word for looping</p>
-
-<p>anything that can iterated upon is described as an <em>enumerable</em>
-strings and arrays are enumerables</p>
-
-<p><strong>Scope</strong></p>
-
-<p>scope gates &#8211; every time you see a &#8216;do&#8217;, &#8216;end&#8217;, &#8216;def&#8217; keyword your scope changed.</p>
-
-<p>blocks have an exclusive scope. If it is defined in that block and only in that block it is accessible for the outside.
-method scopes are even stricter. cannot access method outside of that particular method.
-parameters are how you pass in values into a method.</p>
-
-<p>2nd program- (8:25- 8:35)
-artist, album, song sorting</p>
-
-<p><em>first step in a program is usually to set up state</em></p>
-
-<p><strong>More Data Types</strong>
-<em>Hashes</em> a lot like an array in that it is a collection object. An array is only indexed, so you can only refer to the objects within the array by its position</p>
-
-<p><em>Literal Constructors:</em></p>
-
-<p>&#8221;&#8221; - strings</p>
-
-<p>/ - REGEX</p>
-
-<p>[] - array</p>
-
-<p>{} - hashes</p>
-
-<p>: - symbols</p>
-
-<p>Hashes are valuable when you care about the meta data</p>
-
-<p>every time you create a new string, it creates a new object in memory
-a symbol is an immutable object</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">vending</span> <span class="n">machine</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">a</span><span class="p">:</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;snickers&quot;</span><span class="p">,</span> <span class="s2">&quot;twix&quot;</span><span class="p">,</span> <span class="s2">&quot;kit kat&quot;</span><span class="o">]</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">vending_machine</span><span class="o">[</span><span class="ss">:a</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="c1">#=&gt; this accesses the :a key and the 0th position of the array which is the value</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/scope/">Scope</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-17T20:19:00-04:00" pubdate data-updated="true">Jul 17<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span>Fancy Scope</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>This is the original&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -893,20 +183,58 @@ a symbol is an immutable object</p>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Whatever</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">add</span>
-</span><span class='line'>    <span class="n">add_junk</span><span class="p">(</span><span class="n">new_junk</span><span class="p">)</span> <span class="c1">#this just feeds into the next method</span>
-</span><span class='line'>  <span class="k">end</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span><span class='line'>    <span class="n">client</span> <span class="o">=</span> <span class="no">AirbrakeAPI</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">add_junk</span><span class="p">(</span><span class="n">new_junk</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@junk</span> <span class="o">&lt;&lt;</span> <span class="n">new_junk</span>
-</span><span class='line'>    <span class="n">new_junk</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">errors</span>
+</span><span class='line'>    <span class="n">errors</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">airbrake_error</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:action</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">controller</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:controller</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_created_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:created_at</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">error_class</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:error_class</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:error_message</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_id</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">line_number</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:line_number</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_most_recent_notice_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:most_recent_notice_at</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">notice_hash</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:notice_hash</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">notices_count</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:notices_count</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:project_id</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">rails_env</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:rails_env</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_resolved</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:resolved</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">search_index_me</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:search_index_me</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_updated_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:updated_at</span><span class="o">]</span>
+</span><span class='line'>        <span class="c1"># airbrake.send(&quot;#{key}=&quot;, value)</span>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">attribute_updater</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>I need to understand that feeding into the 2nd method better</p>
 </div>
   
   
@@ -920,7 +248,7 @@ a symbol is an immutable object</p>
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/octopress-blues/">Octopress Blues</a></h1>
+        <h1 class="entry-title"><a href="/blog/haw-day3/">HAW-day3</a></h1>
       
     
     
@@ -937,20 +265,920 @@ a symbol is an immutable object</p>
   
 
 
-<time datetime="2012-07-16T16:53:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2012</time>
+<time datetime="2012-08-02T10:55:00-04:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>I just spent more than an hour debugging an issue when trying to run</p>
+  <div class="entry-content"><p>Rolled back git using the sha</p>
+
+<p>used the fresh method to collect the fresh errors in an array. then we used the flatten method to un-nest the array to acccess the objects.</p>
+
+<p>changed the interface to show the airbrake IDs so that we can differentiate the errors with the same name</p>
+
+<p>p291
+form_tag issues an HTTP request that replaces all the content in the browser.
+form_remote_tag issues an HTTP request, but processes the results with JavaScript
+rather than having the browser render them directly.</p>
+
+<p>nav
+filtering
+all errors inbox
+checkboxes(which don&#8217;t work but do display) - have the route for signal</p>
+
+<p>event driven programming</p>
+
+<p>dom fields</p>
+
+<p>cmd option i - to open the</p>
+
+<p>collect all values
+submit the request, submit the values manually
+raise params.inspect</p>
+
+<p>GOAL OF THE IMPORTER:
+import a new set of airbrake errors</p>
+
+<p>if the id is NOT uniq then update the attributes but do not display or save in mongoid memory</p>
+
+<p>identify what is uniq with the present method
+if uniq ignore
+if NOT uniq then update attributes
+makes sure the newly imported error will not save &#8211;> validation should take care of this</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day2/">HAW-day2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-01T11:31:00-04:00" pubdate data-updated="true">Aug 1<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>builder pattern versus the inheritance pattern</p>
+
+<p>no diff between slugs and permalinks</p>
+
+<p>To install a gem from a fork</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'rails', :git =&gt; 'git://github.com/rails/rails.git'</span></code></pre></td></tr></table></div></figure>
 
 
-<p>The error I kept receiving was:</p>
+<p>add validation to prevent slug nil</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git reset --hard HEAD
+</span><span class='line'># could also reset to a specific point in time
+</span><span class='line'>git reset --hard &lt;sha&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>HEAD is the current version</p>
+
+<p>delete local branch:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git branch -d initial-error-tagging
+</span><span class='line'>#to delete the remote...
+</span><span class='line'>♕ git push origin :initial-error-tagging</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOALS:
+1. normalize the tag_names DONE</p>
+
+<ol>
+<li>should be able to mark the error as ignore and rerun the importer and when it&#8217;s reimported it should still be marked as ignored&#8230;.</li>
+<li>inbox not show you errors with tag ignore</li>
+<li>if we reimport these errors they need to maintain their tags (is this )
+does the count update?</li>
+</ol>
+
+
+<p> look into scopes&#8211; need to filter ignore off the index
+read about named scopes on mongoid
+http://mongoid.org/en/mongoid/docs/querying.html#scoping
+desired code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">errors</span><span class="o">.</span><span class="n">not_ignored</span>
+</span><span class='line'><span class="c1">#or better yet</span>
+</span><span class='line'><span class="n">errors</span><span class="o">.</span><span class="n">fresh</span> <span class="c1"># =&gt; to get a list of errors that haven&#39;t been ignored.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>li needs to build a show page of each error&#8217;s attributes</li>
+</ol>
+
+
+<p>NOTES:
+Scoping - so scoping is like a filter
+<a href="http://mongoid.org/en/mongoid/docs/querying.html#scoping">Mongoid scoping macro</a></p>
+
+<figure class='code'><figcaption><span>Filtering/Scope</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Tag</span><span class="o">.</span><span class="n">not_in</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;fresh&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="ss">:airbrake_errors</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">t</span><span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">airbrake_errors</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Autocomplete for tags:
+<a href="http://www.dwellable.com/blog/Tech-Autocomplete-with-Rails-Mongoid">http://www.dwellable.com/blog/Tech-Autocomplete-with-Rails-Mongoid</a></p>
+
+<p><a href="http://railsforum.com/viewtopic.php?id=2151">Select all checkboxes</a>
+<a href="http://www.rorexperts.com/select-and-unselect-all-checkboxes-by-selecting-single-check-t1614.html">or</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day1/">Haw-day1</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-31T15:15:00-04:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Deploying to Heroku</h3>
+
+<p>Make sure to modify the <a href="https://devcenter.heroku.com/articles/mongohq#mongoid">mongoid.yml file</a> to config the production environment.</p>
+
+<p><strong><em>2 major issues with the mongoid deploy:</em></strong></p>
+
+<ol>
+<li>Issue with ruby version was the first error we encountered&#8230; need to keep in that <em>mongoid only supports 1.9.3</em> this ended up being a big issue.</li>
+</ol>
+
+
+<p>In &#8211;> heroku logs &#8211;tail:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ActionView::Template::Error (undefined method `[]' for nil:NilClass):
+</span><span class='line'> 11:   &lt;/thead&gt;
+</span><span class='line'> 10:     &lt;/tr&gt;
+</span><span class='line'> 12: 
+</span><span class='line'> 13:   &lt;% @airbrake_errors.each_with_index do |a_e, index| %&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>The other issue was to reconfigure the setting below from false to true as the</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">compile</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">ActionView</span><span class="o">::</span><span class="no">Template</span><span class="o">::</span><span class="no">Error</span> <span class="p">(</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span> <span class="n">isn</span><span class="s1">&#39;t precompiled):</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> &lt;%= favicon_link_tag &#39;</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span><span class="s1">&#39;, :rel =&gt; &#39;</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="n">precomposed</span><span class="s1">&#39;, :type =&gt; &#39;</span><span class="n">image</span><span class="o">/</span><span class="n">png</span><span class="s1">&#39;, :sizes =&gt; &#39;</span><span class="mi">144</span><span class="n">x144</span><span class="s1">&#39; %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> app/views/layouts/application.html.erb:19:in `_app_views_layouts_application_html_erb___1957659516384225917_21931620&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Rewriting the writer</h3>
+
+<figure class='code'><figcaption><span>Change the tag writer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1">#the find_or_create_by wasn&#39;t creating unique tag names</span>
+</span><span class='line'>      <span class="c1">#the reason was because we were linking too many methods together</span>
+</span><span class='line'>      <span class="c1">#mongoid is finicky</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># was changed to...</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># but we discoved that the tags were no disappearing if they were left off the form</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>   <span class="c1">#later we added this line because tags were persisting even if we tried to edit them.</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">delete_all</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="o">&lt;</span><span class="sx">% @airbrake_errors.each_with_index </span><span class="k">do</span> <span class="o">|</span><span class="n">a_e</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">    &lt;tr&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">td</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="sx">%= a_e.tags.collect{ |tag|</span>
+</span><span class='line'><span class="sx">         link_to(tag.name, tag_path(tag)) #=</span><span class="o">&gt;</span> <span class="s2">&quot;&lt;a href=&quot;</span><span class="n">adasda</span><span class="s2">&quot;&gt;Tag&lt;/a&gt;&quot;</span>
+</span><span class='line'>      <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">     &lt;/td&gt;</span>
+</span><span class='line'>      <span class="c1"># this needs to be better understood-- TODO</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>HTTP Authentication</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku">This did it</a>.</li>
+</ul>
+
+
+<h3>Pushing the seed file to heroku</h3>
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">db</span><span class="ss">:seed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rake-tasks/">Rake Tasks</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-31T11:54:00-04:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>This is a rake task file&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">task</span> <span class="ss">:load_errors</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>  <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">import_from_airbrake</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In heroku I would run this:</p>
+
+<figure class='code'><figcaption><span>This is a rake task file&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">load_errors</span>
+</span><span class='line'><span class="c1"># NOT</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="n">task</span> <span class="n">bandaid</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day0/">HAW- Day0</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-30T10:13:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Pivotal:
+Move from icebox to current
+Click Start
+Each story is either a feature, a bug, or a chore</p>
+
+<p>Generate our app
+Some sort of layout
+beginning data model
+- main model
+- tag model
+Import script to retreive that data off the API</p>
+
+<p>Views/Controllers
+- index view
+- tagging</p>
+
+<p>Keep commits small and never develop in the master branch</p>
+
+<p>Git:
+Git create the repo
+git clone the repo
+git merge mongoid-setup &#8211;no-ff #no FF- will show the branch even after the commmit</p>
+
+<p>Mongoid-
+rails new myapp -O (&#8211;skip-active-record)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'mongoid', "~&gt; 3.0.0"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Twitter Bootstrap
+gem twitter-bootstrap</p>
+
+<p>Airbrake Gem</p>
+
+<p>Powder Gem
+gem install powder
+makes app available at airbrake.dev</p>
+
+<p>Immediately want to start creating the &#8216;error model&#8217;, but error is a terrible title so call it airbrake model</p>
+
+<p>Routes:
+change index to errors#index</p>
+
+<p>Generate airbrake_errors model
+Generate errors_controller
+Generate bootstrap</p>
+
+<figure class='code'><figcaption><span>Fluid Layout</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">bootstrap</span> <span class="n">layout</span> <span class="n">application</span> <span class="n">fluid</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>In Console</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">AirbrakeError</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Test&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>in the test unit, want to check that AirbrakeError.delete_all
+test to make sure the airbrake API gem tried to connect</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">AirbrakeError</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create initializer to config the connection to airbrake</p>
+
+<h3>Next Steps</h3>
+
+<p>build out the bootstrap layout
+build the import script</p>
+
+<p>Ruby Debugger:
+gem debugger at the bottom of the gem file
+bundle</p>
+
+<p>inspect the hashiemashie to see how the objects are composed</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span><span class='line'>  <span class="n">a</span> <span class="o">=</span> <span class="no">AirbrakeAPI</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Airbrake Doc:
+Can make calls to get a list of errors in general and a call to get more info about an error.
+-The api in general isn&#8217;t all that detailed.</p>
+
+<p>There is a diff between .error(&#8216;id&#8217;) and .errors &#8211; the difference is in what is returned&#8211; i.e. the backtrace etc.</p>
+
+<p>check out what notices because we are probably interested more in the notice than the error itself.</p>
+
+<figure class='code'><figcaption><span>Maybe Something Like This?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">ignore</span>
+</span><span class='line'>  <span class="no">AirbrakeAPI</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:resolved</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">})</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Diff between error and notice: an error is a unique conceptual item and a notice is the occurance of the error</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">h</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="n">b</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">v</span>
+</span><span class='line'><span class="c1">#this is the same as the dynamic dispatching method</span>
+</span><span class='line'><span class="n">airbrake</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From there let&#8217;s go to the view and start formatting the output</p>
+
+<p>Ruby alias method&#8211; this is built into ruby not rails or mongoid</p>
+
+<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">alias</span> <span class="ss">:name</span> <span class="ss">:error_message</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>TIPS and Tricks section:
+Gem Server shows the documentation locally</p>
+
+<p><a href="http://www.codinghorror.com/">Jeff Atwood</a></p>
+
+<p>LOOK-UP &#8216;Client&#8217;, &#8216;tap&#8217;, &#8216;send&#8217;
+dynamic dispatch and the send method
+rails cycle
+Moped::BSON: &#8211; how it generates its unique IDs</p>
+
+<p>GIT STUFF:</p>
+
+<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">pull</span> <span class="o">--</span><span class="n">rebase</span> <span class="c1">#=&gt; if the remote has merges, rewind and then move back forward</span>
+</span><span class='line'><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="no">HEAD</span> <span class="c1">#=&gt; go to the last checkout (HEAD of the branch) without the warnings (hard)</span>
+</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="c1"># save changes</span>
+</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="n">pop</span> <span class="c1">#restore changes</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">status</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">link</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">airbrake</span>
+</span><span class='line'><span class="n">M</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">airbrake_error</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'><span class="n">M</span>  <span class="n">app</span><span class="o">/</span><span class="n">views</span><span class="o">/</span><span class="n">errors</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">erb</span>
+</span><span class='line'><span class="no">Switched</span> <span class="n">to</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">branch</span> <span class="s1">&#39;link-to-airbrake&#39;</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">am</span> <span class="s2">&quot;added airbrake_url method and link_to in views&quot;</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">push</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">merge</span> <span class="n">link</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">airbrake</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">push</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/lecture-7-rails/">Lecture 7 -Rails</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-29T14:20:00-04:00" pubdate data-updated="true">Jul 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Song class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">genre_name</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">g</span><span class="o">|</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">genre_name</span><span class="o">=</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">strip</span><span class="p">}</span><span class="o">.</span>
+</span><span class='line'>    <span class="no">SongGenre</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:genre</span> <span class="o">=&gt;</span> <span class="no">Genre</span><span class="o">.</span><span class="n">find_or_create_by_name</span><span class="p">(</span><span class="n">genre_name</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>an album has many songs&#8230; which means the accepts nested attributes for will be a good fit</p>
+
+<h3>Nested Resource</h3>
+
+<p>begins with the routes</p>
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested Model Form Rails Cast</a></p>
+
+<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong><em>Dont&#8217; use nested attributes for a belongs_to association</em></strong></a></p>
+
+<p>mass assignment and the .build(params[:user_name])</p>
+
+<p>Form_for (2:40)</p>
+
+<h3>Layouts and Sub-layouts</h3>
+
+<figure class='code'><figcaption><span>On the Index Page</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% content_for </span><span class="ss">:sub_nav</span> <span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= link_to &quot;New Song&quot;, new_song_path %&gt;</span>
+</span><span class='line'> <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
+</span><span class='line'><span class="sx"> # this could also be on the show page so they would share this sub_nav</span>
+</span><span class='line'><span class="sx"> &lt;nav class=&quot;sub_nav&quot;&gt;</span>
+</span><span class='line'>  <span class="o">&lt;%=</span> <span class="k">yield</span> <span class="ss">:sub_nav</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx"> &lt;% end %&gt;</span>
+</span><span class='line'> <span class="c1"># this works because you create another yield in the app besides the body</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>you can open up a sublayout as many times as you want to add links&#8230;</p>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to_unless_current">link_to_unless_current</a>- it just creates the title, not the link to its own page&#8230; useful for nav bars</p>
+
+<p>polymorphic interfaces: depending on the argument that you send it, it has different behavior
+when you send @mixtape it looks up:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mixtape_path</span><span class="p">(</span><span class="vi">@mixtape</span><span class="p">)</span> <span class="c1">#=&gt; &#39;/mixtapes/1&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>real life e.g.s
+subway slot can accept a metrocard and a credit card&#8211; depending on what you send it, it has differnt behavior
+a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.</p>
+
+<p>render is another flexible polymorphic object-</p>
+
+<figure class='code'><figcaption><span>Rending Partials in a Collection- very important</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= render @mixtape.songs %&gt;</span>
+</span><span class='line'><span class="sx">#Down a level of abstraction since it reveals the collection and partial:</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">render</span> <span class="ss">:collection</span> <span class="o">=&gt;</span> <span class="vi">@mixtape</span><span class="o">.</span><span class="n">songs</span><span class="p">,</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="n">songs</span><span class="o">/</span><span class="n">song_li</span><span class="err">&#39;</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:song</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Cast Variables</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= render &#39;songs/fields&#39;, :f =</span><span class="o">&gt;</span> <span class="n">song_form</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If skip album name is true, then
+(3:40)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">include_album_name</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;div class=&quot;field&quot;&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="sx">% f.label </span><span class="ss">:album</span> <span class="sx">%&gt; &lt;br /&gt;</span><span class="c1">#more code....</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://guides.rubyonrails.org/layouts_and_rendering.html#asset-tag-helpers">Passing Local Variables into Partials</a>&#8230; need to scroll down a little</p>
+
+<p>write_attribute</p>
+
+<p><a href="http://www.davidverhasselt.com/2011/06/28/5-ways-to-set-attributes-in-activerecord/">5 ways to set attributes in ActiveRecord</a></p>
+
+<p>Could use callbacks and lifecycle hooks to normalize as well&#8230;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before_validate</span> <span class="ss">:normalize_name</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">normalize_name</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">strip</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/mongodb-and-mongoid/">MongoDB &amp; Mongoid</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-28T12:17:00-04:00" pubdate data-updated="true">Jul 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://blog.wiemann.name/mongoid-cheat-sheet">Mongo Cheat Sheet</a></p>
+
+<h1>NoSQL</h1>
+
+<p>Non-relational, next-generation operational datastores and databases
+-databases designed for the web and attacking the traditional problems that traditional DBs have such as scaling out.</p>
+
+<p>-Horizontally scalable architectures => no joins + no complex transactions</p>
+
+<p>Datamodels:</p>
+
+<ol>
+<li>Key / Value Stores - (memcached, Dynamo)</li>
+<li>Tabular (BigTable) - a hybrid</li>
+<li>Document Oriented (MongoDB, CouchDB)</li>
+</ol>
+
+
+<p>Memcached and key/value are high on the scalability and performance side, but low on depth of functionality</p>
+
+<p>RDBMS (relational database management systems) - strong depth of functionality with join models etc., low on the scalability and performance scale.</p>
+
+<p>MongoDB- try to get the scalability and performance of a key/value store and try to make as functional as possible</p>
+
+<p>What&#8217;s Missing?
+- Joins
+- Complex multi-row transactions
+- SQL</p>
+
+<p>Terminology:
+In RDBMS // MongoDB
+ - database => database like in MySQL
+ - table => collection
+ - row => document</p>
+
+<p> MongoDB uses JSON style documents called BSON (binary JSON)</p>
+
+<h2>-There are not predefined schemas, can use nested structures to embed complex values based on the keys</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>post = {author: "mike",
+</span><span class='line'>date: new Date (),
+</span><span class='line'>text: "my blog post",
+</span><span class='line'>tags: ["mongodb", "intro"]} 
+</span><span class='line'>
+</span><span class='line'>db.posts.save(post)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>MongoDB expects to have every document to have a &#8216;_id&#8217; key&#8211; it&#8217;s a <strong>*unique primary key</strong>**</p>
+
+<h3>Dynamic Queries</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>db.posts.find({author: "mike"})
+</span><span class='line'>
+</span><span class='line'>#more advanced
+</span><span class='line'>db.posts.find()
+</span><span class='line'>        .sort({date: -1})
+</span><span class='line'>        .limit(10)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>MongoDB has its own document based query language.</p>
+
+<h3>Indexing</h3>
+
+<p>B-Tree indexes</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>db.posts.ensureIndex({tags: 1})
+</span><span class='line'>
+</span><span class='line'>#Indexing / Querying on Embedded Docs (dot notation)
+</span><span class='line'>db.posts.find({"comments.author": "eliot"})
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>Focus on Performance</em></strong>:
+Don&#8217;t use REST to talk to the database. Use a binary TCP wire protocol because it is faster.</p>
+
+<h3>Replica Sets</h3>
+
+<p>similar to master-slave replication, but there is a primary and secondary node</p>
+
+<h3>Auto-sharding</h3>
+
+<ul>
+<li>split up the data so certain shards (which are groups of nodes- replica set or master //slave) are responsible for some subset of the data</li>
+</ul>
+
+
+<p><a href="http://www.youtube.com/watch?v=bwAqN9l14kI">Intro video</a></p>
+
+<p><a href="http://www.mongodb.org/display/DOCS/MongoDB+Data+Modeling+and+Rails">###Types###</a></p>
+
+<h2>Mongoid</h2>
+
+<p><a href="http://blog.wiemann.name/mongoid-cheat-sheet">Cheatsheet</a>
+<a href="http://vimeo.com/9864311">Intro by the creator</a>
+<a href="http://railscasts.com/episodes/238-mongoid">RailsCast</a>
+<a href="http://mongoid.org/en/mongoid/">Docs</a></p>
+
+<p>-Mongoid by default stores documents in a collection that is the pluralized form of the class name. For the following Person class, the collection the document would get stored in would be named people.</p>
+
+<p>When a document is stored in the database the ruby object will get serialized into BSON and have a structure like so:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -961,24 +1189,273 @@ a symbol is an immutable object</p>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>## Generating Site with Jekyll
-</span><span class='line'>unchanged sass/screen.scss
-</span><span class='line'>Configuration from /Users/Ajonas/octopress/_config.yml
-</span><span class='line'>Building site: source -&gt; public
-</span><span class='line'>/Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/rubypython-0.5.3/lib/rubypython/rubypyproxy.rb:198:in `method_missing': ClassNotFound: no lexer for alias 'Query' found (RubyPython::PythonError)
-</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:135:in `lexer_for'
-</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:91:in `highlight'
-</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:24:in `pygments'
-</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:14:in `highlight'</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>  "_id" : ObjectId("4d3ed089fb60ab534684b7e9"),
+</span><span class='line'>  "title" : "Sir",
+</span><span class='line'>  "name" : {
+</span><span class='line'>    "_id" : ObjectId("4d3ed089fb60ab534684b7ff"),
+</span><span class='line'>    "first_name" : "Durran"
+</span><span class='line'>  },
+</span><span class='line'>  "addresses" : [
+</span><span class='line'>    {
+</span><span class='line'>      "_id" : ObjectId("4d3ed089fb60ab534684b7e0"),
+</span><span class='line'>      "city" : "Berlin",
+</span><span class='line'>      "country" : "Deutschland"
+</span><span class='line'>    }
+</span><span class='line'>  ]
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>It goes on much longer from there. Anyways, I googled it and found <a href="http://samrange.com/blog/2012/06/17/octopress-code-highlighting-with-arch-linux/">this</a> which sent me on a wild goose chase to change out the path in the rubypython gem file.</p>
+<h3>Querying</h3>
 
-<p>After trying to fix this, I decided to generate some other posts. What I discovered was other posts could be generated and pushed which meant it wasn&#8217;t the gem at all&#8230;</p>
+<figure class='code'><figcaption><span>Mongoid Querying</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Band</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;Depeche Mode&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="no">Band</span><span class="o">.</span>
+</span><span class='line'>  <span class="n">where</span><span class="p">(</span><span class="ss">:founded</span><span class="o">.</span><span class="n">gte</span> <span class="o">=&gt;</span> <span class="s2">&quot;1980-1-1&quot;</span><span class="p">)</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">in</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="o">[</span> <span class="s2">&quot;Tool&quot;</span><span class="p">,</span> <span class="s2">&quot;Deftones&quot;</span> <span class="o">]</span><span class="p">)</span><span class="o">.</span>
+</span><span class='line'>  <span class="n">union</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">in</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="o">[</span> <span class="s2">&quot;Melvins&quot;</span> <span class="o">]</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>In the end, I hadn&#8217;t named the language of the code snippet so the post couldn&#8217;t be generated.</p>
 
-<p>Ugh.</p>
+<h3>Attributes</h3>
+
+<p>All relations contain a target, which is the proxied document or documents, a base which is the document the relation hangs off, and metadata which provides information about the relation.</p>
+
+<p>attr_accessible and validation are the same in Mongo as in ActiveRecord</p>
+
+<p>embeds_many similar to has_many => but the information is embedded in the document rather than in a separate record like in ActiveRecord. Will I need to fetch this record outside of the parent? If so, I need than has_many makes more sense. The advantage of course is that the information is right inside that record.</p>
+
+<p><strong><em>Embedded 1-1 relationships</em></strong>
+:    The parent document of the relation should use the embeds_one macro to indicate is has 1 embedded child, where the document that is embedded uses embedded_in.</p>
+
+<p><strong>*Embedded 1-Many</strong>**
+:   The parent document of the relation should use the embeds_many macro to indicate it has n number of embedded children, where the document that is embedded uses embedded_in.</p>
+
+<p><strong><em>Referenced 1-1</em></strong>
+:    The parent document of the relation should use the has_one macro to indicate is has 1 referenced child, where the document that is referenced in it uses belongs_to.</p>
+
+<p><strong><em>Referenced Many-to-Many</em></strong>
+:    Many to many relationships where the inverse documents are stored in a separate collection from the base document are defined using Mongoid&#8217;s has_and_belongs_to_many macro. This exhibits similar behavior to Active Record with the exception that no join collection is needed, the foreign key ids are stored as arrays on either side of the relation.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/airbrake/">Airbrake</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-27T12:23:00-04:00" pubdate data-updated="true">Jul 27<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Airbrake is basically wrapped around a begin rescue block&#8230;
+The app doesn&#8217;t break AND the error is sent to the application.</p>
+
+<p>There are errors in apps that happen that you don&#8217;t care about, then there are show-stoppers.
+- Solution: rebuild a dashboard to ignore the errors or use airbrake to config their own errors.</p>
+
+<p>?How do you decide what kinds of errors are important</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>AirbrakeAPI::Errors</span></code></pre></td></tr></table></div></figure>
+
+
+<p>after you instantite the credientials, you need to create the connections
+- learned this via the spec/client_spec</p>
+
+<p>Keep running into the <a href="http://www.dzone.com/snippets/hashdeepmerge">deep_merge</a> undefined method. According to their specs, Airbreak assumes that the gems in the specs should be included in the library. They assume that people won&#8217;t be using this outside of rails, which is a big assumption.</p>
+
+<p>HashieMashie- hashes behave as both as regular hash and as an object</p>
+
+<p>Once the proper gems are required it works properly.
+If this library had corrected all of the dependencies in it&#8217;s stand along library, this would have been fine&#8230;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ gem install airbrake-api
+</span><span class='line'>♕ irb
+</span><span class='line'> :001 &gt; require 'active_support'
+</span><span class='line'> =&gt; true 
+</span><span class='line'> :002 &gt; require 'active_support/core_ext'
+</span><span class='line'> =&gt; true 
+</span><span class='line'> :003 &gt; require 'i18n'
+</span><span class='line'> =&gt; false 
+</span><span class='line'> :004 &gt; require 'airbrake'
+</span><span class='line'> =&gt; true 
+</span><span class='line'> :005 &gt; require 'airbrake-api'
+</span><span class='line'> =&gt; true 
+</span><span class='line'> :006 &gt; AirbrakeAPI.configure(:account =&gt; 'gearshare', :auth_token =&gt; 'authcodehere', :secure =&gt; true)
+</span><span class='line'> =&gt; AirbrakeAPI 
+</span><span class='line'> :007 &gt; AirbrakeAPI.new
+</span><span class='line'>NoMethodError: undefined method `new' for AirbrakeAPI:Module
+</span><span class='line'> :008 &gt; AirbrakeAPI::Client.new
+</span><span class='line'> =&gt; #&lt;AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"&gt; 
+</span><span class='line'> :009 &gt; a = _
+</span><span class='line'> =&gt; #&lt;AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"&gt; 
+</span><span class='line'> :010 &gt; a.errors</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/badass-keyboard-shortcuts/">BadAss Keyboard Shortcuts</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T17:49:00-04:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Chrome:</h3>
+
+<ul>
+<li>⌥⌘I (Command - Option - I) keys to open Developer Tools</li>
+<li>⌥⌘J (Command - Option - J) to open Developer Tools and bring focus to the Console.</li>
+<li>⇧⌘C (Command - Shift - C) to toggle Inspect Element mode.</li>
+<li>shift ⌘ T -> open the last tab closed in chrome and FF</li>
+</ul>
+
+
+<h3>Sublime Shortcuts</h3>
+
+<ul>
+<li><a href="http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/">Good list here</a></li>
+<li>⌘T or ⌘R will allow you to jump to files really quickly</li>
+<li>option, ⌘, . -> will close an html tag</li>
+<li>⌘P to create a new partial, ⇧⌘P to create and open a new partial ~> need to install this package</li>
+<li>⌘U if I get to overzealous with the ⌘D selections</li>
+<li>⌘, cntrl, G -> select everything of its kind on the page</li>
+</ul>
+
+
+<h3>Terminal</h3>
+
+<ul>
+<li>⌘K clears the screen</li>
+<li>cmd, shift, -> or &lt;- to move between windows in the terminal</li>
+<li>pwd #=> will output the full path</li>
+<li>~ #=> home directory</li>
+<li>ps aux | grep ruby -> show all ruby processes</li>
+</ul>
+
+
+<h3>Sublime Text 2</h3>
+
+<ul>
+<li>⌘shift P allows you to install nearly any package on sublime text 2</li>
+<li>⌘shift c color picker</li>
+<li>cntrl + shift + . to scroll through .erb <a href="https://github.com/eddorre/SublimeERB">see here</a></li>
+<li>⌘shift d - duplicate the line and paste in the line below</li>
+<li>option + cntrl + -> or &lt;- to jump by word</li>
+</ul>
+
+
+<h3>GIT</h3>
+
+<ul>
+<li>git clean -f => <a href="http://stackoverflow.com/questions/61212/removing-untracked-files-from-your-git-working-copy">Removing untracked files from your git working copy</a></li>
+</ul>
+
+
+<h3>Mac</h3>
+
+<ul>
+<li>⌘shift 3 - screen shot</li>
+</ul>
+
+
+<h3>Rails Cmds</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake routes | grep mixtape</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Will only show the routes that match this resource.</p>
+
+<h3>Notes:</h3>
+
+<p>And of course <a href="https://www.shortcutfoo.com/">shortcut foo</a> is awesome too!</p>
 </div>
   
   
@@ -1003,23 +1480,23 @@ a symbol is an immutable object</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/dynamic-method-definition/">Dynamic Method Definition</a>
+        <a href="/blog/advanced-sinatra/">advanced sinatra</a>
       </li>
     
       <li class="post">
-        <a href="/blog/fis-day30/">FIS Day30</a>
+        <a href="/blog/script-bootstrap/">script bootstrap</a>
       </li>
     
       <li class="post">
-        <a href="/blog/fis-day29/">FIS Day29</a>
+        <a href="/blog/conways-game-of-life/">Conways Game of Life</a>
       </li>
     
       <li class="post">
-        <a href="/blog/fis-day28/">FIS Day28</a>
+        <a href="/blog/backbone-dot-js-intro/">Backbone.js Intro</a>
       </li>
     
       <li class="post">
-        <a href="/blog/fis-day27/">FIS Day27</a>
+        <a href="/blog/dynamic-gif-on-github/">Dynamic GIF on Github</a>
       </li>
     
   </ul>
@@ -1027,7 +1504,7 @@ a symbol is an immutable object</p>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/fis/'>FIS (33)</a></li>
+    <li class='category'><a href='/blog/categories/fis/'>FIS (36)</a></li>
 <li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
 <li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
 <li class='category'><a href='/blog/categories/todo/'>TODO (4)</a></li>
@@ -1037,9 +1514,12 @@ a symbol is an immutable object</p>
 <li class='category'><a href='/blog/categories/asset-pipeline/'>asset_pipeline (1)</a></li>
 <li class='category'><a href='/blog/categories/associations/'>associations (3)</a></li>
 <li class='category'><a href='/blog/categories/authentication/'>authentication (2)</a></li>
+<li class='category'><a href='/blog/categories/backbone/'>backbone (1)</a></li>
 <li class='category'><a href='/blog/categories/book-notes/'>book_notes (3)</a></li>
 <li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
+<li class='category'><a href='/blog/categories/bootstrap-script/'>bootstrap_script (1)</a></li>
 <li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
+<li class='category'><a href='/blog/categories/cache/'>cache (1)</a></li>
 <li class='category'><a href='/blog/categories/cheatsheet/'>cheatsheet (1)</a></li>
 <li class='category'><a href='/blog/categories/cli/'>cli (1)</a></li>
 <li class='category'><a href='/blog/categories/code/'>code (1)</a></li>
@@ -1050,6 +1530,7 @@ a symbol is an immutable object</p>
 <li class='category'><a href='/blog/categories/forms/'>forms (4)</a></li>
 <li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (7)</a></li>
+<li class='category'><a href='/blog/categories/google-maps/'>google_maps (1)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
 <li class='category'><a href='/blog/categories/heroku/'>heroku (4)</a></li>
 <li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
@@ -1067,7 +1548,7 @@ a symbol is an immutable object</p>
 <li class='category'><a href='/blog/categories/mongoid/'>mongoid (1)</a></li>
 <li class='category'><a href='/blog/categories/namespacing/'>namespacing (1)</a></li>
 <li class='category'><a href='/blog/categories/notes/'>notes (1)</a></li>
-<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (1)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (2)</a></li>
 <li class='category'><a href='/blog/categories/object-oriented/'>object_oriented (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 <li class='category'><a href='/blog/categories/omniauth/'>omniauth (1)</a></li>
@@ -1091,10 +1572,10 @@ a symbol is an immutable object</p>
 <li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
-<li class='category'><a href='/blog/categories/sinatra/'>sinatra (2)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (3)</a></li>
 <li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
-<li class='category'><a href='/blog/categories/testing/'>testing (4)</a></li>
+<li class='category'><a href='/blog/categories/testing/'>testing (5)</a></li>
 
   </ul>
 </section>
