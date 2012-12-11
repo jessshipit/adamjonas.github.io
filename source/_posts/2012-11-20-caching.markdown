@@ -1,0 +1,282 @@
+---
+layout: post
+title: "Caching"
+date: 2012-11-20 11:11
+comments: true
+categories: cache
+---
+- [Caching tutorial](http://www.mnot.net/cache_docs/)
+- [Things caches do](http://tomayko.com/writings/things-caches-do)
+
+#Fragment Caching- RailsCast 90
+**Fragment caching is done at the the view level**
+
+- Change dev environment file to:
+  - `config.action_controller.perform_caching = true`
+
+```ruby Wrap the div with cache tag
+<% cache "recent_articles" do %>
+<div id="recent_articles">
+  <h3>Recent Articles</h3>
+  #more code
+</div>
+<% end %>
+```
+
+- cache will change in every url
+
+###Expiring fragment cache
+in the articles controller#show
+
+- in the controller
+    - expire_fragment("recent_articles")
+      - move into a sweeper like in episode 89
+
+auto-expiring fragment cache
+
+```ruby Wrap the div you want to cache with cache tags
+<% cache @article do %>
+#behind the scenes this is going to call .cache_key on the model
+  #see below for cache_key explanation
+#powerful way to auto-expire by loading an object
+<div id="article">
+  <h1><%= @article.name %></h1>
+  <%= @article.content %>
+  <p>
+    <%= link_to "Edit", edit_article_path %> |
+    <%= link_to "Browse Articles", articles_path %>
+  </p>
+</div>
+<% end %>
+```
+###Cache_key
+```
+a = Article.first
+a.cache_key #=> articles/1-2012083083433 
+#-> name of the model, id of the model, and updated timestamp
+a.touch #now it will have different cache key
+#because it is looking for a cache with a different name
+```
+Don't need to litter expire_cache all over the model
+
+
+```ruby The Touch Option expires the cache if it's changed
+class Comment < ActiveRecord::Base
+  belongs_to :article, touch: true
+end
+```
+This means it will update the article when a commment is changed.
+
+###Caching a fragment when you aren't passing in an object
+```ruby This is cached as recent_articles
+<% cache "recent_articles" do %>
+<div id="recent_articles">
+  <h3>Recent Articles</h3>
+  <ul>
+  <% @recent_articles.each do |article| %>
+    <% cache ["recent", article] do %>
+#can cache here as well!
+#namespaced with "recent", but passing in the article object
+#creates a unique key based on the elements passed into the array
+      <li><%= link_to article.name, article %></li>
+    <% end %>
+  <% end %>
+  </ul>
+</div>
+<% end %>
+```
+
+- When the "recent_articles" cache is generated, it will generate a cache for each object in the list in addition to the full "recent_articles" cache.
+  - normal behavior will just read the recent articles cache
+  - but editing behavior of the objects will expire the cache.
+
+###How frag caches are stored
+- Rails comes with a built in centralized caching mechnism called rails.cache
+  - can read and write from
+    - `Rails.cache.read('views/recent_articles')
+    - default is memory store, but want to use redis or memcahce
+      - config is done in the env/production
+
+#Memcached Dalli- RailsCast 380
+- [Memcache wiki](http://code.google.com/p/memcached/wiki/NewStart)
+- Use dalli, don't use memcache_store
+
+`brew install memcached`
+
+`gem dalli`
+
+- enable caching in the dev environment ->
+  - change to: `perform_caching = true`
+  - config.cache_store = :dalli_store
+    - should do this in production as well.
+      - Rails.cache will show that this is now a dalli store
+
+- `Rails.cache.fetch(:bar) { sleep 1; 2}`
+  - fetch a cache or execute the block
+- `Rails.cache.read_multi(:bar, :foo)` -> can fetch multiple requests once, instead of going individually.
+- `Rails.cache.stats` -> shows the amt of info store, number of times it reached it's limit, etc.
+
+- **Memcached is not a persistance store.** If you stop the process you lose it.
+  
+- `Rails.cache.write(:bar, 1, expires_in: 5.seconds)`
+  - will expire in 5 seconds
+
+```ruby product.category.name to product.category_name
+def category_name
+  Rails.cache.fetch([:category, category_id, :name], expires_in: 5.minutes) do
+    category.name
+  end
+end
+```
+
+```ruby If you want a cache to expire on update
+class Category < ActiveRecord::Base
+  attr_accessible :name
+  has_many :products
+  after_update :flush_name_cache
+
+  def flush_name_cache
+    Rails.cache.delete([:category, id, :name]) if name_changed?
+  end
+end
+```
+
+- Need to add memcached on the server side as well
+
+#HTTP Caching
+
+#Etag
+- Etag: unique string based on the content in the response body
+  - etag changes based on the csrf token
+- When the browser caches the response it will assign the etag to it
+  - get a 304 not modified, not a 200 ok
+    - request will be the same speed on the server side
+- Can speed up the server side by customizing how an etag is generated
+- 
+
+```ruby Customize how an etag is generated
+def show
+  @product = Product.find(params[:id])
+  expires_in 5.minutes
+  fresh_when @product, public: true
+end
+```
+
+- fresh_when
+  - checks whether the etag passed into the request matches the etag for the product and of it does it gives a 304 not modified
+  - otherwise it will show the render template with the full action
+- this technique isn't going to work well if there is a respond_to block
+
+```ruby Etag and a repond_to block
+def show
+  @product = Product.find(params[:id])
+  if stale? etag: @product
+    repond_to do |format|
+    #.....
+    end
+  end
+end
+```
+
+Etag can accept multiple objects
+```ruby Customize how an etag is generated
+def show
+  @product = Product.find(params[:id])
+  fresh_when [@product, current_user]
+  #passing in multiple 
+end
+```
+###Last_modified
+```ruby Customize how an etag is generated
+def show
+  @product = Product.find(params[:id])
+  fresh_when @product, last_modified: @product.updated_at
+  #this includes a timestamp in the header of last modified
+end
+```
+
+```ruby
+class ProductsController < ApplicationController
+  #from this
+  def index 
+    @products = Product.all
+  end
+#this runs the db query before it is neccessary
+
+#this waits until we are sure it is needed
+  def index
+    @products = Product.scoped
+  #this waits until we are sure the all command is needed
+    fresh_when last_modified: @products.maximum(:updated_at)
+  #only fetching one values to determine if the cache is up to date
+  end
+#which means that it doesn't have to render the whole view template
+#and doesn't have to end up fetching all the products from the DB
+end
+```
+
+- **Should benchmark to see if you get a big performance boost**
+
+###Cache-Control
+- Set options on how caching should behave
+  - validation
+  - max-age
+  - private
+    - cache only stored for one user usually in the web browser and not a shared store like a proxy
+
+```ruby Max-age
+def show
+  @product = Product.find(params[:id])
+  expires_in 5.minutes
+#this sets the max-age 
+  fresh_when @product, public: true
+#this public: true makes it available to multiple users
+#through a proxy
+end
+```
+
+- [rack-cache](https://github.com/rtomayko/rack-cache) -> 
+  - sits on your server between a user requests and a rails app backend
+  - rack cache has to be enabled in the dev environment and restart the server
+
+- warning public to true because this given request is stored for every user.
+  - `<%= csrf_meta_tag unless response.cache_control[:public] %>`
+  - should do for flash messages too
+
+- avoid premature optimization, figure out what you need to cache
+- only set public to true only if you don't have sensitive info on the page.
+
+##In the wild
+```ruby
+#sessions controller
+client = Octokit::Client.new(:oauth_token => auth.credentials.token)
+user.load_cache_info(client, user)
+
+#user model
+
+  #this is the cache writter. Fetch is like a find_or_create
+def load_cache_info(client, user)
+  Rails.cache.fetch(user.nickname.to_sym, expires_in: 24.hours) do
+    { :repos => client.repositories(user.nickname).collect {|repo| repo.name },
+      :following => client.following(user.nickname).collect {|user| user.login },
+      :starred => client.starred(user.nickname).collect {|repo| "#{repo.owner.login}/#{repo.name}" }  }
+  end
+end
+
+#this reads the cache which looks like a big hash
+def user_cache
+  Rails.cache.read(self.nickname.to_sym)
+end
+
+def cached_starred
+  user_cache[:starred]
+end
+
+def cached_following
+  user_cache[:following]
+end
+
+def cached_repos
+  user_cache[:repos]
+end
+```

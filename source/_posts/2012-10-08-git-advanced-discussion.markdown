@@ -86,6 +86,9 @@ $ git confi­g --glo­bal user.­name "blah­ blah"
 $ git confi­g --glo­bal alias­.commit pushi­t 
 ```
 
+###Branching
+This will create a new branch based on an revision: `♕ git co -b new-branch-name old-branch-name`
+
 ###Questions###
 What is a reasonable number of commits per branch?
 How often do you commit?

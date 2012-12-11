@@ -1,0 +1,77 @@
+---
+layout: post
+title: "FIS Day37"
+date: 2012-11-30 10:12
+comments: true
+categories: 
+---
+
+
+- click around without being authenticated
+  - modal prompt
+  - 
+
+- upload repo
+  - user stories of issues that needs to be fixed
+- as a fixer
+  - user story of finding an issue
+    - sort by popularity/ bounty$
+  - fix an issue
+    - notify bounty issuer
+  - 
+
+
+
+tech challenges
+  - sidekiq
+  - memcache
+
+
+- `git reset --hard <tag/branch/commit id>`
+- `git branch -D bugfix`
+
+```javascript None of this worked...
+$('i#index_upvote.icon-arrow-up').click(function(){
+  $(this).toggleClass('icon-arrow-up icon-circle-arrow-up');
+  // $('i#index_downvote.icon-arrow-down').removeClass().addClass('icon-arrow-down');
+})
+
+$('i#index_downvote.icon-arrow-down').click(function(){
+  $(this).toggleClass('icon-circle-arrow-down icon-arrow-down ');
+  // $('i#index_upvote.icon-arrow-up').removeClass().addClass('icon-arrow-up');
+})
+
+$('i#index_upvote.icon-arrow-up, i#index_downvote.icon-arrow-down').click(function(e){
+  var $parent = $(this).parent(),
+  up = $parent.hasClass('icon-arrow-up');
+
+
+$("i.icon-arrow-down").click(function(){
+  $(this).toggleClass("icon-circle-arrow-down icon-arrow-up").removeClass('i.icon-arrow-down')
+});
+```
+
+```javascript This Did It in Vote Js
+$upvoteIcon = $("tr#issue_<%= @issue.id %> i#upvote-icon-<%= @issue.id %>");
+$downvoteIcon = $("tr#issue_<%= @issue.id %> i#down-vote-icon-<%= @issue.id %>");
+
+<% if params[:direction] == "upvote" %>
+  $downvoteIcon.addClass('icon-arrow-down').removeClass('icon-circle-arrow-down');
+  $upvoteIcon.removeClass('icon-arrow-up').addClass('icon-circle-arrow-up');
+<% elsif params[:direction] == "downvote" %>
+  $downvoteIcon.removeClass('icon-arrow-down').addClass('icon-circle-arrow-down');
+  $upvoteIcon.addClass('icon-arrow-up').removeClass('icon-circle-arrow-up');
+<% end %> 
+```
+
+###CSS IDs
+- SO that badge class was overwritten in an attempt to make them bigger. A fix is to simply assign the overwrite to an id and then call it on the element.
+
+```
+#endorsement {
+      code
+  }
+
+<span id="endorsement" class="badge badge-success">Endorsed</span>
+```
+Cool.

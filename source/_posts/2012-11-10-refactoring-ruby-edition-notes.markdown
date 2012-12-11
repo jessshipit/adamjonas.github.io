@@ -42,7 +42,7 @@ The first part of this problem is that case statement. It is a bad idea to do a 
   - Shotgun Surgery
     - Every time you make a kind of change, you have to make a lot of little changes to a lot of different classes.
     - opposite of divergent change
-  - Feature Envy [p. 78]
+  - **Feature Envy [p. 78]**
     - a method that seems more interested in a class other than the one it actually is in.
   - 
 
@@ -57,6 +57,35 @@ The first part of this problem is that case statement. It is a bad idea to do a 
 ###Replace With Query [p. 111]
   - You are using a temporary variable to hold the result of an expression.
     - Extract the expression into a method. Replace all references to the temp with the expression. The new method can then be used in other methods.
+
+
+####Ternary
+```ruby Ternary p. 114
+#from
+def price
+a_base_price = base_price if base_price > 1000
+    discount_factor = 0.95
+  else
+    discount_factor = 0.98
+  end
+  a_base_price * discount_factor
+end
+
+#to (not an exact refactor, but good use of ternary)
+def discount_factor
+  base_price > 1000 ? 0.95 : 0.98
+end
+```
+
+###Extraction Method [p. 120]
+
+###Remove assignment parameters
+```ruby
+def a_method(foo)
+  foo.modify_in_some_way # that's OK
+  foo = another_object # trouble and despair will follow you
+end
+```
 
 ###Replace Loop with Conditional
 ```ruby
@@ -82,11 +111,166 @@ class Employee
   end
 end
 ```
+###Replace Methods with Method Objects
+>Turn the method into its own object so that all the local variables become instance variables on that object. You can then decompose the method into other methods on the same object.[p. 129]
 
+###Subsitute Algorithm
+```ruby
+Replace the body of the method with the new algorithm.
+def found_friends(people)
+  friends = []
+  people.each do |person|
+    if(person == "Don")
+      friends << "Don"
+    end
+    if(person == "John")
+      friends << "John"
+    end
+    if(person == "Kent")
+      friends << "Kent"
+end end
+  return friends
+end
+
+#To
+def found_friends(people)
+  people.select do |person|
+    %w(Don John Kent).include? person
+  end
+end
+```
+
+###Replace Loop with collection p.134
+```ruby
+managers = []
+employees.each do |e|
+  managers << e if e.manager?
+end
+#to
+managers = employees.select {|e| e.manager?}
+
+offices = []
+employees.each {|e| offices << e.office}
+#to
+offices = employees.collect {|e| e.office}
+
+managerOffices = []
+employees.each do |e|
+  managerOffices << e.office if e.manager?
+end
+#to
+managerOffices = employees.select {|e| e.manager?}.
+                           collect {|e| e.office}
+
+total = 0
+employees.each {|e| total += e.salary}
+#to
+total = employees.inject(0) {|sum, e| sum + e.salary}
+```
+
+###Extract Surround Method p.135
+>You have two methods that contain nearly identical code. The variance is in the middle of the method.
+*Extract the duplication into a method that accepts a block and yields back to the caller to execute the unique code.*
+
+- This exists in Gitbo
+
+###Class Annotation p.139
+>Declare the behavior by calling a class method from the class definition.
+
+`hash_initializer :author_id, :publisher_id, :isbn` like `attr_accessor` or `repo_params`
+
+###Introduce Named Parameters p.142
+>Convert the parameter list into a Hash, and use the keys of the Hash as names for the parameters.
+
+**This is what rails does with params!**
+
+```ruby 
+SearchCriteria.new(5, 8, "0201485672")
+#TO
+SearchCriteria.new(:author_id => 5, :publisher_id => 8, :isbn =>"0201485672")
+#like an options path
+```
+
+###Dynamic Method Definition p.152
+[see](/blog/dynamic-method-definition/)
+
+
+###Moving methods p.168
+>The bread and butter of refactoring 
+
+###Move Field p.173
+>I consider moving a field if I see more methods on another class using the information in the field than the class itself. I may choose to move the methods; this decision is based on interface. But if the methods seem sensible where they are, I move the field.
+
+###Extract Class p.175
+>You have one class doing work that should be done by two.
+
+###Inline Class p. 179
+>A class isn’t doing very much. *Move all its features into another class and delete it.*
+
+###Self Encapsulate Field p. 188
+>You are accessing a field directly, but the coupling to the field is becoming awkward. *Create getting and setting methods for the field and use only those to access the field.*
+
+```ruby
+def total
+  @base_price * (1 + @tax_rate)
+end
+#TO
+attr_reader :base_price, :tax_rate
+def total
+  base_price * (1 + tax_rate)
+end
+```
+
+###Replace array with object p.201
+```ruby
+row = []
+row[0] = "Liverpool"
+row[1] = "15"
+#TO
+row = Performance.new
+row.name = "Liverpool"
+row.wins = "15"
+```
+
+###Replace hash with object p.206
+
+###Encapsulate Collections p.219
+>A method returns a collection. *Make it return a copy of the collection and provide add/remove methods.*
+
+```ruby
+def add_course(course)
+  @courses << course
+end
+
+def remove_course(course)
+  @courses.delete(course)
+end
+```
+
+###Lazily Initialized Attributes p.255
+```ruby
+class Employee
+  def initialize
+    @emails = []
+  end
+end
+class Employee
+  def emails
+    @emails ||= []
+  end
+end
+```
 ##Chapter 9: Simplifying Conditional Expressions
+
+###Replace Conditional with Polymorphism p. 279
+
+###Introduce Null Object p. 284
+>You have repeated checks for a nil value. *Replace the nil value with a null object.*
+
 
 ###Replace the conditional code with the more idiomatic Ruby construct.
   - Encapsulate if/else, and/or logic in their own methods
+
 ```ruby
 parameters = params ? params : []
 #becomes
@@ -107,3 +291,12 @@ end
 0.5
 ```
 
+###Quote
+>One of the most fundamental, if not the fundamental, decision in object design is deciding where to put responsibilities. I’ve been working with objects for more than a decade, but I still never get it right the first time. That used to bother me, but now I realize that I can use refactoring to change my mind in these cases. p.167
+
+##Questions:
+- what is the receiver on page 35?
+- weird symbols on p127. T?L?1
+- don't understand what is happening on p. 184
+
+  - Stopped at p. 287

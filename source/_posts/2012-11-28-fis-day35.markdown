@@ -1,0 +1,55 @@
+---
+layout: post
+title: "FIS Day35"
+date: 2012-11-28 09:13
+comments: true
+categories: 
+---
+
+- Goal:
+  - if there is a no bounty div
+  - dont just render the TR for that bounty
+  - rather render the entire bounty table for that issue and insert that
+
+```javascript
+//the [0] is to make sure the element has something in it
+//it is the equivalent to a .exists? method
+ if ($("#bounties_table")[0]){
+//this adds the tr object defined in the controller
+    $('#bounties_table tbody').prepend("<%= j render(@bounty) %>");
+  } else {
+//replace with requires that you pass in the HTML-- not a selector
+    $("#no_bounty").replaceWith("<%= j render 'bounties/bounties_table', :issue => @bounty.issue %>")
+//the j escape is necessary to render the html
+  }
+```
+
+Comparing the inputs....
+```javascript Pulling out values for two different forms
+  $('button#pledge').live(
+    "click", (function() {
+    pageValue = $('#bounty_price_page').val();
+    modalValue(pageValue);
+  }));
+  
+  function modalValue(pageValue) {
+    $('#create-bounty').live(
+    "click", (function(event) {
+    modal = $('#bounty_price').val();
+    
+    if(parseInt(modal)!=parseInt(pageValue)){
+      event.preventDefault();
+      $('span#error').replaceWith('<span class="label label-important">Please Enter The Same Value</span>');
+    }   
+  }));
+}
+```
+
+- [elastic search](http://www.elasticsearch.org/)
+
+- [Serialization](http://en.wikipedia.org/wiki/Serialization)
+  - [rails documentation](http://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html)
+  - [rabl](http://railscasts.com/episodes/322-rabl?view=asciicast)
+  - [to_json](http://jonathanjulian.com/2010/04/rails-to_json-or-as_json/)
+
+  - [pull request to solve an issue](https://github.com/features/projects/issues)

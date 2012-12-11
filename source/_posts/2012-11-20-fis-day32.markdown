@@ -1,0 +1,72 @@
+---
+layout: post
+title: "FIS Day32"
+date: 2012-11-20 11:12
+comments: true
+categories: testing
+---
+
+###Git Services
+- [Service Hooks](https://help.github.com/articles/post-receive-hooks)
+- [github services repo](https://github.com/github/github-services)
+
+##Dan Integration Tests
+- test an app end to end
+- deal with your libs and your code
+- hit external services
+
+  - unit tests may not test bad arguments
+  - bad db queries or scope
+  - issues with external service
+
+- Unit tests are fast
+
+- speed
+  - don't use external services like the DB, that is what mocks and stubs are for
+
+- mocks, stubs and [mocha](https://github.com/freerange/mocha)
+
+- controller specs -> unit tests for controllers
+  - we have 20:1 Unit:integration test ratio
+
+###Factory Girl 
+  - reuseable test data
+  - defines attributes for a class
+  - can define relationships, like a user has an address
+  - `FactoryGirl.create(:user)`
+  - `FactoryGirl.build(:user)`
+  - `FactoryGirl.build_stubbed(:user)`
+  - `FactoryGirl.attributes_for(:user)`
+
+###Mocha-> stubs and mocks
+  - [RDoc](http://gofreerange.com/mocha/docs/)
+  - stubs -> sit in for this method, whenever you call this method, return this val
+    - user.bank_balance => returns 100.
+      - `MyClass.stub(:x => "ABC")`
+  - mocks -> like stubs, but must be called the specified number of times
+    - a mock if it is called or not called will fail a test
+    - use when you need something that is a little more specific
+      - `MyClass.expects(:y).with("arg").returns("ABC")`
+
+  - `Mocha::Configuation.prevent(:stubbing_non_existent_method)`
+
+###In Summary
+- Test basic behavior with intergration tests
+- Test complex behavior with unit tests
+
+
+##Kevin
+```ruby
+args.each_with_object({}) do |(key, selector), attrs|
+  attrs[key] = job_doc.css(selector).text
+end
+```
+
+- [open struct object](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html)
+  - [ruby quiz on open struct](http://www.rubyquiz.com/quiz81.html)
+
+- [Datepicker](http://amsul.github.com/pickadate.js/)
+
+###Libraries to look at for Gitbo
+- [Ender](https://github.com/ender-js/Ender)
+- [Bower](https://github.com/twitter/bower)

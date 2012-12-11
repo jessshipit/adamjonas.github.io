@@ -18,6 +18,8 @@ categories: shortcuts
   - ⌘T or ⌘R will allow you to jump to files really quickly
   - option, ⌘, . -> will close an html tag
   - ⌘P to create a new partial, ⇧⌘P to create and open a new partial ~> need to install this package
+  - ⌘U if I get to overzealous with the ⌘D selections
+  - ⌘, cntrl, G -> select everything of its kind on the page
 
 ###Terminal###
   - ⌘K clears the screen

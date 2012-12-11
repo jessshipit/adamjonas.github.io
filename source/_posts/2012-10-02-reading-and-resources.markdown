@@ -18,3 +18,5 @@ categories: reading
 - [rails ready script](https://github.com/joshfng/railsready)
 
 - [reading list](http://www.codinghorror.com/blog/2004/02/recommended-reading-for-developers.html) from Jeff Atwood
+
+- [Growing Object-Oriented Software, Guided by Tests](http://www.amazon.com/Growing-Object-Oriented-Software-Guided-Tests/dp/0321503627)
