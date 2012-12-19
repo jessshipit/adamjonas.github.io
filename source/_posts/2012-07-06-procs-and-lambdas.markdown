@@ -6,6 +6,19 @@ comments: true
 categories: ruby procs lambda
 ---
 
+
+In Ruby we create an anonymous chunk of code call `Proc.new`. We call this using the `.call` method. 
+
+Lambdas appear to be the same, but lambdas are pickier about arguments. Can't pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.
+
+Lambda return statement just exited execution of the statement itself. The proc ended execution of containing method.
+
+Extra short form for lambdas.
+
+As a rule, stick with lambdas until you find a specific reason not to.
+
+Convenient to write methods that accepts a single proc as arugments. Callers can pass in whatever code they want to be executed once of each name. This method that is so common that has a single argument that is expected to be a proc is got it's own name -- a block. Every ruby method can implicity receive a proc arg with the yield keyword.
+
 You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...
 
 Procs and lambdas are basically blocks that have been assigned to variables.

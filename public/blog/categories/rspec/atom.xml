@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rspec | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/rspec/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2012-12-11T10:37:03-05:00</updated>
+  <updated>2012-12-18T21:13:17-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -506,7 +506,13 @@ TDD is more model => controller => route</p>
     <link href="http://www.adamjonas.com/blog/rspec/"/>
     <updated>2012-09-24T13:21:00-04:00</updated>
     <id>http://www.adamjonas.com/blog/rspec</id>
-    <content type="html"><![CDATA[<p>```ruby
+    <content type="html"><![CDATA[<ul>
+<li><p><a href="https://gist.github.com/663876">cheatsheet</a></p></li>
+<li><p><a href="http://blog.carbonfive.com/2010/10/21/rspec-best-practices/">Good article</a> read it.</p></li>
+</ul>
+
+
+<p>```ruby
 it "has no brains" do</p>
 
 <pre><code>zombie = Zombie.new
@@ -574,6 +580,8 @@ tweet.status.length.should be &lt;= 140
 end
 ```</p>
 
+<h2>Level 2</h2>
+
 <p>Installing RSpec
 ```
 gem install rspec
@@ -584,7 +592,28 @@ rspec --init</p>
 <p>rails generate rspec:install
 ```</p>
 
-<p>```ruby Matchers: include
+<p>Running RSpec:
+```
+rspec</p>
+
+<h1>to run a directory</h1>
+
+<p>rspec spec/models/</p>
+
+<h1>to run a specific test</h1>
+
+<p>rspec spec/models/zombie_spec.rb</p>
+
+<h1>to run a specific line</h1>
+
+<p>rspec spec/models/zombie_spec.rb:4
+```</p>
+
+<p>Should match:
+<code>zombie.name.should matchj(/Ash Clone \d/)</code></p>
+
+<p>Include should be used anywhere where an item should be part of an array...
+```ruby Matchers: include
 describe Zombie do
   it 'includes a tweet' do</p>
 
@@ -616,11 +645,10 @@ zombie.should have(1).tweets
 </code></pre>
 
 <p>  end
-end</p>
-
-<h1>can also have</h1>
-
-<p>have(n)
+end
+<code>
+</code>ruby Can also have
+have(n)
 have_at_least(n)
 have_at_most(n)
 ```</p>
@@ -634,17 +662,28 @@ expect { zombie.eat_brains }.to change { zombie.iq }.by(3)
 </code></pre>
 
 <p>  end
-end</p>
-
-<h1>can also use</h1>
-
-<p>.by(n)
+end
+<code>
+</code>ruby Can also use
+.by(n)
 .from(n)
 .to(n)</p>
 
 <h1>and they can be chained</h1>
 
 <p>.from(1).to(5)
+<code>
+</code>ruby should have
+describe Zombie do
+  it 'increases the number of tweets' do</p>
+
+<pre><code>zombie = Zombie.new(name: 'Ash')
+zombie.tweets.new(message: "Arrrgggggggghhhhh")
+zombie.should have(1).tweets
+</code></pre>
+
+<p>  end
+end
 ```</p>
 
 <p>```ruby Raise_error
@@ -652,9 +691,7 @@ describe Zombie do
   it 'raises a Zombie::NotSmartEnoughError if not able to make a decision' do</p>
 
 <pre><code>zombie = Zombie.new
-expect { zombie.make_decision! }.to raise_error(
-  StandardError
-  )
+expect { zombie.make_decision! }.to raise_error(StandardError)
 </code></pre>
 
 <p>  end
@@ -667,7 +704,9 @@ not_to
 to_not
 ```</p>
 
-<p><code>ruby More Matchers
+<h3>More Matchers</h3>
+
+<p><code>ruby A list
 @zombie.should respond_to(hungry?)
 @zombie.should be_within(0.1).of(33.3)
 @zombie.should exist
@@ -675,6 +714,8 @@ to_not
 @hungry_zombie.should be_kind_of(Zombie) #Inheritance: HungryZombie &lt; Zombie
 @status.should be_an_instance_of(String)
 </code></p>
+
+<h3>Drying up specs</h3>
 
 <p>```ruby Subject</p>
 
@@ -711,6 +752,12 @@ should_not be_genius
 </code></pre>
 
 <p>  end
+end</p>
+
+<h1>OR</h1>
+
+<p>describe Zombie do
+  it {should_not be_genius}
 end
 ```
 This is only going to work if using a describe block with a class in it...</p>
@@ -792,7 +839,8 @@ its(:brains_eaten_count) { should == 1 }
 end
 ```</p>
 
-<p>```ruby Let
+<p>Use the let keyword to create different objects since you can only use subject once.
+```ruby Let
 describe Zombie do
   let(:tweet) { Tweet.new }</p>
 
@@ -806,9 +854,10 @@ describe Zombie do
 end
 ```</p>
 
-<p>```ruby Let!
+<p>```ruby Let! instantiates the zombie everytime instead of lazy eval
 describe Zombie do
-  context "with high iq" do</p>
+  context "with high iq" do
+  #changed Zombie.new to Zombie.create</p>
 
 <pre><code> let!(:zombie) { Zombie.create(iq: 3, name: 'Anna') }
  subject { zombie }
@@ -826,6 +875,13 @@ describe Zombie do
 end
 ```</p>
 
+<p>Using let with FactoryGirl
+```ruby</p>
+
+<p>   let(:issue) { create(:issue) }
+   let(:user) { create(:user) }
+```</p>
+
 <h3>Hooks</h3>
 
 <p><code>ruby
@@ -834,6 +890,19 @@ before(:all)
 after(:each)
 aftter(:all)
 </code></p>
+
+<p>```ruby
+describe Zombie do
+  let(:zombie) { Zombie.create }
+  subject { zombie }
+  before { zombie.eat_brains }</p>
+
+<pre><code>it { subject.should_not be_dummy}
+it { subject.should be_genius }  
+</code></pre>
+
+<p>end
+```</p>
 
 <p>```ruby
 before { zombie.hungry! }</p>
@@ -927,6 +996,32 @@ end
 </code></pre>
 
 <p>end
+```</p>
+
+<p>```ruby for a more explicit subject
+describe Zombie do</p>
+
+<h1>this is clearer</h1>
+
+<p>  it_behaves_like 'the undead' do</p>
+
+<pre><code>let(:undead) {Zombie.new}
+</code></pre>
+
+<p>  end</p>
+
+<h1>can do this</h1>
+
+<p>  it_behaves_like 'the undead', Zombie.new</p>
+
+<p>shared_examples_for 'the undead' do |undead|
+  it 'does not have a pulse' do</p>
+
+<pre><code>undead.pulse.should == false
+</code></pre>
+
+<p>  end
+end
 ```</p>
 ]]></content>
   </entry>

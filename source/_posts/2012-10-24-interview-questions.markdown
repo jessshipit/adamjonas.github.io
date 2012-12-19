@@ -20,3 +20,22 @@ categories:
 
 ###Reading
 - [Appacademy.io](http://hugomelo.com/post/35533342698/becoming-an-apprentice)
+
+
+- What devs want:
+  - room for growth and skills development
+  - high caliber team
+  - positive org structure
+  - opporunity to learn
+  - control over own work
+  - excitement about company's products
+  - convenient commute
+  - high base compensation -> would take 10% less if the company meets the other criteria
+
+- @debbiemadden200
+- <debbiemadden.blogspot.com>
+- dmadden at cyrusinnovation
+
+- [Puzzle Node](http://puzzlenode.com/)
+- [phone screen](https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions)
+- [get that job at google](http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html)

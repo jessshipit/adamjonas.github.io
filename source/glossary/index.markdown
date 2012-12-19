@@ -63,6 +63,9 @@ end
 Levels of Abstraction
 >Going up levels of abstraction means removing the details.
 
+Marshalling
+>The transformation of components stored in the memory of the device into usable data that may be utilized by one or more of the programs residing on the hard drive. The action of gathering data into storage areas for easy retrieval is greatly enhanced by the process of marshalling, as it allows programs to recover the data for use without the need to translate the components each time the action is called for. From this perspective, marshalling aids in the speedy function of many of the software programs used in homes and businesses every day.
+
 Mock
 >also called double, a mock is “an object that stands in for another object in an example”. This means that if we want to test the interaction between an object and another, we can mock the second one.
 
@@ -80,6 +83,9 @@ Recursion
 
 Referential integrity
 >The data in a foreign key needs to match the primary key in some record of the original table. Referential integrity assures there are no broken links between tables. Note that if you delete a record in the original table, for example, you delete one of the customers from the customer table, referential integrity requires that you delete all references to that customer in the order table. (see [:dependent => :destroy](http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html) for rails)
+
+Serialization
+>the context of data storage and transmission, serialization, is the process of converting a data structure or object state into a format that can be stored (for example, in a file or memory buffer, or transmitted across a network connection link) and "resurrected" later in the same or another computer environment. Also referred to as deflating or marshalling an object.
 
 SDK
 >software development kit

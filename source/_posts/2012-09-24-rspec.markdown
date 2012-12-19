@@ -6,6 +6,10 @@ comments: true
 categories: rspec
 ---
 
+- [cheatsheet](https://gist.github.com/663876)
+
+- [Good article](http://blog.carbonfive.com/2010/10/21/rspec-best-practices/) read it.
+
 ```ruby
 it "has no brains" do
 	zombie = Zombie.new
@@ -59,6 +63,8 @@ describe Tweet do
 end
 ```
 
+##Level 2
+
 Installing RSpec
 ```
 gem install rspec
@@ -68,6 +74,22 @@ rspec --init
 rails generate rspec:install
 ```
 
+Running RSpec:
+```
+rspec
+#to run a directory
+rspec spec/models/
+#to run a specific test
+rspec spec/models/zombie_spec.rb
+#to run a specific line
+rspec spec/models/zombie_spec.rb:4
+```
+
+Should match:
+`zombie.name.should matchj(/Ash Clone \d/)`
+
+
+Include should be used anywhere where an item should be part of an array...
 ```ruby Matchers: include
 describe Zombie do
   it 'includes a tweet' do
@@ -91,8 +113,8 @@ describe Zombie do
     zombie.should have(1).tweets
   end
 end
-
-#can also have
+```
+```ruby Can also have
 have(n)
 have_at_least(n)
 have_at_most(n)
@@ -105,22 +127,29 @@ describe Zombie do
     expect { zombie.eat_brains }.to change { zombie.iq }.by(3)
   end
 end
-
-#can also use
+```
+```ruby Can also use
 .by(n)
 .from(n)
 .to(n)
 #and they can be chained
 .from(1).to(5)
 ```
+```ruby should have
+describe Zombie do
+  it 'increases the number of tweets' do
+    zombie = Zombie.new(name: 'Ash')
+    zombie.tweets.new(message: "Arrrgggggggghhhhh")
+    zombie.should have(1).tweets
+  end
+end
+```
 
 ```ruby Raise_error
 describe Zombie do
   it 'raises a Zombie::NotSmartEnoughError if not able to make a decision' do
     zombie = Zombie.new
-    expect { zombie.make_decision! }.to raise_error(
-      StandardError
-      )
+    expect { zombie.make_decision! }.to raise_error(StandardError)
   end
 end
 #these modifiers also work
@@ -129,7 +158,8 @@ not_to
 to_not
 ```
 
-```ruby More Matchers
+###More Matchers
+```ruby A list
 @zombie.should respond_to(hungry?)
 @zombie.should be_within(0.1).of(33.3)
 @zombie.should exist
@@ -137,6 +167,7 @@ to_not
 @hungry_zombie.should be_kind_of(Zombie) #Inheritance: HungryZombie < Zombie
 @status.should be_an_instance_of(String)
 ```
+###Drying up specs
 
 ```ruby Subject
 #this
@@ -158,6 +189,10 @@ describe Zombie do
 	#implicit subject
     should_not be_genius
   end
+end
+#OR
+describe Zombie do
+  it {should_not be_genius}
 end
 ```
 This is only going to work if using a describe block with a class in it...
@@ -217,6 +252,7 @@ describe Zombie do
 end
 ```
 
+Use the let keyword to create different objects since you can only use subject once.
 ```ruby Let
 describe Zombie do
   let(:tweet) { Tweet.new }
@@ -229,9 +265,10 @@ describe Zombie do
 end
 ```
 
-```ruby Let!
+```ruby Let! instantiates the zombie everytime instead of lazy eval
 describe Zombie do
   context "with high iq" do
+  #changed Zombie.new to Zombie.create
      let!(:zombie) { Zombie.create(iq: 3, name: 'Anna') }
      subject { zombie }
 
@@ -246,12 +283,31 @@ describe Zombie do
 end
 ```
 
+Using let with FactoryGirl
+```ruby
+
+   let(:issue) { create(:issue) }
+   let(:user) { create(:user) }
+```
+
+
 ###Hooks###
 ```ruby
 before(:each)
 before(:all)
 after(:each)
 aftter(:all)
+```
+
+```ruby
+describe Zombie do
+  let(:zombie) { Zombie.create }
+  subject { zombie }
+  before { zombie.eat_brains }
+
+    it { subject.should_not be_dummy}
+    it { subject.should be_genius }  
+end
 ```
 
 ```ruby
@@ -288,7 +344,7 @@ describe Zombie do
   end
 end
 ```
-```ruby
+```ruby 
 describe Zombie do
   let(:zombie) { Zombie.create }
   before { zombie.iq = 0 }
@@ -318,3 +374,20 @@ shared_examples_for 'the undead' do
 	end
 end
 ```
+
+```ruby for a more explicit subject
+describe Zombie do
+#this is clearer
+  it_behaves_like 'the undead' do
+    let(:undead) {Zombie.new}
+  end
+#can do this
+  it_behaves_like 'the undead', Zombie.new
+
+shared_examples_for 'the undead' do |undead|
+  it 'does not have a pulse' do
+    undead.pulse.should == false
+  end
+end
+```
+

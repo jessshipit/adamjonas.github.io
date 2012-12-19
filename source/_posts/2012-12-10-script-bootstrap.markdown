@@ -45,3 +45,16 @@ installed = File.read('.bundle/checksum').strip
 - Once we changed the server script and we pushed, the permission issue went away. [This is how we changed the permission](http://shalinjain.com/index.php/2009/05/27/scriptserver-permission-denied-ruby-on-rails-error) in the first place.
 
 - [Git Script To Show Largest Pack Objects](http://stubbisms.wordpress.com/2009/07/10/git-script-to-show-largest-pack-objects-and-trim-your-waist-line/)
+
+###script prompt
+```ruby Slick Prompts
+echo "the database will now be created, migrated and seeded"
+echo "the current default is sqlite, if you'd like to customize your db settings"
+echo "update the config/database.yml file"
+echo "when finished, you may continue..."
+read -p "continue (y/n)?"
+  if [ $REPLY != "y" ]; then
+    echo "Exiting..."
+    exit 1
+  fi
+```

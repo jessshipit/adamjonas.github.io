@@ -19,4 +19,5 @@ categories:
 - `MagickTitle.say("Hello")` builds a PNG that predictably says "Hello"
 - the gifs on github are 13 pixels tall
 
-- 
+- svg image url
+- Moveable ink
