@@ -3,7 +3,7 @@ layout: post
 title: "Interview Prep"
 date: 2012-12-27 21:05
 comments: true
-categories: 
+categories: TODO
 ---
 
 from <https://github.com/afeld/rails_interview_questions>
@@ -20,27 +20,28 @@ As a rule, stick with lambdas until you find a specific reason not to.
 It is often convenient to write methods that accepts a single proc as arguments. Callers can pass in whatever code they want to be executed once for each name for example. It is so common to write a method that has a single argument that is expected to be a proc that it got it's own name -- a block. Every ruby method can implicitly receive a proc arg with the yield keyword.
 
 ###Q: How do you sort an Array of objects by a particular attribute? What is a better way to do sorting with ActiveRecord?
-A: 
-`User.all.sort_by{|u| u.first_name} #=> O(log n)`
-`User.order(“first_name DESC”) #=> O(1)`
+A: Let SQL do its job. It will be more efficient than writing it in Ruby.
 
+```ruby For example...
+User.all.sort_by{|u| u.first_name} #=> O(log n)
+#versus
+User.order(“first_name DESC”) #=> O(1)
+```
 
 ###Q: What are some of your favorite gems? What are their alternatives?
-A: Dalli- High performance memcached client for Ruby, paperclip and carrierwave.
-
+  - Dalli over the standard Memcached library- Higher performance memcached client
+  - paperclip and carrierwave.
 
 ###Q: In Ruby, which is generally the better option: a recursive function or an iterative one?
 A: Loops may achieve a performance gain for your computer. Recursion may achieve a performance gain for your programmer. Choose which is more important in your situation!
 
 Comparing recursion to iteration is like comparing a phillips head screwdriver to a flat head screwdriver. For the most part you could remove any phillips head screw with a flat head, but it would just be easier if you used the screwdriver designed for that screw right?
-Some algorithms just lend themselves to recursion because of the way they are designed (Fibonacci sequences, traversing a tree like structure, etc.). Recursion makes the algorithm more succinct and easier to understand (therefore shareable and reusable).
+Some algorithms just lend themselves to recursion because of the way they are designed (Fibonacci sequences, traversing a tree like structure, etc.). Recursion makes the algorithm more succinct and easier to understand (therefore shareable and reusable).[Pulled from](http://stackoverflow.com/questions/72209/recursion-or-iteration)
 
-<http://stackoverflow.com/questions/72209/recursion-or-iteration>
-
-recursion is, in general, the more natural approach in functional languages, and iteration is normally more intuitive in imperative languages.
+Recursion is, in general, the more natural approach in functional languages, and iteration is normally more intuitive in imperative languages.
 
 ###Q: What are #method_missing and #send? Why are they useful?
-A: <http://rubylearning.com/satishtalim/ruby_method_missing.html>
+- [Method Missing](http://rubylearning.com/satishtalim/ruby_method_missing.html)
 
 ###Q: What is the general history of Rails? 
   - Rails open sourced in 2004
