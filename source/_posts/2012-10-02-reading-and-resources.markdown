@@ -6,17 +6,24 @@ comments: true
 categories: reading
 ---
 
-- [ruby explained to a child](http://ruby4kids.com/ruby4kids/public/web_page/1)
+  - [Books to Read](http://blog.iterate.no/2012/08/19/books-everybody-should-read/)
 
-- Smalltalk best practice patterns
+  - [ruby explained to a child](http://ruby4kids.com/ruby4kids/public/web_page/1)
 
-- [List of free book resources](http://www.coderheya.com/) including:
-  
-  - [sublime](https://tutsplus.com/course/improve-workflow-in-sublime-text-2/)
-  - Bastards Book, Github Ruby Style guide, bash guide, 
+  - Smalltalk best practice patterns
 
-- [rails ready script](https://github.com/joshfng/railsready)
+  - [List of free book resources](http://www.coderheya.com/) including:
+    
+    - [sublime](https://tutsplus.com/course/improve-workflow-in-sublime-text-2/)
+    - Bastards Book, Github Ruby Style guide, bash guide, 
 
-- [reading list](http://www.codinghorror.com/blog/2004/02/recommended-reading-for-developers.html) from Jeff Atwood
+  - [rails ready script](https://github.com/joshfng/railsready)
 
-- [Growing Object-Oriented Software, Guided by Tests](http://www.amazon.com/Growing-Object-Oriented-Software-Guided-Tests/dp/0321503627)
+  - [reading list](http://www.codinghorror.com/blog/2004/02/recommended-reading-for-developers.html) from Jeff Atwood
+
+  - [Growing Object-Oriented Software, Guided by Tests](http://www.amazon.com/Growing-Object-Oriented-Software-Guided-Tests/dp/0321503627)
+
+  - [DHH's list](http://37signals.com/svn/posts/3375-the-five-programming-books-that-meant-most-to-me)
+    - [Are your lights on?](http://www.amazon.com/Are-Your-Lights-Figure-Problem/dp/0932633161/)
+
+  - Anything by Sandi Metz

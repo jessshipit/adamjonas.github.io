@@ -32,6 +32,11 @@ Domain model pattern versus active record
 [Execution in the kindom of nouns](http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html)
 
 
+- Leaky abstraction
+- Messaging architecture system
+
+- Tcp -> Lion based protocol
+
 TO READ:
 [keyword params code](https://github.com/avdi/keyword_params)
 

@@ -1,0 +1,48 @@
+---
+layout: post
+title: "Ruby Bits 2"
+date: 2012-12-20 12:39
+comments: true
+categories: ruby codeschool
+---
+
+```ruby Multiple Lambdas
+def exec_game(name, action, error_handler)
+    game = games.detect { |game| game.name = name }
+    begin
+      action.call(game)
+    rescue
+      error_handler.call
+    end
+  end
+```
+
+```ruby Lambda or Proc to Block
+library = Library.new(GAMES)
+printer = lambda { |game| puts "#{game.name} (#{game.system}) - #{game.year}" }
+library.each(&printer)
+```
+
+*Calling a method with & in front of a parameter*
+`tweets.each(&printer)`
+
+*Defining a method with & in front of a parameter*
+`def each(&block)`
+
+```ruby Passing blocks around...
+  def each
+    games.each do |game|
+      yield game
+    end
+  end
+
+#refactored as
+  
+  def each(&block)
+    games.each(&block)
+  end
+```
+
+```ruby Symbol to Proc
+#going to paste code here...
+```

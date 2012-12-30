@@ -35,6 +35,9 @@ Defensive Programming
 Duck Typing
 >an object's type is determined by what it can do, not by its class.
 
+Eager Loading
+>a way to find objects of a certain class and a number of named associations. This is one of the easiest ways of to prevent the dreaded N+1 problem in which fetching 100 posts that each need to display their author triggers 101 database queries. Through the use of eager loading, the 101 queries can be reduced to 2. `Post.includes(:author).each do |post|` will optimize the retrieval of an author. [Read more](http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html)
+
 Fixtures
 >refers to the fixed state used as a baseline for running tests in software testing. The purpose of a test fixture is to ensure that there is a well known and fixed environment in which tests are run so that results are repeatable.
 
