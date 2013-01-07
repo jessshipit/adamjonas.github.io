@@ -8,6 +8,10 @@ categories: ruby
 
 Ternary operators are simply a short form of an if-else statement in one line.
 
+As a concise alternative to simple if/else statements we can use the conditional or ternary ?: operator. It is the only ternary operator (three operands) in Ruby. It has the following basic structure:
+
+`(condition) ? (result if condition is true) : (result if condition is false)`
+
 The following sample will print “The variable is 10″ if var is equal to 10. Otherwise it will print “The variable is Not 10″.
 ```ruby An example
 print “The variable is ” + (var == 10 ? “10″ : “Not 10″)
@@ -39,3 +43,7 @@ The part before the question mark is the "if condition". the part behind it is t
 <h3>Name:</h3>
 <%= @user.name ? @user.name : "<em>[no name set]</em>" %>
 ```
+
+
+- Reading:
+  - [Ruby Learning](http://rubylearning.com/satishtalim/simple_constructs.html)

@@ -1,0 +1,66 @@
+---
+layout: post
+title: "Jan 3 Notes"
+date: 2013-01-03 12:12
+comments: true
+categories: 
+---
+
+###Adding a comma for big numbers
+`<%= number_with_delimiter(repo.watchers, :delimiter => ',')`
+[From](http://stackoverflow.com/questions/1078347/is-there-a-rails-trick-to-adding-commas-to-large-numbers)
+
+###UI/UX strategy
+  - kickstarter- encouraging click through rather than interaction.
+  - digg, stackoverflow, and reddit are closer to the functionality we want.
+  - don't reinvent the wheel -> move forward.
+
+###Bounty Claims
+
+- Psuedo code: collect the info from the user (modal)
+
+- this is sent to verification layer
+  - bounty controller?
+
+  1. make sure the issue is closed
+  2. make sure that an issue has a bounty
+  3. make sure the issue was solved by the bounty claimer
+
+- if true- send verification to both bounty claimer and bounty author
+  - write the user id for all bounties the claimer solved
+  - change the badge/trigger payment on the profile pages of the bounty issuer
+  - tell gitbo admin that this was solved.
+
+- if false tell them why
+
+
+###A modal mess
+  - We were trying to pass in multiple parameters in the url. But why do that?
+
+```ruby This is simpler
+<div class="modal-body">
+  <%= form_tag(bounty_claim_path) do %>
+  <div class="field">
+    <label for="owner_name">Repo Owner Name</label>
+    <input id="owner_name" name="owner_name" type="text" />
+  </div>
+  <div class="field">
+    <label for="repo_name">Repo Name</label>
+    <input id="repo_name" name="repo_name" type="text" />
+  </div>
+  <div class="field">
+    <label for="git_number">Github Issue Number</label>
+    <input id="git_number" name="git_number" type="text" />
+  </div>
+  <div class="modal-footer">
+    <span id="error"></span>
+    <div class="actions">
+      <button class='btn btn-success btn-small'>Submit</button>
+      <button class="btn btn-danger btn-small" data-dismiss="modal" aria-hidden="true">Oopsy</button>
+    </div>
+  </div>
+  <% end %>
+</div>
+```
+  
+  - Just submit to a static url and pass in the info via params. 

@@ -37,7 +37,9 @@ end
 ```
 Another e.g. determining if a number is even or odd.
 
-  - *O(log n)* -> logarithmic time -> Any algorithm which cuts the problem in half each time is O(log n). The operation will take longer as the input size increases, but once the input gets fairly large it won't change enough to worry about. If you double n, you have to spend an extra amount of time t to complete the task. If n doubles again, the time it takes to complete the task won’t double, but will increase by a constant amount. (e.g. [binary search tree](http://styliii.com/blog/2012/12/26/what-is-a-binary-search-tree/))
+  - *O(log n)* -> logarithmic time -> Any algorithm which cuts the problem in half each time is O(log n). The operation will take longer as the input size increases, but once the input gets fairly large it won't change enough to worry about. If you double n, you have to spend an extra amount of time t to complete the task. If n doubles again, the time it takes to complete the task won’t double, but will increase by a constant amount. (e.g. a binary search tree
+    - A *Binary Search Tree* is a tree comprised of multiple nodes with one root node to start with.  Each node has a value, left node, and a right node.  The left node value has to be less than the current node value, while the right node value is greater than the current.  The biggest concern with a binary search tree is balancing.  If the tree becomes unbalanced, the O(log(n)) benefit can become O(n) if the tree unbalanced (a tree with only a right path).
+      - [further Binary Search Tree reading](http://styliii.com/blog/2012/12/26/what-is-a-binary-search-tree/))
   - *O(N)* -> Linear Time -> the larger the input, the longer it takes. AKA it will grow linearly and in direct proportion to the size of the input data set.
   - *O(n log n)* means that you’re performing an *O(log n)* operation for each item in your input. Most (efficient) sort algorithms are an example of this including quicksort (in the average and best case), heapsort and merge sort.
   - *O(N^2)* represents an algorithm whose performance is directly proportional to the square of the size of the input data set. Every time n doubles, the operation takes four times as long. (e.g.s are comparison algorithms like quicksort and bubble sort)
@@ -109,6 +111,15 @@ Constant Time -> O(1) < Linear Time -> O(n) < Linearithmic Time -> O(nlogn) < Qu
   - recursively done on the left sublist and then the right sublist.
   - Time complexity -> O(nlogn) for best and average. An inversely sorted list will still require O(n^2).
 
+###Example
+Given  a  sorted  array  of  integers,  how  can  you  find  the  location  of  a  particular  integer  x?
+
+*Good  answer:*  Use  binary  search.   Compare  the  number  in  the  middle  of  the  array  with  x.   If  it  is  equal,  we  are  done.   If  the  number  is  greater,  we  know  to  look  in  the  second  half  of  the  array.   If  it  is  smaller,  we  know  to  look  in  the  first  half.   We  can  repeat  the  search  on  the  appropriate  half  of  the  array  by  comparing  the  middle element  of  that  array  with  x,  once  again  narrowing  our  search  by  a  factor  of  2.   We  repeat  this  process  until  we  find  x.  This  algorithm  takes  *O(log n)*  time.
+
+*Not‐so‐good  answer: * Go  through  each  number  in  order  and  compare  it  to  x.  This 
+algorithm  takes  *O(n)*  time.
+
+- ([from](http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf))
 
 ##Further reading:
   - [stackoverflow](http://stackoverflow.com/questions/107165/big-o-for-eight-year-olds/107189#107189)

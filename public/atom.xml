@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2012-12-30T00:37:46-05:00</updated>
+  <updated>2013-01-07T12:15:06-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,289 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Jan 4 Notes]]></title>
+    <link href="http://www.adamjonas.com/blog/jan-4-notes/"/>
+    <updated>2013-01-04T11:30:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/jan-4-notes</id>
+    <content type="html"><![CDATA[<ul>
+<li>Created deploy user or go as root?
+
+<ul>
+<li>scp => ssh copy from home dir to files online</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Goals for payments</h3>
+
+<ul>
+<li>verification is done.
+
+<ul>
+<li>set up payment long form for when a user submits a bounty for the first time.
+
+<ul>
+<li>short form for 2nd payment and beyond?</li>
+</ul>
+</li>
+<li>need to notify the bounty author when a bounty has been claimed &amp;&amp; verified.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Reference Spike&#8217;s resources</h3>
+
+<ul>
+<li><a href="https://github.com/spikegrobstein/flatironschool-deployment_lecture">Github</a></li>
+</ul>
+
+
+<h3>Setting up a staging server</h3>
+
+<ul>
+<li><p>need to configure nginx to handle another environment</p></li>
+<li><p>configured <code>nginx.conf</code></p></li>
+<li><p>copy up or pull down files: <code>scp /fileonmycomp deploy@git.bo:filename</code></p></li>
+<li><p><code>sudo nginx -s stop</code></p></li>
+<li><p><code>sudo nginx</code> -> starts nginx</p></li>
+<li><p>update the DNS so that it points to that IP address</p></li>
+</ul>
+
+
+<h3>Railscast on setting up another env #72</h3>
+
+<ul>
+<li>can make as many environments as you want
+
+<ul>
+<li>add a <code>staging.rb</code></li>
+<li>copy <code>production.rb</code>, but enable debug for the log</li>
+<li>need to create block in the <code>database.yml</code> file as well</li>
+<li><code>rails s -e staging</code> will start the server in that env
+
+<ul>
+<li><code>rails c staging</code> will start the console in that env</li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Ruby Gems</h3>
+
+<p><code>gem env</code> shows the paths of your RubyGem Enviroment</p>
+
+<h3>Create Postgres DB</h3>
+
+<ul>
+<li><a href="http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/">Cyberciti</a></li>
+</ul>
+
+
+<h3>Migrate Postgres DB</h3>
+
+<ul>
+<li><code>bundle exec rake db:migrate RAILS_ENV=staging</code></li>
+</ul>
+
+
+<h3>Precompiling locally</h3>
+
+<ul>
+<li><code>bundle exec rake assets:precompile</code></li>
+</ul>
+
+
+<h3>Undoing the last Github commit</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/927358/undo-last-git-commit"><code>git reset --soft HEAD^</code></a></li>
+</ul>
+
+
+<h3>Passenger environment nginx config</h3>
+
+<ul>
+<li></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jan 3 Notes]]></title>
+    <link href="http://www.adamjonas.com/blog/jan-3-notes/"/>
+    <updated>2013-01-03T12:12:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/jan-3-notes</id>
+    <content type="html"><![CDATA[<h3>Adding a comma for big numbers</h3>
+
+<p><code>&lt;%= number_with_delimiter(repo.watchers, :delimiter =&gt; ',')</code>
+<a href="http://stackoverflow.com/questions/1078347/is-there-a-rails-trick-to-adding-commas-to-large-numbers">From</a></p>
+
+<h3>UI/UX strategy</h3>
+
+<ul>
+<li>kickstarter- encouraging click through rather than interaction.</li>
+<li>digg, stackoverflow, and reddit are closer to the functionality we want.</li>
+<li>don&#8217;t reinvent the wheel -> move forward.</li>
+</ul>
+
+
+<h3>Bounty Claims</h3>
+
+<ul>
+<li><p>Psuedo code: collect the info from the user (modal)</p></li>
+<li><p>this is sent to verification layer</p>
+
+<ul>
+<li><p>bounty controller?</p></li>
+<li><p>make sure the issue is closed</p></li>
+<li>make sure that an issue has a bounty</li>
+<li>make sure the issue was solved by the bounty claimer</li>
+</ul>
+</li>
+<li><p>if true- send verification to both bounty claimer and bounty author</p>
+
+<ul>
+<li>write the user id for all bounties the claimer solved</li>
+<li>change the badge/trigger payment on the profile pages of the bounty issuer</li>
+<li>tell gitbo admin that this was solved.</li>
+</ul>
+</li>
+<li><p>if false tell them why</p></li>
+</ul>
+
+
+<h3>A modal mess</h3>
+
+<ul>
+<li>We were trying to pass in multiple parameters in the url. But why do that?</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>This is simpler</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;modal-body&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= form_tag(bounty_claim_path) do %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;div class=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;owner_name&quot;</span><span class="o">&gt;</span><span class="no">Repo</span> <span class="no">Owner</span> <span class="no">Name</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
+</span><span class='line'><span class="sr">    &lt;input id=&quot;owner_name&quot; name=&quot;owner_name&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;div class=&quot;field&quot;&gt;</span>
+</span><span class='line'><span class="sr">    &lt;label for=&quot;repo_name&quot;&gt;Repo Name&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="sr">/&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;git_number&quot;</span><span class="o">&gt;</span><span class="no">Github</span> <span class="no">Issue</span> <span class="no">Number</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
+</span><span class='line'><span class="sr">    &lt;input id=&quot;git_number&quot; name=&quot;git_number&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;div class=&quot;modal-footer&quot;&gt;</span>
+</span><span class='line'><span class="sr">    &lt;span id=&quot;error&quot;&gt;&lt;/s</span><span class="n">pan</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s1">&#39;btn btn-success btn-small&#39;</span><span class="o">&gt;</span><span class="no">Submit</span><span class="o">&lt;</span><span class="sr">/button&gt;</span>
+</span><span class='line'><span class="sr">      &lt;button class=&quot;btn btn-danger btn-small&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;Oopsy&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Just submit to a static url and pass in the info via params.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jan 2 Notes]]></title>
+    <link href="http://www.adamjonas.com/blog/jan-2-notes/"/>
+    <updated>2013-01-02T13:11:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/jan-2-notes</id>
+    <content type="html"><![CDATA[<h3>Bash Environment Variables</h3>
+
+<p>I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify Gitbo&#8217;s server issue last week. Since <code>issue.js</code> has been compiled into <code>application.js</code>, it is listening twice.</p>
+
+<p>StackOverflow had <a href="http://stackoverflow.com/questions/9641320/rails-assets-dont-get-updated">this to say</a> and this solution <code>bundle exec RAILS_ENV=development rake rails_group=assets assets:clean</code>.</p>
+
+<ol>
+<li>The <code>bundle exec</code> would be needed if the gem file and my system files were different. In Gitbo&#8217;s case, there is no discrepancy. On the server, that can&#8217;t be assumed and <code>bundle exec</code> would be needed.</li>
+<li>The default environment for a rake task is development <strong>except</strong> for assets which obviously have more to do with production.</li>
+<li>Rake tasks are very flexible in terms of how they take <em>bash environment variables</em> (they are sort of like arguments, but they aren&#8217;t). Passing in the rails_environment before the rake task is how I did it, but they could be passed in afterwards and that would be fine because BASH reads the entire line of code before it executes it.</li>
+</ol>
+
+
+<p>Here was the final command I used: <code>RAILS_ENV=development RAILS_GROUP=assets rake assets:clean</code></p>
+
+<h3>Skeleton</h3>
+
+<ul>
+<li>Site is <a href="http://www.getskeleton.com/">here</a></li>
+<li>Installed <a href="https://github.com/helios-technologies/skeleton-rails">skeleton-rails</a></li>
+<li>An alternative to rails</li>
+</ul>
+
+
+<h3>Instance Variables</h3>
+
+<ul>
+<li><p>Show does have an instance variable. The view is attached to an instance of a controller</p></li>
+<li><p>In a partial, this is just crazy&#8230;</p>
+
+<ul>
+<li>a view is not part of the controller, so why should it have access to an instance of a controller.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Further reading on this: <a href="http://rails-bestpractices.com/posts/27-replace-instance-variable-with-local-variable">Rails Best Practices</a> and <a href="http://programmers.stackexchange.com/questions/127838/why-do-people-suggest-not-to-use-instance-variable-for-views-in-ruby-on-rails">Stack Exchange</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Parallelism]]></title>
+    <link href="http://www.adamjonas.com/blog/parallelism/"/>
+    <updated>2013-01-01T21:30:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/parallelism</id>
+    <content type="html"><![CDATA[<h3>Threads  and  processes:</h3>
+
+<p>A  computer  will  often  appear  to  be  doing  many  things  simultaneously,  such  as  checking  for  new  e‐mail  messages,  saving  a  Word  document,  and  loading  a  website. Each  program  is  a  separate  &#8220;process&#8221;.   Each  process  has  one  or  more  &#8220;threads. &#8220;  If  a  process  has  several  threads,  they  appear  to  run  simultaneously.  For  example,  an  e‐mail  client  may  have  one  thread  that  checks  for  new  e‐mail  messages  and  one  thread  for  the  GUI  so  that  it  can  show  a  button  being  pressed.  In  fact,  only  one  thread  is  being  run  at  any  given  time.  The  processor  switches  between  threads  so  quickly  that  they  appear  to  be  running  simultaneously. Multiple  threads  in  a  single  process  have  access  to  the  same  memory.   By  contrast,  multiple  processes  have  separate  regions  of  memory  and  can  only  communicate  by  special  mechanisms.  The  processor  loads  and  saves  a  separate  set  of  registers  for  each  thread. Remember,  each  process  has  one  or  more  threads,  and  the  processor  switches  between  threads.</p>
+
+<ul>
+<li><a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">From</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Big O Notation]]></title>
@@ -81,7 +364,17 @@
 <p>Another e.g. determining if a number is even or odd.</p>
 
 <ul>
-<li><em>O(log n)</em> -> logarithmic time -> Any algorithm which cuts the problem in half each time is O(log n). The operation will take longer as the input size increases, but once the input gets fairly large it won&#8217;t change enough to worry about. If you double n, you have to spend an extra amount of time t to complete the task. If n doubles again, the time it takes to complete the task won’t double, but will increase by a constant amount. (e.g. <a href="http://styliii.com/blog/2012/12/26/what-is-a-binary-search-tree/">binary search tree</a>)</li>
+<li><em>O(log n)</em> -> logarithmic time -> Any algorithm which cuts the problem in half each time is O(log n). The operation will take longer as the input size increases, but once the input gets fairly large it won&#8217;t change enough to worry about. If you double n, you have to spend an extra amount of time t to complete the task. If n doubles again, the time it takes to complete the task won’t double, but will increase by a constant amount. (e.g. a binary search tree
+
+<ul>
+<li>A <em>Binary Search Tree</em> is a tree comprised of multiple nodes with one root node to start with.  Each node has a value, left node, and a right node.  The left node value has to be less than the current node value, while the right node value is greater than the current.  The biggest concern with a binary search tree is balancing.  If the tree becomes unbalanced, the O(log(n)) benefit can become O(n) if the tree unbalanced (a tree with only a right path).
+
+<ul>
+<li><a href="http://styliii.com/blog/2012/12/26/what-is-a-binary-search-tree/">further Binary Search Tree reading</a>)</li>
+</ul>
+</li>
+</ul>
+</li>
 <li><em>O(N)</em> -> Linear Time -> the larger the input, the longer it takes. AKA it will grow linearly and in direct proportion to the size of the input data set.</li>
 <li><em>O(n log n)</em> means that you’re performing an <em>O(log n)</em> operation for each item in your input. Most (efficient) sort algorithms are an example of this including quicksort (in the average and best case), heapsort and merge sort.</li>
 <li>*O(N<sup>2)*</sup> represents an algorithm whose performance is directly proportional to the square of the size of the input data set. Every time n doubles, the operation takes four times as long. (e.g.s are comparison algorithms like quicksort and bubble sort)</li>
@@ -243,6 +536,20 @@
 <li>when both pointers and pivot are at the same value, it is in the right position</li>
 <li>recursively done on the left sublist and then the right sublist.</li>
 <li>Time complexity -> O(nlogn) for best and average. An inversely sorted list will still require O(n<sup>2).</sup></li>
+</ul>
+
+
+<h3>Example</h3>
+
+<p>Given  a  sorted  array  of  integers,  how  can  you  find  the  location  of  a  particular  integer  x?</p>
+
+<p><em>Good  answer:</em>  Use  binary  search.   Compare  the  number  in  the  middle  of  the  array  with  x.   If  it  is  equal,  we  are  done.   If  the  number  is  greater,  we  know  to  look  in  the  second  half  of  the  array.   If  it  is  smaller,  we  know  to  look  in  the  first  half.   We  can  repeat  the  search  on  the  appropriate  half  of  the  array  by  comparing  the  middle element  of  that  array  with  x,  once  again  narrowing  our  search  by  a  factor  of  2.   We  repeat  this  process  until  we  find  x.  This  algorithm  takes  <em>O(log n)</em>  time.</p>
+
+<p><em>Not‐so‐good  answer: </em> Go  through  each  number  in  order  and  compare  it  to  x.  This 
+algorithm  takes  <em>O(n)</em>  time.</p>
+
+<ul>
+<li>(<a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">from</a>)</li>
 </ul>
 
 
@@ -577,6 +884,42 @@ end
 <p>Datamapper has ‘eager loading’ by default, while ActiveRecord, you need to stipulate using the ‘includes’ method. This basically can cut down the amount of database queries in a normalized database by an order of magnitude. Instead of first running a query on the parent table, then running the same numbers of queries on the association table to get associated data, it just collects foreign keys for all the associations and then loads all associated objects with one query. Pretty cool!</p>
 
 <p>Datamapper - model driven, whereas ActiveRecord is Database driven. Meaning, once the needs of the application dictate that the database become fairly complex, it can be a pain point when using AR.</p>
+
+<h3>Recursion</h3>
+
+<ul>
+<li><p><a href="http://ruby.bastardsbook.com/chapters/recursion/">Bastards Book on recursion (still a draft at this time )</a></p></li>
+<li><p>There are two principles of recursion</p>
+
+<ol>
+<li>An end goal, or base case</li>
+<li>A process in which the task at hand is reduced towards that end goal</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Pointer-based algorithms</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Pointer_(computer_programming">Pointers</a>)</li>
+</ul>
+
+
+<h3>P = NP?</h3>
+
+<ul>
+<li>Are there situations where brute-force search— that is, trying an exponential number of possibilities one-by-one, until we find a solution that satisfies all the stated constraints— is essentially the best algorithm possible? (<a href="http://www.scottaaronson.com/blog/?p=459">from p vs. np for dummies</a>)</li>
+<li><a href="http://en.wikipedia.org/wiki/P_versus_NP_problem">wikipedia</a>
+
+<ul>
+<li>P vs NP is basically talking about problems where you can checking each possibility in a reasonable amount of time, but the number of possibility&#8217;s keeps growing faster as the numbers get larger.</li>
+<li>some of these problems are such that there is no way to come up with an exact solution that is faster than being forced to do a brute force check of all or many of the possible solutions.</li>
+<li>The essence of P vs. NP. P is the class of problems where the cost of computing an exact solution doesn&#8217;t necessarily grow too fast relative to input sizes to be impractical with real-world computers. NP is the class of problems that are equivalent to P problems if you happen to have a magical computer which could evaluate and compare any number of possible solutions simultaneously. Naturally, NP will include all of the P problems, so NP-complete problems are taken to be the set of problem for which only the magical computer would be suitable. (from <a href="http://news.ycombinator.com/item?id=1605415">Hacker news discussion</a>)</li>
+</ul>
+</li>
+</ul>
+
 
 <h3>Practice</h3>
 
@@ -1282,340 +1625,6 @@ end
 
 
 <p><code>Load: true</code> will load the active record object as opposed to the</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day37]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day37/"/>
-    <updated>2012-11-30T10:12:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day37</id>
-    <content type="html"><![CDATA[<ul>
-<li><p>click around without being authenticated</p>
-
-<h2>- modal prompt</h2></li>
-<li><p>upload repo</p>
-
-<ul>
-<li>user stories of issues that needs to be fixed</li>
-</ul>
-</li>
-<li>as a fixer
-
-<ul>
-<li>user story of finding an issue
-
-<ul>
-<li>sort by popularity/ bounty$</li>
-</ul>
-</li>
-<li>fix an issue
-
-<ul>
-<li>notify bounty issuer</li>
-</ul>
-</li>
-<li></li>
-</ul>
-</li>
-</ul>
-
-
-<p>tech challenges
-  - sidekiq
-  - memcache</p>
-
-<ul>
-<li><code>git reset --hard &lt;tag/branch/commit id&gt;</code></li>
-<li><code>git branch -D bugfix</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>None of this worked&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_upvote.icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up icon-circle-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="c1">// $(&#39;i#index_downvote.icon-arrow-down&#39;).removeClass().addClass(&#39;icon-arrow-down&#39;);</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_downvote.icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down icon-arrow-down &#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="c1">// $(&#39;i#index_upvote.icon-arrow-up&#39;).removeClass().addClass(&#39;icon-arrow-up&#39;);</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_upvote.icon-arrow-up, i#index_downvote.icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">$parent</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">parent</span><span class="p">(),</span>
-</span><span class='line'>  <span class="nx">up</span> <span class="o">=</span> <span class="nx">$parent</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;i.icon-arrow-down&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;icon-circle-arrow-down icon-arrow-up&quot;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;i.icon-arrow-down&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>This Did It in Vote Js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$upvoteIcon</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;tr#issue_&lt;%= @issue.id %&gt; i#upvote-icon-&lt;%= @issue.id %&gt;&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">$downvoteIcon</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;tr#issue_&lt;%= @issue.id %&gt; i#down-vote-icon-&lt;%= @issue.id %&gt;&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;%</span> <span class="k">if</span> <span class="nx">params</span><span class="p">[</span><span class="o">:</span><span class="nx">direction</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;upvote&quot;</span> <span class="o">%&gt;</span>
-</span><span class='line'>  <span class="nx">$downvoteIcon</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">$upvoteIcon</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;%</span> <span class="nx">elsif</span> <span class="nx">params</span><span class="p">[</span><span class="o">:</span><span class="nx">direction</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;downvote&quot;</span> <span class="o">%&gt;</span>
-</span><span class='line'>  <span class="nx">$downvoteIcon</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">$upvoteIcon</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;%</span> <span class="nx">end</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>CSS IDs</h3>
-
-<ul>
-<li>SO that badge class was overwritten in an attempt to make them bigger. A fix is to simply assign the overwrite to an id and then call it on the element.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>This Did It in Vote Js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">#</span><span class="nx">endorsement</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">code</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">span</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;endorsement&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;badge badge-success&quot;</span><span class="o">&gt;</span><span class="nx">Endorsed</span><span class="o">&lt;</span><span class="err">/span&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cool.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day36]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day36/"/>
-    <updated>2012-11-29T10:30:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day36</id>
-    <content type="html"><![CDATA[<p><code>$ rake db:migrate:down VERSION=20080930121212</code></p>
-
-<h3>Lessons Learned</h3>
-
-<ul>
-<li>We were having trouble adding styling to the vote button after a click, like on stackoverflow.
-
-<ul>
-<li>the javascript was located in the vote.js file and would only trigger after the second event
-
-<ul>
-<li><em>ANSWER:</em> The vote is only created after the vote button is clicked the first time, thus if we moved it to issue.js it would work fine.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Merging an upstream and updating the gem</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git fetch upstream
-</span><span class='line'>♕ git merge upstream/master
-</span><span class='line'>#resolve your conflicts
-</span><span class='line'>
-</span><span class='line'>#bundle update gem --source git_user_name
-</span><span class='line'>bundle update octokit --source ajonas04</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>A Simple Click Event</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a.upvote&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://www.w3resource.com/twitter-bootstrap/modals-tutorial.php">Twitter bootstrap modal tutorial</a></li>
-</ul>
-
-
-<p>Data-backdrop:</p>
-
-<blockquote><p>Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn&#8217;t close the modal on click.</p></blockquote>
-
-<h2>Andrew Koch VP of Product Management @ Lot18</h2>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day35]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day35/"/>
-    <updated>2012-11-28T09:13:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day35</id>
-    <content type="html"><![CDATA[<ul>
-<li>Goal:
-
-<ul>
-<li>if there is a no bounty div</li>
-<li>dont just render the TR for that bounty</li>
-<li>rather render the entire bounty table for that issue and insert that</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//the [0] is to make sure the element has something in it</span>
-</span><span class='line'><span class="c1">//it is the equivalent to a .exists? method</span>
-</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#bounties_table&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]){</span>
-</span><span class='line'><span class="c1">//this adds the tr object defined in the controller</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounties_table tbody&#39;</span><span class="p">).</span><span class="nx">prepend</span><span class="p">(</span><span class="s2">&quot;&lt;%= j render(@bounty) %&gt;&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'><span class="c1">//replace with requires that you pass in the HTML-- not a selector</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#no_bounty&quot;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="s2">&quot;&lt;%= j render &#39;bounties/bounties_table&#39;, :issue =&gt; @bounty.issue %&gt;&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="c1">//the j escape is necessary to render the html</span>
-</span><span class='line'>  <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Comparing the inputs&#8230;.</p>
-
-<figure class='code'><figcaption><span>Pulling out values for two different forms</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;button#pledge&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">pageValue</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounty_price_page&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
-</span><span class='line'>    <span class="nx">modalValue</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}));</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">modalValue</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#create-bounty&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">modal</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounty_price&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">modal</span><span class="p">)</span><span class="o">!=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">)){</span>
-</span><span class='line'>      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span#error&#39;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="s1">&#39;&lt;span class=&quot;label label-important&quot;&gt;Please Enter The Same Value&lt;/span&gt;&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}));</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p><a href="http://www.elasticsearch.org/">elastic search</a></p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a></p>
-
-<ul>
-<li><a href="http://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html">rails documentation</a></li>
-<li><a href="http://railscasts.com/episodes/322-rabl?view=asciicast">rabl</a></li>
-<li><p><a href="http://jonathanjulian.com/2010/04/rails-to_json-or-as_json/">to_json</a></p></li>
-<li><p><a href="https://github.com/features/projects/issues">pull request to solve an issue</a></p></li>
-</ul>
-</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIS Day34]]></title>
-    <link href="http://www.adamjonas.com/blog/fis-day34/"/>
-    <updated>2012-11-27T19:14:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/fis-day34</id>
-    <content type="html"><![CDATA[<ul>
-<li><p><a href="https://github.com/apneadiving/Google-Maps-for-Rails">Google Maps for Rails</a></p>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=Yg5-33zedqM">screencast</a></li>
-</ul>
-</li>
-<li><p><a href="http://jsonviewer.stack.hu/">json viewer</a></p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Handhistory</span><span class="o">.</span><span class="n">find_each</span><span class="p">(</span><span class="ss">:batch_size</span> <span class="o">=&gt;</span> <span class="mi">100000</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">hand</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">bb</span> <span class="o">=</span> <span class="n">hand</span><span class="o">.</span><span class="n">gametype</span><span class="o">.</span><span class="n">bigblind</span>
-</span><span class='line'>  <span class="c1">#etc</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>add indexes</li>
-<li><p>database driver connects database to active record</p>
-
-<ul>
-<li>for example sqlite3 gem</li>
-</ul>
-</li>
-<li><p><a href="http://www.highcharts.com/">high charts</a> -> javascript lib</p></li>
-</ul>
-
 ]]></content>
   </entry>
   

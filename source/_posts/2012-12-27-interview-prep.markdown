@@ -178,6 +178,22 @@ Datamapper has ‘eager loading’ by default, while ActiveRecord, you need to s
 
 Datamapper - model driven, whereas ActiveRecord is Database driven. Meaning, once the needs of the application dictate that the database become fairly complex, it can be a pain point when using AR. 
 
+###Recursion
+  - [Bastards Book on recursion (still a draft at this time )](http://ruby.bastardsbook.com/chapters/recursion/)
+
+  - There are two principles of recursion
+    1. An end goal, or base case
+    2. A process in which the task at hand is reduced towards that end goal
+
+###Pointer-based algorithms 
+ - [Pointers](http://en.wikipedia.org/wiki/Pointer_(computer_programming))
+
+###P = NP?
+  - Are there situations where brute-force search— that is, trying an exponential number of possibilities one-by-one, until we find a solution that satisfies all the stated constraints— is essentially the best algorithm possible? ([from p vs. np for dummies](http://www.scottaaronson.com/blog/?p=459))
+  - [wikipedia](http://en.wikipedia.org/wiki/P_versus_NP_problem)
+    - P vs NP is basically talking about problems where you can checking each possibility in a reasonable amount of time, but the number of possibility's keeps growing faster as the numbers get larger. 
+    - some of these problems are such that there is no way to come up with an exact solution that is faster than being forced to do a brute force check of all or many of the possible solutions.
+    - The essence of P vs. NP. P is the class of problems where the cost of computing an exact solution doesn't necessarily grow too fast relative to input sizes to be impractical with real-world computers. NP is the class of problems that are equivalent to P problems if you happen to have a magical computer which could evaluate and compare any number of possible solutions simultaneously. Naturally, NP will include all of the P problems, so NP-complete problems are taken to be the set of problem for which only the magical computer would be suitable. (from [Hacker news discussion](http://news.ycombinator.com/item?id=1605415))
 
 ###Practice
   - [Daily programmer](http://www.reddit.com/r/dailyprogrammer/)

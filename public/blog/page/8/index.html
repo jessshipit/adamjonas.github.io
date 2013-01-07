@@ -9,9 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="POTD Alan Kay think of programming and computers as metaphors
-Created the GUI
-GUI and object orientation are totally in line The hyperlink makes the &hellip;">
+  <meta name="description" content="POTD: Tim Berners-Lee physicist
+invented the world wide web in 1989 @ Cern
+Marshall_McLuhan Modules Dogs and humans can both run, so should they &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +88,537 @@ GUI and object orientation are totally in line The hyperlink makes the &hellip;"
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day12/">FIS Day12</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-19T09:36:00-04:00" pubdate data-updated="true">Oct 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>POTD: Tim Berners-Lee</h3>
+
+<ul>
+<li>physicist</li>
+<li>invented the world wide web in 1989 @ <a href="http://public.web.cern.ch/public/">Cern</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Marshall_McLuhan">Marshall_McLuhan</a></li>
+</ul>
+
+
+<h3>Modules</h3>
+
+<p><strong>Dogs and humans can both run, so should they inherit from runner or runnable?</strong></p>
+
+<p>We put this shared behavior into a module so that the class can include or <strong>mixin</strong> modules.</p>
+
+<p>modules can include other modules</p>
+
+<p>include - is for the instance methods
+extend - is for the class methods</p>
+
+<p>super - call the same exact message on the class above</p>
+
+<figure class='code'><figcaption><span>Simple Inheritance</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Animal</span>
+</span><span class='line'> <span class="kp">attr_accessor</span> <span class="ss">:legs</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">legs_count</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@leg</span> <span class="o">=</span> <span class="n">legs_count</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Human</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:hair_color</span> <span class="c1">#this is an additional accessor</span>
+</span><span class='line'>  <span class="c1">#and doesn&#39;t over-ride any #other attr_accessor</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this overides the initialize in the Animal class</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>      <span class="k">super</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#super sexy</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>The Builder Pattern</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Animal</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Movement</span><span class="o">::</span><span class="no">Animal</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Human</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Movement</span><span class="o">::</span><span class="no">Animal</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Movement</span><span class="o">::</span><span class="no">Human</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>A class is a module (that can be instantiated).</strong></p>
+
+<h3>ERB</h3>
+
+<p>The <a href="http://www.ruby-doc.org/stdlib-1.9.3/">standard library</a> is separate because you can release ruby and the standard lib without updating the release of the other</p>
+
+<p>&lt;%=  %> (known as a delimiter) is like interpolation for a template</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;erb&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
+</span><span class='line'><span class="c1">#EOF = end of file</span>
+</span><span class='line'><span class="n">template</span> <span class="o">=</span> <span class="no">ERB</span><span class="o">.</span><span class="n">new</span> <span class="o">&lt;&lt;-</span><span class="no">EOF</span>
+</span><span class='line'><span class="sh"> the value of x is: &lt;%= x %&gt;</span>
+</span><span class='line'><span class="no">EOF</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">template</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span> <span class="c1">#the value of x is :42</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="mi">24</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">template</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span> <span class="c1">#the value of x is: 24</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>binding - is equal to the current scope - return to me everything in the universe that happened at this point in time.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/heroku-deployment/">Heroku Deployment</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-18T11:26:00-04:00" pubdate data-updated="true">Oct 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Initialize the repository
+</span><span class='line'>$ git init
+</span><span class='line'>
+</span><span class='line'># Add new files to the repo
+</span><span class='line'>$ git add .
+</span><span class='line'>
+</span><span class='line'># See the status
+</span><span class='line'>$ git status
+</span><span class='line'>
+</span><span class='line'># Commit the changes with the commit message "testing"
+</span><span class='line'>$ git commit -m "testing"
+</span><span class='line'>
+</span><span class='line'># Create a new Heroku app
+</span><span class='line'>$ heroku create
+</span><span class='line'>
+</span><span class='line'># Rename the Heroku app
+</span><span class='line'># Example: $ heroku rename tom-messages
+</span><span class='line'>$ heroku rename &lt;name of url&gt;
+</span><span class='line'>
+</span><span class='line'># Add a (free) PostgreSQL database to your app
+</span><span class='line'>$ heroku addons:add heroku-postgresql
+</span><span class='line'>
+</span><span class='line'># See the details of your new database
+</span><span class='line'>$ heroku pg:info
+</span><span class='line'>
+</span><span class='line'># Promote your new database to the "DATABASE_URL" global constant
+</span><span class='line'># Example: $ heroku pg:promote HEROKU_POSTGRESQL_BRONZE_URL
+</span><span class='line'>$ heroku pg:promote &lt;YOUR_HEROKU_URL&gt;
+</span><span class='line'>
+</span><span class='line'># Push your repo to Heroku, start your app
+</span><span class='line'>$ git push heroku master
+</span><span class='line'>
+</span><span class='line'># Open the app in your browser
+</span><span class='line'>$ heroku open
+</span><span class='line'>
+</span><span class='line'># See your app's log, keep the stream open by using "--tail"
+</span><span class='line'>$ heroku logs --tail
+</span><span class='line'>
+</span><span class='line'># Set up the database for first use, running "DataMapper.auto_migrate!"
+</span><span class='line'># Example: $ http://ajonas.herokuapp.com/reset
+</span><span class='line'>$ http://&lt;project-name&gt;.herokuapp.com/reset
+</span><span class='line'>
+</span><span class='line'># See your messages!
+</span><span class='line'># Example: $ http://ajonas.herokuapp.com
+</span><span class='line'>$ http://&lt;project-name&gt;-messages.herokuapp.com</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day11/">FIS Day11</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-18T09:39:00-04:00" pubdate data-updated="true">Oct 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>POTD: Adele Goldberg</h3>
+
+<ul>
+<li>developed smalltalk and design patterns</li>
+<li>WIMP: windows, icons, menus, pointers.</li>
+</ul>
+
+
+<h3>Making the student pages dynamic</h3>
+
+<p>user:</p>
+
+<ul>
+<li>go to any of the 20 pages and get unique content</li>
+</ul>
+
+
+<p>write tests:</p>
+
+<ul>
+<li>write failing test</li>
+</ul>
+
+
+<p>create a cms</p>
+
+<ul>
+<li>pull data: use db from</li>
+<li>add data</li>
+</ul>
+
+
+<p>sinatra interact with db</p>
+
+<ul>
+<li>create erb views,</li>
+<li>paths in sinatra</li>
+</ul>
+
+
+<p>sinatra front end
+hash student</p>
+
+<p>create a class called student so that the hash
+student.find[1] - has all the</p>
+
+<p>hardcode the data on the front end
+while the backend is done by the other group</p>
+
+<p>(column names are the key and values are the rows.)</p>
+
+<p>Git co in a branch</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co &lt;specific file&gt;
+</span><span class='line'>#will pull in the file from the master branch</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day10/">FIS Day10</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-17T09:42:00-04:00" pubdate data-updated="true">Oct 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Yaml is more about structured data. Markdown is more about content.</p>
+
+<p>Koans don&#8217;t really demonstrate variable scope.</p>
+
+<p>Vint Cerf:</p>
+
+<blockquote><p>built TCP</p></blockquote>
+
+<h3>Programmer of the day</h3>
+
+<p>Kent Beck:</p>
+
+<ul>
+<li>invented smalltalk</li>
+<li>smalltalk design patterns, refactoring, test-driven development, extreme programming, the agile manifesto</li>
+</ul>
+
+
+<blockquote><p><strong>The nature of errors are unmet expectations</strong> you made an assumption and for some reason that is not longer true.</p></blockquote>
+
+<h3>Test Driven Development</h3>
+
+<p>define your expectation</p>
+
+<ul>
+<li><strong>writing tests is writing the code I wish I had</strong></li>
+<li><strong>testing is not about quality assurance</strong></li>
+</ul>
+
+
+<p>If you are using a case statement your code isn&#8217;t object oriented.</p>
+
+<p><a href="http://sqlite-ruby.rubyforge.org/sqlite3/faq.html">execute batch</a></p>
+
+<h2>Ruby</h2>
+
+<h3>Hooks</h3>
+
+<figure class='code'><figcaption><span>initialize</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">#by specifying that initialize </span>
+</span><span class='line'>  <span class="c1">#in initialize its very much ok to use initialize</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>class Methods</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="c1">#this method is hard to read if you are scrolled all the way down.</span>
+</span><span class='line'>  <span class="c1">#it doesn&#39;t explicitly say it&#39;s a class method in the method signature</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">top_5</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Mini Library Project</h3>
+
+<figure class='code'><figcaption><span>Lessons Learned</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="n">find_songs</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="s2">&quot;Poker Face&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Poker Face&quot;</span>
+</span><span class='line'><span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">e</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#notice that find_songs has an implicit receiver. Since it&#39;s not a </span>
+</span><span class='line'><span class="c1">#class method, it has to be called OUTSIDE a class...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># ALSO</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">search_songs</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">song</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">library</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">find_all</span> <span class="p">{</span> <span class="o">|</span><span class="n">ea_song</span><span class="o">|</span> <span class="n">ea_song</span> <span class="k">if</span> <span class="n">ea_song</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">song</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#make sure that I&#39;m calling the .find_all on an ATTRIBUTE of an object. &#39;Come on Jonas,&#39; you are better than that.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1053,472 +1584,6 @@ In general, we don&#8217;t need to go 3 levels deep.</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day6/">FIS Day6</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-11T09:46:00-04:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Programmer of the Day</h3>
-
-<p>_Why the Lucky Stiff</p>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Nikola_Tesla">Tesla</a>:
-1909 predicted the internet and wireless communication</li>
-</ul>
-
-
-<h3>Scraping</h3>
-
-<ul>
-<li><a href="http://www.andrewsturges.com/2011/09/how-to-harvest-web-data-using-ruby-and.html">Possible Workflow</a></li>
-<li><a href="http://lostechies.com/rodpaddock/2011/04/11/hacking-websites-with-ruby-and-nokogiri/">NokoGiri</a></li>
-<li><a href="https://github.com/luislavena/sqlite3-ruby">sqlite3</a> ruby gem</li>
-</ul>
-
-
-<h3>Stuff I read</h3>
-
-<p>One page script
-- <a href="http://coryschires.com/whats-the-difference-between-each-and-collect/">Difference between map and collect</a></p>
-
-<p>CSS selectors are hard
-- <a href="http://www.w3schools.com/cssref/css_selectors.asp">need to keep this handy</a></p>
-
-<p><em>DB prepare:</em>
-If the same statement is going to be executed repeatedly, you can speed things up a bit by preparing the statement.</p>
-
-<p><a href="http://blog.jayfields.com/2006/12/ruby-multiline-strings-here-doc-or.html">&lt;&lt;HEREDOC</a> <a href="http://blog.grayproductions.net/articles/working_with_multiline_strings">This one has some tricks in it</a></p>
-
-<p>xpath: for very specific selectors</p>
-
-<figure class='code'><figcaption><span>Multi Assignment</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;h1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Symbol to proc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:text</span><span class="p">)</span>
-</span><span class='line'><span class="c1"># equal to</span>
-</span><span class='line'><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="o">.</span><span class="n">text</span> <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>.try</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="s2">&quot;attr&quot;</span><span class="p">,</span> <span class="s2">&quot;href&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In rails, but not in the ruby library.</p>
-
-<p>SQL sanitation:</p>
-
-<figure class='code'><figcaption><span>.try</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;INSERT INTO students (tagline, bio) VALUES (?, ?)&quot;</span><span class="p">,</span> <span class="s2">&quot;I&#39;m the ruby guy&quot;</span><span class="p">,</span> <span class="s2">&quot;I&#39;m awesome&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>DB drivers in SQLite3 does the sanitation.</p>
-
-<figure class='code'><figcaption><span>Delete DB if it exists</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FileUtils</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="s2">&quot;database.db&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;database.db&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Avi&#8217;s code</h3>
-
-<p>nokogiri supports a &#8220;/div li.a&#8221; syntax, which is more common than the doc.css(&#8216;div li.a&#8217;)</p>
-
-<h3>Mark Up Languages</h3>
-
-<p>SGML -> standard generalized markup language
-XML -> extensible markup language
-HTML is an extension of XML.</p>
-
-<p>dtd - document type definition
-html5 is a new dtd published standards committee</p>
-
-<h3>Ternary Operator</h3>
-
-<p>logical expression (true or false)
-this is good for the pattern:</p>
-
-<figure class='code'><figcaption><span>Delete DB if it exists</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="kp">true</span> <span class="p">(</span><span class="k">do</span> <span class="n">this</span><span class="p">)</span>
-</span><span class='line'><span class="k">else</span> <span class="p">(</span><span class="n">that</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>reg ex are pretty much patterns&#8211; all languages implement them the same
-Remember <a href="http://rubular.com/">rubular</a> for regular expressions (regex).</p>
-
-<p>if you have email1 and email2 and phone1 and phone2, it&#8217;s time to break out another table. Store vertically, not horizontally.</p>
-
-<p><strong>If you see an each block with a push in it, you should be using a collect</strong></p>
-
-<p><a href="http://www.w3schools.com/cssref/css_selectors.asp">CSS Selector</a></p>
-
-<ul>
-<li>element1~element2
-
-<ul>
-<li>(e.g. p~ul)</li>
-<li>Selects every <ul> element that are preceded by a <p> element</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Homework</h3>
-
-<p>nice <a href="http://www.skorks.com/2009/08/how-a-ruby-case-statement-works-and-what-you-can-do-with-it/">case statement reference</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/sql-db-talk-from-cto-of-behance/">SQL DB Talk From CTO of Behance</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-10T17:52:00-04:00" pubdate data-updated="true">Oct 10<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Thanks to Chris Henry for taking the time to come down</strong></p>
-
-<h3>Things examined</h3>
-
-<p>lock_time the time the server will wait</p>
-
-<p>rows examined</p>
-
-<p>tmp_tables - creating these temp tables are bad</p>
-
-<p><a href="http://en.wikipedia.org/wiki/Cartesian_product">cartisan product</a></p>
-
-<p>indexes- once you created them run completed under the hood
-can only use one index per table</p>
-
-<p>Review: <a href="http://www.simple-talk.com/sql/performance/execution-plan-basics/">Query execution plan</a>
-<a href="http://www.codeproject.com/Articles/9990/SQL-Tuning-Tutorial-Understanding-a-Database-Execu">more reading</a></p>
-
-<ul>
-<li>only way to get around this is to change the structre&#8211; i.e. denormalization</li>
-</ul>
-
-
-<h3>Indexes</h3>
-
-<ul>
-<li>cost per write -> re-indexing</li>
-<li>Can use indexes to set constraints on your data</li>
-</ul>
-
-
-<p>Cardinality
-: how chunky your data is</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>SELECT COUNT(*) title FROM tags t INNER JOIN tags_entity_links tel ON t.id = tel.tag_id WHERE category = 1 AND title</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The tags are polymorphic:
-tag table
-id | tag_id | id_for_table | type</p>
-
-<p>performance to denormalization
-??performance or aggregate data</p>
-
-<p>composite index</p>
-
-<p>LEFT JOIN or RIGHT JOIN will show the nulls that wouldn&#8217;t be included in INNER JOIN</p>
-
-<p>The NoSQL camp is a return to hierarchical data stores - a 40 year old</p>
-
-<p>count or cache</p>
-
-<p>three seperate databases = 3 apps</p>
-
-<p>Testing:</p>
-
-<pre><code>apache bench
-watch the slow logs
-cacti tool
-load on the server
-</code></pre>
-
-<h3>Questions</h3>
-
-<p>?? why mysql over postgres?</p>
-
-<ul>
-<li>right place right time</li>
-</ul>
-
-
-<p>MySQL:</p>
-
-<ul>
-<li>percona port makes the most sense for mysql-</li>
-</ul>
-
-
-<p>?? many proj has many tags - many to many - goes through what join table?</p>
-
-<p>Look up:</p>
-
-<ul>
-<li>jumping words in the terminal</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/code-school-vs-treehouse-vs-code-academy/">Learn to Code Online: Code School vs. Treehouse vs. Codecademy</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-10T11:15:00-04:00" pubdate data-updated="true">Oct 10<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Like any n00b, I spent a lot of time learning the skills of programming online. Outside of random YouTube Videos (<a href="http://www.youtube.com/user/thenewboston">NewBoston</a> is worth your time), there are three well-known online products&#8211; <a href="http://www.codeschool.com/">Code School</a>, <a href="http://teamtreehouse.com/">Treehouse</a>, and <a href="http://www.codecademy.com/">Codecademy</a>. I&#8217;d estimate, I&#8217;ve spent around 80 hours on these sites. I don&#8217;t know if that is a lot or a little, but I do know that Code School is the clear winner&#8230;</p>
-
-<p><img class="left" src="/images/codeschool.jpeg" title="Code School" ></p>
-
-<h3>Codecademy</h3>
-
-<p>(not to be confused with <a href="http://www.builtinchicago.org/blog/code-academy-evolves-starter-league-and-partners-37signals">Code Academy</a>) <a href="http://www.businessinsider.com/codecademy-1000000-users-2012-1">exploded on the scene last fall</a>, but really falls short in the <a href="http://programmingzen.com/2012/01/16/on-the-usability-of-codecademy/">usability</a> department and error feedback. To be fair, I only have spent time with their JavaScript courses, but it&#8217;s hard to past first impressions. Granted, Codecademy is run by a <a href="http://mashable.com/2012/07/25/zach-sims-codecademy/">couple of kids</a> and haven&#8217;t had the head start that Code School has on its interactive browser, but I found myself more than frustrated going through their lessons. If they spent less time, hammering my inbox with weekly emails and built a better interface, I&#8217;d be more likely to take a look at their newly updated and <a href="(http://www.crunchbase.com/company/codecademy">well funded site</a> (I&#8217;ve heard they added Ruby lessons). At least for now, Codecademy is FREE. So serious brownie points there.</p>
-
-<p><img class="right" src="/images/codecademy.png" width="450" height="300" title="Codecademy Inbox" ></p>
-
-<h3>Treehouse is&#8230;</h3>
-
-<p>in a word, boring. Thankfully, I was able to guess most of the answers without struggling through the videos. I did spend, however, a portion of the time learning about subjects on the periphery. Their explanations of structs, I/O, and Ruby Core had slipped through the cracks of other beginner Ruby tutorials. I couldn&#8217;t get into the humor of <a href="http://www.youtube.com/watch?v=jQNXtyoyHic">Mike the Frog</a> or some of their other movie &#8220;rewards,&#8221; but I guess that really shouldn&#8217;t be the main motivating factor. While others thought it is silly, I like that <a href="https://twitter.com/jseifer">Jason Seifer</a> is such a goofball. He is the lone source of humor in an overall dry learning experience. Personally, I learn faster by doing and Treehouse falls short here. Though they do sprinkle in a few interactive quizzes, it just isn&#8217;t enough. If you are going to financially invent in your learning, I&#8217;d save it for&#8230;</p>
-
-<p><img class="right" src="/images/small_Codecademy-Treehouse-Blog-Logo.png" title="Codecademy and Treehouse" ></p>
-
-<h3>Code School</h3>
-
-<p><strong>rocks</strong>. It has clearly been the best use of my time. The videos are much more in-depth and the interactive browser is the superior to everything else I&#8217;ve seen. The <a href="http://envylabs.com/">Envy Labs Team</a> goes into significantly more detail than their aforementioned competitors. Their material is engaging, challenging, and well thought-out. What I enjoyed most (besides the information of course) is the self-depreciating humor that dots their casts. Cheesy graphics and dedication to a theme, for example Zombie terminology, finds the right balance of hilarious and non-interfering entertainment. When I first took their beginner courses, I grumbled at the level of detail they covered. Now that I picked up a few things, Code School does an amazing job of covering the entire breadth of subjects within a topic. Maybe most importantly, the error feedback is actually useful as are their hints. My sole criticism is that there is a recognizable difference between <a href="https://twitter.com/greggpollack">Gregg Pollack</a> and the others characters. If he could navigate the office politics, Gregg should do all the casts.</p>
-
-<p>Now in my 7th month of my programming career, <a href="http://shitavisays.tumblr.com/">Avi&#8217;s words</a> have more meaning than ever:</p>
-
-<blockquote><p>&#8220;It&#8217;s not about learning the syntax. Anyone can learn that. Learning to program is learning how to communicate.&#8221; &#8211; Avi Flombaum</p></blockquote>
-
-<p>If you are going to learn the syntax (which we DO need to do), Code School is very much worth it and <a href="http://paulstamatiou.com/code-school-learn-by-doing">I&#8217;m not the only one who thinks so</a>. But what do I know? Not that much. What do you think?</p>
-
-<p>(Tip to <a href="https://twitter.com/davidbakertv">David Baker</a> for the subject.)</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day5/">FIS Day5</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-10T09:38:00-04:00" pubdate data-updated="true">Oct 10<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>&#8220;Classes are state plus behavior, if you just want the behavior then use a module!&#8221;</p>
-
-<figure class='code'><figcaption><span>This is no good: Singleton Object- class with one method on it</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Random</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">something</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Underuse of modules&#8230;</p>
-
-<h3>Programmer of the day</h3>
-
-<p>Dan Bricklin</p>
-
-<ul>
-<li>inventor of the spreadsheet</li>
-</ul>
-
-
-<h3>Homework Review</h3>
-
-<p>table names should be plaural (e.g.table USERS)</p>
-
-<p>id INTEGER PRIMARY KEY -> always be called ID, is an integer and auto increments</p>
-
-<p>&#8216;never use ruby for something SQL can do&#8217;</p>
-
-<p>you want to group by integer values rather than string values</p>
-
-<p>AS aliases the columns</p>
-
-<p>subqueries- as long as a query returns one and only one value you can use that for another query</p>
-
-<p><a href="http://www.codinghorror.com/blog/2007/10/a-visual-explanation-of-sql-joins.html">Visual explanation of sql</a></p>
-
-<h3>INDEXes</h3>
-
-<ul>
-<li>index a column when it is being used in columns or queries</li>
-<li>should index foreign keys (they are not automatically indexed)</li>
-<li>cost: everytime you add a record it has to reindex</li>
-<li>indexes compromise the write speed in favor of read speed</li>
-</ul>
-
-
-<p>Two optimization steps:</p>
-
-<ul>
-<li>denormalize (add more columns)</li>
-<li><p>index - optimize for write or read?</p>
-
-<ul>
-<li>the more indexes your keys are using the more efficient your DB will be</li>
-</ul>
-</li>
-<li><p>You optimize the joins by denormalizing (and thus removing the need for joins) and indexing</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>This is no good: Singleton Object- class with one method on it</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="o">&lt;</span><span class="n">old</span> <span class="n">dir</span> <span class="nb">name</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="kp">new</span> <span class="n">dir</span> <span class="nb">name</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>update in SQL</p>
-
-<figure class='code'><figcaption><span>This is no good: Singleton Object- class with one method on it</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">UPDATE</span> <span class="no">Persons</span>
-</span><span class='line'><span class="no">SET</span> <span class="no">Address</span><span class="o">=</span><span class="s1">&#39;Nissestien 67&#39;</span><span class="p">,</span> <span class="no">City</span><span class="o">=</span><span class="s1">&#39;Sandnes&#39;</span>
-</span><span class='line'><span class="no">WHERE</span> <span class="no">LastName</span><span class="o">=</span><span class="s1">&#39;Tjessem&#39;</span> <span class="no">AND</span> <span class="no">FirstName</span><span class="o">=</span><span class="s1">&#39;Jakob&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://stackoverflow.com/questions/2044467/how-to-update-two-tables-in-one-statement-in-sql-server-2005">Transaction</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -1536,23 +1601,23 @@ load on the server
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/jan-4-notes/">Jan 4 Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/jan-3-notes/">Jan 3 Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/jan-2-notes/">Jan 2 Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/parallelism/">Parallelism</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/big-o-notation/">Big O Notation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/back-to-gitbo/">Back to Gitbo</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/interview-prep/">Interview Prep</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ruby-bits-2/">Ruby Bits 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/javascript-hoisting/">javascript hoisting</a>
       </li>
     
   </ul>
@@ -1648,7 +1713,7 @@ load on the server
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - Adam Jonas -
+  Copyright &copy; 2013 - Adam Jonas -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

@@ -7,9 +7,10 @@ categories: associations
 ---
 
 ###Polymorphism###
-- Nouns are resources and polymorphism is "a geeky way of saying that different nouns can have the same verb applied to them." [(how I explained REST to my wife)](http://tomayko.com/writings/rest-to-my-wife)
-- "is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour." (wikipedia)
--is a language feature that allows the same function call to be associated with different definitions during the same execution, by delaying the binding of the call to run-time. [here](http://cs.calvin.edu/curriculum/cs/214/adams/labs/10/)
+  - Nouns are resources and polymorphism is "a geeky way of saying that different nouns can have the same verb applied to them." [(how I explained REST to my wife)](http://tomayko.com/writings/rest-to-my-wife)
+  - "is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour." (wikipedia)
+  - is a language feature that allows the same function call to be associated with different definitions during the same execution, by delaying the binding of the call to run-time. [here](http://cs.calvin.edu/curriculum/cs/214/adams/labs/10/)
+  - polymorphism  is  the  ability  of  one  method  to  have  different  behavior  depending  on  the  type  of  object  it  is  being  called  on  or  the  type  of  object  being  passed  as  a  parameter. [From](http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf)
 
 ###Some Real Life Examples###
 - depending on the argument that you send it, it has different behavior

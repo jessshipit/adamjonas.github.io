@@ -1,0 +1,32 @@
+---
+layout: post
+title: "Jan 2 Notes"
+date: 2013-01-02 13:11
+comments: true
+categories: 
+---
+
+###Bash Environment Variables
+
+I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify Gitbo's server issue last week. Since `issue.js` has been compiled into `application.js`, it is listening twice.
+
+StackOverflow had [this to say](http://stackoverflow.com/questions/9641320/rails-assets-dont-get-updated) and this solution `bundle exec RAILS_ENV=development rake rails_group=assets assets:clean`.
+
+1. The `bundle exec` would be needed if the gem file and my system files were different. In Gitbo's case, there is no discrepancy. On the server, that can't be assumed and `bundle exec` would be needed.
+2. The default environment for a rake task is development **except** for assets which obviously have more to do with production. 
+3. Rake tasks are very flexible in terms of how they take *bash environment variables* (they are sort of like arguments, but they aren't). Passing in the rails_environment before the rake task is how I did it, but they could be passed in afterwards and that would be fine because BASH reads the entire line of code before it executes it.
+
+Here was the final command I used: `RAILS_ENV=development RAILS_GROUP=assets rake assets:clean`
+
+###Skeleton
+  - Site is [here](http://www.getskeleton.com/)
+  - Installed [skeleton-rails](https://github.com/helios-technologies/skeleton-rails)
+  - An alternative to rails
+
+###Instance Variables
+- Show does have an instance variable. The view is attached to an instance of a controller
+
+- In a partial, this is just crazy...
+  - a view is not part of the controller, so why should it have access to an instance of a controller.
+
+Further reading on this: [Rails Best Practices](http://rails-bestpractices.com/posts/27-replace-instance-variable-with-local-variable) and [Stack Exchange](http://programmers.stackexchange.com/questions/127838/why-do-people-suggest-not-to-use-instance-variable-for-views-in-ruby-on-rails)

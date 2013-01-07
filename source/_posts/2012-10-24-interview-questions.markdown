@@ -47,3 +47,7 @@ categories:
   - insightful questions
     - you are using tech x, so how do you handle problem y
     - e.g. scaling or payment processing
+
+###Worth reading
+  - [Prepping for a technical interview](http://dandreamsofcoding.com/2012/11/25/how-to-prepare-for-technical-interviews/)
+  - [Joel Spolsky's guide to interviewing](http://www.joelonsoftware.com/articles/GuerrillaInterviewing3.html)
