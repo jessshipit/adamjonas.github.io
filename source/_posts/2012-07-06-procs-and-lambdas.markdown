@@ -9,21 +9,59 @@ categories: ruby procs lambda
 
 In Ruby we create an anonymous chunk of code call `Proc.new`. We call this using the `.call` method. 
 
+Proc:
+>Think of proc as a "saved" block: just like you can give a bit of code a name and turn it into a method, you can name a block and turn it into a proc.
+
 Lambdas appear to be the same, but lambdas are pickier about arguments. Can't pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.
 
 Lambda return statement just exited execution of the statement itself. The proc ended execution of containing method.
 
-Extra short form for lambdas.
+There is an extra short form for lambdas called stabby lambdas.
 
 As a rule, stick with lambdas until you find a specific reason not to.
 
 Convenient to write methods that accepts a single proc as arugments. Callers can pass in whatever code they want to be executed once of each name. This method that is so common that has a single argument that is expected to be a proc is got it's own name -- a block. Every ruby method can implicity receive a proc arg with the yield keyword.
+
+Blocks:
+>A method with a singe proc as as arguments.
+
+```ruby A block
+def block_test
+  puts "We're in the method!"
+  puts "Yielding to the block..."
+  yield
+  puts "We're back in the method!"
+end
+
+block_test { puts ">>> We're in the block!" }
+
+#Can also pass parameters to yield
+def yield_name(name)
+  puts "In the method! Let's yield."
+  yield name
+  puts "Block complete! Back in the method."
+end
+
+yield_name("Eric") { |name| puts "My name is #{name}." }
+
+#another example
+def double(num)
+  yield(num)
+end
+
+double(4) {|num| num*2}
+
+```
 
 You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...
 
 Procs and lambdas are basically blocks that have been assigned to variables.
 
 ###Procs###
+
+- **Advantages of procs over blocks**:
+  1. Procs are full-fledged objects, so they have all the powers and abilities of objects. (Blocks do not.)
+  2. Unlike blocks, procs can be called over and over without rewriting them. This prevents you from having to retype the contents of your block every time you need to execute a particular bit of code.
 
 (*Treehouse notes*)
 
@@ -121,6 +159,28 @@ end
 ```
 -->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away
 
+###Symbol to proc
+- Instructions: 
+  - Create a method, greeter, that takes no arguments and yields to a block.
+  - Create a proc, phrase, that puts "Hello there!". Pass this to greeter instead of a block. (Don't forget to pass &phrase instead of just phrase!)
+
+```ruby An example with yield and a symbol to proc
+def greeter
+  yield
+end
+
+phrase = Proc.new do 
+  puts "Hello there!"
+end
+
+greeter(&phrase)
+```
+Can also use this to cast or convert types
+```ruby
+strings = ["1", "2", "3"]
+nums = strings.map(&:to_i)
+# ==> [1, 2, 3]
+```
 
 ###Lambdas###
 
@@ -177,6 +237,7 @@ Returns:
 
 
 ###SOME MORE READING:
+  - [Know your closures](http://www.dev.gd/20130107-know-your-closures-blocks-procs-and-lambdas.html?utm_source=rubyweekly&utm_medium=email)
   - [Skorks- best explanation out there](http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/)
   - [Learn to program- chapter 10](http://pine.fm/LearnToProgram/?Chapter=10)
   - [Also](http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html)

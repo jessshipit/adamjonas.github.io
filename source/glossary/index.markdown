@@ -7,8 +7,14 @@ sharing: true
 footer: true
 ---
 
+Asymptotic Analysis:
+>Considers the performance of algorithms when applied to very large input datasets. It ignores machine dependent constants and focuses on the growth of the running time.
+
 Black-box testing
 >is a method of software testing that tests the functionality of an application as opposed to its internal structures or workings (see white-box testing).
+
+Block
+>>A method with a singe proc as as arguments.
 
 Business Rule
 >A business rule defines or constrains one aspect of your business that is intended to assert business structure or influence the behavior of your business.  Business rules often focus on access control issues, for example, professors are allowed to input and modify the marks of the students taking the seminars they instruct, but not the marks of students in other seminars.[Reading](http://www.agilemodeling.com/artifacts/businessRule.htm)
@@ -77,6 +83,9 @@ Polyglot
 
 Primitive Type
 >a basic type is a data type provided by a programming language as a basic building block. e.g. a hash, an array, etc.
+
+Proc
+>Think of proc as a "saved" block: just like you can give a bit of code a name and turn it into a method, you can name a block and turn it into a proc.
 
 Protocol
 >describes the syntax, semantics, and synchronization of communication between two objects. It may be a technical standard like HTTP. Protocols are to communications what programming languages are to computations. [wiki](http://en.wikipedia.org/wiki/Communications_protocol)

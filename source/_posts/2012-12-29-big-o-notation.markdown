@@ -63,63 +63,6 @@ Constant Time -> O(1) < Linear Time -> O(n) < Linearithmic Time -> O(nlogn) < Qu
 [{% img left /images/time-complexity.png Time Complexity %}](http://therecyclebin.files.wordpress.com/2008/05/time-complexity.png)
 
 
-###Selection Sort
-  - [Vid](http://www.youtube.com/watch?v=MZ-ZeQnUL1Q)
-  - Time complexity is O(n^2). It makes n comparisons, n times. It needs to make a pass through the list for every element it sorts.
-  - For whatever data you give it, it will make the exact same amount of comparisons. Even if you give selection sort a sorted list, it still will have to make the same amount of passes. Thus, the best case, worst case and average case are all O(n^2).
-
-###Bubble Sort
-  - [Vid](http://www.youtube.com/watch?v=jAoBsroEow4)
-  - Compare items with the item to its right (or left).
-  - Large numbers are pushed to the right side of an unsorted list.
-  - Called a bubble sort since the large numbers rise up to the right.
-  - A O(n^2), same time complexity as selection sort. 
-    - while selection sort will always be a O(n^2), bubble sort may be more efficient if the list is fully sorted. 
-    - the best case is a O(n), while the average and worst case are both O(n^2)
-
-###Cocktail Sort
-  - [Vid](http://www.youtube.com/watch?v=Xmx_6YRBaq8)
-  - Saw in bubble sort, that larger numbers rise to the right.
-    - The larger numbers are sorted to the right and on the pass back, the smaller numbers are bubbled to the left. 
-    - The time complexity is still O(n^2) and is pretty similar to bubble sort.
-
-###Insertion Sort
-  - Only makes one pass through the list. This doesn't mean it is an efficient alorithm.
-  - Start at the second element 
-  - with each new item, you are sorting the item in its correct position it will be sorted in its relative position. 
-    - Every arrow to the left are sorted properly.
-  - As it is inserting itself back through the list, but this is still n comparisons or n items meaning it is a O(n^2) time complexity.
-  - The best case scenario is like bubble sort of n comparisons. An inversely sorted list will require O(n^2).
-
-###Bucket Sort
-  - [Vid](http://www.youtube.com/watch?NR=1&feature=endscreen&v=ovAfqUafjAA)
-  - Not a sorting algorithm. It breaks down a list into sub-lists. The purpose is to break it down into smaller chunks so that each list takes less time to sort than the larger list.
-    - Instead of sorting one list of 8 items, I could sort two lists of 4 items.
-      - need to know the upper and lower items of each list.
-  - Why do this? Because if you use bubble sort you reduce the overall time complexity of N^2 if the list 8^2 items by making it 2 x 4^2.
-  - Average case is O(n+k), k represents the number of buckets created. Worst case scenario is still O(n^2).
-
-###Recursion
-  - similar to recurrence relations in math
-  - any form of recursion must have a base case for the recursion to stop as well as a recursive case which makes recursive calls to itself.
-
-###Quick Sort
-  - sorting algorithm that relies on recursion.
-  - where you put the pivot doesn't matter, pointers go to the extreme left or right of the list
-  - the items at the pointers are compared
-  - when both pointers and pivot are at the same value, it is in the right position
-  - recursively done on the left sublist and then the right sublist.
-  - Time complexity -> O(nlogn) for best and average. An inversely sorted list will still require O(n^2).
-
-###Example
-Given  a  sorted  array  of  integers,  how  can  you  find  the  location  of  a  particular  integer  x?
-
-*Good  answer:*  Use  binary  search.   Compare  the  number  in  the  middle  of  the  array  with  x.   If  it  is  equal,  we  are  done.   If  the  number  is  greater,  we  know  to  look  in  the  second  half  of  the  array.   If  it  is  smaller,  we  know  to  look  in  the  first  half.   We  can  repeat  the  search  on  the  appropriate  half  of  the  array  by  comparing  the  middle element  of  that  array  with  x,  once  again  narrowing  our  search  by  a  factor  of  2.   We  repeat  this  process  until  we  find  x.  This  algorithm  takes  *O(log n)*  time.
-
-*Not‐so‐good  answer: * Go  through  each  number  in  order  and  compare  it  to  x.  This 
-algorithm  takes  *O(n)*  time.
-
-- ([from](http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf))
 
 ##Further reading:
   - [stackoverflow](http://stackoverflow.com/questions/107165/big-o-for-eight-year-olds/107189#107189)

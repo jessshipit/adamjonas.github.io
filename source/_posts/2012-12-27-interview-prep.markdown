@@ -199,3 +199,4 @@ Datamapper - model driven, whereas ActiveRecord is Database driven. Meaning, onc
   - [Daily programmer](http://www.reddit.com/r/dailyprogrammer/)
   - [Ruby Quiz](http://rubyquiz.com/)
   - [5 essential phone screens](https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions)
+  - [Hacking a google interview](http://courses.csail.mit.edu/iap/interview/materials.php)

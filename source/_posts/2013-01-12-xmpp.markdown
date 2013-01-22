@@ -1,0 +1,75 @@
+---
+layout: post
+title: "XMPP"
+date: 2013-01-12 06:57
+comments: true
+categories: xmpp
+---
+
+##XMPP                                        
+- instant messaging for servers -> mobile, desktop or whatever
+- it's an open standard -> what google uses. 
+- rss -> needs to ask every server if they have info.
+  - **Polling is inefficient**
+- In email, messages are push to the recipient -> it's push notification. 
+  - the server and the client need to stay online constantly.
+
+>XMPP is about pushing out info rather than pulling (which would be a continuous poll).
+  
+###XMPP is built around push (not pull)
+  - a not guaranteed queue, if a client is offline when it is sent, it may be lost
+  - XMPP is built around XML
+  - it can be secure, but it isn't required by default
+  
+###Upsides
+  - publish notifications to a list of subscribers (maybe a replacement for RSS)
+  - Declare presence (think about status messages)
+  - control
+ 
+###Message status is an attribute
+  - :normal
+  - :chat
+  - :groupchat
+  - :heading
+  - :error
+  
+###Presence is also an attribute
+  - nil
+  - :chat
+  - :away
+  - :dnd
+  - :xa
+  
+###Jabber account
+  - sign up at <jabber.orb>
+  - IM client applications that speak jabber e.g. Psi, cross platform, can monitor raw xml sent in between
+  - openfire on mac os 10 is a jabber server
+  - <ejabberd.im> an open source jabber server written in erlang
+  - `cd /Applications/ejabberd-2.0.1/bin`
+  - `./ejabberdctl start`
+  - there is a web intergace on port 5280 by default
+  - can only register one account every 10 minutes
+  
+###xmpp4r Gem
+  - [Docs](http://home.gna.org/xmpp4r/)
+  - [The source files on github](https://github.com/ln/xmpp4r)
+
+###XMPP callbacks
+  - receive parameters about the context, the sender, and the message
+  
+###Create a config
+  - create outside the class and then just pass it in later
+
+###Jabber is not the place for complicated logic
+  - Keep your jabber simple as possible and use the rails API for more complicated business logic
+  
+###There are examples in xmpp4r gem
+  - There are some inconsistencies, but they are decent templates
+  
+###Tips
+  - can customize the avatar
+
+###Interacting with rails
+  - `render_then_call(render)` from merb (not sure what it's current status is)
+  - can also sent this to a job queue so that it is done asynchronously, but this uses two jabber accounts which will send the original message from the other
+  - keep a DRb port open on your jabber script, its not fully asynchronous, but it works since the slowest part is opening the connection
