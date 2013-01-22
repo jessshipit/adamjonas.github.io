@@ -4,7 +4,7 @@
   <title><![CDATA[Category: lambda | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/lambda/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-01-07T17:25:24-05:00</updated>
+  <updated>2013-01-22T09:33:19-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -20,21 +20,70 @@
     <id>http://www.adamjonas.com/blog/procs-and-lambdas</id>
     <content type="html"><![CDATA[<p>In Ruby we create an anonymous chunk of code call <code>Proc.new</code>. We call this using the <code>.call</code> method.</p>
 
+<p>Proc:</p>
+
+<blockquote><p>Think of proc as a "saved" block: just like you can give a bit of code a name and turn it into a method, you can name a block and turn it into a proc.</p></blockquote>
+
 <p>Lambdas appear to be the same, but lambdas are pickier about arguments. Can't pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.</p>
 
 <p>Lambda return statement just exited execution of the statement itself. The proc ended execution of containing method.</p>
 
-<p>Extra short form for lambdas.</p>
+<p>There is an extra short form for lambdas called stabby lambdas.</p>
 
 <p>As a rule, stick with lambdas until you find a specific reason not to.</p>
 
 <p>Convenient to write methods that accepts a single proc as arugments. Callers can pass in whatever code they want to be executed once of each name. This method that is so common that has a single argument that is expected to be a proc is got it's own name -- a block. Every ruby method can implicity receive a proc arg with the yield keyword.</p>
+
+<p>Blocks:</p>
+
+<blockquote><p>A method with a singe proc as as arguments.</p></blockquote>
+
+<p>```ruby A block
+def block_test
+  puts "We're in the method!"
+  puts "Yielding to the block..."
+  yield
+  puts "We're back in the method!"
+end</p>
+
+<p>block_test { puts ">>> We're in the block!" }</p>
+
+<h1>Can also pass parameters to yield</h1>
+
+<p>def yield_name(name)
+  puts "In the method! Let's yield."
+  yield name
+  puts "Block complete! Back in the method."
+end</p>
+
+<p>yield_name("Eric") { |name| puts "My name is #{name}." }</p>
+
+<h1>another example</h1>
+
+<p>def double(num)
+  yield(num)
+end</p>
+
+<p>double(4) {|num| num*2}</p>
+
+<p>```</p>
 
 <p>You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...</p>
 
 <p>Procs and lambdas are basically blocks that have been assigned to variables.</p>
 
 <h3>Procs</h3>
+
+<ul>
+<li><strong>Advantages of procs over blocks</strong>:
+
+<ol>
+<li>Procs are full-fledged objects, so they have all the powers and abilities of objects. (Blocks do not.)</li>
+<li>Unlike blocks, procs can be called over and over without rewriting them. This prevents you from having to retype the contents of your block every time you need to execute a particular bit of code.</li>
+</ol>
+</li>
+</ul>
+
 
 <p>(<em>Treehouse notes</em>)</p>
 
@@ -144,6 +193,39 @@ end
 ```
 -->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
 
+<h3>Symbol to proc</h3>
+
+<ul>
+<li>Instructions:
+
+<ul>
+<li>Create a method, greeter, that takes no arguments and yields to a block.</li>
+<li>Create a proc, phrase, that puts "Hello there!". Pass this to greeter instead of a block. (Don't forget to pass &amp;phrase instead of just phrase!)</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```ruby An example with yield and a symbol to proc
+def greeter
+  yield
+end</p>
+
+<p>phrase = Proc.new do
+  puts "Hello there!"
+end</p>
+
+<p>greeter(&amp;phrase)
+<code>
+Can also use this to cast or convert types
+</code>ruby
+strings = ["1", "2", "3"]
+nums = strings.map(&amp;:to_i)</p>
+
+<h1>==> [1, 2, 3]</h1>
+
+<p>```</p>
+
 <h3>Lambdas</h3>
 
 <p>Treehouse notes:
@@ -207,6 +289,7 @@ name = "John"</p>
 <h3>SOME MORE READING:</h3>
 
 <ul>
+<li><a href="http://www.dev.gd/20130107-know-your-closures-blocks-procs-and-lambdas.html?utm_source=rubyweekly&amp;utm_medium=email">Know your closures</a></li>
 <li><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">Skorks- best explanation out there</a></li>
 <li><a href="http://pine.fm/LearnToProgram/?Chapter=10">Learn to program- chapter 10</a></li>
 <li><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">Also</a></li>

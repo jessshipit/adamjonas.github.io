@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>RubyMotion Day 1 - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Course Goals Objective-c Conventions
+Using C Libraries
+Platform Idioms
+Key concepts: pointers, memory management, objects, messages
+Fundamental iOS &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://www.adamjonas.com/blog/rubymotion-day-1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">RubyMotion Day 1</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T09:45:00-05:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>Course Goals</h3>
+
+<ul>
+<li>Objective-c Conventions</li>
+<li>Using C Libraries</li>
+<li>Platform Idioms</li>
+<li>Key concepts: pointers, memory management, objects, messages</li>
+<li>Fundamental iOS libraries</li>
+<li>Cocoa patterns</li>
+<li>Testing</li>
+</ul>
+
+
+<h3>History of why Objective-C</h3>
+
+<ul>
+<li>NeXt
+
+<ul>
+<li>used objective-c to write the main platform
+
+<ul>
+<li>there was a debate on which was better between objective-c and c++, C++ eventually won</li>
+</ul>
+</li>
+<li>If you wanted to write an application on NeXt you needed to use NeXt builder</li>
+<li>OSX was built next and there are a lot of things in OSX that were inherited from NeXt</li>
+</ul>
+</li>
+<li>iOS is basically a version of OS10</li>
+</ul>
+
+
+<h3>iOS Overview</h3>
+
+<ul>
+<li>The window server and Cocoa send events and messages to each other. It is a two way communication.</li>
+<li><p>each application has its own loop of communication. Responsible for send and receiving events from the window server.</p></li>
+<li><p>For each object in the nib file</p>
+
+<ul>
+<li>Class is sent <code>alloc</code> to create interface</li>
+<li>New instance is sent <code>init</code></li>
+<li>Instance variables are set</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Application States</h3>
+
+<ul>
+<li>Two states: foreground and background
+
+<ul>
+<li>two states for foreground: inactive and active</li>
+<li>in the background: you can do tasks in the background, after it is done it will go to suspended</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Cocoa</h3>
+
+<ul>
+<li>UIkit is the main library that comes with cocoa and certainly the most important.</li>
+</ul>
+
+
+<h3>App delegate</h3>
+
+<ul>
+<li>There are at least two classes. The application class and the application delegate.</li>
+</ul>
+
+
+<h3>Create a new project</h3>
+
+<p><code>motion create &lt;app name&gt;</code></p>
+
+<ul>
+<li>fonts, images, assets all go in the resources folder</li>
+</ul>
+
+
+<h3>Rake</h3>
+
+<ul>
+<li><code>rake -T</code> gives me a list of all the rake tasks
+
+<ul>
+<li>can build for a device or build for the simulator</li>
+</ul>
+</li>
+<li>can create a static library with <code>rake static</code></li>
+<li><code>rake config</code> gives you output on the frameworks, delegate_class, etc.
+
+<ul>
+<li>CoreGraphics lib is what we use for animation</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Deploying the application</h3>
+
+<ul>
+<li>need an apple certificate and developer certificate</li>
+</ul>
+
+
+<h3>To see the UI structure</h3>
+
+<p><code>UIApplication.sharedApplication.keyWindow.recursiveDescription</code> -> this will give you the tree structure of what you have created.</p>
+
+<h3>Changing attributes in the console</h3>
+
+<p><code>self.font = UIFont.fontWithName("Noteworthy-Bold",size:18)</code> will change the font of the label that you have highlighted.</p>
+
+<h2>Object C</h2>
+
+<ul>
+<li>objective-c is an objected oriented flavor of c</li>
+<li>heavily influenced from Smalltalk language</li>
+<li><p>all keywords begin with @</p></li>
+<li><p>RubyMotion adds named parameters similar to Ruby 2.0</p></li>
+<li>Both Ruby and Objective C has the notion of open classes, single inheritance and single message dispatch</li>
+</ul>
+
+
+<p><code>now dateByAddingTimeInterval:1000</code>, structure is the <code>receiver theSelector:argument</code></p>
+
+<ul>
+<li>messages always elclose the receiver and the selector insude a pair of square brackets. These brackets can be nested.</li>
+<li><p><em>id</em> is a pointer to any object type.</p></li>
+<li><p>you can invoke objective-c OR ruby methods against built in classes</p></li>
+<li><code>[1,2,3].send(:objectAtIndex, 1)</code> -> you need the colon or it won&#8217;t find the selector!</li>
+<li>helpful to use short methods and callbacks because the method will not be released until it is terminated.</li>
+</ul>
+
+
+<h3>Objective C Classes</h3>
+
+<ul>
+<li>NSString (similar to when you freeze something in Ruby) v. NSMutableString</li>
+<li>NSSArray v. NSMutableArray</li>
+<li>NSSet v. NSMutableSet</li>
+<li><p>NSDictionary v. NSMutableDictionary</p></li>
+<li><p><code>my_string = "hello"</code> -> this is mutable</p></li>
+<li><code>my_stgring = NSString.alloc.init</code> -> this is immutable</li>
+</ul>
+
+
+<h3>NSArray</h3>
+
+<ul>
+<li>NSArray is immutable. Once you create one it can&#8217;t be modified. NSMutableArray is a mutable subclass of NSArray
+
+<ul>
+<li>need to terminate a <code>NSArray.arrayWithObjects(foo, bar, baz, nil)</code> with a <code>nil</code> or it will crash.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>NSSet</h3>
+
+<ul>
+<li>Sets are collections with no order and objects can be present only once (can only be added once).It is useful when dealing with membership issues.</li>
+<li><code>.unionSet</code>, <code>.intersectSet</code></li>
+</ul>
+
+
+<h3>NSDictionary</h3>
+
+<ul>
+<li>Dictionaries are unordered and associate a key.</li>
+</ul>
+
+
+<h3>Constants</h3>
+
+<ul>
+<li>in objective c -> constants usually start with k -> <code>kItemCode</code></li>
+<li>in Ruby make sure that this is uppercase -> <code>KItemCode</code></li>
+</ul>
+
+
+<h3>Defining a class</h3>
+
+<ul>
+<li>Obj c uses the keyword <code>@interface</code> to define the class</li>
+<li>Obj c only supports <em>single inheritance</em>. You can only inherit from one superclass at a time.</li>
+</ul>
+
+
+<h3>Protocols</h3>
+
+<ul>
+<li>similar to the concept of interfaces in java or C-sharp</li>
+<li>a protocol is a contract. It is a promise to the compiler that a given class will implement a given interface.</li>
+</ul>
+
+
+<h3>Categories</h3>
+
+<ul>
+<li>the way to add methods to an existing class</li>
+</ul>
+
+
+<h3>Structures</h3>
+
+<ul>
+<li>C structures are mapped to classes in RubyMotion. <code>CGPoint</code> is very common.</li>
+<li>It is possible to pass the field views directly to the constructor `pt= CGPoint.new(100,200)</li>
+</ul>
+
+
+<h3>Pointers</h3>
+
+<ul>
+<li>Pointers are basic data types of the C language</li>
+<li>RubyMotion supports the creation o structure pointers, by passing their runtime type accordingly to <code>Pointer.new</code></li>
+</ul>
+
+
+<h3>Blocks</h3>
+
+<ul>
+<li>The caret (<sup>)</sup> character is used to define C blocks</li>
+<li>The Prob object must have the same number of args as the C function pointer or block, otherwise an exception will be raised at runtime</li>
+</ul>
+
+
+<h3>Keyboard doesn&#8217;t toggle by default</h3>
+
+<ul>
+<li>Add this code</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">textFieldShouldReturn</span><span class="p">(</span><span class="n">textfield</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">textfield</span><span class="o">.</span><span class="n">resignFirstResponder</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Setting a title of a button</h3>
+
+<p><code>@instance_var.setTitle("TITLE",forState:UIControlStateNormal)</code></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T09:45:00-05:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rubymotion/'>rubymotion</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/rubymotion-pre-work/" title="Previous Post: RubyMotion Pre-work">&laquo; RubyMotion Pre-work</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/rubymotion-day-1/">RubyMotion Day 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/rubymotion-pre-work/">RubyMotion Pre-work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/formulating-a-gitbo-plan/">Formulating a Gitbo plan</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/back-to-sinatra/">Back to Sinatra</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/jan-14-notes/">Jan 14 Notes</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/fis/'>FIS (37)</a></li>
+<li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
+<li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
+<li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
+<li class='category'><a href='/blog/categories/agile/'>agile (1)</a></li>
+<li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
+<li class='category'><a href='/blog/categories/ajax/'>ajax (3)</a></li>
+<li class='category'><a href='/blog/categories/algorithm/'>algorithm (1)</a></li>
+<li class='category'><a href='/blog/categories/algorithms/'>algorithms (1)</a></li>
+<li class='category'><a href='/blog/categories/asset-pipeline/'>asset_pipeline (1)</a></li>
+<li class='category'><a href='/blog/categories/associations/'>associations (3)</a></li>
+<li class='category'><a href='/blog/categories/authentication/'>authentication (2)</a></li>
+<li class='category'><a href='/blog/categories/backbone/'>backbone (1)</a></li>
+<li class='category'><a href='/blog/categories/bigo/'>bigO (1)</a></li>
+<li class='category'><a href='/blog/categories/book-notes/'>book_notes (3)</a></li>
+<li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
+<li class='category'><a href='/blog/categories/bootstrap-script/'>bootstrap_script (1)</a></li>
+<li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
+<li class='category'><a href='/blog/categories/cache/'>cache (1)</a></li>
+<li class='category'><a href='/blog/categories/caching/'>caching (1)</a></li>
+<li class='category'><a href='/blog/categories/cheatsheet/'>cheatsheet (1)</a></li>
+<li class='category'><a href='/blog/categories/cli/'>cli (1)</a></li>
+<li class='category'><a href='/blog/categories/code/'>code (1)</a></li>
+<li class='category'><a href='/blog/categories/codeschool/'>codeschool (3)</a></li>
+<li class='category'><a href='/blog/categories/css/'>css (1)</a></li>
+<li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
+<li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (4)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (7)</a></li>
+<li class='category'><a href='/blog/categories/gitbo/'>gitbo (1)</a></li>
+<li class='category'><a href='/blog/categories/google-maps/'>google_maps (1)</a></li>
+<li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
+<li class='category'><a href='/blog/categories/heroku/'>heroku (4)</a></li>
+<li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
+<li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
+<li class='category'><a href='/blog/categories/javascript/'>javascript (3)</a></li>
+<li class='category'><a href='/blog/categories/jquery/'>jquery (7)</a></li>
+<li class='category'><a href='/blog/categories/kentbeck/'>kentbeck (1)</a></li>
+<li class='category'><a href='/blog/categories/lambda/'>lambda (1)</a></li>
+<li class='category'><a href='/blog/categories/lecture-notes/'>lecture_notes (13)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/minitest/'>minitest (1)</a></li>
+<li class='category'><a href='/blog/categories/modules/'>modules (1)</a></li>
+<li class='category'><a href='/blog/categories/mongodb/'>mongoDB (1)</a></li>
+<li class='category'><a href='/blog/categories/mongoid/'>mongoid (1)</a></li>
+<li class='category'><a href='/blog/categories/namespacing/'>namespacing (1)</a></li>
+<li class='category'><a href='/blog/categories/notes/'>notes (1)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (2)</a></li>
+<li class='category'><a href='/blog/categories/object-oriented/'>object_oriented (1)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
+<li class='category'><a href='/blog/categories/omniauth/'>omniauth (1)</a></li>
+<li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
+<li class='category'><a href='/blog/categories/patterns/'>patterns (1)</a></li>
+<li class='category'><a href='/blog/categories/podcasts/'>podcasts (1)</a></li>
+<li class='category'><a href='/blog/categories/postgresql/'>postgresql (1)</a></li>
+<li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
+<li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
+<li class='category'><a href='/blog/categories/rails/'>rails (17)</a></li>
+<li class='category'><a href='/blog/categories/rails-forms/'>rails_forms (3)</a></li>
+<li class='category'><a href='/blog/categories/rails-routes/'>rails_routes (1)</a></li>
+<li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
+<li class='category'><a href='/blog/categories/reading/'>reading (1)</a></li>
+<li class='category'><a href='/blog/categories/recursion/'>recursion (1)</a></li>
+<li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
+<li class='category'><a href='/blog/categories/refactoring/'>refactoring (4)</a></li>
+<li class='category'><a href='/blog/categories/rspec/'>rspec (4)</a></li>
+<li class='category'><a href='/blog/categories/ruby/'>ruby (25)</a></li>
+<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (3)</a></li>
+<li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
+<li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
+<li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (4)</a></li>
+<li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
+<li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
+<li class='category'><a href='/blog/categories/testing/'>testing (5)</a></li>
+<li class='category'><a href='/blog/categories/xmpp/'>xmpp (1)</a></li>
+
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.adamjonas.com/blog/rubymotion-day-1/';
+        var disqus_url = 'http://www.adamjonas.com/blog/rubymotion-day-1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="In Ruby we create an anonymous chunk of code call Proc.new. We call this using the .call method. Lambdas appear to be the same, but lambdas are &hellip;">
+  <meta name="description" content="In Ruby we create an anonymous chunk of code call Proc.new. We call this using the .call method. Proc: Think of proc as a &#8220;saved&#8221; block: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -116,21 +116,91 @@
 
 <div class="entry-content"><p>In Ruby we create an anonymous chunk of code call <code>Proc.new</code>. We call this using the <code>.call</code> method.</p>
 
+<p>Proc:</p>
+
+<blockquote><p>Think of proc as a &#8220;saved&#8221; block: just like you can give a bit of code a name and turn it into a method, you can name a block and turn it into a proc.</p></blockquote>
+
 <p>Lambdas appear to be the same, but lambdas are pickier about arguments. Can&#8217;t pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.</p>
 
 <p>Lambda return statement just exited execution of the statement itself. The proc ended execution of containing method.</p>
 
-<p>Extra short form for lambdas.</p>
+<p>There is an extra short form for lambdas called stabby lambdas.</p>
 
 <p>As a rule, stick with lambdas until you find a specific reason not to.</p>
 
 <p>Convenient to write methods that accepts a single proc as arugments. Callers can pass in whatever code they want to be executed once of each name. This method that is so common that has a single argument that is expected to be a proc is got it&#8217;s own name &#8211; a block. Every ruby method can implicity receive a proc arg with the yield keyword.</p>
+
+<p>Blocks:</p>
+
+<blockquote><p>A method with a singe proc as as arguments.</p></blockquote>
+
+<figure class='code'><figcaption><span>A block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">block_test</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re in the method!&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Yielding to the block...&quot;</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re back in the method!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">block_test</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;&gt;&gt;&gt; We&#39;re in the block!&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Can also pass parameters to yield</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">yield_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;In the method! Let&#39;s yield.&quot;</span>
+</span><span class='line'>  <span class="k">yield</span> <span class="nb">name</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Block complete! Back in the method.&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">yield_name</span><span class="p">(</span><span class="s2">&quot;Eric&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;My name is </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">.&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#another example</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">yield</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">double</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">num</span><span class="o">|</span> <span class="n">num</span><span class="o">*</span><span class="mi">2</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>You know how everything in Ruby is an object, well, as it turns out that&#8217;s not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class&#8230;</p>
 
 <p>Procs and lambdas are basically blocks that have been assigned to variables.</p>
 
 <h3>Procs</h3>
+
+<ul>
+<li><strong>Advantages of procs over blocks</strong>:
+
+<ol>
+<li>Procs are full-fledged objects, so they have all the powers and abilities of objects. (Blocks do not.)</li>
+<li>Unlike blocks, procs can be called over and over without rewriting them. This prevents you from having to retype the contents of your block every time you need to execute a particular bit of code.</li>
+</ol>
+</li>
+</ul>
+
 
 <p>(<em>Treehouse notes</em>)</p>
 
@@ -300,6 +370,51 @@
 
 <p>&#8211;>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</p>
 
+<h3>Symbol to proc</h3>
+
+<ul>
+<li>Instructions:
+
+<ul>
+<li>Create a method, greeter, that takes no arguments and yields to a block.</li>
+<li>Create a proc, phrase, that puts &#8220;Hello there!&#8221;. Pass this to greeter instead of a block. (Don&#8217;t forget to pass &amp;phrase instead of just phrase!)</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>An example with yield and a symbol to proc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">greeter</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">phrase</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Hello there!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">greeter</span><span class="p">(</span><span class="o">&amp;</span><span class="n">phrase</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Can also use this to cast or convert types</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">strings</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="n">nums</span> <span class="o">=</span> <span class="n">strings</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_i</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># ==&gt; [1, 2, 3]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <h3>Lambdas</h3>
 
 <p>Treehouse notes:</p>
@@ -387,6 +502,7 @@
 <h3>SOME MORE READING:</h3>
 
 <ul>
+<li><a href="http://www.dev.gd/20130107-know-your-closures-blocks-procs-and-lambdas.html?utm_source=rubyweekly&amp;utm_medium=email">Know your closures</a></li>
 <li><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">Skorks- best explanation out there</a></li>
 <li><a href="http://pine.fm/LearnToProgram/?Chapter=10">Learn to program- chapter 10</a></li>
 <li><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">Also</a></li>
@@ -468,23 +584,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/jan-4-notes/">Jan 4 Notes</a>
+        <a href="/blog/rubymotion-day-1/">RubyMotion Day 1</a>
       </li>
     
       <li class="post">
-        <a href="/blog/jan-3-notes/">Jan 3 Notes</a>
+        <a href="/blog/rubymotion-pre-work/">RubyMotion Pre-work</a>
       </li>
     
       <li class="post">
-        <a href="/blog/jan-2-notes/">Jan 2 Notes</a>
+        <a href="/blog/formulating-a-gitbo-plan/">Formulating a Gitbo plan</a>
       </li>
     
       <li class="post">
-        <a href="/blog/parallelism/">Parallelism</a>
+        <a href="/blog/back-to-sinatra/">Back to Sinatra</a>
       </li>
     
       <li class="post">
-        <a href="/blog/big-o-notation/">Big O Notation</a>
+        <a href="/blog/jan-14-notes/">Jan 14 Notes</a>
       </li>
     
   </ul>
@@ -500,6 +616,7 @@
 <li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
 <li class='category'><a href='/blog/categories/ajax/'>ajax (3)</a></li>
 <li class='category'><a href='/blog/categories/algorithm/'>algorithm (1)</a></li>
+<li class='category'><a href='/blog/categories/algorithms/'>algorithms (1)</a></li>
 <li class='category'><a href='/blog/categories/asset-pipeline/'>asset_pipeline (1)</a></li>
 <li class='category'><a href='/blog/categories/associations/'>associations (3)</a></li>
 <li class='category'><a href='/blog/categories/authentication/'>authentication (2)</a></li>
@@ -521,6 +638,7 @@
 <li class='category'><a href='/blog/categories/forms/'>forms (4)</a></li>
 <li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
 <li class='category'><a href='/blog/categories/git/'>git (7)</a></li>
+<li class='category'><a href='/blog/categories/gitbo/'>gitbo (1)</a></li>
 <li class='category'><a href='/blog/categories/google-maps/'>google_maps (1)</a></li>
 <li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
 <li class='category'><a href='/blog/categories/heroku/'>heroku (4)</a></li>
@@ -555,18 +673,20 @@
 <li class='category'><a href='/blog/categories/rails-routes/'>rails_routes (1)</a></li>
 <li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
 <li class='category'><a href='/blog/categories/reading/'>reading (1)</a></li>
+<li class='category'><a href='/blog/categories/recursion/'>recursion (1)</a></li>
 <li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
 <li class='category'><a href='/blog/categories/refactoring/'>refactoring (4)</a></li>
 <li class='category'><a href='/blog/categories/rspec/'>rspec (4)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (25)</a></li>
-<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (1)</a></li>
+<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (3)</a></li>
 <li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
-<li class='category'><a href='/blog/categories/sinatra/'>sinatra (3)</a></li>
+<li class='category'><a href='/blog/categories/sinatra/'>sinatra (4)</a></li>
 <li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
 <li class='category'><a href='/blog/categories/testing/'>testing (5)</a></li>
+<li class='category'><a href='/blog/categories/xmpp/'>xmpp (1)</a></li>
 
   </ul>
 </section>

@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-01-07T17:25:24-05:00</updated>
+  <updated>2013-01-22T09:33:19-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,935 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RubyMotion Day 1]]></title>
+    <link href="http://www.adamjonas.com/blog/rubymotion-day-1/"/>
+    <updated>2013-01-21T09:45:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/rubymotion-day-1</id>
+    <content type="html"><![CDATA[<h3>Course Goals</h3>
+
+<ul>
+<li>Objective-c Conventions</li>
+<li>Using C Libraries</li>
+<li>Platform Idioms</li>
+<li>Key concepts: pointers, memory management, objects, messages</li>
+<li>Fundamental iOS libraries</li>
+<li>Cocoa patterns</li>
+<li>Testing</li>
+</ul>
+
+
+<h3>History of why Objective-C</h3>
+
+<ul>
+<li>NeXt
+
+<ul>
+<li>used objective-c to write the main platform
+
+<ul>
+<li>there was a debate on which was better between objective-c and c++, C++ eventually won</li>
+</ul>
+</li>
+<li>If you wanted to write an application on NeXt you needed to use NeXt builder</li>
+<li>OSX was built next and there are a lot of things in OSX that were inherited from NeXt</li>
+</ul>
+</li>
+<li>iOS is basically a version of OS10</li>
+</ul>
+
+
+<h3>iOS Overview</h3>
+
+<ul>
+<li>The window server and Cocoa send events and messages to each other. It is a two way communication.</li>
+<li><p>each application has its own loop of communication. Responsible for send and receiving events from the window server.</p></li>
+<li><p>For each object in the nib file</p>
+
+<ul>
+<li>Class is sent <code>alloc</code> to create interface</li>
+<li>New instance is sent <code>init</code></li>
+<li>Instance variables are set</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Application States</h3>
+
+<ul>
+<li>Two states: foreground and background
+
+<ul>
+<li>two states for foreground: inactive and active</li>
+<li>in the background: you can do tasks in the background, after it is done it will go to suspended</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Cocoa</h3>
+
+<ul>
+<li>UIkit is the main library that comes with cocoa and certainly the most important.</li>
+</ul>
+
+
+<h3>App delegate</h3>
+
+<ul>
+<li>There are at least two classes. The application class and the application delegate.</li>
+</ul>
+
+
+<h3>Create a new project</h3>
+
+<p><code>motion create &lt;app name&gt;</code></p>
+
+<ul>
+<li>fonts, images, assets all go in the resources folder</li>
+</ul>
+
+
+<h3>Rake</h3>
+
+<ul>
+<li><code>rake -T</code> gives me a list of all the rake tasks
+
+<ul>
+<li>can build for a device or build for the simulator</li>
+</ul>
+</li>
+<li>can create a static library with <code>rake static</code></li>
+<li><code>rake config</code> gives you output on the frameworks, delegate_class, etc.
+
+<ul>
+<li>CoreGraphics lib is what we use for animation</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Deploying the application</h3>
+
+<ul>
+<li>need an apple certificate and developer certificate</li>
+</ul>
+
+
+<h3>To see the UI structure</h3>
+
+<p><code>UIApplication.sharedApplication.keyWindow.recursiveDescription</code> -> this will give you the tree structure of what you have created.</p>
+
+<h3>Changing attributes in the console</h3>
+
+<p><code>self.font = UIFont.fontWithName("Noteworthy-Bold",size:18)</code> will change the font of the label that you have highlighted.</p>
+
+<h2>Object C</h2>
+
+<ul>
+<li>objective-c is an objected oriented flavor of c</li>
+<li>heavily influenced from Smalltalk language</li>
+<li><p>all keywords begin with @</p></li>
+<li><p>RubyMotion adds named parameters similar to Ruby 2.0</p></li>
+<li>Both Ruby and Objective C has the notion of open classes, single inheritance and single message dispatch</li>
+</ul>
+
+
+<p><code>now dateByAddingTimeInterval:1000</code>, structure is the <code>receiver theSelector:argument</code></p>
+
+<ul>
+<li>messages always elclose the receiver and the selector insude a pair of square brackets. These brackets can be nested.</li>
+<li><p><em>id</em> is a pointer to any object type.</p></li>
+<li><p>you can invoke objective-c OR ruby methods against built in classes</p></li>
+<li><code>[1,2,3].send(:objectAtIndex, 1)</code> -> you need the colon or it won&#8217;t find the selector!</li>
+<li>helpful to use short methods and callbacks because the method will not be released until it is terminated.</li>
+</ul>
+
+
+<h3>Objective C Classes</h3>
+
+<ul>
+<li>NSString (similar to when you freeze something in Ruby) v. NSMutableString</li>
+<li>NSSArray v. NSMutableArray</li>
+<li>NSSet v. NSMutableSet</li>
+<li><p>NSDictionary v. NSMutableDictionary</p></li>
+<li><p><code>my_string = "hello"</code> -> this is mutable</p></li>
+<li><code>my_stgring = NSString.alloc.init</code> -> this is immutable</li>
+</ul>
+
+
+<h3>NSArray</h3>
+
+<ul>
+<li>NSArray is immutable. Once you create one it can&#8217;t be modified. NSMutableArray is a mutable subclass of NSArray
+
+<ul>
+<li>need to terminate a <code>NSArray.arrayWithObjects(foo, bar, baz, nil)</code> with a <code>nil</code> or it will crash.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>NSSet</h3>
+
+<ul>
+<li>Sets are collections with no order and objects can be present only once (can only be added once).It is useful when dealing with membership issues.</li>
+<li><code>.unionSet</code>, <code>.intersectSet</code></li>
+</ul>
+
+
+<h3>NSDictionary</h3>
+
+<ul>
+<li>Dictionaries are unordered and associate a key.</li>
+</ul>
+
+
+<h3>Constants</h3>
+
+<ul>
+<li>in objective c -> constants usually start with k -> <code>kItemCode</code></li>
+<li>in Ruby make sure that this is uppercase -> <code>KItemCode</code></li>
+</ul>
+
+
+<h3>Defining a class</h3>
+
+<ul>
+<li>Obj c uses the keyword <code>@interface</code> to define the class</li>
+<li>Obj c only supports <em>single inheritance</em>. You can only inherit from one superclass at a time.</li>
+</ul>
+
+
+<h3>Protocols</h3>
+
+<ul>
+<li>similar to the concept of interfaces in java or C-sharp</li>
+<li>a protocol is a contract. It is a promise to the compiler that a given class will implement a given interface.</li>
+</ul>
+
+
+<h3>Categories</h3>
+
+<ul>
+<li>the way to add methods to an existing class</li>
+</ul>
+
+
+<h3>Structures</h3>
+
+<ul>
+<li>C structures are mapped to classes in RubyMotion. <code>CGPoint</code> is very common.</li>
+<li>It is possible to pass the field views directly to the constructor `pt= CGPoint.new(100,200)</li>
+</ul>
+
+
+<h3>Pointers</h3>
+
+<ul>
+<li>Pointers are basic data types of the C language</li>
+<li>RubyMotion supports the creation o structure pointers, by passing their runtime type accordingly to <code>Pointer.new</code></li>
+</ul>
+
+
+<h3>Blocks</h3>
+
+<ul>
+<li>The caret (<sup>)</sup> character is used to define C blocks</li>
+<li>The Prob object must have the same number of args as the C function pointer or block, otherwise an exception will be raised at runtime</li>
+</ul>
+
+
+<h3>Keyboard doesn&#8217;t toggle by default</h3>
+
+<ul>
+<li>Add this code</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">textFieldShouldReturn</span><span class="p">(</span><span class="n">textfield</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">textfield</span><span class="o">.</span><span class="n">resignFirstResponder</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Setting a title of a button</h3>
+
+<p><code>@instance_var.setTitle("TITLE",forState:UIControlStateNormal)</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RubyMotion Pre-work]]></title>
+    <link href="http://www.adamjonas.com/blog/rubymotion-pre-work/"/>
+    <updated>2013-01-20T19:29:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/rubymotion-pre-work</id>
+    <content type="html"><![CDATA[<ul>
+<li>Ruby Motion Tool Chain from the command line with <code>motion</code></li>
+<li><p>create a new project with <code>motion create &lt;app name&gt;</code></p></li>
+<li><p><code>rake -T</code> gives you a list of tasks</p></li>
+<li><p><code>rake</code> builds the application and opens the simulator</p></li>
+<li><p>Cocoa touch is a framework and calls back into our code using the delegate pattern.</p>
+
+<ul>
+<li>there are special callback methods to hook into the lifecycle</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Creating an alert</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">alert</span> <span class="o">=</span> <span class="no">UIAlertView</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello!&quot;</span>
+</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">show</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>What is the frame?</h3>
+
+<ul>
+<li>a rectangle for the window.
+
+<ul>
+<li>it&#8217;s an origin, an X and Y coordinate</li>
+<li>and it&#8217;s also a size</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Making a Yellow Screen</h3>
+
+<figure class='code'><figcaption><span>A Yellow Flashlight!</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">yellowColor</span>
+</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Using the Console</h3>
+
+<p>When the console builds it provides a console. If I hover with the mouse, nothing happens. But if I hold the cmd key, it puts the element in the console and you can assign it to self or a variable.</p>
+
+<p>So <code>#&lt;UIWindow:0x10922060&gt;)&gt; self</code>
+and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.greenColor</code> will change the color right in the console.</p>
+
+<p>Can grab objects, put them in the console and manipulate them interactively.</p>
+
+<h3>Views</h3>
+
+<ul>
+<li>each view that we have sits in a view and is managed by a view controller</li>
+<li><p>Each</p></li>
+</ul>
+
+
+<h3>ViewController</h3>
+
+<ul>
+<li>UIViewController is where all the magic happens</li>
+</ul>
+
+
+<h3>UI Kit</h3>
+
+<ul>
+<li>the x and y coordinate starts in the upper left corner and x goes -> and y goes down.</li>
+</ul>
+
+
+<h3>Gesture Recognition</h3>
+
+<ul>
+<li>when a view is tapped it sends an action to a particaular target.</li>
+</ul>
+
+
+<h3>What is a delegate</h3>
+
+<p>When the user launches our app, the system sets up a bunch of stuff for us. We need to give the operating system an object which can respond to different events during that process; we refer to that object as the &#8220;application delegate&#8221;. It gets callbacks for when the app starts, ends, goes to the background, gets a push notification, etc. <a href="http://rubymotion-tutorial.com/1-hello-motion/">source</a></p>
+
+<h3>Views</h3>
+
+<ul>
+<li>Everything displayed in an app is called a &#8220;view&#8221;.- A view can have many &#8220;subviews&#8221;; when you move a view, you also move its subviews.
+
+<ul>
+<li>Subviews visually stacked on top of each other within their parent.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Resources:</h3>
+
+<ul>
+<li><a href="http://pragmaticstudio.com/screencasts/rubymotion">50 min screencast</a></li>
+<li><a href="http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial">Promotion</a></li>
+<li><a href="http://rubymotion-tutorial.com/">HTML book</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Formulating a Gitbo plan]]></title>
+    <link href="http://www.adamjonas.com/blog/formulating-a-gitbo-plan/"/>
+    <updated>2013-01-17T19:23:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/formulating-a-gitbo-plan</id>
+    <content type="html"><![CDATA[<p>Intro to the product&#8230;</p>
+
+<p>present gitbo
+  - show that it is integrated with github</p>
+
+<pre><code>- largest open source code sharing platform
+</code></pre>
+
+<ul>
+<li>show how easy it is to find and work on an issue.
+
+<ul>
+<li>by upvoting an issue, I communicate what is important to me, which is relfected in the popularity and the visibility of each issue and repository</li>
+<li>uploading a third party repo bring visibility to a repo that you think deserves attention.</li>
+</ul>
+</li>
+<li>bounty process</li>
+<li><p>notified when solved (verbal &#8216;notified by email&#8217;)</p>
+
+<ul>
+<li>prompted to pay show stripe js (needed?)</li>
+</ul>
+</li>
+<li><p>Founded a company.</p></li>
+<li><p>express passion</p></li>
+<li>capability</li>
+<li>team cohesiveness - 3 month intense bootcamp</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Back to Sinatra]]></title>
+    <link href="http://www.adamjonas.com/blog/back-to-sinatra/"/>
+    <updated>2013-01-17T19:19:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/back-to-sinatra</id>
+    <content type="html"><![CDATA[<ul>
+<li>Couldn&#8217;t launch on heroku because I didn&#8217;t have a gemfile.</li>
+<li><p>Then I could removed all the gem requirements from the top of the <code>main.rb</code> file. Not how it&#8217;s done.</p></li>
+<li><p>Since I need two different keys to for FB authentication I configured them in the main <code>app.rb</code> file. I tried setting these in a <code>.env</code> file and start up the app locally with foreman, but I couldn&#8217;t get it to work.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MyApp</span> <span class="o">&lt;</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">configure</span> <span class="ss">:development</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_APP_ID&quot;</span><span class="o">]=</span><span class="s1">&#39;numbers&#39;</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_SECRET&quot;</span><span class="o">]=</span><span class="s1">&#39;key&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">configure</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_APP_ID&quot;</span><span class="o">]=</span><span class="s1">&#39;numbers&#39;</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_SECRET&quot;</span><span class="o">]=</span><span class="s1">&#39;key&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Found this solution on <a href="http://stackoverflow.com/questions/4486634/is-there-a-rack-or-sinatra-based-environment-configuration-utility">stackoverflow</a></p>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/658044/tick-symbol-in-html-xhtml">HTML Tick symbol</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jan 14 Notes]]></title>
+    <link href="http://www.adamjonas.com/blog/jan-14-notes/"/>
+    <updated>2013-01-15T11:05:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/jan-14-notes</id>
+    <content type="html"><![CDATA[<h3>Simple Search</h3>
+
+<p><a href="http://railscasts.com/episodes/37-simple-search-form">Ryan Bates to the rescue</a></p>
+
+<h3>Find</h3>
+
+<p>Getting back to basics (or at least closer to SQL). I haven&#8217;t used find much in the couple months, but it was what I needed for the set up search on the index pages.</p>
+
+<p>The <a href="http://apidock.com/rails/ActiveRecord/Base/find/class">documentation is awesome</a>.</p>
+
+<h3>ActiveRelation Queries</h3>
+
+<p><a href="http://blog.mitchcrowe.com/blog/2012/04/14/10-most-underused-activerecord-relation-methods/">Good article on underused queries</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[XMPP]]></title>
+    <link href="http://www.adamjonas.com/blog/xmpp/"/>
+    <updated>2013-01-12T06:57:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/xmpp</id>
+    <content type="html"><![CDATA[<h2>XMPP</h2>
+
+<ul>
+<li>instant messaging for servers -> mobile, desktop or whatever</li>
+<li>it&#8217;s an open standard -> what google uses.</li>
+<li>rss -> needs to ask every server if they have info.
+
+<ul>
+<li><strong>Polling is inefficient</strong></li>
+</ul>
+</li>
+<li>In email, messages are push to the recipient -> it&#8217;s push notification.
+
+<ul>
+<li>the server and the client need to stay online constantly.</li>
+</ul>
+</li>
+</ul>
+
+
+<blockquote><p>XMPP is about pushing out info rather than pulling (which would be a continuous poll).</p></blockquote>
+
+<h3>XMPP is built around push (not pull)</h3>
+
+<ul>
+<li>a not guaranteed queue, if a client is offline when it is sent, it may be lost</li>
+<li>XMPP is built around XML</li>
+<li>it can be secure, but it isn&#8217;t required by default</li>
+</ul>
+
+
+<h3>Upsides</h3>
+
+<ul>
+<li>publish notifications to a list of subscribers (maybe a replacement for RSS)</li>
+<li>Declare presence (think about status messages)</li>
+<li>control</li>
+</ul>
+
+
+<h3>Message status is an attribute</h3>
+
+<ul>
+<li>:normal</li>
+<li>:chat</li>
+<li>:groupchat</li>
+<li>:heading</li>
+<li>:error</li>
+</ul>
+
+
+<h3>Presence is also an attribute</h3>
+
+<ul>
+<li>nil</li>
+<li>:chat</li>
+<li>:away</li>
+<li>:dnd</li>
+<li>:xa</li>
+</ul>
+
+
+<h3>Jabber account</h3>
+
+<ul>
+<li>sign up at &lt;jabber.orb></li>
+<li>IM client applications that speak jabber e.g. Psi, cross platform, can monitor raw xml sent in between</li>
+<li>openfire on mac os 10 is a jabber server</li>
+<li>&lt;ejabberd.im> an open source jabber server written in erlang</li>
+<li><code>cd /Applications/ejabberd-2.0.1/bin</code></li>
+<li><code>./ejabberdctl start</code></li>
+<li>there is a web intergace on port 5280 by default</li>
+<li>can only register one account every 10 minutes</li>
+</ul>
+
+
+<h3>xmpp4r Gem</h3>
+
+<ul>
+<li><a href="http://home.gna.org/xmpp4r/">Docs</a></li>
+<li><a href="https://github.com/ln/xmpp4r">The source files on github</a></li>
+</ul>
+
+
+<h3>XMPP callbacks</h3>
+
+<ul>
+<li>receive parameters about the context, the sender, and the message</li>
+</ul>
+
+
+<h3>Create a config</h3>
+
+<ul>
+<li>create outside the class and then just pass it in later</li>
+</ul>
+
+
+<h3>Jabber is not the place for complicated logic</h3>
+
+<ul>
+<li>Keep your jabber simple as possible and use the rails API for more complicated business logic</li>
+</ul>
+
+
+<h3>There are examples in xmpp4r gem</h3>
+
+<ul>
+<li>There are some inconsistencies, but they are decent templates</li>
+</ul>
+
+
+<h3>Tips</h3>
+
+<ul>
+<li>can customize the avatar</li>
+</ul>
+
+
+<h3>Interacting with rails</h3>
+
+<ul>
+<li><code>render_then_call(render)</code> from merb (not sure what it&#8217;s current status is)</li>
+<li>can also sent this to a job queue so that it is done asynchronously, but this uses two jabber accounts which will send the original message from the other</li>
+<li>keep a DRb port open on your jabber script, its not fully asynchronous, but it works since the slowest part is opening the connection</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Recursion]]></title>
+    <link href="http://www.adamjonas.com/blog/recursion/"/>
+    <updated>2013-01-11T22:04:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/recursion</id>
+    <content type="html"><![CDATA[<ul>
+<li><p><a href="http://www.youtube.com/watch?v=MyzFdthuUcA">How to write a recursive method</a></p></li>
+<li><p>Step one- write &#8216;if&#8217;
+a. There must be two cases: a recursive case (where the method calls itself)
+b. and a base case (where the method does not)</p></li>
+<li>Handle the simplest case(s).
+a. Simplest = no recursive call needed (no looping)</li>
+<li>Write the recurisve call(s)
+a. On the next simplest input/state</li>
+<li>Assume the recursive call works (maybe store the result in a variable)
+a. Ask yourself, what does it do?
+b. How does it help?</li>
+</ul>
+
+
+<p>9! = <code>9*8*7*6..</code>
+10! = <code>10*9!</code>
+n! = n * (n - 1)! -> a recursive definition of factorial</p>
+
+<p>&#8220;`ruby
+def factorial(n)
+  if n == 0</p>
+
+<pre><code>return 1
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>result = factorial(n - 1) #computes n-1 factorial
+result * n
+</code></pre>
+
+<p>  end
+end</p>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=ozmE8G6YKww">How recursion works</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Data Structures]]></title>
+    <link href="http://www.adamjonas.com/blog/data-structures/"/>
+    <updated>2013-01-11T17:55:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/data-structures</id>
+    <content type="html"><![CDATA[<h3>MIT lecture on Intro to Algorithms</h3>
+
+<p><em>Analysis of algorithms:</em></p>
+
+<blockquote><p>the theoretical study of computer program performance and resource usage</p></blockquote>
+
+<ul>
+<li><p>What is more important than performance?</p>
+
+<ul>
+<li>correctness</li>
+<li>simplicity</li>
+<li>maintainability</li>
+<li>stability / robustness</li>
+<li>features / functionality</li>
+<li>modularity</li>
+<li>security</li>
+<li>user friendliness</li>
+</ul>
+</li>
+<li><p>Why study this then?</p>
+
+<ul>
+<li>real time constraints</li>
+<li>sometime user friendliness is a function of performance</li>
+<li>performance measures the line between feasible and infeasible -> algorithms are on the edge of entrepreneurship</li>
+<li>algorithms provides a common language to talk about programming behavior</li>
+</ul>
+</li>
+<li><p>Permutation (an arrangement of numbers)</p></li>
+</ul>
+
+
+<blockquote><p>Take a bunch of numbers and arrangement them in order</p></blockquote>
+
+<ul>
+<li>Insertion sort:
+
+<ul>
+<li>depends on the input order. If sorted, there is little work to do. Worst case is if it is reverse sorted.</li>
+<li>depends also on the input size.</li>
+<li><em>expected time</em> is the time of every input multiplied by the probability of every input AKA a weighted average.
+
+<ul>
+<li>the assumption is based on the statistical distribution of the inputs
+
+<ul>
+<li>all inputs are equally likely -> uniform distribution</li>
+</ul>
+</li>
+<li>a best case analysis is bogus&#8230;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Relative speed:</p>
+
+<blockquote><p>speed that depends on the speed of the</p></blockquote>
+
+<p>Absolute speed:</p>
+
+<blockquote><p>speed that depends on the speed of the</p></blockquote>
+
+<p>Asymptotic Analysis:</p>
+
+<blockquote><p>Considers the performance of algorithms when applied to very large input datasets. It ignores machine dependent constants and focuses on the growth of the running time.</p></blockquote>
+
+<ul>
+<li>Asymptotic notation:
+
+<ul>
+<li>Theta notation -> drop low order terms and ignore leading constants</li>
+<li>e.g. -> <code>3n^3 + 90n^2 - 5n + 6046 = θ(n^3)</code> in asymptotic notation
+
+<ul>
+<li>As n approaches infinity, <code>θ(n^2)</code> <strong>always beats</strong> <code>θ(n^3)</code> alogrithm.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Sometimes choosing a slower algorithm allows you to attack a problem that a faster algorithm would not allow you to. (56 min)</p>
+
+<ul>
+<li>can</li>
+</ul>
+
+
+<h3>Selection Sort</h3>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=MZ-ZeQnUL1Q">Vid</a></li>
+<li>Time complexity is O(n<sup>2).</sup> It makes n comparisons, n times. It needs to make a pass through the list for every element it sorts.</li>
+<li>For whatever data you give it, it will make the exact same amount of comparisons. Even if you give selection sort a sorted list, it still will have to make the same amount of passes. Thus, the best case, worst case and average case are all O(n<sup>2).</sup></li>
+</ul>
+
+
+<h3>Bubble Sort</h3>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=jAoBsroEow4">Vid</a></li>
+<li>Compare items with the item to its right (or left).</li>
+<li>Large numbers are pushed to the right side of an unsorted list.</li>
+<li>Called a bubble sort since the large numbers rise up to the right.</li>
+<li>A O(n<sup>2),</sup> same time complexity as selection sort.
+
+<ul>
+<li>while selection sort will always be a O(n<sup>2),</sup> bubble sort may be more efficient if the list is fully sorted.</li>
+<li>the best case is a O(n), while the average and worst case are both O(n<sup>2)</sup></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Cocktail Sort</h3>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=Xmx_6YRBaq8">Vid</a></li>
+<li>Saw in bubble sort, that larger numbers rise to the right.
+
+<ul>
+<li>The larger numbers are sorted to the right and on the pass back, the smaller numbers are bubbled to the left.</li>
+<li>The time complexity is still O(n<sup>2)</sup> and is pretty similar to bubble sort.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Insertion Sort</h3>
+
+<ul>
+<li>Only makes one pass through the list. This doesn&#8217;t mean it is an efficient algorithm.</li>
+<li>Start at the second element</li>
+<li>with each new item, you are sorting the item in its correct position it will be sorted in its relative position.
+
+<ul>
+<li>Every arrow to the left are sorted properly.</li>
+</ul>
+</li>
+<li>As it is inserting itself back through the list, but this is still n comparisons or n items meaning it is a O(n<sup>2)</sup> time complexity.</li>
+<li>The best case scenario is like bubble sort of n comparisons. An inversely sorted list will require O(n<sup>2).</sup>
+-> moderately fast for small n, but not at all for large n</li>
+</ul>
+
+
+<h3>Bucket Sort</h3>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?NR=1&amp;feature=endscreen&amp;v=ovAfqUafjAA">Vid</a></li>
+<li>Not a sorting algorithm. It breaks down a list into sub-lists. The purpose is to break it down into smaller chunks so that each list takes less time to sort than the larger list.
+
+<ul>
+<li>Instead of sorting one list of 8 items, I could sort two lists of 4 items.
+
+<ul>
+<li>need to know the upper and lower items of each list.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Why do this? Because if you use bubble sort you reduce the overall time complexity of N<sup>2</sup> if the list 8<sup>2</sup> items by making it 2 x 4<sup>2.</sup></li>
+<li>Average case is O(n+k), k represents the number of buckets created. Worst case scenario is still O(n<sup>2).</sup></li>
+</ul>
+
+
+<h3>Recursion</h3>
+
+<ul>
+<li>similar to recurrence relations in math</li>
+<li>any form of recursion must have a base case for the recursion to stop as well as a recursive case which makes recursive calls to itself.</li>
+</ul>
+
+
+<h3>Quick Sort</h3>
+
+<ul>
+<li>sorting algorithm that relies on recursion.</li>
+<li>where you put the pivot doesn&#8217;t matter, pointers go to the extreme left or right of the list</li>
+<li>the items at the pointers are compared</li>
+<li>when both pointers and pivot are at the same value, it is in the right position</li>
+<li>recursively done on the left sublist and then the right sublist.</li>
+<li>Time complexity -> O(nlogn) for best and average. An inversely sorted list will still require O(n<sup>2).</sup></li>
+</ul>
+
+
+<h3>Merge Sort</h3>
+
+<ul>
+<li>MIT-> 1:03</li>
+<li><p>A[1..n]</p></li>
+<li><p>If n=1, done</p></li>
+<li>Recursively sort A[1..(n/2)] &amp;&amp; A[n/2+1..n] (we are sorting two halves of the input)</li>
+<li>Take the two lists and merge them
+a. say you have two lists [2, 7, 13, 20], [1, 9, 11, 12]
+b. check the head of the two arrays, then ouput the smallest.</li>
+<li><p>The time to do this is θ(n) or linear time which is proportional to the size of n.</p></li>
+<li><p>Worst case this is a O(nlogn). Anything more than 30 this would be more performant than insert sort (1:20 MIT)</p></li>
+</ul>
+
+
+<h3>Example</h3>
+
+<p>Given  a  sorted  array  of  integers,  how  can  you  find  the  location  of  a  particular  integer  x?</p>
+
+<p><em>Good  answer:</em>  Use  binary  search.   Compare  the  number  in  the  middle  of  the  array  with  x.   If  it  is  equal,  we  are  done.   If  the  number  is  greater,  we  know  to  look  in  the  second  half  of  the  array.   If  it  is  smaller,  we  know  to  look  in  the  first  half.   We  can  repeat  the  search  on  the  appropriate  half  of  the  array  by  comparing  the  middle element  of  that  array  with  x,  once  again  narrowing  our  search  by  a  factor  of  2.   We  repeat  this  process  until  we  find  x.  This  algorithm  takes  <em>O(log n)</em>  time.</p>
+
+<p><em>Not‐so‐good  answer</em>:  Go  through  each  number  in  order  and  compare  it  to  x.  This 
+algorithm  takes  <em>O(n)</em>  time.</p>
+
+<ul>
+<li>(<a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">from</a>)</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jan 8 Notes]]></title>
+    <link href="http://www.adamjonas.com/blog/jan-8-notes/"/>
+    <updated>2013-01-08T12:14:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/jan-8-notes</id>
+    <content type="html"><![CDATA[<h3>Railscast 240 8min</h3>
+
+<ul>
+<li>Sortable table columns #228 railscast</li>
+<li>pagination with will_paginate gem, 3.0.pre2 version</li>
+<li>Will ajax improve the user experience?</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Jan 4 Notes]]></title>
@@ -443,116 +1372,6 @@
 
 <p><a href="http://therecyclebin.files.wordpress.com/2008/05/time-complexity.png"><img class="left" src="http://www.adamjonas.com/images/time-complexity.png" title="Time Complexity" ></a></p>
 
-<h3>Selection Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=MZ-ZeQnUL1Q">Vid</a></li>
-<li>Time complexity is O(n<sup>2).</sup> It makes n comparisons, n times. It needs to make a pass through the list for every element it sorts.</li>
-<li>For whatever data you give it, it will make the exact same amount of comparisons. Even if you give selection sort a sorted list, it still will have to make the same amount of passes. Thus, the best case, worst case and average case are all O(n<sup>2).</sup></li>
-</ul>
-
-
-<h3>Bubble Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=jAoBsroEow4">Vid</a></li>
-<li>Compare items with the item to its right (or left).</li>
-<li>Large numbers are pushed to the right side of an unsorted list.</li>
-<li>Called a bubble sort since the large numbers rise up to the right.</li>
-<li>A O(n<sup>2),</sup> same time complexity as selection sort.
-
-<ul>
-<li>while selection sort will always be a O(n<sup>2),</sup> bubble sort may be more efficient if the list is fully sorted.</li>
-<li>the best case is a O(n), while the average and worst case are both O(n<sup>2)</sup></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Cocktail Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=Xmx_6YRBaq8">Vid</a></li>
-<li>Saw in bubble sort, that larger numbers rise to the right.
-
-<ul>
-<li>The larger numbers are sorted to the right and on the pass back, the smaller numbers are bubbled to the left.</li>
-<li>The time complexity is still O(n<sup>2)</sup> and is pretty similar to bubble sort.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Insertion Sort</h3>
-
-<ul>
-<li>Only makes one pass through the list. This doesn&#8217;t mean it is an efficient alorithm.</li>
-<li>Start at the second element</li>
-<li>with each new item, you are sorting the item in its correct position it will be sorted in its relative position.
-
-<ul>
-<li>Every arrow to the left are sorted properly.</li>
-</ul>
-</li>
-<li>As it is inserting itself back through the list, but this is still n comparisons or n items meaning it is a O(n<sup>2)</sup> time complexity.</li>
-<li>The best case scenario is like bubble sort of n comparisons. An inversely sorted list will require O(n<sup>2).</sup></li>
-</ul>
-
-
-<h3>Bucket Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?NR=1&amp;feature=endscreen&amp;v=ovAfqUafjAA">Vid</a></li>
-<li>Not a sorting algorithm. It breaks down a list into sub-lists. The purpose is to break it down into smaller chunks so that each list takes less time to sort than the larger list.
-
-<ul>
-<li>Instead of sorting one list of 8 items, I could sort two lists of 4 items.
-
-<ul>
-<li>need to know the upper and lower items of each list.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Why do this? Because if you use bubble sort you reduce the overall time complexity of N<sup>2</sup> if the list 8<sup>2</sup> items by making it 2 x 4<sup>2.</sup></li>
-<li>Average case is O(n+k), k represents the number of buckets created. Worst case scenario is still O(n<sup>2).</sup></li>
-</ul>
-
-
-<h3>Recursion</h3>
-
-<ul>
-<li>similar to recurrence relations in math</li>
-<li>any form of recursion must have a base case for the recursion to stop as well as a recursive case which makes recursive calls to itself.</li>
-</ul>
-
-
-<h3>Quick Sort</h3>
-
-<ul>
-<li>sorting algorithm that relies on recursion.</li>
-<li>where you put the pivot doesn&#8217;t matter, pointers go to the extreme left or right of the list</li>
-<li>the items at the pointers are compared</li>
-<li>when both pointers and pivot are at the same value, it is in the right position</li>
-<li>recursively done on the left sublist and then the right sublist.</li>
-<li>Time complexity -> O(nlogn) for best and average. An inversely sorted list will still require O(n<sup>2).</sup></li>
-</ul>
-
-
-<h3>Example</h3>
-
-<p>Given  a  sorted  array  of  integers,  how  can  you  find  the  location  of  a  particular  integer  x?</p>
-
-<p><em>Good  answer:</em>  Use  binary  search.   Compare  the  number  in  the  middle  of  the  array  with  x.   If  it  is  equal,  we  are  done.   If  the  number  is  greater,  we  know  to  look  in  the  second  half  of  the  array.   If  it  is  smaller,  we  know  to  look  in  the  first  half.   We  can  repeat  the  search  on  the  appropriate  half  of  the  array  by  comparing  the  middle element  of  that  array  with  x,  once  again  narrowing  our  search  by  a  factor  of  2.   We  repeat  this  process  until  we  find  x.  This  algorithm  takes  <em>O(log n)</em>  time.</p>
-
-<p><em>Not‐so‐good  answer: </em> Go  through  each  number  in  order  and  compare  it  to  x.  This 
-algorithm  takes  <em>O(n)</em>  time.</p>
-
-<ul>
-<li>(<a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">from</a>)</li>
-</ul>
-
-
 <h2>Further reading:</h2>
 
 <ul>
@@ -927,6 +1746,7 @@ end
 <li><a href="http://www.reddit.com/r/dailyprogrammer/">Daily programmer</a></li>
 <li><a href="http://rubyquiz.com/">Ruby Quiz</a></li>
 <li><a href="https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions">5 essential phone screens</a></li>
+<li><a href="http://courses.csail.mit.edu/iap/interview/materials.php">Hacking a google interview</a></li>
 </ul>
 
 ]]></content>
@@ -995,13 +1815,6 @@ end
 </span><span class='line'>  <span class="k">def</span> <span class="nf">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
 </span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
 </span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Symbol to Proc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#going to paste code here...</span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
@@ -1119,512 +1932,6 @@ end
 </li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Marketing Your App]]></title>
-    <link href="http://www.adamjonas.com/blog/marketing-your-app/"/>
-    <updated>2012-12-12T09:48:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/marketing-your-app</id>
-    <content type="html"><![CDATA[<p>Sr. Hacker @ Ordr.in</p>
-
-<ul>
-<li>FakeGirlfriend.co</li>
-<li><p>Co-creator of world of Fourcraft</p></li>
-<li><p><a href="http://blog.rickyrobinett.com/">Ricky&#8217;s Blog</a></p></li>
-<li><a href="http://www.helpareporter.com/">Help a reporter out</a></li>
-<li><a href="http://www.garysguide.com/jobs?region=newyork">Gary&#8217;s Guide</a></li>
-<li><a href="http://hackweekends.com/city-detail.html?city=New%20York">Hack Weekends</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing Gitbo]]></title>
-    <link href="http://www.adamjonas.com/blog/testing-gitbo/"/>
-    <updated>2012-12-11T19:18:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/testing-gitbo</id>
-    <content type="html"><![CDATA[<ul>
-<li><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">Factory Girl</a></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Defining Attributes in FactoryGirl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">provider</span> <span class="s2">&quot;github&quot;</span>
-</span><span class='line'>    <span class="n">uid</span>  <span class="s2">&quot;xxxx5826&quot;</span>
-</span><span class='line'>    <span class="nb">name</span> <span class="s2">&quot;Adam Jonas&quot;</span>
-</span><span class='line'>    <span class="n">nickname</span> <span class="s2">&quot;ajonas04&quot;</span>
-</span><span class='line'>    <span class="n">email</span> <span class="s2">&quot;francestown@gmail.com&quot;</span>
-</span><span class='line'>    <span class="n">image</span> <span class="s2">&quot;string&quot;</span>
-</span><span class='line'>    <span class="n">token</span> <span class="s2">&quot;xxxxx&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>config.include FactoryGirl::Syntax::Methods</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[advanced sinatra]]></title>
-    <link href="http://www.adamjonas.com/blog/advanced-sinatra/"/>
-    <updated>2012-12-10T13:14:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/advanced-sinatra</id>
-    <content type="html"><![CDATA[<h3>Sinatra</h3>
-
-<ul>
-<li><p>Sinatra is a DSL for creating a web</p></li>
-<li><p>Sinatra is library, not a framework (rails is a framework)</p></li>
-<li><p><a href="http://stackoverflow.com/questions/148747/what-is-the-difference-between-a-framework-and-a-library">difference between lib and framework</a></p></li>
-<li><p><a href="http://martinfowler.com/bliki/InversionOfControl.html">inversion of control</a> by Martin Fowler</p>
-
-<ul>
-<li>Sinatra supports inline templates</li>
-<li>variables are passed in via @instance variables</li>
-<li>Filters</li>
-<li>Helpers: takes a block and then anything defined are available in the templates</li>
-<li>Configuration: looks at the rack env variable and executes code based on the env</li>
-<li><a href="http://www.mnot.net/cache_docs/">cache docs</a></li>
-<li>By default don&#8217;t have sessions. Need to config sessions.</li>
-<li><p>Testing -> a lot of the tests that come with rails aren&#8217;t in sinatra</p>
-
-<ul>
-<li>test with rack-test</li>
-</ul>
-</li>
-<li><p>classic app -></p>
-
-<ul>
-<li>all the routes are in one file, it is straight Ruby code</li>
-</ul>
-</li>
-<li><p>Modular app -></p>
-
-<ul>
-<li>don&#8217;t want to pollute the Object namespace</li>
-<li>combinging multiple Sinatra apps in a single process</li>
-<li>use Sinatra app as middleware</li>
-</ul>
-</li>
-<li><p>Supports extensions</p>
-
-<ul>
-<li>could be helpers, routes, configurations pacakged into a Gem and used on other apps</li>
-</ul>
-</li>
-<li><p>Registered</p>
-
-<ul>
-<li>when the app is registered is has a method (<code>def self.registered(app)</code>) that allows config settings</li>
-</ul>
-</li>
-<li><p>extensions</p>
-
-<ul>
-<li><a href="http://www.sinatrarb.com/extensions.html">writing extensions</a></li>
-<li><a href="http://www.sinatrarb.com/extensions-wild.html">using extensions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Sinatra vs. Rails</h3>
-
-<ul>
-<li>when to use Sinatra&#8230;
-
-<ul>
-<li><p>Thick client web applications for performance or heavily visualizations</p>
-
-<ul>
-<li>majority of the logic is on the client, not on the server</li>
-<li>sinatra serves things really fast</li>
-</ul>
-</li>
-<li><p>API servers for iOS/Android/Javascript Apps</p></li>
-<li>HTML5 Mobile Apps (<a href="http://www.jqtouch.com/">jq touch</a> or jquery mobile)</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Rack</h3>
-
-<ul>
-<li><a href="http://m.onkey.org/ruby-on-rack-1-hello-rack">Hello Rack</a></li>
-</ul>
-
-
-<h3>Gems</h3>
-
-<ul>
-<li><a href="http://middlemanapp.com/getting-started/welcome/">Middleman Gem</a></li>
-<li>Sprockets- pretty much the asset pipeline</li>
-</ul>
-
-
-<h3>Sinatra integrated into Rails</h3>
-
-<ul>
-<li>it is all Rack under the hood so you use <code>mount</code> in the route file and then all the urls defined in the sinatra app are available in the rails app</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[script bootstrap]]></title>
-    <link href="http://www.adamjonas.com/blog/script-bootstrap/"/>
-    <updated>2012-12-10T11:16:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/script-bootstrap</id>
-    <content type="html"><![CDATA[<h3>Zach Holman&#8217;s Slides on <a href="http://zachholman.com/talk/ruby-patterns">setting up a boostrap script</a></h3>
-
-<ul>
-<li>dependency check
-
-<ul>
-<li>is MySQL installed</li>
-<li>is redis running</li>
-</ul>
-</li>
-<li>bundler
-
-<ul>
-<li>bundle install \
-&#8211;binstubs \
-&#8211;local \
-&#8211;path=vendor/gems \
-&#8211;without=production</li>
-</ul>
-</li>
-<li>db creation
-
-<ul>
-<li>rake db:create</li>
-</ul>
-</li>
-<li>db migration
-
-<ul>
-<li>rake db:migrate</li>
-</ul>
-</li>
-<li>db seeding
-
-<ul>
-<li><a href="https://github.com/rtomayko/replicate">script/replicate-repo</a></li>
-</ul>
-</li>
-<li>static page compilation
-
-<ul>
-<li>404,500</li>
-</ul>
-</li>
-<li>language compilation
-
-<ul>
-<li>python, c, erlang</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Check to see if we need bundle install</h3>
-
-<figure class='code'><figcaption><span>Need to bundle install?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">md5</span>       <span class="o">&lt;&lt;</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Gemfile&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="n">checksum</span>  <span class="o">=</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span>
-</span><span class='line'><span class="n">installed</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;.bundle/checksum&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="https://github.com/holman/hopper/blob/master/script/bootstrap">Some examples</a></li>
-</ul>
-
-
-<h3>Using Foreman</h3>
-
-<ul>
-<li><a href="http://blog.daviddollar.org/2011/05/06/introducing-foreman.html">An Intro</a></li>
-</ul>
-
-
-<h3>Permission Issues</h3>
-
-<ul>
-<li><p>Once we changed the server script and we pushed, the permission issue went away. <a href="http://shalinjain.com/index.php/2009/05/27/scriptserver-permission-denied-ruby-on-rails-error">This is how we changed the permission</a> in the first place.</p></li>
-<li><p><a href="http://stubbisms.wordpress.com/2009/07/10/git-script-to-show-largest-pack-objects-and-trim-your-waist-line/">Git Script To Show Largest Pack Objects</a></p></li>
-</ul>
-
-
-<h3>script prompt</h3>
-
-<figure class='code'><figcaption><span>Slick Prompts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">echo</span> <span class="s2">&quot;the database will now be created, migrated and seeded&quot;</span>
-</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;the current default is sqlite, if you&#39;d like to customize your db settings&quot;</span>
-</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;update the config/database.yml file&quot;</span>
-</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;when finished, you may continue...&quot;</span>
-</span><span class='line'><span class="n">read</span> <span class="o">-</span><span class="nb">p</span> <span class="s2">&quot;continue (y/n)?&quot;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="vg">$REPLY</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span><span class='line'>    <span class="n">echo</span> <span class="s2">&quot;Exiting...&quot;</span>
-</span><span class='line'>    <span class="nb">exit</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="n">fi</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Conways Game of Life]]></title>
-    <link href="http://www.adamjonas.com/blog/conways-game-of-life/"/>
-    <updated>2012-12-08T11:23:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/conways-game-of-life</id>
-    <content type="html"><![CDATA[<p><a href="http://stackoverflow.com/questions/1720932/create-two-dimensional-arrays-and-access-sub-arrays-in-ruby">Initializing new arrays</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Backbone.js Intro]]></title>
-    <link href="http://www.adamjonas.com/blog/backbone-dot-js-intro/"/>
-    <updated>2012-12-07T14:57:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/backbone-dot-js-intro</id>
-    <content type="html"><![CDATA[<h3>Intro with <a href="http://www.youtube.com/watch?v=PqtYcHyyWJA">Nick Gauthier</a></h3>
-
-<ul>
-<li><p>7min 3seconds</p></li>
-<li><p>Backbone is a library, not a framework</p>
-
-<ul>
-<li>it is injectable, like Jquery</li>
-</ul>
-</li>
-<li><p>Ember is much larger and does more for you, but in backbone you call the shots</p></li>
-<li><p>Router</p>
-
-<ul>
-<li>Bind urls to actions with hashbang route or pushstate route</li>
-<li>if you have a route that it recognizes it triggers your code</li>
-<li>extend backbone default router</li>
-<li>looks at a route and triggers an action -> like Rails</li>
-</ul>
-</li>
-<li><p>Views</p>
-
-<ul>
-<li>When you instantiate a view, you create a new DOM element
-
-<ul>
-<li>The view&#8217;s job is to listen to events, like jQuery to trigger actions</li>
-</ul>
-</li>
-<li></li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Listens for a click&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="err">\\</span><span class="nx">code</span>
-</span><span class='line'>  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s2">&quot;click .pet&quot;</span><span class="o">:</span> <span class="s2">&quot;woof&quot;</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="err">\\</span><span class="nx">more</span> <span class="nx">code</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Dynamic GIF on Github]]></title>
-    <link href="http://www.adamjonas.com/blog/dynamic-gif-on-github/"/>
-    <updated>2012-12-07T13:06:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/dynamic-gif-on-github</id>
-    <content type="html"><![CDATA[<ol>
-<li><p>How is the GIF embedded in the markdown?</p></li>
-<li><p>Where can I see it?</p></li>
-<li>TravisCI</li>
-<li>The only .png match points to Repositories#show</li>
-<li><p><code>repo = service(:find_repo, params).run</code> -> line 31 in the repo controller, this must be how it is done.</p></li>
-<li><p>How do we dynamically generate a png in ruby</p></li>
-</ol>
-
-
-<h3><a href="https://github.com/citrus/magick_title#readme">Magick_title</a></h3>
-
-<ul>
-<li><code>MagickTitle.say("Hello")</code> builds a PNG that predictably says &#8220;Hello&#8221;</li>
-<li><p>the gifs on github are 13 pixels tall</p></li>
-<li><p>svg image url</p></li>
-<li>Moveable ink</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Object Oriented Design Sandi Metz]]></title>
-    <link href="http://www.adamjonas.com/blog/object-oriented-design-sandi-metz/"/>
-    <updated>2012-12-07T12:31:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/object-oriented-design-sandi-metz</id>
-    <content type="html"><![CDATA[<h3>Solid Object Oriented Design</h3>
-
-<p><a href="http://vimeo.com/12350535">Video of Sandi Metz</a></p>
-
-<h3>Less the path to better design</h3>
-
-<p><a href="http://vimeo.com/26330100">Video</a></p>
-
-<ul>
-<li><p>Code needs to work today just once, but needs to be easy to change forever</p>
-
-<ul>
-<li>purpose of design is reduce the cost of change</li>
-</ul>
-</li>
-<li><p>Patterns are prescriptions</p>
-
-<ul>
-<li>patterns work at the correct dosage</li>
-</ul>
-</li>
-<li><p>principles</p>
-
-<ul>
-<li>SOLID</li>
-<li>Demeter</li>
-</ul>
-</li>
-<li><p>Need diagnostics</p>
-
-<ul>
-<li>need simple ways to judge the goodness of code (the inverse of Bob Martin&#8217;s list of ailments)</li>
-</ul>
-</li>
-<li><p>4 Diagnostics : True</p>
-
-<ol>
-<li>Code should be <em>transparent</em></li>
-<li><em>Reasonable</em>: cost of making any change should be to proportional to its value</li>
-<li>Code should be <em>useable</em> -> if you wrote the code, you should be able to reuse it</li>
-<li><em>Exemplary</em> -> more code like this would be good for your app</li>
-</ol>
-</li>
-<li><p>These principles tell you when to quit</p></li>
-<li><p>Don&#8217;t be a know-it-all</p></li>
-<li><p>Code is more stable when the objects communicate less</p>
-
-<ul>
-<li>For example, all the work that goes into building and curating bounties belongs in the bounty class and not in the issue class, even though bounties belong to issues
-
-<blockquote><p>managing dependencies is at the center of design. Depend on things that are more stable than you are.</p></blockquote></li>
-<li>early on in an app, you actually don&#8217;t know which is more stable
-
-<ul>
-<li>embrace uncertainty. If two objects must collaborate and you don&#8217;t know who is more uncertain. Then you need to make them know as a little of each other as possible. <em>A directive to decouple.</em></li>
-</ul>
-</li>
-<li>Don&#8217;t have to guess what changes will come. Loosen the coupling so that when a change came (and we didn&#8217;t know what the change was) it would be ok.</li>
-</ul>
-</li>
-<li><p>It&#8217;s Ducks all the way down</p></li>
-<li>identify the underlying abstractions, from trip&#8217;s point of view it just wants to be prepared</li>
-<li>preparer is an agreement about the public interface of an idea -> it&#8217;s a <em>duck type</em></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">preparer</span><span class="p">(</span><span class="n">preparers</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">preparers</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">preparer</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">preparer</span><span class="o">.</span><span class="n">prepare_trip</span><span class="p">(</span><span class="nb">self</span><span class="p">)}</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#then each class has it&#39;s own prepare_trip(trip) method which sends back a prepared trip.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Abstractions are more stable than concretions. It is the duck type.
-
-<ul>
-<li>You can trade the unpredictability for the constancy for what you want.</li>
-<li>We share no code, there are no modules</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Trip expects preparers and prepares trust that they can pass the object to that called them</h3>
-
-<ul>
-<li><p>Trustworthy objects</p>
-
-<ul>
-<li>Understand more about themselves and what they want and know less about what others do</li>
-<li>Depend less on concretions and more on abstractions</li>
-</ul>
-</li>
-<li><p>The space between objects</p></li>
-<li>When objects have space around them they have room to move</li>
-<li>Design allows you to put off design decision until you know more about the application</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[elastic search]]></title>
-    <link href="http://www.adamjonas.com/blog/elastic-search/"/>
-    <updated>2012-12-02T10:21:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/elastic-search</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/karmi/tire">Ruby API and DSL for the ElasticSearch search engine</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
-</span><span class='line'>Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
-</span><span class='line'>No Java runtime present, requesting install.</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Load: true</code> will load the active record object as opposed to the</p>
 ]]></content>
   </entry>
   
