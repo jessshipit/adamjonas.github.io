@@ -78,3 +78,4 @@ When the user launches our app, the system sets up a bunch of stuff for us. We n
   - [50 min screencast](http://pragmaticstudio.com/screencasts/rubymotion)
   - [Promotion](http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial)
   - [HTML book](http://rubymotion-tutorial.com/)
+  - [tutorial that also lists a bunch of resources](http://blog.crowdint.com/2013/01/16/developing-ios-applications-with-ruby.html)

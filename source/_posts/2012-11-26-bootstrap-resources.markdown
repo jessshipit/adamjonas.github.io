@@ -11,4 +11,5 @@ categories:
   - <http://bootswatch.com/>
   - <https://github.com/addyosmani/jquery-ui-bootstrap/>
   - <http://fortawesome.github.com/Font-Awesome/>
+  - [Bootstrap tour](http://sorich87.github.com/bootstrap-tour/index.html)
 

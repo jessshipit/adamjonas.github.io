@@ -76,7 +76,7 @@ categories: rubymotion
 
 `now dateByAddingTimeInterval:1000`, structure is the `receiver theSelector:argument`
 
-  - messages always elclose the receiver and the selector insude a pair of square brackets. These brackets can be nested.
+  - messages always enclose the receiver and the selector inside a pair of square brackets. These brackets can be nested.
   - *id* is a pointer to any object type.
 
   - you can invoke objective-c OR ruby methods against built in classes
@@ -142,3 +142,6 @@ categories: rubymotion
 
 ###Setting a title of a button
 `@instance_var.setTitle("TITLE",forState:UIControlStateNormal)`
+
+###List of wrappers
+  - <http://rubymotion-wrappers.com/>
