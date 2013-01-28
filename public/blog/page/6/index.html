@@ -9,8 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="POTD Jesse James Garrett Author of elements of user experience elements of style Ajax essay asynchronous model Gitbo merit/reputation
-whenever JS &hellip;">
+  <meta name="description" content="Authentication http is stateless
+we pass along with the request is our cookie the cookie lives on the client, which means we can&#8217;t trust it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,196 @@ whenever JS &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day28/">FIS Day28</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T10:10:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Authentication</h2>
+
+<ul>
+<li>http is stateless</li>
+<li><p>we pass along with the request is our cookie</p>
+
+<ul>
+<li>the cookie lives on the client, which means we can&#8217;t trust it</li>
+</ul>
+</li>
+<li><p>cookie has a lot of raw data</p>
+
+<ul>
+<li>you don&#8217;t really want to put data on the client</li>
+<li>except the token: which is just a primary key for their session on my server</li>
+</ul>
+</li>
+<li><p>session id in the cookie identifies the session</p></li>
+<li><p>cookies on the browser/sessions are on the server</p>
+
+<ul>
+<li>the cookie is used to access the session</li>
+</ul>
+</li>
+<li><p>Form_for requires an ActiveRecord instance -> it needs a model</p>
+
+<ul>
+<li>form_tag(sessions_path)</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Session Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">skip_before_filter</span> <span class="ss">:login_required</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span>
+</span><span class='line'><span class="c1">#this is needed you will need to login before you login. #Need to do this in the user controller as well.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="n">user</span>
+</span><span class='line'>    <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="s1">&#39;login failed&#39;</span>
+</span><span class='line'>    <span class="n">redirect</span> <span class="ss">:new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="n">reset_session</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Application Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Application</span> <span class="no">Controller</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">login_required</span>
+</span><span class='line'>    <span class="k">unless</span> <span class="n">current_user</span>
+</span><span class='line'>      <span class="n">redirect_url</span> <span class="n">login_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s2">&quot;please login&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">logged_in?</span>
+</span><span class='line'>    <span class="kp">true</span> <span class="k">if</span> <span class="n">current_user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:logged_in?</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>In user model: <code>has_secure_password</code></p>
+
+<ul>
+<li>bcrypt</li>
+<li>password confirmation is optional with has_secure_password</li>
+<li>if a hacker gains access to your logs and you don&#8217;t have the password field filtered, they can see all the passwords</li>
+</ul>
+</li>
+<li><p><a href="http://www.dshield.org/diary.html?storyid=11110">hashing passwords</a></p></li>
+</ul>
+
+
+<p><code>Order.update(12, :name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<ul>
+<li>is equivalent to</li>
+</ul>
+
+
+<p><code>Order.find(12).update_attributes(:name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<h3>MISC</h3>
+
+<ul>
+<li><a href="http://chrispederick.com/work/web-developer/features/">Web dev tool</a></li>
+<li><a href="https://makandracards.com/makandra/621-git-delete-a-branch-local-or-remote">delete local and remote branches</a></li>
+<li><a href="http://pusher.com/tutorials">pusher</a> better than socket.io
+
+<ul>
+<li><a href="https://github.com/tarnfeld/PusherChat-Rails">pusher chat</a></li>
+</ul>
+</li>
+<li><p><a href="http://socrates.io/">socrates.io</a></p></li>
+<li><p>Throw this at the top for a place for flash notices</p>
+
+<ul>
+<li><code>&lt;%= notice %&gt;</code></li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2635,226 +2825,6 @@ Even noobs know that refactoring is important. This presentation, inspired by <e
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/anatomy-of-web-requests/">Anatomy of Web Requests</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-05T12:58:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3><a href="http://johndbritton.com/">John Britton</a></h3>
-
-<h3>Requests are like</h3>
-
-<ul>
-<li>driving a car</li>
-<li><p>shipping containers</p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/OSI_model">OSI model</a></p></li>
-</ul>
-
-
-<p>  sounds a lot like mvc- in terms of abstraction</p>
-
-<p>  HTTP: the language that your browser speaks
-  - The webpage is a document</p>
-
-<h3>URI:</h3>
-
-<ul>
-<li><p>Rendering</p>
-
-<ul>
-<li>HTML structure</li>
-<li>CSS style</li>
-<li><p>JS behavior</p></li>
-<li><p>ports are a concept</p></li>
-<li>ftp 21</li>
-<li>ssl 53</li>
-<li>0-1024 -> are assigned</li>
-<li>1024-49151 -> are available</li>
-<li><p>49152+</p></li>
-<li><p>if listening on 80- that means that route every request on port 80 to this program</p></li>
-</ul>
-</li>
-<li><p><a href="http://jsfiddle.net/">JS Fiddle</a></p></li>
-<li><p>HTTP: methods/verbs</p>
-
-<ul>
-<li>GET - grab some stuff and bring it down</li>
-<li>POST - anything you are altering the state of the app with is probably a post request</li>
-<li>PUT</li>
-<li>DELETE</li>
-<li>others: HEAD, PATCH, TRACE, OPTIONS, CONNECT</li>
-</ul>
-</li>
-<li><p>curl- works just like a browser on the command line.</p></li>
-</ul>
-
-
-<h3>Where do those requests go?</h3>
-
-<ul>
-<li>what is the ip address of the resource I am looking for</li>
-<li>if nothing is cached anywhere
-
-<ul>
-<li>13 root nameservers</li>
-<li>TLD nameserver- authoritative for .coms for example</li>
-<li>A record - I found the place to go for github, but I need the actual IP address</li>
-<li><p>IP address</p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/BIND">BIND</a> is the most widely used DNS software on the Internet.</p></li>
-<li><p>TTL- <a href="http://en.wikipedia.org/wiki/Time_to_live">time to live</a></p></li>
-<li><p>Networks: nodes that can talk to each other directly</p></li>
-<li>Interface</li>
-<li><p>Network addresses:</p>
-
-<ul>
-<li>defines all the address that can talk to each other</li>
-<li>a.b.c.d/n (n= network mask /subnet)</li>
-<li>Private (non routable) network
-
-<ul>
-<li>10.0.0.0/8</li>
-<li>172.16.0.0/12 -> identifies which part is</li>
-<li>192.168.0.0/16 -> private networks namespaced for private networks</li>
-</ul>
-
-
-<p>255.255.255.0 -> subnet mask -> 24 bits ->
-192.168.1.N and n can&#8217;t exceed 255 people.</p>
-
-<p>10101100.0001 -> this is the network address -> the first 16 bits, the rest would be the node of the network</p>
-
-<ul>
-<li>you can have a lot more machines on an 8 bit network identifier, than a 16 bit. But you wouldn&#8217;t want to waste a bunch of nodes that aren&#8217;t going to be used.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Maximum number of address minus two</p>
-
-<ul>
-<li>192.168.1.255 -> broadcast address</li>
-</ul>
-</li>
-<li><p>Network Hardware</p>
-
-<ul>
-<li>Hub - dumb -> connects everyone&#8217;s ports to each other -> every machine&#8217;s send is connected to everyone&#8217;s receive -> lowest level</li>
-<li>Switch - smarter -> knows what addresses are connected to what ports - lowers network traffic, sending something once and remembering who responds</li>
-<li>Router - smartest -> connects <a href="http://www.merriam-webster.com/dictionary/disparate">disparate</a> networks. Hub and switch talk to each other, for a router, we go through another point -> knows about disparate networks and IP addresses</li>
-</ul>
-</li>
-</ul>
-
-
-<p>-Network Protocols</p>
-
-<ul>
-<li>Operating system knows about the <strong>transport</strong>.
-
-<ul>
-<li>Something reliable it will write in <strong>TCP</strong>
-
-<ul>
-<li>It has to all get there or the file will be corrupt</li>
-<li>there is a control mechanism. If the packets I&#8217;m not sending</li>
-</ul>
-</li>
-<li><strong>UDP</strong> - don&#8217;t want a reliable transport.
-
-<ul>
-<li>I don&#8217;t care if it all gets there. Deliver it in order.</li>
-<li>You don&#8217;t want a second of video that was sent out of order, you don&#8217;t want to patch it together out of order. Streaming would use UDP.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Routing - my machine doesn&#8217;t know about them.
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Routing_Information_Protocol">RIP</a> -</li>
-<li><a href="http://en.wikipedia.org/wiki/Open_Shortest_Path_First">OSPF</a> - Open Shortest Path First- a concept of links and weight of links. If you have two possible routes, it will go on</li>
-</ul>
-</li>
-<li><p>Network Address Translation</p>
-
-<ul>
-<li>maps traffic coming from an internal network and makes sure the appropriate machine gets the info it requested.</li>
-</ul>
-</li>
-<li><p>traceroute</p></li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>traceroute github.com
-</span><span class='line'>whois adamjonas.com
-</span><span class='line'>ping google.com
-</span><span class='line'>curl google.com</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p>nmap
-brew install nmap
-nmap #map the network</p>
-
-<h1>could run this against port 22 which is all the ssh</h1></li>
-<li><p><a href="http://whatismyipaddress.com/">wireshark</a></p></li>
-<li><p>hazel- rules based apps</p></li>
-<li>cueing in rails</li>
-<li><p><a href="http://progrium.com/localtunnel/">local tunnel</a></p></li>
-<li><p>blobs, tags, branches, commits</p>
-
-<ul>
-<li>blob is just a file -> any data</li>
-<li>git hash-object README</li>
-</ul>
-</li>
-<li><p>tree</p>
-
-<ul>
-<li>brew install tree</li>
-</ul>
-</li>
-<li><p>Divy or breeze: window arranging</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -2880,15 +2850,15 @@ nmap #map the network</p>
       </li>
     
       <li class="post">
+        <a href="/blog/rubymotion-day-5/">RubyMotion Day 5</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/ember-dot-js-meetup/">Ember.js Meetup</a>
       </li>
     
       <li class="post">
         <a href="/blog/rubymotion-day-4/">RubyMotion Day 4</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rubymotion-day-3/">RubyMotion Day 3</a>
       </li>
     
   </ul>
@@ -2967,7 +2937,7 @@ nmap #map the network</p>
 <li class='category'><a href='/blog/categories/refactoring/'>refactoring (4)</a></li>
 <li class='category'><a href='/blog/categories/rspec/'>rspec (4)</a></li>
 <li class='category'><a href='/blog/categories/ruby/'>ruby (25)</a></li>
-<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (7)</a></li>
+<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (8)</a></li>
 <li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
 <li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
 <li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>

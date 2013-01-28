@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-01-27T23:06:00-05:00</updated>
+  <updated>2013-01-28T10:15:07-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -45,6 +45,191 @@
 <p>It takes a village to raise a coder in less than a year. Learning something entirely new can be demoralizing. I have to thank my beautiful fiancé for the free passes to attend weekend classes and for her patience when I woke up to jot down that elusive solution which arrived during my R.E.M. cycle. I have to thank <a href="http://flatironschool.com/#people">The Flatiron School guys</a> for giving a shit.</p>
 
 <p>Clearly, my education isn&#8217;t complete. That first day I didn&#8217;t know what a method was. Now, I don&#8217;t know what lots of things are. But just maybe I&#8217;ll make the aforementioned people proud by creating something to justify all the work that they put into me. No promises, but thanks to them, I at least have a chance.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RubyMotion Day 5]]></title>
+    <link href="http://www.adamjonas.com/blog/rubymotion-day-5/"/>
+    <updated>2013-01-25T09:54:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/rubymotion-day-5</id>
+    <content type="html"><![CDATA[<h3>CA Animation</h3>
+
+<ul>
+<li><p>Animation family tree</p>
+
+<ul>
+<li>CA Animattion
+
+<ul>
+<li>CA Animation Group</li>
+<li>CA Property Animation</li>
+<li>CA Transition
+
+<ul>
+<li>CA basic animation is for linear animation</li>
+<li>keyanimattion is for more specific or non-linear animation</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Animated Properties</p>
+
+<ul>
+<li>CGColorRef -> shadowColor, borderColor</li>
+<li>NSNumber (float) -> opactity, shadowRadius</li>
+<li>NSVAlue (CGRect) -> bounds, contentsRect</li>
+<li>NSValue (CGPoint) -> anchorPoint (is the center point for rotation), position</li>
+<li>NSValue (CATransform3D) -> transform</li>
+</ul>
+</li>
+<li><p>CATransform3d</p>
+
+<ul>
+<li>CoreGraphics is just in 2 dimensions</li>
+<li>Can add a perspective column in the z column &#8211; (as opposed to just x and y planes (the 3rd column is for perspective) &#8211; to create the illusion that it is tilted back</li>
+</ul>
+</li>
+<li><p>Easing: to control the acceleration or deceleration of the objects in the animation. This is used to simulate real life forces like friction or gravity.</p></li>
+</ul>
+
+
+<h2>Web Services</h2>
+
+<ul>
+<li>Synchronous URL Fetch (not recommended) -> <em>if you block the main thread, your application will freeze</em>
+
+<ul>
+<li>NSURLConnection -(request)-> NSMutableURLRequest -(URL)-> NSURL
+
+<ul>
+<li>NSURLConnection, the class of CocoaTouch to send requests to web services</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Asynchronous URL Fetch (the one we are going to use)</p></li>
+<li><p>we can block the whole app execution until the web service responds OR send the request and forget about it, avoiding blocking the app execution. Once the service responds we process the result.</p>
+
+<ul>
+<li>The later option is the right one.</li>
+</ul>
+</li>
+<li>We send and Asynchronous request to the service using a NSOperationQueue. This block of code will be executed in a background Queue defined by the NSOperationQueue.
+
+<ul>
+<li>This block receives three parameters:
+
+<ul>
+<li>response: An object with an instance of NSURLResponse.</li>
+<li>data: The response returned by the service as a NSData object.</li>
+<li>error: An NSError with the error, if any, returned by the service.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Core Data</h3>
+
+<ul>
+<li>StoreTypes
+
+<ul>
+<li>SQlite, binary file, NOT xml formats (only available in OS10)</li>
+</ul>
+</li>
+<li>Predicates</li>
+<li>NSManagedObject
+
+<ul>
+<li>class capable of storing data for an instance of any entity.</li>
+<li>access properties (attributes, relationships) via key-value coding methods (valueForKey:, setValue:forKey)</li>
+</ul>
+</li>
+<li>Relationships
+
+<ul>
+<li>delete rule: &#8220;if an attempt is made to delete the source object&#8230;&#8221;
+
+<ul>
+<li>nullify (the inverse relationship)</li>
+<li>deny (if any destination relationships)</li>
+<li>cascade (delete any destination relationships, too) -> <em>very dangeous</em></li>
+<li>No action</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># In Core Data we can have relationship between objects, so lets add one</span>
+</span><span class='line'>  <span class="c1"># to the Director Object</span>
+</span><span class='line'>  <span class="vi">@relationships</span> <span class="o">||=</span> <span class="o">[</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># IMPORTANT: In Core Data is required to have a circular relationships between</span>
+</span><span class='line'>    <span class="c1"># the two objects. In these case we are adding a Relationship from Movie to Director</span>
+</span><span class='line'>    <span class="c1"># but also we will need one from Director to Movie, these relationship is called Inverse</span>
+</span><span class='line'>    <span class="c1"># Relationship</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Relationship Name, Relationship Class, Inverse Relationship, Is Optional, Is Indexed,</span>
+</span><span class='line'>    <span class="c1"># Is Ordered, Min Count, Max Count, Delete Rule</span>
+</span><span class='line'>    <span class="o">[</span><span class="s1">&#39;director&#39;</span><span class="p">,</span> <span class="s1">&#39;Director&#39;</span><span class="p">,</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="no">NSNullifyDeleteRule</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>The relationships in Core Data are circular, what these means is that if we want to create a relationship from Movie to Director we also need another one from Director to Movie.</li>
+</ul>
+
+
+<h3>Debugger</h3>
+
+<ul>
+<li>rake debug=1, backtrace (or bt), fr <number>
+
+<ul>
+<li>n to step to the next line in the file</li>
+<li>quit to quit.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>3rd Party Libs</h3>
+
+<ul>
+<li>CorePlot -> to build graphs</li>
+</ul>
+
+
+<h3>Wrappers</h3>
+
+<ul>
+<li>[formotion](https://github.com/clayallsopp/formotion -> to easily create complex forms</li>
+<li><a href="https://github.com/clayallsopp/formotion">walt</a> -> wrapper of core animation</li>
+<li><a href="https://github.com/clayallsopp/formotion">teacup</a> -> pretty much create a stylesheet for the views</li>
+<li><a href="https://github.com/clayallsopp/formotion">sugarcube</a> -> redefining methods to be more semantic</li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -1935,165 +2120,6 @@ algorithm  takes  <em>O(n)</em>  time.</p>
 
 <ul>
 <li><a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">From</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Big O Notation]]></title>
-    <link href="http://www.adamjonas.com/blog/big-o-notation/"/>
-    <updated>2012-12-29T22:59:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/big-o-notation</id>
-    <content type="html"><![CDATA[<h3>What is it? Let me say it a few different ways&#8230;</h3>
-
-<ul>
-<li>Big-O measures how well an operation will “scale” when you increase the amount of “things” it operates on.</li>
-<li>Big-O can be used to describe how fast an algorithm will run, or it can describe other behavior such as how much memory an algorithm will use.</li>
-</ul>
-
-
-<blockquote><p>Big O notation refers to the asymptotic upper bound (see below for fuller explanation), which means that it&#8217;s a cap on how much the time complexity will grow. If we say that a function is O(1), then there&#8217;s no growth and the function will always take a fixed amount of time to complete. If we say that a function is O(N) then if N doubles, the function&#8217;s time complexity at most will double. It may be less, but never more. That&#8217;s the upper bound of an algorithm, and it&#8217;s the most common notation. <a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">credit</a></p></blockquote>
-
-<h3>Asymptotic Bounds</h3>
-
-<ul>
-<li>By removing the constants from an equation, we can focus on the part of the measure that grows and derive a simplified asymptotic bound on the algorithm.</li>
-<li><strong>The reference to bounds is pretty much a reference to the best-case (lower bound, also known as Omega -> Ω) and worst-case (upper bound, also known as Big O) scenarios.</strong>
-
-<ul>
-<li><strong>If these end up being the same, we can call it theta -> Θ.</strong></li>
-</ul>
-</li>
-<li>For more on Asymptotic Bounds, read a <a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">good explanation</a>.</li>
-</ul>
-
-
-<h3>Time complexity</h3>
-
-<ul>
-<li><p>Time complexity is a measure of efficiency.</p>
-
-<ul>
-<li>In a list of N items, how many times do I need to go through this list to get the task done?
-
-<ul>
-<li>e.g. which number is the smallest. Only once I pass through the entire list can I figure out which is the smallest. <em>It must make N comparisons.</em></li>
-<li>Selection sort and bubble sort are N<sup>2</sup> algorithms.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><em>O(1)</em> -> Constant Time -> describes an algorithm that will always execute in the same time regardless of the size of the input data set.</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>This will never change no matter the size</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">checking_nil</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">array</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Another e.g. determining if a number is even or odd.</p>
-
-<ul>
-<li><em>O(log n)</em> -> logarithmic time -> Any algorithm which cuts the problem in half each time is O(log n). The operation will take longer as the input size increases, but once the input gets fairly large it won&#8217;t change enough to worry about. If you double n, you have to spend an extra amount of time t to complete the task. If n doubles again, the time it takes to complete the task won’t double, but will increase by a constant amount. (e.g. a binary search tree
-
-<ul>
-<li>A <em>Binary Search Tree</em> is a tree comprised of multiple nodes with one root node to start with.  Each node has a value, left node, and a right node.  The left node value has to be less than the current node value, while the right node value is greater than the current.  The biggest concern with a binary search tree is balancing.  If the tree becomes unbalanced, the O(log(n)) benefit can become O(n) if the tree unbalanced (a tree with only a right path).
-
-<ul>
-<li><a href="http://styliii.com/blog/2012/12/26/what-is-a-binary-search-tree/">further Binary Search Tree reading</a>)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><em>O(N)</em> -> Linear Time -> the larger the input, the longer it takes. AKA it will grow linearly and in direct proportion to the size of the input data set.</li>
-<li><em>O(n log n)</em> means that you’re performing an <em>O(log n)</em> operation for each item in your input. Most (efficient) sort algorithms are an example of this including quicksort (in the average and best case), heapsort and merge sort.</li>
-<li>*O(N<sup>2)*</sup> represents an algorithm whose performance is directly proportional to the square of the size of the input data set. Every time n doubles, the operation takes four times as long. (e.g.s are comparison algorithms like quicksort and bubble sort)</li>
-<li><em>O(2<sup>N)*</sup> -> exponential time -> denotes an algorithm whose growth will double with each additional element in the input data set. Totally impractical for any reasonably large input size </em>n*.</li>
-<li><em>O(n!)</em> -> factorial time -> for all possible permutations&#8230; that&#8217;s just crazy.</li>
-</ul>
-
-
-<p>Constant Time -> O(1) &lt; Linear Time -> O(n) &lt; Linearithmic Time -> O(nlogn) &lt; Quadratic -> O(n<sup>2)</sup></p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Big-O </th>
-<th> Operations for 10 “things” </th>
-<th> Operations for 100 “things” </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> O(1) </td>
-<td> 1 </td>
-<td> 1 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(log n) </td>
-<td> 3 </td>
-<td> 7 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n) </td>
-<td> 10 </td>
-<td> 100 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n log n) </td>
-<td> 30 </td>
-<td> 700 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n<sup>2)</sup> </td>
-<td> 100 </td>
-<td> 10000 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(2<sup>n)</sup> </td>
-<td> 1024 </td>
-<td> 2<sup>100</sup> – a lot! </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n!) </td>
-<td> 3628800 </td>
-<td> 100! – also a lot! </td>
-</tr>
-</tbody>
-</table>
-
-
-<p><a href="http://therecyclebin.files.wordpress.com/2008/05/time-complexity.png"><img class="left" src="http://www.adamjonas.com/images/time-complexity.png" title="Time Complexity" ></a></p>
-
-<h2>Further reading:</h2>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/107165/big-o-for-eight-year-olds/107189#107189">stackoverflow</a></li>
-<li><a href="http://rob-bell.net/2009/06/a-beginners-guide-to-big-o-notation/">Rob Bell&#8217;s Beginner&#8217;s Guide</a></li>
-<li><a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">This nails asymptotic notation</a></li>
-<li><a href="http://recursive-design.com/blog/2010/12/07/comp-sci-101-big-o-notation/">Pulled a lot from here</a></li>
 </ul>
 
 ]]></content>

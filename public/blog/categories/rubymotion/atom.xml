@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rubymotion | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/rubymotion/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-01-27T23:06:00-05:00</updated>
+  <updated>2013-01-28T10:15:07-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,180 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RubyMotion Day 5]]></title>
+    <link href="http://www.adamjonas.com/blog/rubymotion-day-5/"/>
+    <updated>2013-01-25T09:54:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/rubymotion-day-5</id>
+    <content type="html"><![CDATA[<h3>CA Animation</h3>
+
+<ul>
+<li><p>Animation family tree</p>
+
+<ul>
+<li>CA Animattion
+
+<ul>
+<li>CA Animation Group</li>
+<li>CA Property Animation</li>
+<li>CA Transition
+
+<ul>
+<li>CA basic animation is for linear animation</li>
+<li>keyanimattion is for more specific or non-linear animation</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Animated Properties</p>
+
+<ul>
+<li>CGColorRef -> shadowColor, borderColor</li>
+<li>NSNumber (float) -> opactity, shadowRadius</li>
+<li>NSVAlue (CGRect) -> bounds, contentsRect</li>
+<li>NSValue (CGPoint) -> anchorPoint (is the center point for rotation), position</li>
+<li>NSValue (CATransform3D) -> transform</li>
+</ul>
+</li>
+<li><p>CATransform3d</p>
+
+<ul>
+<li>CoreGraphics is just in 2 dimensions</li>
+<li>Can add a perspective column in the z column -- (as opposed to just x and y planes (the 3rd column is for perspective) -- to create the illusion that it is tilted back</li>
+</ul>
+</li>
+<li><p>Easing: to control the acceleration or deceleration of the objects in the animation. This is used to simulate real life forces like friction or gravity.</p></li>
+</ul>
+
+
+<h2>Web Services</h2>
+
+<ul>
+<li>Synchronous URL Fetch (not recommended) -> <em>if you block the main thread, your application will freeze</em>
+
+<ul>
+<li>NSURLConnection -(request)-> NSMutableURLRequest -(URL)-> NSURL
+
+<ul>
+<li>NSURLConnection, the class of CocoaTouch to send requests to web services</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Asynchronous URL Fetch (the one we are going to use)</p></li>
+<li><p>we can block the whole app execution until the web service responds OR send the request and forget about it, avoiding blocking the app execution. Once the service responds we process the result.</p>
+
+<ul>
+<li>The later option is the right one.</li>
+</ul>
+</li>
+<li>We send and Asynchronous request to the service using a NSOperationQueue. This block of code will be executed in a background Queue defined by the NSOperationQueue.
+
+<ul>
+<li>This block receives three parameters:
+
+<ul>
+<li>response: An object with an instance of NSURLResponse.</li>
+<li>data: The response returned by the service as a NSData object.</li>
+<li>error: An NSError with the error, if any, returned by the service.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Core Data</h3>
+
+<ul>
+<li>StoreTypes
+
+<ul>
+<li>SQlite, binary file, NOT xml formats (only available in OS10)</li>
+</ul>
+</li>
+<li>Predicates</li>
+<li>NSManagedObject
+
+<ul>
+<li>class capable of storing data for an instance of any entity.</li>
+<li>access properties (attributes, relationships) via key-value coding methods (valueForKey:, setValue:forKey)</li>
+</ul>
+</li>
+<li>Relationships
+
+<ul>
+<li>delete rule: "if an attempt is made to delete the source object..."
+
+<ul>
+<li>nullify (the inverse relationship)</li>
+<li>deny (if any destination relationships)</li>
+<li>cascade (delete any destination relationships, too) -> <em>very dangeous</em></li>
+<li>No action</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```ruby
+  # In Core Data we can have relationship between objects, so lets add one
+  # to the Director Object
+  @relationships ||= [</p>
+
+<pre><code># IMPORTANT: In Core Data is required to have a circular relationships between
+# the two objects. In these case we are adding a Relationship from Movie to Director
+# but also we will need one from Director to Movie, these relationship is called Inverse
+# Relationship
+
+# Relationship Name, Relationship Class, Inverse Relationship, Is Optional, Is Indexed,
+# Is Ordered, Min Count, Max Count, Delete Rule
+['director', 'Director', 'movie', true, false, true, 0, 1, NSNullifyDeleteRule]
+</code></pre>
+
+<p>  ]
+```</p>
+
+<ul>
+<li>The relationships in Core Data are circular, what these means is that if we want to create a relationship from Movie to Director we also need another one from Director to Movie.</li>
+</ul>
+
+
+<h3>Debugger</h3>
+
+<ul>
+<li>rake debug=1, backtrace (or bt), fr <number>
+
+<ul>
+<li>n to step to the next line in the file</li>
+<li>quit to quit.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>3rd Party Libs</h3>
+
+<ul>
+<li>CorePlot -> to build graphs</li>
+</ul>
+
+
+<h3>Wrappers</h3>
+
+<ul>
+<li>[formotion](https://github.com/clayallsopp/formotion -> to easily create complex forms</li>
+<li><a href="https://github.com/clayallsopp/formotion">walt</a> -> wrapper of core animation</li>
+<li><a href="https://github.com/clayallsopp/formotion">teacup</a> -> pretty much create a stylesheet for the views</li>
+<li><a href="https://github.com/clayallsopp/formotion">sugarcube</a> -> redefining methods to be more semantic</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RubyMotion Day 5]]></title>
@@ -641,276 +815,6 @@ withRowAnimation:UITableViewRowAnimationRight)
 
 
 <h3>Playing with the interface builder</h3>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RubyMotion Day 1]]></title>
-    <link href="http://www.adamjonas.com/blog/rubymotion-day-1/"/>
-    <updated>2013-01-21T09:45:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/rubymotion-day-1</id>
-    <content type="html"><![CDATA[<h3>Course Goals</h3>
-
-<ul>
-<li>Objective-c Conventions</li>
-<li>Using C Libraries</li>
-<li>Platform Idioms</li>
-<li>Key concepts: pointers, memory management, objects, messages</li>
-<li>Fundamental iOS libraries</li>
-<li>Cocoa patterns</li>
-<li>Testing</li>
-</ul>
-
-
-<h3>History of why Objective-C</h3>
-
-<ul>
-<li>NeXt
-
-<ul>
-<li>used objective-c to write the main platform
-
-<ul>
-<li>there was a debate on which was better between objective-c and c++, C++ eventually won</li>
-</ul>
-</li>
-<li>If you wanted to write an application on NeXt you needed to use NeXt builder</li>
-<li>OSX was built next and there are a lot of things in OSX that were inherited from NeXt</li>
-</ul>
-</li>
-<li>iOS is basically a version of OS10</li>
-</ul>
-
-
-<h3>iOS Overview</h3>
-
-<ul>
-<li>The window server and Cocoa send events and messages to each other. It is a two way communication.</li>
-<li><p>each application has its own loop of communication. Responsible for send and receiving events from the window server.</p></li>
-<li><p>For each object in the nib file</p>
-
-<ul>
-<li>Class is sent <code>alloc</code> to create interface</li>
-<li>New instance is sent <code>init</code></li>
-<li>Instance variables are set</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Application States</h3>
-
-<ul>
-<li>Two states: foreground and background
-
-<ul>
-<li>two states for foreground: inactive and active</li>
-<li>in the background: you can do tasks in the background, after it is done it will go to suspended</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Cocoa</h3>
-
-<ul>
-<li>UIkit is the main library that comes with cocoa and certainly the most important.</li>
-</ul>
-
-
-<h3>App delegate</h3>
-
-<ul>
-<li>There are at least two classes. The application class and the application delegate.</li>
-</ul>
-
-
-<h3>Create a new project</h3>
-
-<p><code>motion create &lt;app name&gt;</code></p>
-
-<ul>
-<li>fonts, images, assets all go in the resources folder</li>
-</ul>
-
-
-<h3>Rake</h3>
-
-<ul>
-<li><code>rake -T</code> gives me a list of all the rake tasks
-
-<ul>
-<li>can build for a device or build for the simulator</li>
-</ul>
-</li>
-<li>can create a static library with <code>rake static</code></li>
-<li><code>rake config</code> gives you output on the frameworks, delegate_class, etc.
-
-<ul>
-<li>CoreGraphics lib is what we use for animation</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Deploying the application</h3>
-
-<ul>
-<li>need an apple certificate and developer certificate</li>
-</ul>
-
-
-<h3>To see the UI structure</h3>
-
-<p><code>UIApplication.sharedApplication.keyWindow.recursiveDescription</code> -> this will give you the tree structure of what you have created.</p>
-
-<h3>Changing attributes in the console</h3>
-
-<p><code>self.font = UIFont.fontWithName("Noteworthy-Bold",size:18)</code> will change the font of the label that you have highlighted.</p>
-
-<h2>Object C</h2>
-
-<ul>
-<li>objective-c is an objected oriented flavor of c</li>
-<li>heavily influenced from Smalltalk language</li>
-<li><p>all keywords begin with @</p></li>
-<li><p>RubyMotion adds named parameters similar to Ruby 2.0</p></li>
-<li>Both Ruby and Objective C has the notion of open classes, single inheritance and single message dispatch</li>
-</ul>
-
-
-<p><code>now dateByAddingTimeInterval:1000</code>, structure is the <code>receiver theSelector:argument</code></p>
-
-<ul>
-<li>messages always enclose the receiver and the selector inside a pair of square brackets. These brackets can be nested.</li>
-<li><p><em>id</em> is a pointer to any object type.</p></li>
-<li><p>you can invoke objective-c OR ruby methods against built in classes</p></li>
-<li><code>[1,2,3].send(:objectAtIndex, 1)</code> -> you need the colon or it won't find the selector!</li>
-<li>helpful to use short methods and callbacks because the method will not be released until it is terminated.</li>
-</ul>
-
-
-<h3>Objective C Classes</h3>
-
-<ul>
-<li>NSString (similar to when you freeze something in Ruby) v. NSMutableString</li>
-<li>NSSArray v. NSMutableArray</li>
-<li>NSSet v. NSMutableSet</li>
-<li><p>NSDictionary v. NSMutableDictionary</p></li>
-<li><p><code>my_string = "hello"</code> -> this is mutable</p></li>
-<li><code>my_stgring = NSString.alloc.init</code> -> this is immutable</li>
-</ul>
-
-
-<h3>NSArray</h3>
-
-<ul>
-<li>NSArray is immutable. Once you create one it can't be modified. NSMutableArray is a mutable subclass of NSArray
-
-<ul>
-<li>need to terminate a <code>NSArray.arrayWithObjects(foo, bar, baz, nil)</code> with a <code>nil</code> or it will crash.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>NSSet</h3>
-
-<ul>
-<li>Sets are collections with no order and objects can be present only once (can only be added once).It is useful when dealing with membership issues.</li>
-<li><code>.unionSet</code>, <code>.intersectSet</code></li>
-</ul>
-
-
-<h3>NSDictionary</h3>
-
-<ul>
-<li>Dictionaries are unordered and associate a key.</li>
-</ul>
-
-
-<h3>Constants</h3>
-
-<ul>
-<li>in objective c -> constants usually start with k -> <code>kItemCode</code></li>
-<li>in Ruby make sure that this is uppercase -> <code>KItemCode</code></li>
-</ul>
-
-
-<h3>Defining a class</h3>
-
-<ul>
-<li>Obj c uses the keyword <code>@interface</code> to define the class</li>
-<li>Obj c only supports <em>single inheritance</em>. You can only inherit from one superclass at a time.</li>
-</ul>
-
-
-<h3>Protocols</h3>
-
-<ul>
-<li>similar to the concept of interfaces in java or C-sharp</li>
-<li>a protocol is a contract. It is a promise to the compiler that a given class will implement a given interface.</li>
-</ul>
-
-
-<h3>Categories</h3>
-
-<ul>
-<li>the way to add methods to an existing class</li>
-</ul>
-
-
-<h3>Structures</h3>
-
-<ul>
-<li>C structures are mapped to classes in RubyMotion. <code>CGPoint</code> is very common.</li>
-<li>It is possible to pass the field views directly to the constructor `pt= CGPoint.new(100,200)</li>
-</ul>
-
-
-<h3>Pointers</h3>
-
-<ul>
-<li>Pointers are basic data types of the C language</li>
-<li>RubyMotion supports the creation o structure pointers, by passing their runtime type accordingly to <code>Pointer.new</code></li>
-</ul>
-
-
-<h3>Blocks</h3>
-
-<ul>
-<li>The caret (<sup>)</sup> character is used to define C blocks</li>
-<li>The Prob object must have the same number of args as the C function pointer or block, otherwise an exception will be raised at runtime</li>
-</ul>
-
-
-<h3>Keyboard doesn't toggle by default</h3>
-
-<ul>
-<li>Add this code</li>
-</ul>
-
-
-<p>```ruby
-  def textFieldShouldReturn(textfield)</p>
-
-<pre><code>textfield.resignFirstResponder
-return false
-</code></pre>
-
-<p>  end
-```</p>
-
-<h3>Setting a title of a button</h3>
-
-<p><code>@instance_var.setTitle("TITLE",forState:UIControlStateNormal)</code></p>
-
-<h3>List of wrappers</h3>
-
-<ul>
-<li><a href="http://rubymotion-wrappers.com/">http://rubymotion-wrappers.com/</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
