@@ -6,7 +6,6 @@ comments: true
 categories: rubymotion
 ---
 
-
 ###CA Animation
 	- Animation family tree
 		- CA Animattion
@@ -59,6 +58,7 @@ categories: rubymotion
 			- deny (if any destination relationships)
 	 	 	- cascade (delete any destination relationships, too) -> *very dangeous*
 			- No action
+
 ```ruby
   # In Core Data we can have relationship between objects, so lets add one
   # to the Director Object

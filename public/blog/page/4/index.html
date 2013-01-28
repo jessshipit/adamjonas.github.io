@@ -9,9 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Zach Holman&#8217;s Slides on setting up a boostrap script dependency check is MySQL installed
-is redis running bundler bundle install \
-&#8211; &hellip;">
+  <meta name="description" content="Initializing new arrays
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,149 +87,6 @@ is redis running bundler bundle install \
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/script-bootstrap/">Script Bootstrap</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-10T11:16:00-05:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Zach Holman&#8217;s Slides on <a href="http://zachholman.com/talk/ruby-patterns">setting up a boostrap script</a></h3>
-
-<ul>
-<li>dependency check
-
-<ul>
-<li>is MySQL installed</li>
-<li>is redis running</li>
-</ul>
-</li>
-<li>bundler
-
-<ul>
-<li>bundle install \
-&#8211;binstubs \
-&#8211;local \
-&#8211;path=vendor/gems \
-&#8211;without=production</li>
-</ul>
-</li>
-<li>db creation
-
-<ul>
-<li>rake db:create</li>
-</ul>
-</li>
-<li>db migration
-
-<ul>
-<li>rake db:migrate</li>
-</ul>
-</li>
-<li>db seeding
-
-<ul>
-<li><a href="https://github.com/rtomayko/replicate">script/replicate-repo</a></li>
-</ul>
-</li>
-<li>static page compilation
-
-<ul>
-<li>404,500</li>
-</ul>
-</li>
-<li>language compilation
-
-<ul>
-<li>python, c, erlang</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Check to see if we need bundle install</h3>
-
-<figure class='code'><figcaption><span>Need to bundle install?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">md5</span>       <span class="o">&lt;&lt;</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Gemfile&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="n">checksum</span>  <span class="o">=</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span>
-</span><span class='line'><span class="n">installed</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;.bundle/checksum&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="https://github.com/holman/hopper/blob/master/script/bootstrap">Some examples</a></li>
-</ul>
-
-
-<h3>Using Foreman</h3>
-
-<ul>
-<li><a href="http://blog.daviddollar.org/2011/05/06/introducing-foreman.html">An Intro</a></li>
-</ul>
-
-
-<h3>Permission Issues</h3>
-
-<ul>
-<li><p>Once we changed the server script and we pushed, the permission issue went away. <a href="http://shalinjain.com/index.php/2009/05/27/scriptserver-permission-denied-ruby-on-rails-error">This is how we changed the permission</a> in the first place.</p></li>
-<li><p><a href="http://stubbisms.wordpress.com/2009/07/10/git-script-to-show-largest-pack-objects-and-trim-your-waist-line/">Git Script To Show Largest Pack Objects</a></p></li>
-</ul>
-
-
-<h3>script prompt</h3>
-
-<figure class='code'><figcaption><span>Slick Prompts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">echo</span> <span class="s2">&quot;the database will now be created, migrated and seeded&quot;</span>
-</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;the current default is sqlite, if you&#39;d like to customize your db settings&quot;</span>
-</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;update the config/database.yml file&quot;</span>
-</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;when finished, you may continue...&quot;</span>
-</span><span class='line'><span class="n">read</span> <span class="o">-</span><span class="nb">p</span> <span class="s2">&quot;continue (y/n)?&quot;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="vg">$REPLY</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span><span class='line'>    <span class="n">echo</span> <span class="s2">&quot;Exiting...&quot;</span>
-</span><span class='line'>    <span class="nb">exit</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="n">fi</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1052,6 +908,89 @@ is redis running bundler bundle install \
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day33/">FIS Day33</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-26T10:04:00-05:00" pubdate data-updated="true">Nov 26<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p><a href="http://rubular.com/r/TicDjjCz2S">http://rubular.com/r/TicDjjCz2S</a></p></li>
+<li><p>Httparty:</p>
+
+<ul>
+<li><a href="https://github.com/jnunemaker/httparty/blob/master/examples/whoismyrep.rb">https://github.com/jnunemaker/httparty/blob/master/examples/whoismyrep.rb</a></li>
+<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">http://blog.teamtreehouse.com/its-time-to-httparty</a></li>
+</ul>
+</li>
+<li><p>JQuery:</p>
+
+<ul>
+<li><a href="http://www.unheap.com/section/inputs-forms/input-sliders/">http://www.unheap.com/section/inputs-forms/input-sliders/</a></li>
+</ul>
+</li>
+<li><p>JRating:</p>
+
+<ul>
+<li><a href="http://www.myjqueryplugins.com/jquery-plugin/jrating">http://www.myjqueryplugins.com/jquery-plugin/jrating</a></li>
+</ul>
+</li>
+<li><p>Stars:</p>
+
+<ul>
+<li><a href="http://jsfiddle.net/leaverou/CGP87/light/">http://jsfiddle.net/leaverou/CGP87/light/</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Submitting a <a href="http://forum.jquery.com/topic/how-to-submit-form-on-click-radio-button-with-jquery-mobile">radio button</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;:radio&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">).</span><span class="nx">submit</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p><a href="http://stackoverflow.com/questions/1716965/ruby-and-nil-object">passing in local variables to a partial</a></p></li>
+<li><p>rounding <code>34567.89.round(1)  #=&gt; 34567.9</code></p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1073,10 +1012,6 @@ is redis running bundler bundle install \
       </li>
     
       <li class="post">
-        <a href="/blog/vim/">VIM</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/rubymotion-day-5/">RubyMotion Day 5</a>
       </li>
     
@@ -1086,6 +1021,10 @@ is redis running bundler bundle install \
     
       <li class="post">
         <a href="/blog/rubymotion-day-4/">RubyMotion Day 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/rubymotion-day-3/">RubyMotion Day 3</a>
       </li>
     
   </ul>
@@ -1172,7 +1111,6 @@ is redis running bundler bundle install \
 <li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
 <li class='category'><a href='/blog/categories/testing/'>testing (5)</a></li>
-<li class='category'><a href='/blog/categories/vim/'>vim (1)</a></li>
 <li class='category'><a href='/blog/categories/xmpp/'>xmpp (1)</a></li>
 
   </ul>

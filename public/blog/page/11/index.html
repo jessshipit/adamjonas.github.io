@@ -9,11 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="INNER JOIN is the same as JOIN. 1
-2
-3
-4
-SELECT title, artist FROM album JOIN track ON (album.asin=track.album) WHERE song = 'Alison' Index structures &hellip;">
+  <meta name="description" content="Git Talk with Julia West git pull = git fetch + git merge
+git pull &#8211;rebase = git fetch + git rebase #generally don&#8217;t get the merge commit &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,152 +87,6 @@ SELECT title, artist FROM album JOIN track ON (album.asin=track.album) WHERE son
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/advanced-sql/">Advanced SQL</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-09T20:58:00-04:00" pubdate data-updated="true">Oct 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>INNER JOIN is the same as JOIN.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>SELECT title, artist
-</span><span class='line'>  FROM album JOIN track
-</span><span class='line'>         ON (album.asin=track.album)
-</span><span class='line'> WHERE song = 'Alison'</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Index structures: if you create an index on the primary key and then search for a row of data based on one of the primary key values, SQL Server first finds that value in the index, and then uses the index to quickly locate the entire row of data. Without the index, a table scan would have to be performed in order to locate the row, which can have a significant effect on performance. <a href="http://www.simple-talk.com/sql/learn-sql-server/sql-server-index-basics/">source</a></p>
-
-<p>Many databases have one special index per table where all of the data from a row exists in the index. SQL Server calls this index a <em>clustered index</em>. Instead of an index at the back of a book, a clustered index is closer in similarity to a phone book because each index entry contains all the information you need, there are no references to follow to pick up additional data values.<a href="http://odetocode.com/code/237.aspx">Source</a></p>
-
-<p>The <em>EXPLAIN</em> statement can be used either as a way to obtain information about how MySQL executes a statement, or as a synonym for DESCRIBE. <a href="http://dev.mysql.com/doc/refman/5.0/en/explain.html">source</a> In other words, a SQL statement can be preceded by the keyword &#8220;EXPLAIN&#8221; or by the phrase &#8220;EXPLAIN QUERY PLAN&#8221;. Either modification causes the SQL statement to behave as a query and to return information about how the SQL statement would have operated if the EXPLAIN keyword or phrase had been omitted. <a href="http://www.sqlite.org/lang_explain.html">source</a></p>
-
-<h3>Normalized DB</h3>
-
-<ul>
-<li>A normalized database is one where you minimize duplication of data by keeping groups of data in separate tables and linking (using indexes) between the tables.</li>
-<li>Another def: Database normalization is the process of organizing the fields and tables of a relational database to minimize redundancy and dependency. Normalization usually involves dividing large tables into smaller (and less redundant) tables and defining relationships between them. The objective is to isolate data so that additions, deletions, and modifications of a field can be made in just one table and then propagated through the rest of the database via the defined relationships.</li>
-</ul>
-
-
-<h3>Optimization</h3>
-
-<ul>
-<li>Write operations are always more expensive than reads.</li>
-<li>Use memCache</li>
-<li>use background tasks to do your database activity offline</li>
-<li>Denormalize: database normalization is a fatal mistake.
-
-<ul>
-<li>A de-noramlized database is one where you keeps redundant frequently-accessed data, duplicated across several tables, making it possible to fulfill a user request without having to look at more than a single table.</li>
-<li>The key to high performance database access is sticking to single-table SELECT queries with short indexes.</li>
-</ul>
-</li>
-<li>MySQL Triggers (starting from MySQL 5.0) allow us to define a rule to perform whenever a certain table is updated.
-<a href="http://www.softwareprojects.com/resources/programming/t-database-performance-optimization-denormalization-1410.html">source</a></li>
-</ul>
-
-
-<p>The SQL HAVING clause is &#8220;like a WHERE clause for aggregated data.&#8221; It&#8217;s used with conditional statements, just like WHERE, to filter results. One thing to note is that any column name appearing in the HAVING clause must also appear in the GROUP BY clause.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>SELECT DISTINCT player
-</span><span class='line'>  FROM game JOIN goal ON matchid = id 
-</span><span class='line'>    WHERE (game.team1='GER' OR game.team2='GER') AND goal.teamid &lt;&gt; 'GER'
-</span><span class='line'>
-</span><span class='line'>SELECT teamname, COUNT(teamid)
-</span><span class='line'>  FROM eteam JOIN goal ON eteam.id = goal.teamid 
-</span><span class='line'>GROUP BY teamname
-</span><span class='line'>
-</span><span class='line'>SELECT stadium, count(teamid)
-</span><span class='line'>FROM game join goal on matchid=id
-</span><span class='line'>group by stadium
-</span><span class='line'>
-</span><span class='line'>SELECT matchid,mdate, count(teamid)
-</span><span class='line'>  FROM game JOIN goal ON matchid = id 
-</span><span class='line'> WHERE (team1 = 'POL' OR team2 = 'POL')
-</span><span class='line'>GROUP BY matchid
-</span><span class='line'>
-</span><span class='line'>SELECT day_of_order,
-</span><span class='line'>  product,
-</span><span class='line'>  SUM(quantity) as "Total"
-</span><span class='line'>FROM orders
-</span><span class='line'>GROUP BY day_of_order,product,quantity
-</span><span class='line'>HAVING quantity &gt; 7
-</span><span class='line'>ORDER BY day_of_order;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Other functions min, max, sum, count, cast</p>
-
-<p><a href="http://www.w3schools.com/sql/sql_in.asp">IN operator</a>: The IN operator allows you to specify multiple values in a WHERE clause.</p>
-
-<p>IN Clause:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>SELECT * FROM Persons
-</span><span class='line'>WHERE LastName IN ('Hansen','Pettersen')</span></code></pre></td></tr></table></div></figure>
-
-
-<p>casting in ruby (.to_i)</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1012,6 +863,206 @@ Does <a href="http://www.simple-talk.com/blogs/2005/12/30/a-sql-game/">this</a> 
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day2/">FIS Day2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-04T09:06:00-04:00" pubdate data-updated="true">Oct 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>summary of yesterday
+plan for today</p>
+
+<pre><code>-everyone should be cloning on their own
+</code></pre>
+
+<p>git clone
+create new repo
+ - git remove remote origin
+ - git add remote origin</p>
+
+<p>make changes push to our repo
+submit pull request to flatiron repo</p>
+
+<p>DB design:</p>
+
+<p>student:</p>
+
+<pre><code>id (pk, incrementer)
+name
+</code></pre>
+
+<p>Quiz:</p>
+
+<pre><code>id (pk, incrementer)
+a question
+b question
+c question
+d question
+e queston
+answer
+</code></pre>
+
+<p>Student/answers</p>
+
+<pre><code>student id
+quiz id
+</code></pre>
+
+<p>circles for pictures
+css - mask transparent circle on top of it</p>
+
+<p>write a site that degrades gracefully.
+progressive enhancement- don&#8217;t build for the worst browser rather than the worst</p>
+
+<figure class='code'><figcaption><span>Smilies implementation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="c">/* in the css */</span>
+</span><span class='line'><span class="nt">div</span> <span class="nt">smilies-5</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="k">repeat-x</span> <span class="sx">url(smilies)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>communicate on the web protocols
+ssh
+http
+http
+git://
+ftp
+aim://</p>
+
+<p>https required more resources
+// => piggy back the protocol that is being used. over course if this is local it will break on the file system</p>
+
+<p>tr;dl => too long, don&#8217;t read</p>
+
+<p><em>Programmer of the day</em>
+Edgar F. Codd: designed the relational database model</p>
+
+<ul>
+<li>relational model: has data with keys
+one column has a primary key and all the other data works off of that primary</li>
+<li><p>don&#8217;t want to repeat data so you a second normal form is what you want over third normal form. <a href="http://en.wikipedia.org/wiki/Network_model">network model</a></p></li>
+<li><p>Hierarchical model is the other kind, that no one uses</p></li>
+</ul>
+
+
+<p>&#8220;A relation is in second normal form if the relation depends on the key, the whole key, and nothing but the key, so help me Codd.&#8221;<a href="http://www.dba-oracle.com/oracle_tips_codd_obit.htm">source</a></p>
+
+<p>Beautiful code-
+is in proportion to the complexity of the problem.</p>
+
+<p>left joins, inner joins, etc.</p>
+
+<figure class='code'><figcaption><span>Prefixes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="o">//</span><span class="k">prefix</span><span class="p">.</span> <span class="n">It</span> <span class="n">would</span> <span class="n">be</span> <span class="n">ambiguous</span> <span class="n">if</span> <span class="n">you</span> <span class="n">had</span> <span class="n">the</span> <span class="n">content</span> <span class="k">column</span> <span class="k">in</span>
+</span><span class='line'><span class="k">SELECT</span> <span class="n">question</span><span class="p">.</span><span class="n">content</span> <span class="n">multiple</span> <span class="n">tables</span>
+</span><span class='line'><span class="k">FROM</span> <span class="n">quiz</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">quiz_question</span>
+</span><span class='line'><span class="k">WHERE</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://www.sqlite.org/datatype3.html"><em>sql data types</em></a></p>
+
+<p><strong><em>The fewer tables you query, the more efficient the query is</em></strong></p>
+
+<p>difference between a where and a join</p>
+
+<p>refernential integrity problem</p>
+
+<figure class='code'><figcaption><span>Prefixes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">student</span>
+</span><span class='line'><span class="n">id</span>         <span class="n">name</span>
+</span><span class='line'><span class="mi">1</span>         <span class="n">Adam</span> <span class="n">Jonas</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">quiz</span>
+</span><span class='line'><span class="n">id</span>         <span class="n">name</span>
+</span><span class='line'><span class="mi">1</span>             <span class="k">First</span> <span class="n">quiz</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">question</span>
+</span><span class='line'><span class="n">id</span> <span class="n">question_content</span>                     <span class="n">correct_answer_id</span>    <span class="n">quiz_id</span>
+</span><span class='line'><span class="mi">1</span>     <span class="ss">&quot;What&#39;s the color of the sky&quot;</span>         <span class="mi">1</span>                               <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">answers</span>
+</span><span class='line'><span class="n">id</span>         <span class="n">response_content</span>         <span class="n">question_id</span>
+</span><span class='line'><span class="mi">1</span>         <span class="ss">&quot;blue&quot;</span>                                    <span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>         <span class="ss">&quot;red&quot;</span>                                     <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">student_answers</span>
+</span><span class='line'><span class="n">question_id</span>    <span class="n">student_id</span>       <span class="n">student_response_id</span>  <span class="n">correct</span>
+</span><span class='line'>    <span class="mi">1</span>                         <span class="mi">1</span>                           <span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Different SQL JOINs</em></p>
+
+<p>Before we continue with examples, we will list the types of JOIN you can use, and the differences between them.</p>
+
+<p>JOIN: Return rows when there is at least one match in both tables (this is also known as inner join)
+LEFT JOIN: Return all rows from the left table, even if there are no matches in the right table
+RIGHT JOIN: Return all rows from the right table, even if there are no matches in the left table
+FULL JOIN: Return rows when there is a match in one of the tables</p>
+
+<p><a href="http://stackoverflow.com/questions/1609637/is-it-possible-to-insert-multiple-rows-at-a-time-in-an-sqlite-database">multiple row inserts syntax</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -1033,10 +1084,6 @@ Does <a href="http://www.simple-talk.com/blogs/2005/12/30/a-sql-game/">this</a> 
       </li>
     
       <li class="post">
-        <a href="/blog/vim/">VIM</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/rubymotion-day-5/">RubyMotion Day 5</a>
       </li>
     
@@ -1046,6 +1093,10 @@ Does <a href="http://www.simple-talk.com/blogs/2005/12/30/a-sql-game/">this</a> 
     
       <li class="post">
         <a href="/blog/rubymotion-day-4/">RubyMotion Day 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/rubymotion-day-3/">RubyMotion Day 3</a>
       </li>
     
   </ul>
@@ -1132,7 +1183,6 @@ Does <a href="http://www.simple-talk.com/blogs/2005/12/30/a-sql-game/">this</a> 
 <li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
 <li class='category'><a href='/blog/categories/testing/'>testing (5)</a></li>
-<li class='category'><a href='/blog/categories/vim/'>vim (1)</a></li>
 <li class='category'><a href='/blog/categories/xmpp/'>xmpp (1)</a></li>
 
   </ul>

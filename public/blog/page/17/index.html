@@ -9,7 +9,12 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Before you start! Keep in mind that heroku doesn&#8217;t work with sqlite. This should be changed out if you are going to use heroku and before you &hellip;">
+  <meta name="description" content="if it has a belongs_to it has a foreign key&#8230;
+e.g. songs belong to an artist, so it must have an artist_id 1
+2
+3
+4
+#the return value of this is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,122 +91,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/heroku/">Heroku</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-24T15:07:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Before you start!</h3>
-
-<p>Keep in mind that heroku doesn&#8217;t work with sqlite. This should be changed out if you are going to use heroku and before you push. If you forget, you need to change out the sqlite3 gem for the pg gem. Commit and re-push.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add heroku git@heroku.com:gearshare.git
-</span><span class='line'>fatal: remote heroku already exists.</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://digitalsanctum.com/2010/05/05/heroku-no-app-specified/">See</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#this initializes the heroku repo
-</span><span class='line'>♕ heroku create &lt;appname&gt; #adding the app name will allow you to name it off the bat otherwise heroku will assign it to you... like below
-</span><span class='line'>Creating ancient-tor-4530... done, stack is cedar
-</span><span class='line'>http://ancient-tor-4530.herokuapp.com/ | git@heroku.com:ancient-tor-4530.git
-</span><span class='line'>Git remote heroku added
-</span><span class='line'>
-</span><span class='line'>#check to see what remotes I've set up
-</span><span class='line'>♕ git remote -v
-</span><span class='line'>heroku    git@heroku.com:ancient-tor-4530.git (fetch)
-</span><span class='line'>heroku    git@heroku.com:ancient-tor-4530.git (push)
-</span><span class='line'>origin    https://github.com/ajonas04/*appname*.git (fetch)
-</span><span class='line'>origin    https://github.com/ajonas04/*appname*.git (push)
-</span><span class='line'>
-</span><span class='line'># need to remove heroku so that I can rename it
-</span><span class='line'>♕ git remote rm heroku
-</span><span class='line'>
-</span><span class='line'>#add new name
-</span><span class='line'>♕ git remote add heroku git@heroku.com:*appname*.git</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I was missing this command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>heroku run rake db:migrate</span></code></pre></td></tr></table></div></figure>
-
-
-<p>as outlined in the rails3 basics <a href="https://devcenter.heroku.com/articles/rails3">here&#8230;</a></p>
-
-<p>See how to point domains to your heroku project <a href="https://devcenter.heroku.com/articles/custom-domains">here</a>.</p>
-
-<p><strong>Linking Local Branches to Remote Apps:</strong>*</p>
-
-<p>Heroku is designed only to accept pushes from master. In order to push from a feature branch you need to do something like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git push heroku branch_name:master</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This says push branch named &#8216;branch_name&#8217; to heroku but call it master. <a href="https://devcenter.heroku.com/articles/multiple-environments#advanced-linking-local-branches-to-remote-apps">Explanation</a></p>
-
-<p>Also look at rake tasks for heroku&#8230; its on the rake task post&#8230;</p>
-
-<h3>Pushing the seed file to heroku</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ heroku run rake db:seed</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1370,6 +1259,86 @@ we refer to that character one at a time, as the iterator or yield</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rails-helpers/">Rails Helpers</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:58:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>&#8216;Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers are mainly for use in that context. Helpers are the only methods you can access, other than instance methods for an instance you have access to.&#8217; <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">except from</a></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">why this is important?</a>
+and <a href="/blog/2012/07/18/solid-principles/">my own write up of Dependency Inversion Principle</a></p>
+
+<p>Declare a controller method as a helper. For example, the following makes the current_user controller method available to the view. You</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span><span class="p">,</span> <span class="ss">:logged_in?</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="k">def</span> <span class="nf">logged_in?</span>
+</span><span class='line'>     <span class="n">current_user</span> <span class="o">!=</span> <span class="kp">nil</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In a view:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">logged_in?</span> <span class="o">-</span><span class="sx">%&gt;Welcome, &lt;%= current_user.name %&gt;</span><span class="o">&lt;</span><span class="sx">% end </span><span class="o">-%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Parameters
+method[, method] - A name or names of a method on the controller to be made available on the view.</p>
+
+<p>A solid beginner&#8217;s break-down (it&#8217;s a little old though) is <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">here</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/18/">&larr; Older</a>
@@ -1391,10 +1360,6 @@ we refer to that character one at a time, as the iterator or yield</p>
       </li>
     
       <li class="post">
-        <a href="/blog/vim/">VIM</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/rubymotion-day-5/">RubyMotion Day 5</a>
       </li>
     
@@ -1404,6 +1369,10 @@ we refer to that character one at a time, as the iterator or yield</p>
     
       <li class="post">
         <a href="/blog/rubymotion-day-4/">RubyMotion Day 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/rubymotion-day-3/">RubyMotion Day 3</a>
       </li>
     
   </ul>
@@ -1490,7 +1459,6 @@ we refer to that character one at a time, as the iterator or yield</p>
 <li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
 <li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
 <li class='category'><a href='/blog/categories/testing/'>testing (5)</a></li>
-<li class='category'><a href='/blog/categories/vim/'>vim (1)</a></li>
 <li class='category'><a href='/blog/categories/xmpp/'>xmpp (1)</a></li>
 
   </ul>
