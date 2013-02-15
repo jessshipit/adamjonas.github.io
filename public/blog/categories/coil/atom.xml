@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: coil | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/coil/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2013-02-15T08:38:51-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Coil]]></title>
+    <link href="http://www.adamjonas.com/blog/coil/"/>
+    <updated>2013-01-30T10:46:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/coil</id>
+    <content type="html"><![CDATA[<h3>Git Workflow</h3>
+
+<ul>
+<li><a href="http://nvie.com/posts/a-successful-git-branching-model/">git workflow</a></li>
+</ul>
+
+
+<h3>Powder</h3>
+
+<ul>
+<li><a href="http://pow.cx/">pow</a></li>
+<li><code>binding.remote_pry</code> in the code to drop into pry. Also need to have <code>pry-remote</code> open in a terminal window.</li>
+<li><code>powder applog</code> -> is like trace for pow</li>
+<li>to output notices to the log <code>logger.debug "message"</code></li>
+</ul>
+
+
+<h3>Hooks</h3>
+
+<ul>
+<li><p><a href="https://help.github.com/articles/post-receive-hooks">post-receive hooks</a></p>
+
+<ul>
+<li><a href="http://developer.github.com/v3/repos/hooks/#pubsubhubbub">Pubsubhubbub</a></li>
+</ul>
+</li>
+<li><p>wrote a rake task to hit the route with <a href="https://github.com/jnunemaker/httparty">httparty</a></p>
+
+<ul>
+<li>This <a href="http://stackoverflow.com/questions/6154176/changing-body-type-to-json-using-httparty">stackoverflow post</a> helped</li>
+</ul>
+</li>
+<li><p>need to <a href="http://guides.rubyonrails.org/layouts_and_rendering.html"><code>render :nothing =&gt; true</code></a> when hitting a controller acton that doesn't render a view</p></li>
+<li><p>Ran into an <code>uninitialized constant GitFetch</code> error. I actually remembered to restart my Redis server!!! (after 20 minutes)</p></li>
+</ul>
+
+
+<h3>Redis</h3>
+
+<p>To access the Reds cli and flushall these are the commands...
+<code>
+♕ redis-cli
+redis&gt; flushall
+</code></p>
+
+<h3>Reg-ex</h3>
+
+<p>reg expressions can kick out multiple match groups. These are accessible with array notion. <code>[0]</code> is always the matching string, <code>[1]</code> would be the first match, and <code>[2]</code> would be the second and so on. <a href="http://rubular.com/">Rubular</a> throws off the match groups for you to access.</p>
+
+<p><code>ruby e.g. of URL parse
+p.slug = "#{github_url.match(/https:\/\/github\.com\/.*\/(.*)\.git/)[1]}"
+p.repo_owner = "#{github_url.match(/https:\/\/github\.com\/(.*)\/.*\.git/)[1]}"
+</code></p>
+
+<h3>Disable CSRF</h3>
+
+<ul>
+<li>disabled the CSRF verifcation with <code>skip_before_filter :verify_authenticity_token</code> <a href="http://stackoverflow.com/questions/5669322/turn-off-csrf-token-in-rails-3">found at</a></li>
+</ul>
+
+
+<h3>Pubsubhubbub</h3>
+
+<ul>
+<li>think about subscribe or unsubscribe on pubsubhubbub
+
+<ul>
+<li>when to trigger the subscription? in an asynch worker? in the clone method</li>
+<li>because you have have access to the process and the user?</li>
+</ul>
+</li>
+<li>this can be easily called with Octokit (See below)</li>
+</ul>
+
+
+<h3>cURL</h3>
+
+<p>We really shouldn't be invoke cURL methods in the model or background job. Octokit allows users to easily subscribe to pubsubhubbub. <a href="https://github.com/pengwynn/octokit/blob/master/lib/octokit/client/pub_sub_hubbub.rb">It's all here.</a></p>
+
+<p>I was going to do this... but it wasn't neccessary with octokit
+<code>ruby Pubsubhubbub and cURL
+curl -u "#{user.nickname}:#{user.password}" -i https://api.github.com/hub
+  -F "hub.mode=subscribe"
+  -F "hub.topic=https://github.com/#{project.repo_owner}/#{project.slug}/events/push"
+  -F "hub.callback=http://coil.io/hook/#{project.key}"
+</code></p>
+
+<h3>Sidekiq best practices</h3>
+
+<ul>
+<li><a href="https://github.com/mperham/sidekiq/wiki/Best-Practices">WIKI</a></li>
+</ul>
+
+
+<h3>Parsing a yaml file of quotes</h3>
+
+<p><code>ruby
+thing = YAML.load_file('some.yml')
+puts thing.inspect
+</code>
+See <a href="http://stackoverflow.com/questions/3877004/how-do-i-parse-a-yaml-file">here</a></p>
+
+<ul>
+<li><a href="http://api.rubyonrails.org/classes/Hash.html#method-i-symbolize_keys">symbolize_keys()</a></li>
+<li><a href="http://www.yaml.org/YAML_for_ruby.htm">Yaml cookbook was really helpful</a></li>
+</ul>
+
+
+<p>Formatted array of strings in YAML:
+<code>
+- "“We build but to tear down. Most of our work and resource is squandered. Our onward march
+is marked by devastation. Everywhere there is an appalling loss of time, effort and life. A
+cheerless view, but true”
+\n - Nikola Tesla, 1910"
+- "“If the genius of invention were to reveal to-morrow the secret of immortality, of eternal
+beauty and youth, for which all humanity is aching, the same inexorable agents which prevent a
+mass from changing suddenly its velocity would likewise resist the force of the new knowledge
+until time gradually modifies human thought.”
+\n - Nikola Tesla, 1907"
+</code></p>
+
+<p>Yaml is white space sensitive, but not new-line sensitive for strings as long as the new-line is within the the quotes.</p>
+
+<p>I then selected a random element with the <a href="http://stackoverflow.com/questions/3482149/how-do-i-pick-randomly-from-an-array"><code>.sample</code> method</a>. Very cool.</p>
+
+<h3>Slim</h3>
+
+<p>Had to look in the <a href="http://rdoc.info/github/slim-template/slim#Control_code_-">Slim docs</a>. I was looking for output, which is controlled by the = sign. Figured it out after that...</p>
+
+<h3>Testing</h3>
+
+<ul>
+<li>remember to migrate Test DB <code>rake environment RAILS_ENV=test db:migrate</code></li>
+<li>add <a href="https://github.com/plataformatec/devise">test helpers for devise</a></li>
+</ul>
+
+
+<h3>Factory Girl</h3>
+
+<ul>
+<li>A factory generates test data to pass to the controller method; note the use of Factory Girl’s <code>attributes_for</code> option, which generates a hash of values as opposed to a Ruby object.</li>
+<li>Rewatched the RailsCasts no. 158</li>
+</ul>
+
+
+<h3>Refactoring lessons</h3>
+
+<ul>
+<li>Don't pass in more params than you need. It makes the unit testing harder and it isn't neccessary.
+
+<ul>
+<li>refer to Sandi Metz's comments about passing in a params hash if you are accessing multiple attributes of an object</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Random</h3>
+
+<ul>
+<li><a href="http://www.teslauniverse.com/nikola-tesla-quotes">Tesla quotes</a></li>
+<li><a href="http://www.random.org/strings/">Random String Generator</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

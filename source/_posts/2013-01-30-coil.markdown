@@ -1,0 +1,111 @@
+---
+layout: post
+title: "Coil"
+date: 2013-01-30 10:46
+comments: true
+categories: coil
+---
+
+###Git Workflow
+  - [git workflow](http://nvie.com/posts/a-successful-git-branching-model/)
+
+###Powder
+  - [pow](http://pow.cx/)
+  - `binding.remote_pry` in the code to drop into pry. Also need to have `pry-remote` open in a terminal window.
+  - `powder applog` -> is like trace for pow
+  - to output notices to the log `logger.debug "message"`
+
+###Hooks
+  - [post-receive hooks](https://help.github.com/articles/post-receive-hooks)
+    - [Pubsubhubbub](http://developer.github.com/v3/repos/hooks/#pubsubhubbub)
+
+  - wrote a rake task to hit the route with [httparty](https://github.com/jnunemaker/httparty)
+    - This [stackoverflow post](http://stackoverflow.com/questions/6154176/changing-body-type-to-json-using-httparty) helped
+
+  - need to [`render :nothing => true`](http://guides.rubyonrails.org/layouts_and_rendering.html) when hitting a controller acton that doesn't render a view
+
+  - Ran into an `uninitialized constant GitFetch` error. I actually remembered to restart my Redis server!!! (after 20 minutes)
+
+###Redis
+To access the Reds cli and flushall these are the commands...
+```
+♕ redis-cli
+redis> flushall
+```
+
+###Reg-ex
+reg expressions can kick out multiple match groups. These are accessible with array notion. `[0]` is always the matching string, `[1]` would be the first match, and `[2]` would be the second and so on. [Rubular](http://rubular.com/) throws off the match groups for you to access.
+
+```ruby e.g. of URL parse
+p.slug = "#{github_url.match(/https:\/\/github\.com\/.*\/(.*)\.git/)[1]}"
+p.repo_owner = "#{github_url.match(/https:\/\/github\.com\/(.*)\/.*\.git/)[1]}"
+```
+
+###Disable CSRF
+  - disabled the CSRF verifcation with `skip_before_filter :verify_authenticity_token` [found at](http://stackoverflow.com/questions/5669322/turn-off-csrf-token-in-rails-3)
+
+###Pubsubhubbub
+  - think about subscribe or unsubscribe on pubsubhubbub
+    - when to trigger the subscription? in an asynch worker? in the clone method 
+    - because you have have access to the process and the user?
+  - this can be easily called with Octokit (See below)
+
+###cURL
+We really shouldn't be invoke cURL methods in the model or background job. Octokit allows users to easily subscribe to pubsubhubbub. [It's all here.](https://github.com/pengwynn/octokit/blob/master/lib/octokit/client/pub_sub_hubbub.rb)
+
+I was going to do this... but it wasn't neccessary with octokit
+```ruby Pubsubhubbub and cURL
+curl -u "#{user.nickname}:#{user.password}" -i https://api.github.com/hub 
+  -F "hub.mode=subscribe" 
+  -F "hub.topic=https://github.com/#{project.repo_owner}/#{project.slug}/events/push" 
+  -F "hub.callback=http://coil.io/hook/#{project.key}"
+```
+
+###Sidekiq best practices
+  - [WIKI](https://github.com/mperham/sidekiq/wiki/Best-Practices)
+
+###Parsing a yaml file of quotes
+```ruby
+thing = YAML.load_file('some.yml')
+puts thing.inspect
+```
+See [here](http://stackoverflow.com/questions/3877004/how-do-i-parse-a-yaml-file)
+
+  - [symbolize_keys()](http://api.rubyonrails.org/classes/Hash.html#method-i-symbolize_keys)
+  - [Yaml cookbook was really helpful](http://www.yaml.org/YAML_for_ruby.htm)
+
+Formatted array of strings in YAML:
+```
+- "“We build but to tear down. Most of our work and resource is squandered. Our onward march 
+is marked by devastation. Everywhere there is an appalling loss of time, effort and life. A 
+cheerless view, but true”
+\n - Nikola Tesla, 1910"
+- "“If the genius of invention were to reveal to-morrow the secret of immortality, of eternal 
+beauty and youth, for which all humanity is aching, the same inexorable agents which prevent a 
+mass from changing suddenly its velocity would likewise resist the force of the new knowledge 
+until time gradually modifies human thought.”
+\n - Nikola Tesla, 1907"
+```
+
+Yaml is white space sensitive, but not new-line sensitive for strings as long as the new-line is within the the quotes.
+
+I then selected a random element with the [`.sample` method](http://stackoverflow.com/questions/3482149/how-do-i-pick-randomly-from-an-array). Very cool.
+
+###Slim
+Had to look in the [Slim docs](http://rdoc.info/github/slim-template/slim#Control_code_-). I was looking for output, which is controlled by the = sign. Figured it out after that...
+
+###Testing
+  - remember to migrate Test DB ` rake environment RAILS_ENV=test db:migrate`
+  - add [test helpers for devise](https://github.com/plataformatec/devise)
+
+###Factory Girl
+  - A factory generates test data to pass to the controller method; note the use of Factory Girl’s `attributes_for` option, which generates a hash of values as opposed to a Ruby object.
+  - Rewatched the RailsCasts no. 158
+
+###Refactoring lessons
+  - Don't pass in more params than you need. It makes the unit testing harder and it isn't neccessary.
+    - refer to Sandi Metz's comments about passing in a params hash if you are accessing multiple attributes of an object
+
+###Random
+  - [Tesla quotes](http://www.teslauniverse.com/nikola-tesla-quotes)
+  - [Random String Generator](http://www.random.org/strings/)

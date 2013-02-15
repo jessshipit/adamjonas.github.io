@@ -1,0 +1,28 @@
+---
+layout: post
+title: "Rugged"
+date: 2013-01-29 16:26
+comments: true
+categories: rugged
+---
+
+Gists were redesigned with libgit2 gem with Rugged.
+
+```
+#In IRB
+require 'rugged'
+#git init the repo then...
+repo = Rugged::Repository.new('/file/path')
+
+#what worked
+index = repo.index
+repo.bare?
+repo.empty?
+tree= repo.lookup( repo.index.write_tree ) 
+
+#what didnt
+oid = rugged.write("This is a blob.", :blob) #didnt recognize rugged
+parents=[ repo.lookup( repo.head.target ).oid ]
+```
+
+In this [StackOverflow question](http://stackoverflow.com/questions/12649697/how-to-commit-with-ruby-bindings-for-libgit2/12651234) there seem to be some issues with the 0.16 build. They suggest to use the `gem install --prerelease rugged` for commits.
