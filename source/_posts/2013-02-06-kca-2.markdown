@@ -1,0 +1,169 @@
+---
+layout: post
+title: "KCA 2"
+date: 2013-02-06 13:40
+comments: true
+categories: 
+---
+
+###Heroku 
+  - `git push staging develop:master`
+###FB
+  - target '_top' will put the new window on top
+  - `http://app.facebook.com/name-space`
+  - make sure to disable secure browsing in FB
+  - change fields from address `state` to `state_loc` to avoid collisions with state machine gems like transitions
+
+  - can simulate mobile with overrides in the inspector
+
+  - `heroku run rake db:migrate --remote staging`
+  - `heroku config:add <env variable> <env variable>`
+  - `heroku log --remote staging`
+
+  - `.shuffle` method
+  - `.floor` returns an integer
+  - if diving two integers you need to th make sure one of them is a float
+
+  - In routes, `member do` block adds a resource on a specific record, while collect do
+
+  - in config/application.rb in order to load libs automatically need to change config to `config.autoload_paths += %W(#{config.root}/lib)`
+
+  - `has_mobile_fu false` in appcontroller, need false
+
+  - [decent exposure](https://github.com/voxdolo/decent_exposure)
+    - - `expose(:articles) { current_user.articles }` scopes articles belonging to that user
+  
+  - output the boards on board show page, new board page, and how to play
+
+  - [content tag](http://apidock.com/rails/ActionView/Helpers/TagHelper/content_tag)
+    - need to use .html_safe
+
+  - to start memcache `/usr/local/opt/memcached/bin/memcached`
+  - deploy to heroku staging with `git push staging develop:master`
+
+  - creating a table with content tags in a helper
+  - `.update_attribute!` versus `.update_attribute` -> raise an exception rahter than false.
+
+###Tests
+  - Make sure to migrate the Test DB -> `rake db:migrate RAILS_ENV=test`
+  - `watchr .watchr`
+  - using [traits with Factory Girl](http://robots.thoughtbot.com/post/23673635798/remove-duplication-with-factorygirls-traits)
+  - [expect syntax](http://myronmars.to/n/dev-blog/2012/06/rspecs-new-expectation-syntax)
+  - rake start to start spork
+  - {:id => board.id}.merge(opts)
+
+###HAML
+  - `= f.hidden_field :customer_id, value: @customer.id` [from](http://stackoverflow.com/questions/10387077/rails3-hidden-field-in-haml)
+  - [html to haml](http://html2haml.heroku.com/)
+
+```
+.shuffle.hidden
+.delete.hidden
+```
+Makes divs with classes above
+
+  - [HAML id and class declaration](http://9elements.github.com/haml-coffee/classes/Haml.html)
+  - passing in partials with locals on [stackoverflow](http://stackoverflow.com/questions/5255874/rendering-partial-with-locals-in-haml)
+
+###Ajax with coffeescript
+Used the call below to make a friend request.
+```
+getFriends: (callback) ->
+    FB.api '/me/friends', (response) => 
+      $.each response.data, (k, v) =>
+        @friends.push({ label: v.name, value: v.id })
+      callback()
+```
+The callback is to ensure that other function do not proceed before the friends are loaded asynchronously.
+
+###Auto-complete with JQuery UI
+  - Got it from [here](http://jqueryui.com/autocomplete/#custom-data)
+  - also loaded the js and css minified versions in the lib directory.
+  - there was a small change to be made, [documented here](http://stackoverflow.com/questions/9513251/cannot-set-property-renderitem-of-undefined-jquery-ui-autocomplete-with-html)
+
+###Javascript to coffee
+  - [really cool site](http://js2coffee.org/)
+
+  - Posting to a wall, note the method and the `:to` method, taken mostly from [here](http://developers.facebook.com/docs/reference/dialogs/feed/)
+
+```
+  sendMessage: (fb_uid, details = {}) ->
+    obj =
+      to: fb_uid
+      method: "feed"
+      redirect_uri: "http://kca.dev"
+      link: "http://google.com"
+      picture: "http://fbrell.com/f8.jpg"
+      name: "Facebook Dialogs"
+      caption: "Reference Documentation"
+      description: "Using Dialogs to interact with users."
+
+    obj = $.extend obj, details
+
+    FB.ui obj, ->
+      alert 'posted'
+```
+  
+  - `= link_to "Something", some_path, :method => :post`
+
+  - **Need to remember to add () after a method call**
+  - defaults to auth user if no `to:` method
+  - [discussion on lexical scope](https://github.com/raganwald/homoiconic/blob/master/2012/09/lexical-scope-in-coffeescript.md)
+
+###Counter_cache
+  - In the model -> `belongs_to :project, :counter_cache => true`
+  - [railscast #23](http://railscasts.com/episodes/23-counter-cache-column)
+
+###Jquery
+  - `$("div,p,span")` this works as a multiple selector
+  - [hidden divs](http://stackoverflow.com/questions/1992114/how-do-you-create-a-hidden-div-that-doesnt-create-a-line-break-or-horizontal-sp)
+
+###Selecting a winner
+  - use the [randumb gem](https://github.com/spilliton/randumb)
+
+###Migrate test db
+  - `ake db:migrate RAILS_ENV=test `
+
+###No merge message for a no-ff flag
+  - `--no-edit`
+
+###FB app auto-grow
+  - [auto-grow canvas in fb app](http://stackoverflow.com/questions/9197411/facebook-iframe-fb-canvas-setautogrow-does-not-auto-grow-after-initial-load)
+
+###Gem from a git url
+  - `gem 'redcarpet', :git => 'git://github.com/tanoku/redcarpet.git'`
+
+###With an options hash
+```ruby
+def facepile(*options)
+opts = {:href => ENV['FACEBOOK_APP_URL'],
+        :max_rows => 1,
+        :width => 300,
+        :show_count => true }
+opts.merge!(options.first) unless options.empty?
+
+raise "Must provide a :url option parameter or ENV['FACEBOOK_APP_URL']" unless opts[:href]
+
+%Q{
+<div class="fb-facepile" 
+data-href="#{opts[:href]}" 
+data-max-rows="#{opts[:max_rows]}"
+data-show-count="#{opts[:show_count]}"
+data-width="#{opts[:width]}">
+</div>
+}.html_safe
+  end
+```
+###FB invite friends
+```ruby in coffeescript
+inviteFriend: -> 
+  obj = 
+    method: 'apprequests',
+    message: 'Come check this out'
+
+  FB.ui obj, ->
+    alert 'invited'
+```
+
+###Delpoy
+  - `rake deploy:staging` and `rake deploy:production`
