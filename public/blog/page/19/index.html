@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion Dependency inversion principle one should “ &hellip;">
+  <meta name="description" content="When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails. Here&#8217;s the code in the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,114 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/the-clues-errors-provide/">The Clues Errors Provide</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:35:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
+
+<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>     <span class="c1">#blah blah blah</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#ERROR</span>
+</span><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`authenticate&#39; for nil:NilClass</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This means that the method was called on a receiver that is nil. Meaning that <strong>the receiver not the right object or it&#8217;s nil</strong></p>
+
+<p><strong>Undefined Method:</strong></p>
+
+<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">magic</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#blah blah blah</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#The Error</span>
+</span><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`magic&#39; for #&lt;User:0x007fa35e3e2fe8&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>The method magic doesn&#8217;t exist for that object.</strong></p>
+
+<p><strong>Expected an object but got an attribute in the form of a string, array, etc.</strong></p>
+
+<figure class='code'><figcaption><span>AssociationTypeMismatch</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">AssociationTypeMismatch</span><span class="p">:</span> <span class="no">City</span><span class="p">(</span><span class="c1">#17815740) expected, got String(#1138750)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>This means that you have entered an infinite loop. e.g. you have called something on itself.</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SystemStackError</span><span class="p">:</span> <span class="n">stack</span> <span class="n">level</span> <span class="n">too</span> <span class="n">deep</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>DB Errors</h3>
+
+<p>When the browser can&#8217;t locate a table that you know exists&#8211; <strong><em>make sure you migrate the DB!!</em></strong></p>
+
+<h3>Can&#8217;t save something to the DB</h3>
+
+<ul>
+<li>Open up console.</li>
+<li>When you can&#8217;t save it, send it &#8216;.save!&#8217; and it will throw off the errors.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -940,69 +1048,6 @@ Alright, now let&#8217;s get down to diaspora.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/programming-quotes/">Programming Quotes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-09T14:50:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Beauty is more important in computing than anywhere else in technology because software is so complicated. Beauty is the ultimate defence against complexity.
-— David Gelernter</p>
-
-<p>Life is too short to run proprietary software.
-— Bdale Garbee</p>
-
-<p>“Computer science education cannot make anybody an expert programmer any more than studying brushes and pigment can make somebody an expert painter.”
-- Eric S. Raymond</p>
-
-<p>Good design adds value faster than it adds cost.
-- Thomas C. Gale</p>
-
-<p>Talk is cheap. Show me the code.
-- Linus Torvalds</p>
-
-<p>Perfection [in design] is achieved, not when there is nothing more to add, but when there is nothing left to take away.
-- Antoine de Saint-Exupéry</p>
-
-<p>Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.
-- Brian W. Kernighan.</p>
-
-<p>To iterate is human, to recurse divine.
-- L. Peter Deutsch</p>
-
-<p>Most good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.
-- Linus Torvalds</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -1020,6 +1065,10 @@ Alright, now let&#8217;s get down to diaspora.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/kca-3/">KCA 3</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/paypal-integration/">Paypal integration</a>
       </li>
     
@@ -1033,10 +1082,6 @@ Alright, now let&#8217;s get down to diaspora.</p>
     
       <li class="post">
         <a href="/blog/kca/">KCA</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/angular-skillshare/">Angular Skillshare</a>
       </li>
     
   </ul>

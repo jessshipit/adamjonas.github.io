@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-02-15T10:11:01-05:00</updated>
+  <updated>2013-03-08T16:50:44-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,203 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[KCA 3]]></title>
+    <link href="http://www.adamjonas.com/blog/kca-3/"/>
+    <updated>2013-02-15T10:14:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/kca-3</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>Everytime you clone a project you get its full history&#8230;</p>
+
+<ul>
+<li>to get a specific commit
+
+<ul>
+<li><code>$ git checkout -b aNewBranch SHA1</code> with SHA1 representing the commit id from which you want to proceed.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>config env variables on heroku</p>
+
+<ul>
+<li><code>heroku config:add FACEBOOK_APP_TOKEN='&lt;tokenhere&gt;' --remote staging</code></li>
+</ul>
+</li>
+<li><p><code>rake deploy:staging</code> but need to make sure staging db is up to date <code>rake db:migrate RAILS_ENV=staging</code></p></li>
+<li><p>custom actions are for dream big are <a href="https://github.com/carrot/target-dream-big/blob/develop/app/controllers/facebook_controller.rb">here</a></p></li>
+<li><p><code>git bisect</code> -> <a href="http://git-scm.com/book/en/Git-Tools-Debugging-with-Git">docs</a></p></li>
+</ul>
+
+
+<h3>Expect syntax</h3>
+
+<ul>
+<li>remember to not including whitespaces between expect and the parentheses
+
+<ul>
+<li>correct -> <code>expect(sm.current_number_of_boards).to eq 24</code></li>
+<li>incorrect -> <code>expect (sm.current_number_of_boards).to eq 24</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Testing the cache</h3>
+
+<ul>
+<li><p>it&#8217;s not easy to test the cache.</p>
+
+<ul>
+<li>one problem is that when you write to the cache you are affecing the dev cache</li>
+</ul>
+</li>
+<li><p>can clear the cache with <code>Rails.cache.clear</code> <a href="http://stackoverflow.com/questions/10443535/manually-clear-fragment-cache-in-rails">found here</a></p></li>
+<li><p><a href="http://broadcastingadam.com/2011/05/advanced_caching_in_rails/">complicated caching</a></p></li>
+</ul>
+
+
+<h3>Progress bar</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/7190898/progress-bar-with-html-and-css?lq=1">stackoverflow</a></li>
+</ul>
+
+
+<h3>HAML</h3>
+
+<ul>
+<li>partial -> <code>= render :partial =&gt; "partial_name"</code></li>
+<li>yield -> <code>#masthead= yield :masthead</code></li>
+<li>setting a variable in HAML -> <code>- check_mark = image_tag("http://placehold.it/21x21", class: 'check')</code> need the <code>-</code></li>
+<li>submit button -> <code>%input{:type =&gt; "submit", :value =&gt; "Send", :class =&gt; "button"}</code></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>sweet helper allows you to reduce whitespace</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">=</span> <span class="n">surround</span> <span class="s1">&#39;GiftCard&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span> <span class="k">do</span>
+</span><span class='line'>   <span class="o">%</span><span class="n">sup</span> <span class="o">&amp;</span><span class="n">reg</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are a bunch <a href="http://haml.info/docs/yardoc/Haml/Helpers.html">in the docs.</a></p>
+
+<h3>Content_for</h3>
+
+<figure class='code'><figcaption><span>Using content_for</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% content_for </span><span class="ss">:not_authorized</span> <span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  alert(&#39;You are not authorized to do that!&#39;)</span>
+</span><span class='line'><span class="sx">&lt;% end %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#You can then use content_for :not_authorized anywhere in your templates.</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= content_for :not_authorized if current_user.nil? %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">#This is equivalent to:</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="k">yield</span> <span class="ss">:not_authorized</span> <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">nil?</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://apidock.com/rails/ActionView/Helpers/CaptureHelper/content_for">Api-dock</a></li>
+</ul>
+
+
+<h3>Escaping a space</h3>
+
+<ul>
+<li><code>&amp;nbsp;</code></li>
+<li><a href="9http://www.samuelhwong.com/blog/2011/09/29/quick-tip-ascii-codes-and-link-to/">ascii character in link_to</a>, just add <code>.html_safe</code></li>
+</ul>
+
+
+<h3>Creating or updating many records at a time in rails</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#creating new records</span>
+</span><span class='line'><span class="o">[</span><span class="s2">&quot;array&quot;</span> <span class="s2">&quot;of&quot;</span> <span class="s2">&quot;strings&quot;</span><span class="o">].</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="p">,</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">Tile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#updating existing records</span>
+</span><span class='line'><span class="o">[</span><span class="s2">&quot;array&quot;</span> <span class="s2">&quot;of&quot;</span> <span class="s2">&quot;strings&quot;</span><span class="o">].</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="p">,</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">Tile</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">update_attribute</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Collection in routes</h3>
+
+<figure class='code'><figcaption><span>Need collection to lose the id requirement</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:superlatives</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:create</span><span class="o">]</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:skip</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>.length</h3>
+
+<p>You can look for the number of instances in the DOM and update it accordingly if there are the right number. I used this when I was updating the DOM and to see if the page had 3 classes indicating that three friends had been nominated.</p>
+
+<figure class='code'><figcaption><span>Need collection to lose the id requirement</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="err">$</span><span class="p">(</span><span class="s1">&#39;div.friend-nomination&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">3</span>
+</span><span class='line'>  <span class="n">console?</span><span class="o">.</span><span class="n">log?</span> <span class="s1">&#39;this has three&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Heroku console</h3>
+
+<ul>
+<li><code>heroku run rails console --remote &lt;name of branch&gt;</code></li>
+</ul>
+
+
+<h3>CSS Positioning</h3>
+
+<ul>
+<li><a href="http://www.barelyfitz.com/screencast/html-training/css/positioning/">old but cool little reference</a></li>
+</ul>
+
+
+<h3>Print Stylesheets</h3>
+
+<ul>
+<li>had a problem with getting the @media print file to recognize the sass styling that I was writing. Discovered that every single element needed to be to explicitly defined for it to work&#8230;. what a pain in the ass.</li>
+</ul>
+
+
+<h3>JQuery Migrate</h3>
+
+<ul>
+<li> Was removed from the <a href="https://github.com/jquery/jquery-migrate/">jquery core</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Paypal integration]]></title>
@@ -42,9 +239,13 @@
     <content type="html"><![CDATA[<h3>Heroku</h3>
 
 <ul>
-<li><code>git push staging develop:master</code>
+<li><code>git push staging develop:master</code></li>
+</ul>
 
-<h3>FB</h3></li>
+
+<h3>FB</h3>
+
+<ul>
 <li>target &#8216;_top&#8217; will put the new window on top</li>
 <li><code>http://app.facebook.com/name-space</code></li>
 <li>make sure to disable secure browsing in FB</li>
@@ -357,7 +558,7 @@
 <ul>
 <li>Devise -> <code>gem 'devise'</code>, then <code>rails g install devise</code></li>
 <li><code>rails g devise &lt;model&gt;</code></li>
-<li>`rails g devise:views</li>
+<li><code>rails g devise:views</code></li>
 <li>more steps on <a href="https://github.com/carrot/hw-packages-private/blob/master/devise.rb">github</a></li>
 </ul>
 
@@ -2103,27 +2304,6 @@ and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.green
 <li><a href="http://stackoverflow.com/questions/658044/tick-symbol-in-html-xhtml">HTML Tick symbol</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jan 14 Notes]]></title>
-    <link href="http://www.adamjonas.com/blog/jan-14-notes/"/>
-    <updated>2013-01-15T11:05:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/jan-14-notes</id>
-    <content type="html"><![CDATA[<h3>Simple Search</h3>
-
-<p><a href="http://railscasts.com/episodes/37-simple-search-form">Ryan Bates to the rescue</a></p>
-
-<h3>Find</h3>
-
-<p>Getting back to basics (or at least closer to SQL). I haven&#8217;t used find much in the couple months, but it was what I needed for the set up search on the index pages.</p>
-
-<p>The <a href="http://apidock.com/rails/ActiveRecord/Base/find/class">documentation is awesome</a>.</p>
-
-<h3>ActiveRelation Queries</h3>
-
-<p><a href="http://blog.mitchcrowe.com/blog/2012/04/14/10-most-underused-activerecord-relation-methods/">Good article on underused queries</a></p>
 ]]></content>
   </entry>
   
