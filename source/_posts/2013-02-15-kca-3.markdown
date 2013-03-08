@@ -1,0 +1,112 @@
+---
+layout: post
+title: "KCA 3"
+date: 2013-02-15 10:14
+comments: true
+categories: 
+---
+
+  - Everytime you clone a project you get its full history...
+    - to get a specific commit
+      - `$ git checkout -b aNewBranch SHA1` with SHA1 representing the commit id from which you want to proceed.
+
+  - config env variables on heroku
+    - `heroku config:add FACEBOOK_APP_TOKEN='<tokenhere>' --remote staging` 
+
+  - `rake deploy:staging` but need to make sure staging db is up to date `rake db:migrate RAILS_ENV=staging`
+
+  - custom actions are for dream big are [here](https://github.com/carrot/target-dream-big/blob/develop/app/controllers/facebook_controller.rb)
+
+  - `git bisect` -> [docs](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git)
+
+###Expect syntax
+  - remember to not including whitespaces between expect and the parentheses
+    - correct -> `expect(sm.current_number_of_boards).to eq 24`
+    - incorrect -> `expect (sm.current_number_of_boards).to eq 24`
+
+
+###Testing the cache
+  - it's not easy to test the cache.
+    - one problem is that when you write to the cache you are affecing the dev cache
+
+  - can clear the cache with `Rails.cache.clear` [found here](http://stackoverflow.com/questions/10443535/manually-clear-fragment-cache-in-rails)
+
+  - [complicated caching](http://broadcastingadam.com/2011/05/advanced_caching_in_rails/)
+
+###Progress bar
+  - [stackoverflow](http://stackoverflow.com/questions/7190898/progress-bar-with-html-and-css?lq=1)
+
+###HAML
+  - partial -> `= render :partial => "partial_name"` 
+  - yield -> `#masthead= yield :masthead`
+  - setting a variable in HAML -> `- check_mark = image_tag("http://placehold.it/21x21", class: 'check')` need the `-`
+  - submit button -> ` %input{:type => "submit", :value => "Send", :class => "button"}`
+
+```ruby sweet helper allows you to reduce whitespace
+= surround 'GiftCard', '.' do
+   %sup &reg;
+```
+There are a bunch [in the docs.](http://haml.info/docs/yardoc/Haml/Helpers.html)
+
+###Content_for
+```ruby Using content_for
+
+<% content_for :not_authorized do %>
+  alert('You are not authorized to do that!')
+<% end %>
+
+#You can then use content_for :not_authorized anywhere in your templates.
+<%= content_for :not_authorized if current_user.nil? %>
+
+#This is equivalent to:
+<%= yield :not_authorized if current_user.nil? %>
+```
+
+  - [Api-dock](http://apidock.com/rails/ActionView/Helpers/CaptureHelper/content_for)
+
+
+###Escaping a space
+  - `&nbsp;`
+  - [ascii character in link_to](9http://www.samuelhwong.com/blog/2011/09/29/quick-tip-ascii-codes-and-link-to/), just add `.html_safe`
+
+###Creating or updating many records at a time in rails
+```ruby
+#creating new records
+["array" "of" "strings"].each_with_index do |t,i|
+  Tile.create(:title, t)
+end
+
+#updating existing records
+["array" "of" "strings"].each_with_index do |t,i|
+  Tile.find(i+1).update_attribute(:title, t)
+end
+```
+
+###Collection in routes
+```ruby Need collection to lose the id requirement
+resources :superlatives, :only => [:create] do
+  collection do
+    post :skip
+  end
+end
+```
+
+###.length
+You can look for the number of instances in the DOM and update it accordingly if there are the right number. I used this when I was updating the DOM and to see if the page had 3 classes indicating that three friends had been nominated.
+
+```
+if $('div.friend-nomination').length == 3
+  console?.log? 'this has three'
+```
+
+###Heroku console
+  - `heroku run rails console --remote <name of branch>`
+
+###CSS Positioning
+  - [old but cool little reference](http://www.barelyfitz.com/screencast/html-training/css/positioning/)
+
+###Print Stylesheets
+  - had a problem with getting the @media print file to recognize the sass styling that I was writing. Discovered that every single element needed to be to explicitly defined for it to work.... what a pain in the ass.
+
+###JQuery Migrate
+  -  Was removed from the [jquery core](https://github.com/jquery/jquery-migrate/)
