@@ -1,0 +1,87 @@
+---
+layout: post
+title: "KCA 4"
+date: 2013-03-12 13:26
+comments: true
+categories: 
+---
+
+###Google Analytics
+  - We passed in the [onclick trackers](https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide) as [options](http://stackoverflow.com/questions/4274002/rails-link-to-ruby-variable-in-onclick-javascript)
+  - This the gem we used to install the UA code in the footer, also used this for [reference](https://raw.github.com/carrot/hw-packages-private/master/google_analytics.rb?login=tmilewski&token=2e0a477e5793c263c3ba48d191995233).
+
+###Arel
+  - [Some cool arel queries](http://stackoverflow.com/questions/4402815/is-there-a-particularly-elegant-way-to-do-a-count-query-with-rails-3-arel. 
+  - used a lamba as shown [here](http://stackoverflow.com/questions/5284696/how-can-i-search-date-range-in-rails-with- variable-date), because otherwise the queries will be cached and we were running queries for a day to day basis.
+  - ARel has some good [documentation.](https://github.com/rails/arel)
+
+###Local Storage
+  - used [store.js](https://github.com/marcuswestin/store.js)
+  - nice [little screencast](http://javascriptplayground.com/blog/2012/06/javascript-local-storage-store-js-tutorial)
+  - here is an [older article](http://coding.smashingmagazine.com/2010/10/11/local-storage-and-how-to-use-it/) from 2010
+  - *NOTE:* We ended up using [store.js with json](https://github.com/marcuswestin/store.js/blob/master/store%2Bjson2.min.js) because ie7 apparently doesn't come equiped with JSON. Tom and I broke our heads trying to figure out why `store.enabled` wasn't `true` for ie7. It came down to the fact that ie7 didn't have JSON.
+
+Thought this was a cool little way to store whether a td square had been clicked on...
+```
+addRedTiles: ->
+  selected = store.get("board_#{@board_id}")
+
+  for tile_number in selected
+    $("[data-title-num=#{tile_number}]").addClass('clicked_space')
+
+
+duringBoardClick: ->
+  if store.enabled
+    $('td').click =>
+      $(event.target).toggleClass('clicked_space')
+      clicked_tiles = []
+      all_clicked = $('td.clicked_space')
+
+      for tile in all_clicked
+        clicked_tiles.push $(tile).attr('data-title-num')
+
+      store.set("board_#{@board_id}", clicked_tiles)
+  else
+    console?.log? 'store is not enabled'
+```
+
+```javascript This needed to be updated b/c of event.targer
+duringBoardClick: ->
+  if store.enabled
+
+    board_id = @board_id
+    \\notice that I declared the above variable
+    $('td').click -> \\and changed this to a single ->
+      $(@).toggleClass('clicked_space')
+      clicked_tiles = []
+      all_clicked = $('td.clicked_space')
+
+      for tile in all_clicked
+        clicked_tiles.push $(tile).attr('data-title-num')
+
+      store.set("board_#{board_id}", clicked_tiles)
+      \\board then becomes a local
+  else
+    console?.log? 'store is not enabled' 
+```
+
+I think this was the first time I used the [push method](http://stackoverflow.com/questions/7398354/in-coffeescript-how-do-you-append-a-value-to-an-array) in coffeescript.
+
+###Z-index
+  - in order to use z-index you need to use the position absolute, relative, or fixed as mentioned [here](http://www.w3schools.com/cssref/pr_pos_z-index.asp)
+
+###SASS
+  - `>*` selects all the elements in the selector
+
+###PG backups
+  - Backing up a larger DB on heroku -> [docs](https://devcenter.heroku.com/articles/pgbackups)
+
+###Anchor in a path helper
+  - pass it in as an option `redirect_to post_path(comment.post, :anchor => "comment-#{comment.id}")` -> [from](http://stackoverflow.com/questions/4981029/how-do-you-use-anchors-for-ids-in-routes-in-rails-3)
+
+###Regex
+  - remember there is no whitespacing in regex
+    - `background_\w|clicked_space` not `background_\w | clicked_space`
+
+###Background images in mobile
+  - need to make sure to explicity define the background image and background size for mobile

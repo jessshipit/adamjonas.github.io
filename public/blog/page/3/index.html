@@ -9,7 +9,11 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Simple Search Ryan Bates to the rescue Find Getting back to basics (or at least closer to SQL). I haven&#8217;t used find much in the couple months, &hellip;">
+  <meta name="description" content="Course Goals Objective-c Conventions
+Using C Libraries
+Platform Idioms
+Key concepts: pointers, memory management, objects, messages
+Fundamental iOS &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +90,614 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-day-1/">RubyMotion Day 1</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T09:45:00-05:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Course Goals</h3>
+
+<ul>
+<li>Objective-c Conventions</li>
+<li>Using C Libraries</li>
+<li>Platform Idioms</li>
+<li>Key concepts: pointers, memory management, objects, messages</li>
+<li>Fundamental iOS libraries</li>
+<li>Cocoa patterns</li>
+<li>Testing</li>
+</ul>
+
+
+<h3>History of why Objective-C</h3>
+
+<ul>
+<li>NeXt
+
+<ul>
+<li>used objective-c to write the main platform
+
+<ul>
+<li>there was a debate on which was better between objective-c and c++, C++ eventually won</li>
+</ul>
+</li>
+<li>If you wanted to write an application on NeXt you needed to use NeXt builder</li>
+<li>OSX was built next and there are a lot of things in OSX that were inherited from NeXt</li>
+</ul>
+</li>
+<li>iOS is basically a version of OS10</li>
+</ul>
+
+
+<h3>iOS Overview</h3>
+
+<ul>
+<li>The window server and Cocoa send events and messages to each other. It is a two way communication.</li>
+<li><p>each application has its own loop of communication. Responsible for send and receiving events from the window server.</p></li>
+<li><p>For each object in the nib file</p>
+
+<ul>
+<li>Class is sent <code>alloc</code> to create interface</li>
+<li>New instance is sent <code>init</code></li>
+<li>Instance variables are set</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Application States</h3>
+
+<ul>
+<li>Two states: foreground and background
+
+<ul>
+<li>two states for foreground: inactive and active</li>
+<li>in the background: you can do tasks in the background, after it is done it will go to suspended</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Cocoa</h3>
+
+<ul>
+<li>UIkit is the main library that comes with cocoa and certainly the most important.</li>
+</ul>
+
+
+<h3>App delegate</h3>
+
+<ul>
+<li>There are at least two classes. The application class and the application delegate.</li>
+</ul>
+
+
+<h3>Create a new project</h3>
+
+<p><code>motion create &lt;app name&gt;</code></p>
+
+<ul>
+<li>fonts, images, assets all go in the resources folder</li>
+</ul>
+
+
+<h3>Rake</h3>
+
+<ul>
+<li><code>rake -T</code> gives me a list of all the rake tasks
+
+<ul>
+<li>can build for a device or build for the simulator</li>
+</ul>
+</li>
+<li>can create a static library with <code>rake static</code></li>
+<li><code>rake config</code> gives you output on the frameworks, delegate_class, etc.
+
+<ul>
+<li>CoreGraphics lib is what we use for animation</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Deploying the application</h3>
+
+<ul>
+<li>need an apple certificate and developer certificate</li>
+</ul>
+
+
+<h3>To see the UI structure</h3>
+
+<p><code>UIApplication.sharedApplication.keyWindow.recursiveDescription</code> -> this will give you the tree structure of what you have created.</p>
+
+<h3>Changing attributes in the console</h3>
+
+<p><code>self.font = UIFont.fontWithName("Noteworthy-Bold",size:18)</code> will change the font of the label that you have highlighted.</p>
+
+<h2>Object C</h2>
+
+<ul>
+<li>objective-c is an objected oriented flavor of c</li>
+<li>heavily influenced from Smalltalk language</li>
+<li><p>all keywords begin with @</p></li>
+<li><p>RubyMotion adds named parameters similar to Ruby 2.0</p></li>
+<li>Both Ruby and Objective C has the notion of open classes, single inheritance and single message dispatch</li>
+</ul>
+
+
+<p><code>now dateByAddingTimeInterval:1000</code>, structure is the <code>receiver theSelector:argument</code></p>
+
+<ul>
+<li>messages always enclose the receiver and the selector inside a pair of square brackets. These brackets can be nested.</li>
+<li><p><em>id</em> is a pointer to any object type.</p></li>
+<li><p>you can invoke objective-c OR ruby methods against built in classes</p></li>
+<li><code>[1,2,3].send(:objectAtIndex, 1)</code> -> you need the colon or it won&#8217;t find the selector!</li>
+<li>helpful to use short methods and callbacks because the method will not be released until it is terminated.</li>
+</ul>
+
+
+<h3>Objective C Classes</h3>
+
+<ul>
+<li>NSString (similar to when you freeze something in Ruby) v. NSMutableString</li>
+<li>NSSArray v. NSMutableArray</li>
+<li>NSSet v. NSMutableSet</li>
+<li><p>NSDictionary v. NSMutableDictionary</p></li>
+<li><p><code>my_string = "hello"</code> -> this is mutable</p></li>
+<li><code>my_stgring = NSString.alloc.init</code> -> this is immutable</li>
+</ul>
+
+
+<h3>NSArray</h3>
+
+<ul>
+<li>NSArray is immutable. Once you create one it can&#8217;t be modified. NSMutableArray is a mutable subclass of NSArray
+
+<ul>
+<li>need to terminate a <code>NSArray.arrayWithObjects(foo, bar, baz, nil)</code> with a <code>nil</code> or it will crash.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>NSSet</h3>
+
+<ul>
+<li>Sets are collections with no order and objects can be present only once (can only be added once).It is useful when dealing with membership issues.</li>
+<li><code>.unionSet</code>, <code>.intersectSet</code></li>
+</ul>
+
+
+<h3>NSDictionary</h3>
+
+<ul>
+<li>Dictionaries are unordered and associate a key.</li>
+</ul>
+
+
+<h3>Constants</h3>
+
+<ul>
+<li>in objective c -> constants usually start with k -> <code>kItemCode</code></li>
+<li>in Ruby make sure that this is uppercase -> <code>KItemCode</code></li>
+</ul>
+
+
+<h3>Defining a class</h3>
+
+<ul>
+<li>Obj c uses the keyword <code>@interface</code> to define the class</li>
+<li>Obj c only supports <em>single inheritance</em>. You can only inherit from one superclass at a time.</li>
+</ul>
+
+
+<h3>Protocols</h3>
+
+<ul>
+<li>similar to the concept of interfaces in java or C-sharp</li>
+<li>a protocol is a contract. It is a promise to the compiler that a given class will implement a given interface.</li>
+</ul>
+
+
+<h3>Categories</h3>
+
+<ul>
+<li>the way to add methods to an existing class</li>
+</ul>
+
+
+<h3>Structures</h3>
+
+<ul>
+<li>C structures are mapped to classes in RubyMotion. <code>CGPoint</code> is very common.</li>
+<li>It is possible to pass the field views directly to the constructor `pt= CGPoint.new(100,200)</li>
+</ul>
+
+
+<h3>Pointers</h3>
+
+<ul>
+<li>Pointers are basic data types of the C language</li>
+<li>RubyMotion supports the creation o structure pointers, by passing their runtime type accordingly to <code>Pointer.new</code></li>
+</ul>
+
+
+<h3>Blocks</h3>
+
+<ul>
+<li>The caret (<sup>)</sup> character is used to define C blocks</li>
+<li>The Prob object must have the same number of args as the C function pointer or block, otherwise an exception will be raised at runtime</li>
+</ul>
+
+
+<h3>Keyboard doesn&#8217;t toggle by default</h3>
+
+<ul>
+<li>Add this code</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">textFieldShouldReturn</span><span class="p">(</span><span class="n">textfield</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">textfield</span><span class="o">.</span><span class="n">resignFirstResponder</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Setting a title of a button</h3>
+
+<p><code>@instance_var.setTitle("TITLE",forState:UIControlStateNormal)</code></p>
+
+<h3>List of wrappers</h3>
+
+<ul>
+<li><a href="http://rubymotion-wrappers.com/">http://rubymotion-wrappers.com/</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-pre-work/">RubyMotion Pre-work</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T19:29:00-05:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>Ruby Motion Tool Chain from the command line with <code>motion</code></li>
+<li><p>create a new project with <code>motion create &lt;app name&gt;</code></p></li>
+<li><p><code>rake -T</code> gives you a list of tasks</p></li>
+<li><p><code>rake</code> builds the application and opens the simulator</p></li>
+<li><p>Cocoa touch is a framework and calls back into our code using the delegate pattern.</p>
+
+<ul>
+<li>there are special callback methods to hook into the lifecycle</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Creating an alert</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">alert</span> <span class="o">=</span> <span class="no">UIAlertView</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello!&quot;</span>
+</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">show</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>What is the frame?</h3>
+
+<ul>
+<li>a rectangle for the window.
+
+<ul>
+<li>it&#8217;s an origin, an X and Y coordinate</li>
+<li>and it&#8217;s also a size</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Making a Yellow Screen</h3>
+
+<figure class='code'><figcaption><span>A Yellow Flashlight!</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">yellowColor</span>
+</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Using the Console</h3>
+
+<p>When the console builds it provides a console. If I hover with the mouse, nothing happens. But if I hold the cmd key, it puts the element in the console and you can assign it to self or a variable.</p>
+
+<p>So <code>#&lt;UIWindow:0x10922060&gt;)&gt; self</code>
+and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.greenColor</code> will change the color right in the console.</p>
+
+<p>Can grab objects, put them in the console and manipulate them interactively.</p>
+
+<h3>Views</h3>
+
+<ul>
+<li>each view that we have sits in a view and is managed by a view controller</li>
+<li><p>Each</p></li>
+</ul>
+
+
+<h3>ViewController</h3>
+
+<ul>
+<li>UIViewController is where all the magic happens</li>
+</ul>
+
+
+<h3>UI Kit</h3>
+
+<ul>
+<li>the x and y coordinate starts in the upper left corner and x goes -> and y goes down.</li>
+</ul>
+
+
+<h3>Gesture Recognition</h3>
+
+<ul>
+<li>when a view is tapped it sends an action to a particaular target.</li>
+</ul>
+
+
+<h3>What is a delegate</h3>
+
+<p>When the user launches our app, the system sets up a bunch of stuff for us. We need to give the operating system an object which can respond to different events during that process; we refer to that object as the &#8220;application delegate&#8221;. It gets callbacks for when the app starts, ends, goes to the background, gets a push notification, etc. <a href="http://rubymotion-tutorial.com/1-hello-motion/">source</a></p>
+
+<h3>Views</h3>
+
+<ul>
+<li>Everything displayed in an app is called a &#8220;view&#8221;.- A view can have many &#8220;subviews&#8221;; when you move a view, you also move its subviews.
+
+<ul>
+<li>Subviews visually stacked on top of each other within their parent.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Resources:</h3>
+
+<ul>
+<li><a href="http://pragmaticstudio.com/screencasts/rubymotion">50 min screencast</a></li>
+<li><a href="http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial">Promotion</a></li>
+<li><a href="http://rubymotion-tutorial.com/">HTML book</a></li>
+<li><a href="http://blog.crowdint.com/2013/01/16/developing-ios-applications-with-ruby.html">tutorial that also lists a bunch of resources</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/formulating-a-gitbo-plan/">Formulating a Gitbo Plan</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-17T19:23:00-05:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Intro to the product&#8230;</p>
+
+<p>present gitbo
+  - show that it is integrated with github</p>
+
+<pre><code>- largest open source code sharing platform
+</code></pre>
+
+<ul>
+<li>show how easy it is to find and work on an issue.
+
+<ul>
+<li>by upvoting an issue, I communicate what is important to me, which is relfected in the popularity and the visibility of each issue and repository</li>
+<li>uploading a third party repo bring visibility to a repo that you think deserves attention.</li>
+</ul>
+</li>
+<li>bounty process</li>
+<li><p>notified when solved (verbal &#8216;notified by email&#8217;)</p>
+
+<ul>
+<li>prompted to pay show stripe js (needed?)</li>
+</ul>
+</li>
+<li><p>Founded a company.</p></li>
+<li><p>express passion</p></li>
+<li>capability</li>
+<li>team cohesiveness - 3 month intense bootcamp</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/back-to-sinatra/">Back to Sinatra</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-17T19:19:00-05:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>Couldn&#8217;t launch on heroku because I didn&#8217;t have a gemfile.</li>
+<li><p>Then I could removed all the gem requirements from the top of the <code>main.rb</code> file. Not how it&#8217;s done.</p></li>
+<li><p>Since I need two different keys to for FB authentication I configured them in the main <code>app.rb</code> file. I tried setting these in a <code>.env</code> file and start up the app locally with foreman, but I couldn&#8217;t get it to work.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MyApp</span> <span class="o">&lt;</span> <span class="ss">Sinatra</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">configure</span> <span class="ss">:development</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_APP_ID&quot;</span><span class="o">]=</span><span class="s1">&#39;numbers&#39;</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_SECRET&quot;</span><span class="o">]=</span><span class="s1">&#39;key&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">configure</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_APP_ID&quot;</span><span class="o">]=</span><span class="s1">&#39;numbers&#39;</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;FACEBOOK_SECRET&quot;</span><span class="o">]=</span><span class="s1">&#39;key&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Found this solution on <a href="http://stackoverflow.com/questions/4486634/is-there-a-rack-or-sinatra-based-environment-configuration-utility">stackoverflow</a></p>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/658044/tick-symbol-in-html-xhtml">HTML Tick symbol</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -820,450 +1432,6 @@ algorithm  takes  <em>O(n)</em>  time.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jan-3-notes/">Jan 3 Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-03T12:12:00-05:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Adding a comma for big numbers</h3>
-
-<p><code>&lt;%= number_with_delimiter(repo.watchers, :delimiter =&gt; ',')</code>
-<a href="http://stackoverflow.com/questions/1078347/is-there-a-rails-trick-to-adding-commas-to-large-numbers">From</a></p>
-
-<h3>UI/UX strategy</h3>
-
-<ul>
-<li>kickstarter- encouraging click through rather than interaction.</li>
-<li>digg, stackoverflow, and reddit are closer to the functionality we want.</li>
-<li>don&#8217;t reinvent the wheel -> move forward.</li>
-</ul>
-
-
-<h3>Bounty Claims</h3>
-
-<ul>
-<li><p>Psuedo code: collect the info from the user (modal)</p></li>
-<li><p>this is sent to verification layer</p>
-
-<ul>
-<li><p>bounty controller?</p></li>
-<li><p>make sure the issue is closed</p></li>
-<li>make sure that an issue has a bounty</li>
-<li>make sure the issue was solved by the bounty claimer</li>
-</ul>
-</li>
-<li><p>if true- send verification to both bounty claimer and bounty author</p>
-
-<ul>
-<li>write the user id for all bounties the claimer solved</li>
-<li>change the badge/trigger payment on the profile pages of the bounty issuer</li>
-<li>tell gitbo admin that this was solved.</li>
-</ul>
-</li>
-<li><p>if false tell them why</p></li>
-</ul>
-
-
-<h3>A modal mess</h3>
-
-<ul>
-<li>We were trying to pass in multiple parameters in the url. But why do that?</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>This is simpler</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;modal-body&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= form_tag(bounty_claim_path) do %&gt;</span>
-</span><span class='line'><span class="sx">  &lt;div class=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;owner_name&quot;</span><span class="o">&gt;</span><span class="no">Repo</span> <span class="no">Owner</span> <span class="no">Name</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
-</span><span class='line'><span class="sr">    &lt;input id=&quot;owner_name&quot; name=&quot;owner_name&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
-</span><span class='line'><span class="sr">  &lt;div class=&quot;field&quot;&gt;</span>
-</span><span class='line'><span class="sr">    &lt;label for=&quot;repo_name&quot;&gt;Repo Name&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="sr">/&gt;</span>
-</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;git_number&quot;</span><span class="o">&gt;</span><span class="no">Github</span> <span class="no">Issue</span> <span class="no">Number</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
-</span><span class='line'><span class="sr">    &lt;input id=&quot;git_number&quot; name=&quot;git_number&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
-</span><span class='line'><span class="sr">  &lt;div class=&quot;modal-footer&quot;&gt;</span>
-</span><span class='line'><span class="sr">    &lt;span id=&quot;error&quot;&gt;&lt;/s</span><span class="n">pan</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s1">&#39;btn btn-success btn-small&#39;</span><span class="o">&gt;</span><span class="no">Submit</span><span class="o">&lt;</span><span class="sr">/button&gt;</span>
-</span><span class='line'><span class="sr">      &lt;button class=&quot;btn btn-danger btn-small&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;Oopsy&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="sr">/div&gt;</span>
-</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
-</span><span class='line'><span class="sx">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Just submit to a static url and pass in the info via params.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jan-2-notes/">Jan 2 Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-02T13:11:00-05:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Bash Environment Variables</h3>
-
-<p>I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify Gitbo&#8217;s server issue last week. Since <code>issue.js</code> has been compiled into <code>application.js</code>, it is listening twice.</p>
-
-<p>StackOverflow had <a href="http://stackoverflow.com/questions/9641320/rails-assets-dont-get-updated">this to say</a> and this solution <code>bundle exec RAILS_ENV=development rake rails_group=assets assets:clean</code>.</p>
-
-<ol>
-<li>The <code>bundle exec</code> would be needed if the gem file and my system files were different. In Gitbo&#8217;s case, there is no discrepancy. On the server, that can&#8217;t be assumed and <code>bundle exec</code> would be needed.</li>
-<li>The default environment for a rake task is development <strong>except</strong> for assets which obviously have more to do with production.</li>
-<li>Rake tasks are very flexible in terms of how they take <em>bash environment variables</em> (they are sort of like arguments, but they aren&#8217;t). Passing in the rails_environment before the rake task is how I did it, but they could be passed in afterwards and that would be fine because BASH reads the entire line of code before it executes it.</li>
-</ol>
-
-
-<p>Here was the final command I used: <code>RAILS_ENV=development RAILS_GROUP=assets rake assets:clean</code></p>
-
-<h3>Skeleton</h3>
-
-<ul>
-<li>Site is <a href="http://www.getskeleton.com/">here</a></li>
-<li>Installed <a href="https://github.com/helios-technologies/skeleton-rails">skeleton-rails</a></li>
-<li>An alternative to rails</li>
-</ul>
-
-
-<h3>Instance Variables</h3>
-
-<ul>
-<li><p>Show does have an instance variable. The view is attached to an instance of a controller</p></li>
-<li><p>In a partial, this is just crazy&#8230;</p>
-
-<ul>
-<li>a view is not part of the controller, so why should it have access to an instance of a controller.</li>
-</ul>
-</li>
-</ul>
-
-
-<p>Further reading on this: <a href="http://rails-bestpractices.com/posts/27-replace-instance-variable-with-local-variable">Rails Best Practices</a> and <a href="http://programmers.stackexchange.com/questions/127838/why-do-people-suggest-not-to-use-instance-variable-for-views-in-ruby-on-rails">Stack Exchange</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/parallelism/">Parallelism</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-01T21:30:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Threads  and  processes:</h3>
-
-<p>A  computer  will  often  appear  to  be  doing  many  things  simultaneously,  such  as  checking  for  new  e‐mail  messages,  saving  a  Word  document,  and  loading  a  website. Each  program  is  a  separate  &#8220;process&#8221;.   Each  process  has  one  or  more  &#8220;threads. &#8220;  If  a  process  has  several  threads,  they  appear  to  run  simultaneously.  For  example,  an  e‐mail  client  may  have  one  thread  that  checks  for  new  e‐mail  messages  and  one  thread  for  the  GUI  so  that  it  can  show  a  button  being  pressed.  In  fact,  only  one  thread  is  being  run  at  any  given  time.  The  processor  switches  between  threads  so  quickly  that  they  appear  to  be  running  simultaneously. Multiple  threads  in  a  single  process  have  access  to  the  same  memory.   By  contrast,  multiple  processes  have  separate  regions  of  memory  and  can  only  communicate  by  special  mechanisms.  The  processor  loads  and  saves  a  separate  set  of  registers  for  each  thread. Remember,  each  process  has  one  or  more  threads,  and  the  processor  switches  between  threads.</p>
-
-<ul>
-<li><a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">From</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/big-o-notation/">Big O Notation</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-29T22:59:00-05:00" pubdate data-updated="true">Dec 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>What is it? Let me say it a few different ways&#8230;</h3>
-
-<ul>
-<li>Big-O measures how well an operation will “scale” when you increase the amount of “things” it operates on.</li>
-<li>Big-O can be used to describe how fast an algorithm will run, or it can describe other behavior such as how much memory an algorithm will use.</li>
-</ul>
-
-
-<blockquote><p>Big O notation refers to the asymptotic upper bound (see below for fuller explanation), which means that it&#8217;s a cap on how much the time complexity will grow. If we say that a function is O(1), then there&#8217;s no growth and the function will always take a fixed amount of time to complete. If we say that a function is O(N) then if N doubles, the function&#8217;s time complexity at most will double. It may be less, but never more. That&#8217;s the upper bound of an algorithm, and it&#8217;s the most common notation. <a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">credit</a></p></blockquote>
-
-<h3>Asymptotic Bounds</h3>
-
-<ul>
-<li>By removing the constants from an equation, we can focus on the part of the measure that grows and derive a simplified asymptotic bound on the algorithm.</li>
-<li><strong>The reference to bounds is pretty much a reference to the best-case (lower bound, also known as Omega -> Ω) and worst-case (upper bound, also known as Big O) scenarios.</strong>
-
-<ul>
-<li><strong>If these end up being the same, we can call it theta -> Θ.</strong></li>
-</ul>
-</li>
-<li>For more on Asymptotic Bounds, read a <a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">good explanation</a>.</li>
-</ul>
-
-
-<h3>Time complexity</h3>
-
-<ul>
-<li><p>Time complexity is a measure of efficiency.</p>
-
-<ul>
-<li>In a list of N items, how many times do I need to go through this list to get the task done?
-
-<ul>
-<li>e.g. which number is the smallest. Only once I pass through the entire list can I figure out which is the smallest. <em>It must make N comparisons.</em></li>
-<li>Selection sort and bubble sort are N<sup>2</sup> algorithms.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><em>O(1)</em> -> Constant Time -> describes an algorithm that will always execute in the same time regardless of the size of the input data set.</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>This will never change no matter the size</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">checking_nil</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">array</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Another e.g. determining if a number is even or odd.</p>
-
-<ul>
-<li><em>O(log n)</em> -> logarithmic time -> Any algorithm which cuts the problem in half each time is O(log n). The operation will take longer as the input size increases, but once the input gets fairly large it won&#8217;t change enough to worry about. If you double n, you have to spend an extra amount of time t to complete the task. If n doubles again, the time it takes to complete the task won’t double, but will increase by a constant amount. (e.g. a binary search tree
-
-<ul>
-<li>A <em>Binary Search Tree</em> is a tree comprised of multiple nodes with one root node to start with.  Each node has a value, left node, and a right node.  The left node value has to be less than the current node value, while the right node value is greater than the current.  The biggest concern with a binary search tree is balancing.  If the tree becomes unbalanced, the O(log(n)) benefit can become O(n) if the tree unbalanced (a tree with only a right path).
-
-<ul>
-<li><a href="http://styliii.com/blog/2012/12/26/what-is-a-binary-search-tree/">further Binary Search Tree reading</a>)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><em>O(N)</em> -> Linear Time -> the larger the input, the longer it takes. AKA it will grow linearly and in direct proportion to the size of the input data set.</li>
-<li><em>O(n log n)</em> means that you’re performing an <em>O(log n)</em> operation for each item in your input. Most (efficient) sort algorithms are an example of this including quicksort (in the average and best case), heapsort and merge sort.</li>
-<li>*O(N<sup>2)*</sup> represents an algorithm whose performance is directly proportional to the square of the size of the input data set. Every time n doubles, the operation takes four times as long. (e.g.s are comparison algorithms like quicksort and bubble sort)</li>
-<li><em>O(2<sup>N)*</sup> -> exponential time -> denotes an algorithm whose growth will double with each additional element in the input data set. Totally impractical for any reasonably large input size </em>n*.</li>
-<li><em>O(n!)</em> -> factorial time -> for all possible permutations&#8230; that&#8217;s just crazy.</li>
-</ul>
-
-
-<p>Constant Time -> O(1) &lt; Linear Time -> O(n) &lt; Linearithmic Time -> O(nlogn) &lt; Quadratic -> O(n<sup>2)</sup></p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Big-O </th>
-<th> Operations for 10 “things” </th>
-<th> Operations for 100 “things” </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> O(1) </td>
-<td> 1 </td>
-<td> 1 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(log n) </td>
-<td> 3 </td>
-<td> 7 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n) </td>
-<td> 10 </td>
-<td> 100 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n log n) </td>
-<td> 30 </td>
-<td> 700 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n<sup>2)</sup> </td>
-<td> 100 </td>
-<td> 10000 </td>
-</tr>
-<tr>
-<td></td>
-<td> O(2<sup>n)</sup> </td>
-<td> 1024 </td>
-<td> 2<sup>100</sup> – a lot! </td>
-</tr>
-<tr>
-<td></td>
-<td> O(n!) </td>
-<td> 3628800 </td>
-<td> 100! – also a lot! </td>
-</tr>
-</tbody>
-</table>
-
-
-<p><a href="http://therecyclebin.files.wordpress.com/2008/05/time-complexity.png"><img class="left" src="/images/time-complexity.png" title="Time Complexity" ></a></p>
-
-<h2>Further reading:</h2>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/107165/big-o-for-eight-year-olds/107189#107189">stackoverflow</a></li>
-<li><a href="http://rob-bell.net/2009/06/a-beginners-guide-to-big-o-notation/">Rob Bell&#8217;s Beginner&#8217;s Guide</a></li>
-<li><a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">This nails asymptotic notation</a></li>
-<li><a href="http://recursive-design.com/blog/2010/12/07/comp-sci-101-big-o-notation/">Pulled a lot from here</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1281,117 +1449,57 @@ algorithm  takes  <em>O(n)</em>  time.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/dot-powconfig/">.powconfig</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/calendar-app-1/">calendar app 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/another-new-macbook-air-load/">Another new MacBook Air load</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kca-4/">KCA 4</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/kca-3/">KCA 3</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/paypal-integration/">Paypal integration</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/kca-2/">KCA 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/macpro-set-up/">MacPro Set Up</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/kca/">KCA</a>
-      </li>
-    
   </ul>
 </section>
-<section>
-  <h1>Categories</h1>
-  <ul id="categories">
-    <li class='category'><a href='/blog/categories/fis/'>FIS (37)</a></li>
-<li class='category'><a href='/blog/categories/sql/'>SQL (5)</a></li>
-<li class='category'><a href='/blog/categories/tdd/'>TDD (1)</a></li>
-<li class='category'><a href='/blog/categories/todo/'>TODO (5)</a></li>
-<li class='category'><a href='/blog/categories/agile/'>agile (1)</a></li>
-<li class='category'><a href='/blog/categories/airbrake/'>airbrake (2)</a></li>
-<li class='category'><a href='/blog/categories/ajax/'>ajax (3)</a></li>
-<li class='category'><a href='/blog/categories/algorithm/'>algorithm (1)</a></li>
-<li class='category'><a href='/blog/categories/algorithms/'>algorithms (1)</a></li>
-<li class='category'><a href='/blog/categories/angular/'>angular (1)</a></li>
-<li class='category'><a href='/blog/categories/asset-pipeline/'>asset_pipeline (1)</a></li>
-<li class='category'><a href='/blog/categories/associations/'>associations (3)</a></li>
-<li class='category'><a href='/blog/categories/authentication/'>authentication (2)</a></li>
-<li class='category'><a href='/blog/categories/backbone/'>backbone (1)</a></li>
-<li class='category'><a href='/blog/categories/bigo/'>bigO (1)</a></li>
-<li class='category'><a href='/blog/categories/book-notes/'>book_notes (3)</a></li>
-<li class='category'><a href='/blog/categories/bootstrap/'>bootstrap (1)</a></li>
-<li class='category'><a href='/blog/categories/bootstrap-script/'>bootstrap_script (1)</a></li>
-<li class='category'><a href='/blog/categories/curl/'>cURL (1)</a></li>
-<li class='category'><a href='/blog/categories/cache/'>cache (1)</a></li>
-<li class='category'><a href='/blog/categories/caching/'>caching (1)</a></li>
-<li class='category'><a href='/blog/categories/cheatsheet/'>cheatsheet (1)</a></li>
-<li class='category'><a href='/blog/categories/cli/'>cli (1)</a></li>
-<li class='category'><a href='/blog/categories/code/'>code (1)</a></li>
-<li class='category'><a href='/blog/categories/codeschool/'>codeschool (3)</a></li>
-<li class='category'><a href='/blog/categories/coil/'>coil (1)</a></li>
-<li class='category'><a href='/blog/categories/css/'>css (1)</a></li>
-<li class='category'><a href='/blog/categories/diaspora/'>diaspora (2)</a></li>
-<li class='category'><a href='/blog/categories/errors/'>errors (3)</a></li>
-<li class='category'><a href='/blog/categories/forms/'>forms (4)</a></li>
-<li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
-<li class='category'><a href='/blog/categories/git/'>git (7)</a></li>
-<li class='category'><a href='/blog/categories/gitbo/'>gitbo (1)</a></li>
-<li class='category'><a href='/blog/categories/google-maps/'>google_maps (1)</a></li>
-<li class='category'><a href='/blog/categories/helpers/'>helpers (1)</a></li>
-<li class='category'><a href='/blog/categories/heroku/'>heroku (4)</a></li>
-<li class='category'><a href='/blog/categories/html/'>html (1)</a></li>
-<li class='category'><a href='/blog/categories/imagemagick/'>imagemagick (1)</a></li>
-<li class='category'><a href='/blog/categories/javascript/'>javascript (4)</a></li>
-<li class='category'><a href='/blog/categories/job/'>job (1)</a></li>
-<li class='category'><a href='/blog/categories/jquery/'>jquery (7)</a></li>
-<li class='category'><a href='/blog/categories/kentbeck/'>kentbeck (1)</a></li>
-<li class='category'><a href='/blog/categories/lambda/'>lambda (1)</a></li>
-<li class='category'><a href='/blog/categories/lecture-notes/'>lecture_notes (13)</a></li>
-<li class='category'><a href='/blog/categories/mac/'>mac (1)</a></li>
-<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
-<li class='category'><a href='/blog/categories/minitest/'>minitest (1)</a></li>
-<li class='category'><a href='/blog/categories/modules/'>modules (1)</a></li>
-<li class='category'><a href='/blog/categories/mongodb/'>mongoDB (1)</a></li>
-<li class='category'><a href='/blog/categories/mongoid/'>mongoid (1)</a></li>
-<li class='category'><a href='/blog/categories/namespacing/'>namespacing (1)</a></li>
-<li class='category'><a href='/blog/categories/notes/'>notes (1)</a></li>
-<li class='category'><a href='/blog/categories/object-oriented/'>object-oriented (2)</a></li>
-<li class='category'><a href='/blog/categories/object-oriented/'>object_oriented (1)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
-<li class='category'><a href='/blog/categories/omniauth/'>omniauth (1)</a></li>
-<li class='category'><a href='/blog/categories/openssl/'>openssl (1)</a></li>
-<li class='category'><a href='/blog/categories/patterns/'>patterns (1)</a></li>
-<li class='category'><a href='/blog/categories/podcasts/'>podcasts (1)</a></li>
-<li class='category'><a href='/blog/categories/postgresql/'>postgresql (1)</a></li>
-<li class='category'><a href='/blog/categories/procs/'>procs (1)</a></li>
-<li class='category'><a href='/blog/categories/quotes/'>quotes (1)</a></li>
-<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
-<li class='category'><a href='/blog/categories/rails/'>rails (17)</a></li>
-<li class='category'><a href='/blog/categories/rails-forms/'>rails_forms (3)</a></li>
-<li class='category'><a href='/blog/categories/rails-routes/'>rails_routes (1)</a></li>
-<li class='category'><a href='/blog/categories/rake/'>rake (2)</a></li>
-<li class='category'><a href='/blog/categories/reading/'>reading (1)</a></li>
-<li class='category'><a href='/blog/categories/recursion/'>recursion (1)</a></li>
-<li class='category'><a href='/blog/categories/redis/'>redis (1)</a></li>
-<li class='category'><a href='/blog/categories/refactoring/'>refactoring (4)</a></li>
-<li class='category'><a href='/blog/categories/rspec/'>rspec (4)</a></li>
-<li class='category'><a href='/blog/categories/ruby/'>ruby (25)</a></li>
-<li class='category'><a href='/blog/categories/rubymotion/'>rubymotion (8)</a></li>
-<li class='category'><a href='/blog/categories/rubyrogues/'>rubyrogues (1)</a></li>
-<li class='category'><a href='/blog/categories/rugged/'>rugged (1)</a></li>
-<li class='category'><a href='/blog/categories/scope/'>scope (1)</a></li>
-<li class='category'><a href='/blog/categories/setup/'>setup (1)</a></li>
-<li class='category'><a href='/blog/categories/shortcuts/'>shortcuts (1)</a></li>
-<li class='category'><a href='/blog/categories/sinatra/'>sinatra (4)</a></li>
-<li class='category'><a href='/blog/categories/solid/'>solid (1)</a></li>
-<li class='category'><a href='/blog/categories/speaker/'>speaker (1)</a></li>
-<li class='category'><a href='/blog/categories/testing/'>testing (5)</a></li>
-<li class='category'><a href='/blog/categories/xmpp/'>xmpp (1)</a></li>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
   </ul>
+  
+  <a href="https://github.com/ajonas04">@ajonas04</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'ajonas04',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
+
 
 
 
@@ -1427,6 +1535,16 @@ algorithm  takes  <em>O(n)</em>  time.</p>
 
 
 
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
 
 
 
