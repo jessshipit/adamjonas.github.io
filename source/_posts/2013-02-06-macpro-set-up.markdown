@@ -3,7 +3,7 @@ layout: post
 title: "MacPro Set Up"
 date: 2013-02-06 13:26
 comments: true
-categories: setup
+categories: mac
 ---
 
 - My postgres paths were screwed up. [This helped](http://stackoverflow.com/questions/12028037/postgres-app-could-not-start-on-port-5432/13847738#13847738)
