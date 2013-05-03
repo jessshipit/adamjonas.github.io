@@ -9,9 +9,9 @@ footer: true
 
 #I also live at...#
 
-* [github](https://github.com/ajonas04)
+* [github](https://github.com/adamjonas)
 
-* [LinkedIn](http://www.linkedin.com/pub/adam-jonas/2a/518/677)
+* [LinkedIn](http://www.linkedin.com/in/ajonas)
 
 * [Major League Draft Services](http://mldraft.com)
 

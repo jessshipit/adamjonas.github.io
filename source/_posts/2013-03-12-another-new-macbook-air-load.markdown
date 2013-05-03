@@ -14,5 +14,20 @@ categories: mac
 ###PSQL
   - the install went much smoother this time. I used this [ref](http://stackoverflow.com/questions/12028037/postgres-app-could-not-start-on-port-5432/13847738#13847738) when I ran into problems.
 
+  - [this helped](http://stackoverflow.com/questions/6867401/postgres-postgresql-fatal-database-ew-dev-does-not-exist) on my old air... the app installed without a hitch, but I was missing the creating of the databases.
+  - when the psql app wasn't active
+
+    ♕ psql
+    psql: could not connect to server: No such file or directory
+      Is the server running locally and accepting
+      connections on Unix domain socket "/var/pgsql_socket/.s.PGSQL.5432"?
+
+  - after turning it on, I got this
+
+    ♕ psql
+    psql: FATAL:  database "Ajonas" does not exist
+
+  - the PATH clearly isn't right, but by adding `rake db:create:all` I got the app to bootup.
+
 ###Bundler and Octopress reinstall
   - bundler wasn't recognized because of the different ruby version. Installed the new version and `gem install bundler` as [advised](http://stackoverflow.com/questions/7483515/rake-aborted-no-such-file-to-load-bundler-setup-rails-3-1.

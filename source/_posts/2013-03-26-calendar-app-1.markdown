@@ -126,8 +126,9 @@ end
 ###S3
   - used [fog](https://github.com/fog/fog) to store the carrierwave uploaded images on AWS
   - needed to config heroku with the `heroku config:add ENV_VARIABLE=bucket-name -r staging` to make it work
-  - in carrierwave.rb need to specify the `config.fog_host`
+  - in carrierwave.rb need to specify the `config.fog_host`, but this is NOT the right method. It is supposed to be `config.asset_host`
     - implemented via [this commit](https://github.com/carrot/rolex-world-of-rolex/commit/b58dbf36c38a3932c51eeab1700ac09171cae338)
+    - and [corrected by](http://stackoverflow.com/questions/13041498/undefined-method-fog-host)
       - also push the config variable via `heroku config:add CLOUDFRONT='<cloudfront URL>' -r staging`
     - [this post was helpful](http://stackoverflow.com/questions/10777712/carrierwave-s3-how-to-specify)
 

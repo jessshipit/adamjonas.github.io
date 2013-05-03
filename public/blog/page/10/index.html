@@ -9,25 +9,13 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="MiniTest Spec Matchers1
+  <meta name="description" content="POTD Linus Torvalds Rails rails assigns attr_accessors Active Record Queries1
 2
 3
 4
 5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-obj.must_be(operator, expected) - for example, 10.must_be :&lt; , 11
-obj. &hellip;">
+song.limit(2).last #=&gt; this is the second to last song
+Song. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -104,6 +92,532 @@ obj. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day16/">FIS Day16</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-25T09:39:00-04:00" pubdate data-updated="true">Oct 25<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>POTD</h3>
+
+<p>Linus Torvalds</p>
+
+<h2>Rails</h2>
+
+<p>rails assigns attr_accessors</p>
+
+<figure class='code'><figcaption><span>Active Record Queries</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">song</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">last</span> <span class="c1">#=&gt; this is the second to last song</span>
+</span><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">find_by_name</span>
+</span><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">find_by_anyattrributename</span>
+</span><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">find_all_by_name</span> <span class="c1">#=&gt; sweet</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ORM ~> Object Relational Mapping</h3>
+
+<ul>
+<li><strong>A ruby class is to a databse table as instances of that class are to a row in that table</strong>
+
+<ul>
+<li>the form field should map to the column name</li>
+</ul>
+</li>
+<li>activerecord&#8217;s exists to accomplish CRUD</li>
+<li>active record pattern <a href="http://books.google.com/books?id=FyWZt5DdvFkC&amp;lpg=PA1&amp;dq=Patterns%20of%20Enterprise%20Application%20Architecture%20by%20Martin%20Fowler&amp;pg=PT187#v=onepage&amp;q=active%20record&amp;f=false">proposed by Martin Fowler</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Persistence</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">new_song</span><span class="o">.</span><span class="n">persisted?</span> <span class="c1">#=&gt; false</span>
+</span><span class='line'><span class="n">new_song</span><span class="o">.</span><span class="n">new_record?</span> <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="n">new_song</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'><span class="n">new_song</span><span class="o">.</span><span class="n">persisted?</span> <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="n">new_song</span><span class="o">.</span><span class="n">new_record?</span> <span class="c1">#=&gt; false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>ORM Awareness</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_song</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">changed?</span> <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">changes</span> <span class="c1">#=&gt; {&quot;name=&gt; [&quot;whatever&quot;, &quot;new&quot;]}</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">name_changed?</span> <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">duration_changed</span> <span class="c1">#=&gt; false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">song</span><span class="o">.</span><span class="n">destroy</span> <span class="c1">#=&gt; will destroy the record</span>
+</span><span class='line'><span class="n">song</span><span class="o">.</span><span class="n">delete</span> <span class="c1">#=&gt; don&#39;t use this for now</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>REST</h3>
+
+<p>Identification of a resource
+Individual resources that are identified in the requests, for example using the URIs sin web-based REST systems.</p>
+
+<p>REST- the url address should mirror the http verb and url action</p>
+
+<ul>
+<li><em>What do you mean by a representation?</em></li>
+<li>these objects have different representations depending on their name</li>
+<li>.xml should return the xml and .json and return the json</li>
+<li>the objects should be devoid of your form until you ask for them</li>
+</ul>
+
+
+<h3>Routes</h3>
+
+<figure class='code'><figcaption><span>Routes File syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s1">&#39;/welcome&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;application#welcome&#39;</span>
+</span><span class='line'><span class="c1"># same as ApplcationController.welcome</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="p">{</span><span class="n">controller</span> <span class="o">=&gt;</span> <span class="s1">&#39;application&#39;</span><span class="p">,</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s1">&#39;welcome&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:songs</span> <span class="c1">#is a macro that is calling 7 methods for you</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>the routes file are evaluated with lazy evaluation. Which allows you to put the most specific patterns on top and let them trickle down&#8230;</li>
+<li>7 restful routes: get, create, update, delete, show, etc.</li>
+<li><p><em>url endpoint</em>- the very last thing that is executed after a url request- the last application run is the action in the controller</p></li>
+<li><p><strong>URL request cascade through a rails app:</strong></p>
+
+<ol>
+<li>web server gets request</li>
+<li>send it through the rack</li>
+<li>last stop, routes file</li>
+<li>match a  route</li>
+<li>request = SongContoller.new</li>
+<li>response = request.index</li>
+</ol>
+</li>
+</ul>
+
+
+<p>Rails was the first to have implicit rendering&#8230;</p>
+
+<figure class='code'><figcaption><span>Implicit Rendering</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>  <span class="vi">@index</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#this will implicitly render the index page</span>
+</span><span class='line'><span class="c1">#could also add ~&gt; render &#39;artist/index&#39; &lt;~ which will over-write the implicitly render</span>
+</span><span class='line'><span class="c1">#&#39;artist/index&#39; is a method called on self</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>class variable can inherit down the inheritance tree
+a class instance var is private to the class</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="vi">@genres</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="no">Artist</span><span class="o">.</span><span class="n">all</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span><span class="sc">??</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>VPS- Virtual Private server</p>
+
+<p>Linux distribution - ubuntu
+server - nginx
+unicorn
+DB- postgres</p>
+
+<h3>Visualization</h3>
+
+<ul>
+<li>how does a partition actually work?
+
+<ul>
+<li>2 cores or 4 cores?? i don&#8217;t know what a core is.</li>
+</ul>
+</li>
+<li>hardware usually out-paces software
+
+<ul>
+<li>we have had <em>multi-core processors</em> before we had software to take advantage of it.</li>
+</ul>
+</li>
+<li><p>vocab:</p>
+
+<ul>
+<li>slice, a box, a vps, are pretty much synonymous</li>
+</ul>
+</li>
+<li><p>dediserve is the server we are using</p></li>
+<li>RAM has fast access.</li>
+<li><a href="http://vimeo.com/15882917">capistrano</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ssh</span> <span class="n">root</span><span class="err">@</span><span class="mi">96</span><span class="o">.</span><span class="mi">8</span><span class="n">ipaddress</span>
+</span><span class='line'><span class="c1">#will get an error saying that you can&#39;t connect</span>
+</span><span class='line'><span class="c1">#say yes</span>
+</span><span class='line'><span class="c1">#next insert your password: </span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#create a new user instead of root</span>
+</span><span class='line'><span class="n">useradd</span> <span class="c1">#to get access to instructons</span>
+</span><span class='line'><span class="n">man</span> <span class="n">useradd</span>
+</span><span class='line'><span class="n">useradd</span> <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">s</span> <span class="sr">/bin/</span><span class="n">bash</span> <span class="o">-</span><span class="n">G</span> <span class="n">sudo</span> <span class="n">ajonas</span>
+</span><span class='line'><span class="c1">#sudo says anyone in sudo group can use sudo adam</span>
+</span><span class='line'><span class="c1">#userdel will delete a user</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">passwd</span> <span class="n">ajonas</span>
+</span><span class='line'><span class="c1">#enter password:</span>
+</span><span class='line'><span class="n">ssh</span> <span class="n">root</span><span class="err">@</span><span class="mi">96</span><span class="o">.</span><span class="mi">8</span><span class="n">ipaddress</span> <span class="n">will</span> <span class="n">get</span> <span class="n">you</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="c1">#for updating indexes and downloading packages, like homebrew</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">upgrade</span>
+</span><span class='line'><span class="n">build</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#install your packages with apt-get</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Capistrano</h3>
+
+<ul>
+<li>handles your <a href="http://en.wikipedia.org/wiki/Release_management">release management</a> throw the entire code base on your server every time you deploy. Copy code off of Github or server and apply it. This will maintain revisions, roll back easily, compile the CSS in your assets. It can&#8217;t happen manually.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">cap</span> <span class="n">deploy</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>will do this for you. It&#8217;s script-able and automatic.</p>
+
+<ul>
+<li>This is run locally.</li>
+<li>cap is what you use to interact with capistrano from the outside (like rails new from outside a rails project)</li>
+<li>capify is how you interact with the gem (like rails generate inside the project folder)</li>
+</ul>
+
+
+<h3>Web Servers</h3>
+
+<ul>
+<li>apache was the market leader for best of breed of web server</li>
+<li><p>ngenx - can handle lots of requests and tries to stay really small</p>
+
+<ul>
+<li>has much smaller memory footprint</li>
+<li>has some features that are better suited for rails</li>
+<li>ngenx is also a really good load balancer</li>
+<li>config file is much easier to understand than ngenx</li>
+</ul>
+</li>
+<li><p>Four functions in the config/deploy.rb DSL</p>
+
+<ul>
+<li>set: capistrano variables</li>
+<li>role:</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Further reading</h3>
+
+<ul>
+<li>backups</li>
+<li>log rotations - when your log gets too big, it is going to zip it up and send it to some long term storage. The first thing hackers will do is go through the logs.</li>
+</ul>
+
+
+<h3>Reading in prep:</h3>
+
+<ul>
+<li>Capistrano reads its instructions from a capfile.</li>
+<li>many server clusters are hidden behind NATs (Network address translation) and firewalls, to prevent direct access.
+
+<ul>
+<li>NATs - the process of modifying IP address information in IP packet headers while in transit across a traffic routing device.</li>
+</ul>
+</li>
+<li>Tasks are the foundation of a Capistrano setup; collections of tasks are typically called Recipes.</li>
+<li><p>Daemons are special system applications which typically execute continuously in the background and await requests for the functions they provide from other applications.</p></li>
+<li><p><em>From lowest to highest, the layers of the internet protocol suite are:</em></p></li>
+<li>The link layer (commonly Ethernet) contains communication technologies for a local network.</li>
+<li>The internet layer (IP) connects local networks, thus establishing internetworking.</li>
+<li>The transport layer (TCP) handles host-to-host communication.</li>
+<li><p>The application layer (for example HTTP) contains all protocols for specific data communications services on a process-to-process level (for example how a web browser communicates with a web server).</p></li>
+<li><p>Stateless firewalls require less memory, and can be faster for simple filters that require less time to filter than to look up a session.</p></li>
+<li><p>Modern firewalls can filter traffic based on many packet attributes like source IP address, source port, destination IP address or port, destination service like WWW or FTP.</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/ruby-motion/">Ruby Motion</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-24T19:16:00-04:00" pubdate data-updated="true">Oct 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>ios simulator app
+git repo: malkomalko/tweets-i-love</p>
+
+<ul>
+<li><p>File structure:</p>
+
+<ul>
+<li>controller</li>
+<li>extensions</li>
+<li>models</li>
+<li>styles</li>
+<li>views</li>
+<li>build</li>
+<li>resources</li>
+<li>spec</li>
+<li>tasks</li>
+<li>vendor</li>
+<li>Gemfile</li>
+</ul>
+</li>
+<li><p>Use Xcode for storyboards</p></li>
+</ul>
+
+
+<p><a href="https://github.com/CocoaPods/CocoaPods">Cocoapods</a></p>
+
+<p>more or less -> every screen of data is bound to a view controller</p>
+
+<p>??delegates ~> look it up</p>
+
+<p><a href="http://iconoclastlabs.com/cms/blog/posts/starting-with-rubymotion-delegates-and-messages">read</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@collection = [*"a".."z"] ~&gt; explode a range in the view</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/interview-questions/">Interview Questions</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-24T15:47:00-04:00" pubdate data-updated="true">Oct 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="http://codegolf.com/tower-of-hanoi">Towers of Hanoi</a></li>
+<li><a href="http://en.literateprograms.org/Fibonacci_numbers_(Ruby">Fibonacci Sequence</a>) <a href="http://vimeo.com/45768714">(Fib in video)</a></li>
+<li><a href="https://github.com/darcyclarke/Front-end-Developer-Interview-Questions">front-end interview questions</a></li>
+</ul>
+
+
+<h3>For employers:</h3>
+
+<ol>
+<li>What are you looking for in a junior developer?</li>
+<li>What are your technology needs and goals?</li>
+<li>Do you think I can help you reach those goals?</li>
+</ol>
+
+
+<h3>Expect from employers</h3>
+
+<ol>
+<li>What&#8217;s your biggest weakness and/or tell me about a time you had a conflict in a team</li>
+</ol>
+
+
+<h3>Reading</h3>
+
+<ul>
+<li><p><a href="http://hugomelo.com/post/35533342698/becoming-an-apprentice">Appacademy.io</a></p></li>
+<li><p>What devs want:</p>
+
+<ul>
+<li>room for growth and skills development</li>
+<li>high caliber team</li>
+<li>positive org structure</li>
+<li>opporunity to learn</li>
+<li>control over own work</li>
+<li>excitement about company&#8217;s products</li>
+<li>convenient commute</li>
+<li>high base compensation -> would take 10% less if the company meets the other criteria</li>
+</ul>
+</li>
+<li><p><a href="http://puzzlenode.com/">Puzzle Node</a></p></li>
+<li><a href="https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions">phone screen</a></li>
+<li><a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">get that job at google</a></li>
+</ul>
+
+
+<h3>questions to ask:</h3>
+
+<ul>
+<li><p>genuine questions:</p>
+
+<ul>
+<li>what % do you spend coding</li>
+<li>how much time do you spend in meetings</li>
+</ul>
+</li>
+<li><p>passion questions</p>
+
+<ul>
+<li>Ive been primarily working in rails, but what should I study to get up to speed?</li>
+</ul>
+</li>
+<li><p>insightful questions</p>
+
+<ul>
+<li>you are using tech x, so how do you handle problem y</li>
+<li>e.g. scaling or payment processing</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Worth reading</h3>
+
+<ul>
+<li><a href="http://dandreamsofcoding.com/2012/11/25/how-to-prepare-for-technical-interviews/">Prepping for a technical interview</a></li>
+<li><a href="http://www.joelonsoftware.com/articles/GuerrillaInterviewing3.html">Joel Spolsky&#8217;s guide to interviewing</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -953,369 +1467,6 @@ Since my Dad first popped in that AOL floppy disk around 1995, I have been a con
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day13/">FIS Day13</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-21T19:18:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote><p>&#8220;It is much easier to optimize correct code than it is to correct optimized code.&#8221;</p></blockquote>
-
-<h3>POTD Uncle Bob</h3>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Robert_Cecil_Martin">Wikipedia</a></li>
-<li><a href="http://agilemanifesto.org/">Agile manifesto</a></li>
-</ul>
-
-
-<h3>Nate Westheimer</h3>
-
-<ul>
-<li>? What kind of startups would you like to work at?</li>
-<li>? Since we are starting with a blank slate, what would you spend your time learning? Mobile? What skills will ensure you will be valuable for the next few years?</li>
-<li>? why choose mysql over other db options, how do you make other architectural decisions since you may not have a bird&#8217;s eye view?</li>
-<li>? controlling feature creep - where i live based on the photos&#8211; necessary? A: intuition</li>
-</ul>
-
-
-<p><strong>Mentions:</strong></p>
-
-<ul>
-<li><a href="http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html">comparing pictures</a></li>
-<li>imagemagick- gem for manipulating photos</li>
-<li><a href="http://stu.mp/2004/06/a-quick-bitmask-howto-for-programmers.html">bit mask</a></li>
-<li>vertical color palette is spits out top 5 colors out my <a href="http://www.imagemagick.org/script/index.php">imagemagick</a></li>
-<li><a href="http://www.merbivore.com/">merb</a>- a product people love because it&#8217;s simple</li>
-<li><a href="http://digital-photography-school.com/using-exif-data">exif</a> data in the photos</li>
-<li><a href="http://www.amazon.com/iWoz-Computer-Invented-Personal-Co-Founded/dp/0393330435/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1350920465&amp;sr=1-1&amp;keywords=iwoz">IWOZ</a> by Steve Wozniak</li>
-<li><a href="http://www.amazon.com/Soul-New-Machine-Tracy-Kidder/dp/0316491977">soul of the new machine</a></li>
-</ul>
-
-
-<h3>TDD</h3>
-
-<p>Setup and tear down methods come with every test suite.</p>
-
-<ul>
-<li>CLI application for the dynamic</li>
-<li>test the job board classes, using SQL joins&#8211; class called job and a class called company</li>
-<li>test the student class in the dynamic site</li>
-<li>focus on Sinatra- put a front end on the job board</li>
-<li>find what they scraped and build an end all be all of job scrapers.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/agile-with-matt-salerno/">Agile With Matt Salerno</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-19T13:39:00-04:00" pubdate data-updated="true">Oct 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Agile is&#8230;</h2>
-
-<p><strong><em>is about getting input from your environment</em></strong></p>
-
-<ul>
-<li>many agile dev techniques, come from Toyota and lean manufacturing
-
-<ul>
-<li>if they were based on 1000 cars a day metric and the suppliers or demand change, Toyota needed to avoid</li>
-</ul>
-</li>
-</ul>
-
-
-<p><em>split the process into small parts to reduce waste and inefficiency</em></p>
-
-<ul>
-<li>set up frequent opportunities for assessment and feedback</li>
-<li>plan only as far ahead as you need to. Your environment WILL change.</li>
-<li>break the process down into the smallest possible units</li>
-</ul>
-
-
-<h3>Small Pieces</h3>
-
-<ul>
-<li>break the task down and break the time frames down</li>
-<li>sprints: in an avg dev shop, a sprint might be from 2-3 weeks
-
-<ul>
-<li>for a day project, we use sprints from</li>
-</ul>
-</li>
-</ul>
-
-
-<p><strong>Get feedback so that you can fail faster</strong></p>
-
-<h3>Process</h3>
-
-<ol>
-<li>sprint planning session</li>
-<li>sprint</li>
-<li>retrospective</li>
-</ol>
-
-
-<h3>Stories</h3>
-
-<p>Epic > stories > task</p>
-
-<ul>
-<li>Story = what is this code going to do?
-
-<ul>
-<li>break the story down into tasks to make that happen</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Planning session</h3>
-
-<ul>
-<li>beginning of the project, you start out with a planning session.
-
-<ul>
-<li>the client and the user can identify the NEED TO HAVES and WANT TO HAVES
-
-<ul>
-<li>which stories are we going to pull out from the backlog</li>
-</ul>
-</li>
-<li>reduce you waste because the client is going to change their mind</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Agile is sort of the like:</h3>
-
-<ul>
-<li>~= small git commits</li>
-<li>~= TDD</li>
-</ul>
-
-
-<p><strong><em>Nice job <a href="https://twitter.com/seldomatt">Matt</a></em></strong></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day12/">FIS Day12</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-19T09:36:00-04:00" pubdate data-updated="true">Oct 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>POTD: Tim Berners-Lee</h3>
-
-<ul>
-<li>physicist</li>
-<li>invented the world wide web in 1989 @ <a href="http://public.web.cern.ch/public/">Cern</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Marshall_McLuhan">Marshall_McLuhan</a></li>
-</ul>
-
-
-<h3>Modules</h3>
-
-<p><strong>Dogs and humans can both run, so should they inherit from runner or runnable?</strong></p>
-
-<p>We put this shared behavior into a module so that the class can include or <strong>mixin</strong> modules.</p>
-
-<p>modules can include other modules</p>
-
-<p>include - is for the instance methods
-extend - is for the class methods</p>
-
-<p>super - call the same exact message on the class above</p>
-
-<figure class='code'><figcaption><span>Simple Inheritance</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Animal</span>
-</span><span class='line'> <span class="kp">attr_accessor</span> <span class="ss">:legs</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">legs_count</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
-</span><span class='line'>  <span class="vi">@leg</span> <span class="o">=</span> <span class="n">legs_count</span>
-</span><span class='line'> <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Human</span> <span class="o">&lt;</span> <span class="no">Animal</span>
-</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:hair_color</span> <span class="c1">#this is an additional accessor</span>
-</span><span class='line'>  <span class="c1">#and doesn&#39;t over-ride any #other attr_accessor</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#this overides the initialize in the Animal class</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
-</span><span class='line'>      <span class="k">super</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#super sexy</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>The Builder Pattern</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Animal</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="ss">Movement</span><span class="p">:</span><span class="ss">:Animal</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Human</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="ss">Movement</span><span class="p">:</span><span class="ss">:Animal</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="ss">Movement</span><span class="p">:</span><span class="ss">:Human</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>A class is a module (that can be instantiated).</strong></p>
-
-<h3>ERB</h3>
-
-<p>The <a href="http://www.ruby-doc.org/stdlib-1.9.3/">standard library</a> is separate because you can release ruby and the standard lib without updating the release of the other</p>
-
-<p>&lt;%=  %> (known as a delimiter) is like interpolation for a template</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;erb&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
-</span><span class='line'><span class="c1">#EOF = end of file</span>
-</span><span class='line'><span class="n">template</span> <span class="o">=</span> <span class="no">ERB</span><span class="o">.</span><span class="n">new</span> <span class="o">&lt;&lt;-</span><span class="no">EOF</span>
-</span><span class='line'><span class="sh"> the value of x is: &lt;%= x %&gt;</span>
-</span><span class='line'><span class="no">EOF</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">puts</span> <span class="n">template</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span> <span class="c1">#the value of x is :42</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="mi">24</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">template</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span> <span class="c1">#the value of x is: 24</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>binding - is equal to the current scope - return to me everything in the universe that happened at this point in time.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -1333,23 +1484,23 @@ extend - is for the class methods</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/fancy-specs/">Fancy Specs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/pergola/">Pergola</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/calendar-app-2/">calendar app 2</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/dot-powconfig/">.powconfig</a>
       </li>
     
       <li class="post">
         <a href="/blog/calendar-app-1/">calendar app 1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/another-new-macbook-air-load/">Another new MacBook Air load</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/kca-4/">KCA 4</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/kca-3/">KCA 3</a>
       </li>
     
   </ul>
@@ -1361,7 +1512,7 @@ extend - is for the class methods</p>
     <li class="loading">Status updating&#8230;</li>
   </ul>
   
-  <a href="https://github.com/ajonas04">@ajonas04</a> on GitHub
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
   
   <script type="text/javascript">
     $.domReady(function(){
@@ -1374,8 +1525,8 @@ extend - is for the class methods</p>
         }
 
         github.showRepos({
-            user: 'ajonas04',
-            count: 0,
+            user: 'adamjonas',
+            count: 2,
             skip_forks: true,
             target: '#gh_repos'
         });
@@ -1419,16 +1570,6 @@ extend - is for the class methods</p>
 
 
 
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 
