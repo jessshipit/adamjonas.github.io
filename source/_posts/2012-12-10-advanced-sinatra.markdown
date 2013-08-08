@@ -57,6 +57,21 @@ categories: sinatra
 ###Gems
 - [Middleman Gem](http://middlemanapp.com/getting-started/welcome/)
 - Sprockets- pretty much the asset pipeline
+- [shotgun](https://github.com/rtomayko/shotgun) is a must.
 
 ###Sinatra integrated into Rails
 - it is all Rack under the hood so you use `mount` in the route file and then all the urls defined in the sinatra app are available in the rails app
+
+###Sinatra on Heroku
+  - heroku requires sinatra to have a `gem` file as well as a `config.ru` file
+
+```ruby config.ru example
+require './myapp'
+
+run Sinatra::Application
+```
+
+```ruby gemfile example
+source "https://rubygems.org"
+gem 'sinatra', '1.1.0'
+```

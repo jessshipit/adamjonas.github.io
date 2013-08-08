@@ -86,6 +86,17 @@ $ git confi­g --glo­bal user.­name "blah­ blah"
 $ git confi­g --glo­bal alias­.commit pushi­t 
 ```
 
+###Removing a file
+
+    git rm file1.txt
+    git commit -m "remove file1.txt"
+
+To remove it from the repo AND keep in the local file system:
+
+    git rm --cached file.txt
+
+  - [stackoverflow](http://stackoverflow.com/questions/2047465/how-can-i-delete-a-file-from-git-repo)
+
 ###Branching
 This will create a new branch based on an revision: `♕ git co -b new-branch-name old-branch-name`
 
