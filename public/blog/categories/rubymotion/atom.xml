@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rubymotion | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/rubymotion/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-08-08T13:40:08-04:00</updated>
+  <updated>2013-08-24T13:42:50-04:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,267 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RubyMotion Alarm]]></title>
+    <link href="http://www.adamjonas.com/blog/rubymotion-alarm/"/>
+    <updated>2013-08-05T13:34:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rubymotion-alarm</id>
+    <content type="html"><![CDATA[<h2>positioning</h2>
+
+<ul>
+<li>UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify the frame, in the following format:
+
+<ul>
+<li>[[x, y], [width, height]]</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>CocoaPods</h2>
+
+<ul>
+<li>like RubyGems for ruby</li>
+<li>nice summary <a href="http://mobile.tutsplus.com/tutorials/iphone/streamlining-cocoa-development-with-cocoapods/">here</a></li>
+</ul>
+
+
+<h2>add_periodic_timer</h2>
+
+<ul>
+<li>run this code every second -> <code>EM.add_periodic_timer 1.0 do</code></li>
+<li><code>add_periodic_timer</code> is actaully an <a href="http://eventmachine.rubyforge.org/EventMachine.html">event machine</a> method</li>
+<li>this is made possible by the bubblewrap which used BW::Reactor
+
+<ul>
+<li>BW::Reactor is a simplified, mostly complete implementation of the Event Machine API. In fact BW::Reactor is aliased to EM in the runtime environment.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Leading zeros</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/5810468/leading-zeros-in-rails"><code>rjust(integer, padstr=' ') → new_str</code></a></li>
+</ul>
+
+
+<h3>Promotion slide menu</h3>
+
+<ul>
+<li>we started by using <a href="https://github.com/macfanatic/promotion_slide_menu">this</a> but dropped it and dropped promotion altogether.</li>
+</ul>
+
+
+<h3>Colors with bubble wrap</h3>
+
+<ul>
+<li>instead of <code>UIColor.whiteColor</code> you can just do <code>'white'.to_color</code></li>
+</ul>
+
+
+<h3>Delegates for input field</h3>
+
+<p>```ruby Delegate pattern
+  def on_load</p>
+
+<pre><code>@input_field = UITextField.new
+add(@input_field, setting_input_style)
+@input_field.delegate = self
+</code></pre>
+
+<p>  end</p>
+
+<p>  # - (BOOL)textFieldShouldReturn:(UITextField *)textField
+  def textFieldShouldReturn(textField)</p>
+
+<pre><code>urlString = textField.text
+if urlString.length &gt; 1
+  loadRequest(urlString)
+end
+textField.resignFirstResponder
+true
+</code></pre>
+
+<p>  end
+```</p>
+
+<h3>initWithFrame</h3>
+
+<ul>
+<li>Can't pass in parameters to initWithFrame and having trouble setting variables. So invoke a new method called 'initWithFrameAndImage' passing the neccessary parameters and then call initWithFrame within that method.</li>
+</ul>
+
+
+<p>```ruby
+def initWithFrameAndImage(frame, picture)
+  initWithFrame(frame)
+  @time_pic = UIImageView.alloc.initWithImage(UIImage.imageNamed(picture))
+  add(@time_pic) #, tile_style)</p>
+
+<p>  set_attributes self, {</p>
+
+<pre><code>background_color: hex_color("F6F6F6"),
+layer: {
+  shadow_radius: 4.0,
+  shadow_opacity: 0.4,
+  shadow_color: UIColor.blackColor.CGColor
+}
+</code></pre>
+
+<p>  }
+  self
+end
+```</p>
+
+<h3>Scrolling</h3>
+
+<ul>
+<li>adding elements to a scroll is rather easy with promotion. Keep in mind that you can't be adding multiple elements as a splat or anything. If you are iterating over a bunch of tiles, for example, they need to be added to the UIScrollView individually.</li>
+</ul>
+
+
+<p><code>ruby
+def on_load
+  @scroll = add UIScrollView.alloc.initWithFrame(self.view.bounds)
+  add_to @scroll, element
+  @scroll.frame = self.view.bounds
+  @scroll.contentSize = CGSizeMake(@scroll.frame.size.width, content_height(@scroll) + 20)
+end
+</code></p>
+
+<h3>Stuff I didn't understand</h3>
+
+<ul>
+<li><code>makeKeyAndVisible</code> specifies which window is current. Despite the fact that most apps only have one window, there is no way to assume that your primary window is to be the key window. Therefore you must explicitly call makeKeyAndVisible. <a href="http://stackoverflow.com/questions/14714688/examples-where-makekeyandvisible-is-not-required-for-uiwindow">see</a></li>
+<li>Use a UIScrollView with pagingEnabled=YES to switch between pages, but you need pagingEnabled=NO to scroll vertically. <a href="http://stackoverflow.com/questions/728014/uiscrollview-paging-horizontally-scrolling-vertically">see</a></li>
+<li>The purpose of dequeueReusableCellWithIdentifier is to use less memory. If the screen can fit 4 or 5 table cells, then with reuse you only need to have 4 or 5 table cells allocated in memory even if the table has 1000 entries.<a href="http://stackoverflow.com/questions/2928873/iphone-dequeuereusablecellwithidentifier-usage">see</a></li>
+<li>can't add a target to a UIView. Need to add a UIButton to the UIView and THEN add a target to the UIButton.</li>
+<li>bringSubviewToFront</li>
+<li>clipsToBounds -> like overflow hidden. great for circular mask type images.</li>
+<li>toll-free bridge => ruby class inheriting from objective-c ancestors so that both ruby and objective-c methods can be called on an object.</li>
+</ul>
+
+
+<h3>CALayers</h3>
+
+<ul>
+<li>CALayers are simply classes representing a rectangle on the screen with visual content. A <a href="http://www.raywenderlich.com/2502/calayers-tutorial-for-ios-introduction-to-calayers-tutorial">tutorial</a></li>
+</ul>
+
+
+<h3>RMQ => JQuery for RubyMotion</h3>
+
+<ul>
+<li>jQuery-like <a href="https://github.com/infinitered/rmq">library for RubyMotion</a></li>
+<li><a href="https://ir_public.s3.amazonaws.com/projects/rmq/rmq_guide.pdf">pdf reference of methods</a></li>
+</ul>
+
+
+<h3>Garbage Collection</h3>
+
+<ul>
+<li>RubyMotion’s memory management system is designed to simplify the development process. Unlike traditional Objective-C programming, object references are automatically created and destroyed by the system. It is very similar to Objective-C’s ARC, in design, but it is differently implemented. <a href="https://groups.google.com/forum/#!topic/rubymotion/hXvb9PVX0_Y">via</a>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/6385212/how-does-the-new-automatic-reference-counting-mechanism-work">An explanation of ARC</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Observer Pattern vs. NSNotificationCenter vs. Key/Value Observing (KVO)</h3>
+
+<ul>
+<li>micheal erasmus has a gem <a href="https://github.com/michael-erasmus/rubymotion-observer">observable</a>, which is a compatible implementation of the ruby stdlib Observable library.</li>
+<li>bubblewrap provides helper methods to give NSNotificationCenter a Ruby-like interface.</li>
+<li>bubblewrap also allows you to observe for object's changes and trigger blocks.</li>
+</ul>
+
+
+<h3>Deploy to device</h3>
+
+<ul>
+<li>This was a <a href="http://joshsymonds.com/blog/2012/05/10/from-the-rubymotion-simulator-to-your-friends-iphone/">tremendous help</a>. I did all the steps up to step 6.</li>
+<li>we also created dot files which stored the dev cert and the path of the mobile provision</li>
+</ul>
+
+
+<h3>Obj-c to rubymotion</h3>
+
+<p><code>objective-c
+UIWindow *window = [[UIWindow alloc] initWithFrame:frame]
+</code>
+<code>UIWindow</code> is the type of the variable pointer. <code>*window</code> is the pointer. <code>UIWindow alloc</code> allocates memory and returns a new object. <code>initWithFrame</code> is calling on the new object that is created via the <code>UIWindow alloc</code>.</p>
+
+<p><code>ruby
+@window = UIWindow.alloc.initWithFrame(frame)
+</code>
+We are setting @window as an instance variable to prevent premature garbare collection.</p>
+
+<p><strong>Another Example</strong></p>
+
+<p>```objective-c Method in Obj-C
+  UITapGestureRecognizer *recognizer =</p>
+
+<pre><code>[[UITapGestureRecognizer alloc] initWithTarget:self 
+                                action:@selector(tapped_purchase_button:)];
+</code></pre>
+
+<p>```</p>
+
+<ul>
+<li>This is a two parameter method. This first parameter is the target, which is self. Second param, is the action or method that we want to send to that target.</li>
+<li>to call methods dynamically in objective-c you use the @selector(method_name). This is how it is invoked in objective-c</li>
+</ul>
+
+
+<p><code>ruby In Ruby
+recognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action:'tapped_purchase_button')
+</code></p>
+
+<h3>Loading a json file</h3>
+
+<ul>
+<li>need to create a NSData Object and read in the data.</li>
+<li>need to use a pointer for error handling.</li>
+<li>NSDataSerialization.JSONObjectWithData(raw_data, options:NSDataReadingUncached, error:errorPointer)</li>
+<li><a href="http://pragmaticstudio.com/screencasts/rubymotion">38:04 in prag screencast</a></li>
+</ul>
+
+
+<p>```ruby
+def loadAnswers
+  answerFile = NSBundle.mainBundle.pathForResource('answers', ofType:'json')
+end</p>
+
+<p>errorPointer = Pointer.new(:object)
+data = NSData.alloc.initWithContentOfFile(answerFile, options:NSDataReadUncached, error:errorPointer)</p>
+
+<p>NSDataSerialization.JSONObjectWithData(data, options:NSDataReadingUncached, error:errorPointer)
+```</p>
+
+<h3>Push Notifications</h3>
+
+<ul>
+<li>Your service (a.k.a. the publisher of the app) sends a message with a token that is wants to send a push notifcation to Apple Push Notification Service (APNS).</li>
+<li>APNS then decides whether to relay your push notification onto the app.</li>
+<li>there a good tutorial at <a href="https://parse.com/tutorials/ios-push-notifications">parse</a></li>
+</ul>
+
+
+<h3>Testing</h3>
+
+<ul>
+<li>RubyMotion uses MacBacon and the UIAnimation framework to do UI testing.</li>
+<li><a href="http://blog.rubymotion.com/post/26489000626/functional-view-and-controller-testing-with-rubymotion">quick tutorial</a></li>
+<li>subviews are not found the same way as top level views</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ruby motion meetup]]></title>
@@ -384,173 +645,6 @@
 <li><code>rake device debug=1</code> will deploy with a debugger</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RubyMotion Day 3]]></title>
-    <link href="http://www.adamjonas.com/blog/rubymotion-day-3/"/>
-    <updated>2013-01-23T10:27:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/rubymotion-day-3</id>
-    <content type="html"><![CDATA[<h2>UIViewControllers</h2>
-
-<blockquote><p>a view controller manages a set of views that makes up a portion of your app's user interface.</p></blockquote>
-
-<ul>
-<li>UIViewController:
-
-<ul>
-<li>sends data to NSArray</li>
-<li>sends view to UIView</li>
-<li>sends a target to UIButton</li>
-<li>Receives a delegate from UITextField</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>UITabBarController</h3>
-
-<ul>
-<li>common to use that as the main controller</li>
-<li>this controls the display of the main screen</li>
-</ul>
-
-
-<h3>UITabBarItem</h3>
-
-<ul>
-<li>displays the tab buttons in the along the top or bottom</li>
-</ul>
-
-
-<h2>TableViews</h2>
-
-<ul>
-<li>Very flexible</li>
-<li>Uses the delegate pattern
-
-<ul>
-<li>UITableViewController is a controller object that manages a table view.
-
-<ul>
-<li>when the table view is about to appear the first time it's loaded, it reloads the table view's data</li>
-<li>whent he table view has appeared, the controller flashes the tbale view's scroll indicators</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>inherits from the view controller adn dispays the table view cells</p></li>
-<li><p>supports different kinds of layouts</p>
-
-<ul>
-<li>plain</li>
-<li>grouped -> Like the ones you can find in the Settings app of an iPhone.</li>
-</ul>
-</li>
-<li><p>the UITableView has subviews that will contain the cells</p></li>
-<li><p>Data sources</p>
-
-<ul>
-<li>special type of delegate
-used by the tableView in order to get info needed to display
-
-<ul>
-<li><h1>of rows, etc</h1></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>like tabs this is set in the app delegate</p></li>
-<li><p>when you have data that is more than will fit on the screen, you probably only need to create 9 or so cells and then you can send in the data to fit in those cells. Loading 50 cells will make the interface very slow.</p>
-
-<ul>
-<li>We reuse the cells with <em>dequeue</em> like <code>tableView.dequeueReusableCellWithIdentifier(NEWS_CELL_REUSE_ID)</code></li>
-<li>Only if the table view can not find a cached cell with that identifier, we build it: <code>UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier: NEWS_CELL_REUSE_ID)</code></li>
-</ul>
-</li>
-<li><p>System Cell Types</p>
-
-<ul>
-<li>four kinds provided by apple</li>
-<li>can also create your own cells</li>
-</ul>
-</li>
-<li><p><em>creating custom tableviews is a good example of using when to use Interface Builder.</em></p></li>
-<li><p><code>viewWillAppear</code> method will be called every time the view is shown</p></li>
-<li><p><code>initWithStyle:</code> This is the initializer method used to create instances of UITableViewController</p></li>
-<li><p><code>p.list files</code> are Property list files -> files that store serialized objects</p>
-
-<ul>
-<li>Objective-C supports these files natively</li>
-</ul>
-</li>
-<li><p>Animation for adding or deleting a cell with:
-```ruby Animation for deleting and inserting</p>
-
-<h1>to delete</h1>
-
-self.tableView.deleteRowsAtIndexPaths([selected_cell_index_path],
-withRowAnimation:UITableViewRowAnimationMiddle)
-
-<h1>to insert</h1>
-
-<p>self.tableView.insertRowsAtIndexPaths([index_path],
-withRowAnimation:UITableViewRowAnimationRight)
-```</p></li>
-</ul>
-
-
-<h3>Custom Cells</h3>
-
-<ul>
-<li>Need UITableViewCell as the super class</li>
-</ul>
-
-
-<h2>Navigation Controllers</h2>
-
-<ul>
-<li><p>very similar to TabBarControllers, but like a chain of views.</p>
-
-<ul>
-<li>when you have a master, detail relationship you should use a Navigation controller
-
-<ul>
-<li>you get a back button for free!</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>can use CoreAnimation to create your own animation instead of using the standard transition.</p></li>
-<li><p>A Navigation Bar can only have two buttons, one to the left and one to right. T</p></li>
-<li>The buttons should be instances of UIBarButtonItem not of UIButton.</li>
-</ul>
-
-
-<h3>Dirty Views</h3>
-
-<ul>
-<li>needed to update a view -> <code>@receiver.setNeedsDisplay</code></li>
-</ul>
-
-
-<h2>A ruby aside</h2>
-
-<p>```ruby 'not' examples
-  ! me
-  not me
-  i != you</p>
-
-<h1>in the wild</h1>
-
-<p>  def isFormValid</p>
-
-<pre><code>not @email_textfield.text.empty? and not @password_textfield.text.empty?
-</code></pre>
-
-<p>  end
-```</p>
 ]]></content>
   </entry>
   

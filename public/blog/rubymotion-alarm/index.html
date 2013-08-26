@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="CocoaPods like RubyGems for ruby
-nice summary here ">
+  <meta name="description" content="positioning UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -115,11 +114,297 @@ nice summary here ">
   </header>
 
 
-<div class="entry-content"><h2>CocoaPods</h2>
+<div class="entry-content"><h2>positioning</h2>
+
+<ul>
+<li>UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify the frame, in the following format:
+
+<ul>
+<li>[[x, y], [width, height]]</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>CocoaPods</h2>
 
 <ul>
 <li>like RubyGems for ruby</li>
 <li>nice summary <a href="http://mobile.tutsplus.com/tutorials/iphone/streamlining-cocoa-development-with-cocoapods/">here</a></li>
+</ul>
+
+
+<h2>add_periodic_timer</h2>
+
+<ul>
+<li>run this code every second -> <code>EM.add_periodic_timer 1.0 do</code></li>
+<li><code>add_periodic_timer</code> is actaully an <a href="http://eventmachine.rubyforge.org/EventMachine.html">event machine</a> method</li>
+<li>this is made possible by the bubblewrap which used BW::Reactor
+
+<ul>
+<li>BW::Reactor is a simplified, mostly complete implementation of the Event Machine API. In fact BW::Reactor is aliased to EM in the runtime environment.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Leading zeros</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/5810468/leading-zeros-in-rails"><code>rjust(integer, padstr=' ') → new_str</code></a></li>
+</ul>
+
+
+<h3>Promotion slide menu</h3>
+
+<ul>
+<li>we started by using <a href="https://github.com/macfanatic/promotion_slide_menu">this</a> but dropped it and dropped promotion altogether.</li>
+</ul>
+
+
+<h3>Colors with bubble wrap</h3>
+
+<ul>
+<li>instead of <code>UIColor.whiteColor</code> you can just do <code>'white'.to_color</code></li>
+</ul>
+
+
+<h3>Delegates for input field</h3>
+
+<figure class='code'><figcaption><span>Delegate pattern</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">on_load</span>
+</span><span class='line'>    <span class="vi">@input_field</span> <span class="o">=</span> <span class="no">UITextField</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">add</span><span class="p">(</span><span class="vi">@input_field</span><span class="p">,</span> <span class="n">setting_input_style</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@input_field</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># - (BOOL)textFieldShouldReturn:(UITextField *)textField</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">textFieldShouldReturn</span><span class="p">(</span><span class="n">textField</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">urlString</span> <span class="o">=</span> <span class="n">textField</span><span class="o">.</span><span class="n">text</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">urlString</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="n">loadRequest</span><span class="p">(</span><span class="n">urlString</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">textField</span><span class="o">.</span><span class="n">resignFirstResponder</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>initWithFrame</h3>
+
+<ul>
+<li>Can&#8217;t pass in parameters to initWithFrame and having trouble setting variables. So invoke a new method called &#8216;initWithFrameAndImage&#8217; passing the neccessary parameters and then call initWithFrame within that method.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">initWithFrameAndImage</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">picture</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">initWithFrame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@time_pic</span> <span class="o">=</span> <span class="no">UIImageView</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithImage</span><span class="p">(</span><span class="no">UIImage</span><span class="o">.</span><span class="n">imageNamed</span><span class="p">(</span><span class="n">picture</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">add</span><span class="p">(</span><span class="vi">@time_pic</span><span class="p">)</span> <span class="c1">#, tile_style)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">set_attributes</span> <span class="nb">self</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">background_color</span><span class="p">:</span> <span class="n">hex_color</span><span class="p">(</span><span class="s2">&quot;F6F6F6&quot;</span><span class="p">),</span>
+</span><span class='line'>    <span class="ss">layer</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">shadow_radius</span><span class="p">:</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">shadow_opacity</span><span class="p">:</span> <span class="mi">0</span><span class="o">.</span><span class="mi">4</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">shadow_color</span><span class="p">:</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">blackColor</span><span class="o">.</span><span class="n">CGColor</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nb">self</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Scrolling</h3>
+
+<ul>
+<li>adding elements to a scroll is rather easy with promotion. Keep in mind that you can&#8217;t be adding multiple elements as a splat or anything. If you are iterating over a bunch of tiles, for example, they need to be added to the UIScrollView individually.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">on_load</span>
+</span><span class='line'>  <span class="vi">@scroll</span> <span class="o">=</span> <span class="n">add</span> <span class="no">UIScrollView</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">add_to</span> <span class="vi">@scroll</span><span class="p">,</span> <span class="n">element</span>
+</span><span class='line'>  <span class="vi">@scroll</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">bounds</span>
+</span><span class='line'>  <span class="vi">@scroll</span><span class="o">.</span><span class="n">contentSize</span> <span class="o">=</span> <span class="no">CGSizeMake</span><span class="p">(</span><span class="vi">@scroll</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">content_height</span><span class="p">(</span><span class="vi">@scroll</span><span class="p">)</span> <span class="o">+</span> <span class="mi">20</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Stuff I didn&#8217;t understand</h3>
+
+<ul>
+<li><code>makeKeyAndVisible</code> specifies which window is current. Despite the fact that most apps only have one window, there is no way to assume that your primary window is to be the key window. Therefore you must explicitly call makeKeyAndVisible. <a href="http://stackoverflow.com/questions/14714688/examples-where-makekeyandvisible-is-not-required-for-uiwindow">see</a></li>
+<li>Use a UIScrollView with pagingEnabled=YES to switch between pages, but you need pagingEnabled=NO to scroll vertically. <a href="http://stackoverflow.com/questions/728014/uiscrollview-paging-horizontally-scrolling-vertically">see</a></li>
+<li>The purpose of dequeueReusableCellWithIdentifier is to use less memory. If the screen can fit 4 or 5 table cells, then with reuse you only need to have 4 or 5 table cells allocated in memory even if the table has 1000 entries.<a href="http://stackoverflow.com/questions/2928873/iphone-dequeuereusablecellwithidentifier-usage">see</a></li>
+<li>can&#8217;t add a target to a UIView. Need to add a UIButton to the UIView and THEN add a target to the UIButton.</li>
+<li>bringSubviewToFront</li>
+<li>clipsToBounds -> like overflow hidden. great for circular mask type images.</li>
+<li>toll-free bridge => ruby class inheriting from objective-c ancestors so that both ruby and objective-c methods can be called on an object.</li>
+</ul>
+
+
+<h3>CALayers</h3>
+
+<ul>
+<li>CALayers are simply classes representing a rectangle on the screen with visual content. A <a href="http://www.raywenderlich.com/2502/calayers-tutorial-for-ios-introduction-to-calayers-tutorial">tutorial</a></li>
+</ul>
+
+
+<h3>RMQ => JQuery for RubyMotion</h3>
+
+<ul>
+<li>jQuery-like <a href="https://github.com/infinitered/rmq">library for RubyMotion</a></li>
+<li><a href="https://ir_public.s3.amazonaws.com/projects/rmq/rmq_guide.pdf">pdf reference of methods</a></li>
+</ul>
+
+
+<h3>Garbage Collection</h3>
+
+<ul>
+<li>RubyMotion’s memory management system is designed to simplify the development process. Unlike traditional Objective-C programming, object references are automatically created and destroyed by the system. It is very similar to Objective-C’s ARC, in design, but it is differently implemented. <a href="https://groups.google.com/forum/#!topic/rubymotion/hXvb9PVX0_Y">via</a>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/6385212/how-does-the-new-automatic-reference-counting-mechanism-work">An explanation of ARC</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Observer Pattern vs. NSNotificationCenter vs. Key/Value Observing (KVO)</h3>
+
+<ul>
+<li>micheal erasmus has a gem <a href="https://github.com/michael-erasmus/rubymotion-observer">observable</a>, which is a compatible implementation of the ruby stdlib Observable library.</li>
+<li>bubblewrap provides helper methods to give NSNotificationCenter a Ruby-like interface.</li>
+<li>bubblewrap also allows you to observe for object&#8217;s changes and trigger blocks.</li>
+</ul>
+
+
+<h3>Deploy to device</h3>
+
+<ul>
+<li>This was a <a href="http://joshsymonds.com/blog/2012/05/10/from-the-rubymotion-simulator-to-your-friends-iphone/">tremendous help</a>. I did all the steps up to step 6.</li>
+<li>we also created dot files which stored the dev cert and the path of the mobile provision</li>
+</ul>
+
+
+<h3>Obj-c to rubymotion</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">UIWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIWindow</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">frame</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>UIWindow</code> is the type of the variable pointer. <code>*window</code> is the pointer. <code>UIWindow alloc</code> allocates memory and returns a new object. <code>initWithFrame</code> is calling on the new object that is created via the <code>UIWindow alloc</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We are setting @window as an instance variable to prevent premature garbare collection.</p>
+
+<p><strong>Another Example</strong></p>
+
+<figure class='code'><figcaption><span>Method in Obj-C</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>  <span class="n">UITapGestureRecognizer</span> <span class="o">*</span><span class="n">recognizer</span> <span class="o">=</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">UITapGestureRecognizer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTarget:</span><span class="n">self</span>
+</span><span class='line'>                                    <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">tapped_purchase_button:</span><span class="p">)];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>This is a two parameter method. This first parameter is the target, which is self. Second param, is the action or method that we want to send to that target.</li>
+<li>to call methods dynamically in objective-c you use the @selector(method_name). This is how it is invoked in objective-c</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>In Ruby</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">recognizer</span> <span class="o">=</span> <span class="no">UITapGestureRecognizer</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithTarget</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="ss">action</span><span class="p">:</span><span class="s1">&#39;tapped_purchase_button&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Loading a json file</h3>
+
+<ul>
+<li>need to create a NSData Object and read in the data.</li>
+<li>need to use a pointer for error handling.</li>
+<li>NSDataSerialization.JSONObjectWithData(raw_data, options:NSDataReadingUncached, error:errorPointer)</li>
+<li><a href="http://pragmaticstudio.com/screencasts/rubymotion">38:04 in prag screencast</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">loadAnswers</span>
+</span><span class='line'>  <span class="n">answerFile</span> <span class="o">=</span> <span class="no">NSBundle</span><span class="o">.</span><span class="n">mainBundle</span><span class="o">.</span><span class="n">pathForResource</span><span class="p">(</span><span class="s1">&#39;answers&#39;</span><span class="p">,</span> <span class="ss">ofType</span><span class="p">:</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">errorPointer</span> <span class="o">=</span> <span class="no">Pointer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:object</span><span class="p">)</span>
+</span><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="no">NSData</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithContentOfFile</span><span class="p">(</span><span class="n">answerFile</span><span class="p">,</span> <span class="ss">options</span><span class="p">:</span><span class="no">NSDataReadUncached</span><span class="p">,</span> <span class="ss">error</span><span class="p">:</span><span class="n">errorPointer</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">NSDataSerialization</span><span class="o">.</span><span class="n">JSONObjectWithData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="ss">options</span><span class="p">:</span><span class="no">NSDataReadingUncached</span><span class="p">,</span> <span class="ss">error</span><span class="p">:</span><span class="n">errorPointer</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Push Notifications</h3>
+
+<ul>
+<li>Your service (a.k.a. the publisher of the app) sends a message with a token that is wants to send a push notifcation to Apple Push Notification Service (APNS).</li>
+<li>APNS then decides whether to relay your push notification onto the app.</li>
+<li>there a good tutorial at <a href="https://parse.com/tutorials/ios-push-notifications">parse</a></li>
+</ul>
+
+
+<h3>Testing</h3>
+
+<ul>
+<li>RubyMotion uses MacBacon and the UIAnimation framework to do UI testing.</li>
+<li><a href="http://blog.rubymotion.com/post/26489000626/functional-view-and-controller-testing-with-rubymotion">quick tutorial</a></li>
+<li>subviews are not found the same way as top level views</li>
 </ul>
 
 </div>
@@ -146,6 +431,12 @@ nice summary here ">
 
 <time datetime="2013-08-05T13:34:00-04:00" pubdate data-updated="true">Aug 5<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rubymotion/'>rubymotion</a>
+  
+</span>
 
 
     </p>
