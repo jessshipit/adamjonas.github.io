@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-08-24T13:42:50-04:00</updated>
+  <updated>2013-11-11T15:27:48-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -14,11 +14,458 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Grape Api]]></title>
+    <link href="http://www.adamjonas.com/blog/grape-api/"/>
+    <updated>2013-11-11T15:13:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/grape-api</id>
+    <content type="html"><![CDATA[<h2><a href="https://github.com/intridea/grape">Grape</a></h2>
+
+<ul>
+<li>Grape is a REST-like API micro-framework for Ruby. It&#8217;s designed to run on Rack or complement existing web application frameworks such as Rails and Sinatra by providing a simple DSL to easily develop RESTful APIs.</li>
+<li>Here is a nice <a href="http://www.slideshare.net/yorzi/rapid-rubyapiongrape-8674582">slide share</a> of the API possibilities (though it is from 2011).</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[memories and holiday]]></title>
+    <link href="http://www.adamjonas.com/blog/memories-and-holiday/"/>
+    <updated>2013-10-22T10:52:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/memories-and-holiday</id>
+    <content type="html"><![CDATA[<h3>Generate a new secret token</h3>
+
+<ul>
+<li>I copied over app with a foundation built in. Can&#8217;t of course copy over the secret token. <code>rake secret</code> will generate the new token <a href="http://www.jamesbadger.ca/2012/12/18/generate-new-secret-token/">via</a>.</li>
+</ul>
+
+
+<h3>Geolocation</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/2248404/about-geolocation-in-html-5">used enabled geo location in the app</a></li>
+<li>the method <a href="http://diveintohtml5.info/geolocation.html">found here</a>, which should be the canonical source didn&#8217;t work for me.</li>
+</ul>
+
+
+<h3>Print styling</h3>
+
+<ul>
+<li>needed to remove the deafult media=&#8217;screen&#8217; in order to load these styles via <a href="http://lawrencenaman.com/optimisation/print-media-queries-not-working/">this post</a></li>
+<li>in application.rb needed to include <code>config.assets.precompile += ['print_wishlist.css']</code> so that it is precompiled separately. Though it was written in sass it needed the print_wishlist.css.sass extensions as sass isn&#8217;t recognized in the app.rb as it expect the file after compilation rather than before <a href="http://jalada.co.uk/2012/01/23/adding-files-to-config-assets-precompile-in-rails-3-1.html">via</a>.</li>
+</ul>
+
+
+<h3>local storage versus cookies</h3>
+
+<ul>
+<li><strong>client versus server</strong> -> Cookies and local storage really serve difference purposes. Cookies are primarily for reading server-side, local storage can only be read client-side. So the question is, in your app, who needs this data — the client or the server? If it&#8217;s your client (your JavaScript), then by all means switch. You&#8217;re wasting bandwidth by sending all the data in each HTTP header. If it&#8217;s your server, local storage isn&#8217;t so useful because you&#8217;d have to forward the data along somehow (with Ajax or hidden form fields or something). This might be okay if the server only needs a small subset of the total data for each request.</li>
+<li><strong>Size</strong> -> Apart from being an old way of saving data, Cookies give you a limit of 4096 bytes (4095, actually) - its per cookie. Local Storage is as big as 5MB per domain.</li>
+<li>Cute -> you can test your local storage <a href="http://arty.name/localstorage.html">here</a>.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[turbolinks]]></title>
+    <link href="http://www.adamjonas.com/blog/turbolinks/"/>
+    <updated>2013-09-25T10:27:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/turbolinks</id>
+    <content type="html"><![CDATA[<p>Turbolinks replaces the body of the page but doesn&#8217;t reload the header files. This limits the number of calls and makes the site appear faster to the user by a noticeable margin.</p>
+
+<h3>To remove turbolinks for Rails 4</h3>
+
+<ul>
+<li>(3 steps from Steve Klabnik)[http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4]</li>
+</ul>
+
+
+<h3>Breaking my JS</h3>
+
+<ul>
+<li>Turbolink breaks my JS calls when the page loads up the Facebook SDK. So I started disabling turbolinks on certain pages in my HAML a tag with the &#8220;data-no-turbolink&#8221; option <code>= link_to 'add friends', next_wizard_path, "data-no-turbolink" =&gt; "true"</code></li>
+<li>There are also events that one can hook into. They are (listed here)[https://github.com/rails/turbolinks/#events].</li>
+<li>You can also put the click event on the doc rather than the element which will solve this issue. In this case ajax tasks would also have the click event applied to them as well.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Click Event on doc rather than element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span><span class="p">(</span><span class="s1">&#39;document&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;.edit_task input[type=checkbox]&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="err">$</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>The jquery turbolinks gem</h3>
+
+<ul>
+<li>Using (the gem)[https://github.com/kossnocorp/jquery.turbolinks] just straight fixes it. This likely means that the turbolinks is disabled for all jquery related calls.</li>
+</ul>
+
+
+<h3>Reading</h3>
+
+<ul>
+<li>a (basic summary by treehouse)[http://blog.teamtreehouse.com/rails-4-a-look-at-turbolinks]</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rum Fun]]></title>
+    <link href="http://www.adamjonas.com/blog/rum-fun/"/>
+    <updated>2013-09-16T16:02:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rum-fun</id>
+    <content type="html"><![CDATA[<h3>Asset Trouble</h3>
+
+<ul>
+<li>Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn&#8217;t compiling.</li>
+<li><a href="http://stackoverflow.com/questions/15811889/my-rails-javascript-manifest-file-doesnt-compile-nor-include-any-required-files">This</a> inspired us to roll back to 1.9.3, which worked.</li>
+</ul>
+
+
+<h3>Coffeescript hashes</h3>
+
+<ul>
+<li><p>this one took me a hot second -> <code>delete obj[key]</code></p>
+
+<ul>
+<li>courtesy of <a href="http://coffeescript.org/documentation/docs/helpers.html">the docs</a></li>
+</ul>
+</li>
+<li><p>counting the keys in an object was pretty close to javascript <code>Object.keys(obj).length</code> <a href="http://stackoverflow.com/questions/15629799/count-number-of-keys-in-object-with-coffeescript">from</a>.</p></li>
+</ul>
+
+
+<h3>Thought process on adding a friend</h3>
+
+<ul>
+<li>page loads
+
+<ul>
+<li><p>checks to see if local storage has values</p>
+
+<ul>
+<li>if not it assigns empty array</li>
+<li>if so it assigns to local array which contains a hash of both the name, the uid, and its input position
+
+<ul>
+<li>names are loaded into the input field</li>
+<li>names and uid(pic) are loaded with the appropriate number of beach passes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>if when a name is removed from the input field, it is removed from the local array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>when a name is selected by the autocomplete, it assigns pushes the new record of name, uid and position into the array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>a validator prevents the user from continuing without having at least one friend OR checking the &#8216;alone&#8217; checkbox</p></li>
+<li><p>upon hitting the continue btn, the local array is assigned to local storage</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Devise sign out</h3>
+
+<ul>
+<li>In the <code>devise.rb</code> initializer -> The default HTTP method used to sign out a resource. Default is :delete.
+
+<ul>
+<li><code>config.sign_out_via = :get</code> will allow me to use a regular link</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>PG setup</h3>
+
+<ul>
+<li>this is the <a href="https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups">process prelaunch</a></li>
+<li>otherwise you want to use a follower method</li>
+</ul>
+
+
+<h3>IP Spoof</h3>
+
+<ul>
+<li>had a client on a plane that triggered a <code>ActionDispatch::RemoteIp::IpSpoofAttackError: IP spoofing attack?!</code> error.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>To turn off ip spoof</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">IpSpoof</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">env</span><span class="o">.</span><span class="n">reject</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">key</span><span class="o">.</span><span class="n">upcase</span> <span class="o">==</span> <span class="s1">&#39;HTTP_CLIENT_IP&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<ul>
+<li>this needed to be inserted before the rack middleware <code>ActionDispatch::RemoteIp</code> so used <code>config.middleware.insert_before ActionDispatch::RemoteIp, IpSpoof</code> as suggested in <a href="http://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack">rails guide</a>. Pretty cool.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[objective-c for rubyists]]></title>
+    <link href="http://www.adamjonas.com/blog/objective-c-for-rubyists/"/>
+    <updated>2013-09-11T16:35:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/objective-c-for-rubyists</id>
+    <content type="html"><![CDATA[<p>So RubyMotion is great. I can create an app in a few minutes by leveraging resources like <a href="http://bubblewrap.io/">Bubblewrap</a> and styling becomes pretty straight-forward with <a href="https://github.com/rubymotion/teacup">Teacup</a> and syntax looks much more Ruby-ish with <a href="https://github.com/rubymotion/sugarcube">SugarCube</a>.</p>
+
+<p>Here&#8217;s the thing. As a spoiled Rubyist, Objective-C as a language and CocoaTouch/iOS as is a framework is a verbose. That means that the code comes out really sounding like English. Not the poetry that Ruby is, but more like prose.  The fact that I am not learning the language isolated from the framework has led to problems for me in the past when I initially learned Rails before I learned Ruby. It isn&#8217;t really a great way to learn, but I have always been driven by the application of a language more than the language itself, which is the case here.</p>
+
+<h3>That whole thing is the method?</h3>
+
+<p>So RubyMotion isn&#8217;t a superiority thing. I&#8217;d certainly prefer to be 100% fluent in objective-c from day one. Apple&#8217;s documentation appears to be pretty steller. The problem for me however, is that everything just looks so hard in obj-c. Method declarations are pretty intimidating. So here I go to look up how to set the title of a UIButton and I find <code>- (void)setTitle:(NSString *)title forState:(UIControlState)state</code>. Now come on. That&#8217;s a little much to set a title of a button right? A guideline I have always tried to follow with my own code is to only create complicated methods for complicated tasks.</p>
+
+<ul>
+<li>This declaration is preceded by a minus (-) sign, which indicates that this is an instance method, as opposed to a class method. It requires an object to call it, and instance variables of the object are available to it inside its definition.</li>
+<li>The (void) indicates the return type. This method doesn&#8217;t return anything, so its result can&#8217;t be assigned to anything.</li>
+<li>This method name is <code>setTitle:forState:</code></li>
+<li>The number of colons (:) indicate how many arguments it takes. T</li>
+<li>The first argument is the string to set the title to.</li>
+<li>The second argument is the button state (such as normal or pressed) in which to set the title.</li>
+</ul>
+
+
+<p>Here&#8217;s an example of this method in use: <code>[myButton setTitle:@"Clicked!" forState:UIControlStateHighlighted];</code>. So after you break it down things seems little more reasonable, but it feels like it shouldn&#8217;t be this hard.</p>
+
+<h3></h3>
+
+<p>The specification of a class in Objective-C requires two distinct pieces: the interface and the implementation. The interface portion contains the class declaration and defines the instance variables and methods associated with the class. The interface is usually in a .h file. The implementation portion contains the actual code for the methods of the class. The implementation is usually in a .m file.</p>
+
+<p>A class in Objective-C can declare two types of methods: instance methods and class methods. An instance method is a method whose execution is scoped to a particular instance of the class. In other words, before you call an instance method, you must first create an instance of the class. Class methods, by comparison, do not require you to create an instance</p>
+
+<p>There&#8217;s strong and weak typing for variables.</p>
+
+<p>Objective-c is from around 1983, invented by Brad Cox. Ruby is from 1995, which makes it a contemporary of Java.</p>
+
+<p>Ruby is more script oriented, obj-c looks a lot more like lisp. The semi-colon takes some getting used to.</p>
+
+<p>Underscore versus camelCase. Short method names in Ruby, while the cocoa convention is much more verbose.</p>
+
+<p>Name spacing in Ruby which Objective-C doesn&#8217;t have.</p>
+
+<p>On the surface, these look like very different languages.</p>
+
+<p>Ruby is a decedent of Smalltalk, Perl, Eiffel, and Lisp. While Objective-C comes purely from Smalltalk and C.</p>
+
+<p>Smalltalk was really the first object oriented programming language. Alan Kay and the X PARC geniuses invented the OOP concept in the early 70s.</p>
+
+<p>Conway&#8217;s Law: software architecture reflects the communication structures of the community that is building it.</p>
+
+<p>Objective-c and cocoa are dictated by Apple. It&#8217;s Apple&#8217;s app store and they dictate what is appropriate and what isn&#8217;t. It is a benevolent (sometimes not so benevolent) dictatorship.</p>
+
+<p>Ruby is on the other hand is a product of Rails. DHH singlehandedly put Ruby on the map in 2004. Rails is what the web needed in 2005. Github, heroku and twitter were all started as Rails apps.
+  - most Rails devs were noobs
+  - iconoclasts
+  - dillitants
+  - hipsters
+  - scavengers -> turning to other languages
+  - establishmentarians</p>
+
+<ul>
+<li>TDD</li>
+<li>Tooling -> throw out older tools</li>
+<li>progress versus subsistence</li>
+<li>overthinking</li>
+</ul>
+
+
+<p>We have entered the era of CocoaPods, which is now 2 years old. It is written in Ruby. 1300 projects on CocoaPods. This is the rise of Ruby gem. A dependency manager. This is a place to share creations.</p>
+
+<ul>
+<li><p><a href="https://peepcode.com/products/objective-c-for-rubyists">objective c for Rubyists</a> from peepcode</p></li>
+<li><p><a href="https://github.com/tombenner/nui">NUI</a> -> sass for objective-c</p></li>
+<li><a href="https://github.com/kif-framework/KIF">KIF</a> -> usable testing framework</li>
+<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa">reactiveCocoa</a> -> functional programmning for ios</li>
+<li><a href="http://www.testingwithfrank.com/">Testing with Frank</a> -> cucumber</li>
+<li><a href="https://github.com/helios-framework">Helios</a> -></li>
+</ul>
+
+
+<p>http://www.slideshare.net/abdels/my-adventuresinobjc</p>
+
+<ul>
+<li>unlike ruby, obj-c is a strict superset of c</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">say:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>obj-c message passing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">say:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">performSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">say:</span><span class="p">)</span> <span class="nl">withObject:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">objc_sendMSG</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">selector</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>ruby message passing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:say</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>non-strict typing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="kt">id</span> <span class="n">world</span> <span class="o">=</span> <span class="p">[[</span><span class="n">World</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="n">world</span> <span class="n">peace</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm">&#39;id&#39; is a pointer to any object</span>
+</span><span class='line'><span class="cm">*/</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>objective-c non-strict typing
+World *world = [[World alloc] init]
+[world peace];</p>
+
+<p>/<em>
+this ensures the method compiler checks.
+</em>/
+&#8220;`</p>
+
+<p>attr_accessor equivalent
+@synthesize creates dynamic setters and getters and performs the neccessary memory allocaiton
+- interfaces with protocols</p>
+
+<p>objective-c has blocks</p>
+
+<p><a href="https://github.com/nomad/cupertino">cupertino</a></p>
+
+<h3>Strong versus weak pointers</h3>
+
+<p>The difference is that an object will be deallocated as soon as there are no strong pointers to it. Even if weak pointers point to it, once the last strong pointer is gone, the object will be deallocated, and all remaining weak pointers will be zeroed out.</p>
+
+<p>Perhaps an example is in order.</p>
+
+<p>Imagine our object is a dog, and that the dog wants to run away (be deallocated).</p>
+
+<p>Strong pointers are like a leash on the dog. As long as you have the leash attached to the dog, the dog will not run away. If five people attach their leash to one dog, (five strong pointers to one object), then the dog will not run away until all five leashes are detached.</p>
+
+<p>Weak pointers, on the other hand, are like little kids pointing at the dog and saying &#8220;Look! A dog!&#8221; As long as the dog is still on the leash, the little kids can still see the dog, and they&#8217;ll still point to it. As soon as all the leashes are detached, though, the dog runs away no matter how many little kids are pointing to it.</p>
+
+<p>As soon as the last strong pointer (leash) no longer points to an object, the object will be deallocated, and all weak pointers will be zeroed out.</p>
+
+<p><a href="http://stackoverflow.com/questions/9262535/explanation-of-strong-and-weak-storage-in-ios5">from</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git Cheatsheet]]></title>
+    <link href="http://www.adamjonas.com/blog/git-cheatsheet/"/>
+    <updated>2013-08-28T18:31:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/git-cheatsheet</id>
+    <content type="html"><![CDATA[<ul>
+<li><code>git clean -f -d</code> removes all untracked files. <code>git reset --hard HEAD</code> won&#8217;t remove untracked files.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ImageMagick ummm... magic]]></title>
+    <link href="http://www.adamjonas.com/blog/imagemagick-ummm-dot-dot-dot-magic/"/>
+    <updated>2013-08-27T16:41:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/imagemagick-ummm-dot-dot-dot-magic</id>
+    <content type="html"><![CDATA[<h3>entension conversion</h3>
+
+<ul>
+<li>discovered <a href="http://www.imagemagick.org/script/mogrify.php">mogrify</a> which does bulk actions. I really need to convert .svgs to .pngs and this was a life saver.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[RubyMotion Alarm]]></title>
     <link href="http://www.adamjonas.com/blog/rubymotion-alarm/"/>
     <updated>2013-08-05T13:34:00-04:00</updated>
     <id>http://www.adamjonas.com/blog/rubymotion-alarm</id>
-    <content type="html"><![CDATA[<h2>positioning</h2>
+    <content type="html"><![CDATA[<h3>To Read</h3>
+
+<ul>
+<li><a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html">human interface guide</a></li>
+<li>motion config vars</li>
+</ul>
+
+
+<h3>Reachability</h3>
+
+<ul>
+<li>I had all sorts of problems with the <code>reachability</code> pod on the device, while I saw no such problems on the simulator. Pretty frustrating.</li>
+<li>The reachability methods seemed to be returning true even if there was no connection and it also seemed to screw up my simple requests to an external API.</li>
+<li>Still not quite sure what was wrong, but as soon as I stripped out reachability the behavior returned to normal.
+
+<ul>
+<li>reachability resources I consulted were <a href="http://sxross-blog.herokuapp.com/2013/02/25/reachability-and-ruby-motion/">here</a> <a href="http://joshsymonds.com/blog/2013/02/04/reachability-with-rubymotion/">and here</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>positioning</h2>
 
 <ul>
 <li>UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify the frame, in the following format:
@@ -309,6 +756,42 @@
 <li>RubyMotion uses MacBacon and the UIAnimation framework to do UI testing.</li>
 <li><a href="http://blog.rubymotion.com/post/26489000626/functional-view-and-controller-testing-with-rubymotion">quick tutorial</a></li>
 <li>subviews are not found the same way as top level views</li>
+</ul>
+
+
+<h3>Location</h3>
+
+<ul>
+<li>bubblewrap provides the call <code>BW::Location.get_once { |location|}</code> which get the location just once and returns a CLLManager object. Bubblewrap offers a number of methods that can be called on the this object such as latitude and longitude.
+
+<ul>
+<li>a list of bubblewrap location methods <a href="https://github.com/rubymotion/BubbleWrap/blob/master/motion/location/location.rb">can be found here</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>NSData</h3>
+
+<ul>
+<li> Getting back NSConcreteData from an API call.
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/1113811/what-is-nsconcretedata-and-where-is-it-defined">advice on stackoverflow</a> is to: ignore the existence of NSConcreteData and treat it like NSData</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Basic web service</h3>
+
+<ul>
+<li><p>users will be able to receive random motivational messages from other users</p></li>
+<li><p>set up sinatra to post .json from DB</p></li>
+<li><p>BW::HTTP get (URL) data</p></li>
+<li><p>BW::HTTP post (URL) data</p></li>
+<li><p>sinatra receives message and writes to DB</p></li>
+<li><p><code>BW::HTTP</code> also has methods to make sure the response comes back ok. Not surprisingly, this is <code>response.ok?</code>. Just make sure to use this to quasi-rescue a method that depends on a request.</p></li>
 </ul>
 
 ]]></content>
@@ -1276,770 +1759,6 @@ psql: FATAL:  database &#8220;Ajonas&#8221; does not exist</p></li>
 
 <ul>
 <li>bundler wasn&#8217;t recognized because of the different ruby version. Installed the new version and <code>gem install bundler</code> as [advised](http://stackoverflow.com/questions/7483515/rake-aborted-no-such-file-to-load-bundler-setup-rails-3-1.</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[KCA 4]]></title>
-    <link href="http://www.adamjonas.com/blog/kca-4/"/>
-    <updated>2013-03-12T13:26:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/kca-4</id>
-    <content type="html"><![CDATA[<h3>Google Analytics</h3>
-
-<ul>
-<li>We passed in the <a href="https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide">onclick trackers</a> as <a href="http://stackoverflow.com/questions/4274002/rails-link-to-ruby-variable-in-onclick-javascript">options</a></li>
-<li>This the gem we used to install the UA code in the footer, also used this for <a href="https://raw.github.com/carrot/hw-packages-private/master/google_analytics.rb?login=tmilewski&amp;token=2e0a477e5793c263c3ba48d191995233">reference</a>.</li>
-</ul>
-
-
-<h3>Arel</h3>
-
-<ul>
-<li>[Some cool arel queries](http://stackoverflow.com/questions/4402815/is-there-a-particularly-elegant-way-to-do-a-count-query-with-rails-3-arel.</li>
-<li>used a lamba as shown <a href="http://stackoverflow.com/questions/5284696/how-can-i-search-date-range-in-rails-with-%20variable-date">here</a>, because otherwise the queries will be cached and we were running queries for a day to day basis.</li>
-<li>ARel has some good <a href="https://github.com/rails/arel">documentation.</a></li>
-</ul>
-
-
-<h3>Local Storage</h3>
-
-<ul>
-<li>used <a href="https://github.com/marcuswestin/store.js">store.js</a></li>
-<li>nice <a href="http://javascriptplayground.com/blog/2012/06/javascript-local-storage-store-js-tutorial">little screencast</a></li>
-<li>here is an <a href="http://coding.smashingmagazine.com/2010/10/11/local-storage-and-how-to-use-it/">older article</a> from 2010</li>
-<li><em>NOTE:</em> We ended up using <a href="https://github.com/marcuswestin/store.js/blob/master/store%2Bjson2.min.js">store.js with json</a> because ie7 apparently doesn&#8217;t come equiped with JSON. Tom and I broke our heads trying to figure out why <code>store.enabled</code> wasn&#8217;t <code>true</code> for ie7. It came down to the fact that ie7 didn&#8217;t have JSON.</li>
-</ul>
-
-
-<p>Thought this was a cool little way to store whether a td square had been clicked on&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>addRedTiles: -&gt;
-</span><span class='line'>  selected = store.get("board_#{@board_id}")
-</span><span class='line'>
-</span><span class='line'>  for tile_number in selected
-</span><span class='line'>    $("[data-title-num=#{tile_number}]").addClass('clicked_space')
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>duringBoardClick: -&gt;
-</span><span class='line'>  if store.enabled
-</span><span class='line'>    $('td').click =&gt;
-</span><span class='line'>      $(event.target).toggleClass('clicked_space')
-</span><span class='line'>      clicked_tiles = []
-</span><span class='line'>      all_clicked = $('td.clicked_space')
-</span><span class='line'>
-</span><span class='line'>      for tile in all_clicked
-</span><span class='line'>        clicked_tiles.push $(tile).attr('data-title-num')
-</span><span class='line'>
-</span><span class='line'>      store.set("board_#{@board_id}", clicked_tiles)
-</span><span class='line'>  else
-</span><span class='line'>    console?.log? 'store is not enabled'</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>This needed to be updated b/c of event.targer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">duringBoardClick</span><span class="o">:</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">store</span><span class="p">.</span><span class="nx">enabled</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">board_id</span> <span class="o">=</span> <span class="err">@</span><span class="nx">board_id</span>
-</span><span class='line'>    <span class="err">\\</span><span class="nx">notice</span> <span class="nx">that</span> <span class="nx">I</span> <span class="nx">declared</span> <span class="nx">the</span> <span class="nx">above</span> <span class="nx">variable</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">).</span><span class="nx">click</span> <span class="o">-&gt;</span> <span class="err">\\</span><span class="nx">and</span> <span class="nx">changed</span> <span class="k">this</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">single</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="err">@</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;clicked_space&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">clicked_tiles</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span class='line'>      <span class="nx">all_clicked</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td.clicked_space&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">tile</span> <span class="k">in</span> <span class="nx">all_clicked</span>
-</span><span class='line'>        <span class="nx">clicked_tiles</span><span class="p">.</span><span class="nx">push</span> <span class="nx">$</span><span class="p">(</span><span class="nx">tile</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-title-num&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">store</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;board_#{board_id}&quot;</span><span class="p">,</span> <span class="nx">clicked_tiles</span><span class="p">)</span>
-</span><span class='line'>      <span class="err">\\</span><span class="nx">board</span> <span class="nx">then</span> <span class="nx">becomes</span> <span class="nx">a</span> <span class="nx">local</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="nx">console</span><span class="o">?</span><span class="p">.</span><span class="nx">log</span><span class="o">?</span> <span class="s1">&#39;store is not enabled&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I think this was the first time I used the <a href="http://stackoverflow.com/questions/7398354/in-coffeescript-how-do-you-append-a-value-to-an-array">push method</a> in coffeescript.</p>
-
-<h3>Z-index</h3>
-
-<ul>
-<li>in order to use z-index you need to use the position absolute, relative, or fixed as mentioned <a href="http://www.w3schools.com/cssref/pr_pos_z-index.asp">here</a></li>
-</ul>
-
-
-<h3>SASS</h3>
-
-<ul>
-<li><code>&gt;*</code> selects all the elements in the selector</li>
-</ul>
-
-
-<h3>PG backups</h3>
-
-<ul>
-<li>Backing up a larger DB on heroku -> <a href="https://devcenter.heroku.com/articles/pgbackups">docs</a></li>
-</ul>
-
-
-<h3>Anchor in a path helper</h3>
-
-<ul>
-<li>pass it in as an option <code>redirect_to post_path(comment.post, :anchor =&gt; "comment-#{comment.id}")</code> -> <a href="http://stackoverflow.com/questions/4981029/how-do-you-use-anchors-for-ids-in-routes-in-rails-3">from</a></li>
-</ul>
-
-
-<h3>Regex</h3>
-
-<ul>
-<li>remember there is no whitespacing in regex
-
-<ul>
-<li><code>background_\w|clicked_space</code> not <code>background_\w | clicked_space</code></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Background images in mobile</h3>
-
-<ul>
-<li>need to make sure to explicity define the background image and background size for mobile</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[KCA 3]]></title>
-    <link href="http://www.adamjonas.com/blog/kca-3/"/>
-    <updated>2013-02-15T10:14:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/kca-3</id>
-    <content type="html"><![CDATA[<ul>
-<li><p>Everytime you clone a project you get its full history&#8230;</p>
-
-<ul>
-<li>to get a specific commit
-
-<ul>
-<li><code>$ git checkout -b aNewBranch SHA1</code> with SHA1 representing the commit id from which you want to proceed.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>config env variables on heroku</p>
-
-<ul>
-<li><code>heroku config:add FACEBOOK_APP_TOKEN='&lt;tokenhere&gt;' --remote staging</code></li>
-</ul>
-</li>
-<li><p><code>rake deploy:staging</code> but need to make sure staging db is up to date <code>rake db:migrate RAILS_ENV=staging</code></p></li>
-<li><p>custom actions are for dream big are <a href="https://github.com/carrot/target-dream-big/blob/develop/app/controllers/facebook_controller.rb">here</a></p></li>
-<li><p><code>git bisect</code> -> <a href="http://git-scm.com/book/en/Git-Tools-Debugging-with-Git">docs</a></p></li>
-</ul>
-
-
-<h3>Expect syntax</h3>
-
-<ul>
-<li>remember to not including whitespaces between expect and the parentheses
-
-<ul>
-<li>correct -> <code>expect(sm.current_number_of_boards).to eq 24</code></li>
-<li>incorrect -> <code>expect (sm.current_number_of_boards).to eq 24</code></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Testing the cache</h3>
-
-<ul>
-<li><p>it&#8217;s not easy to test the cache.</p>
-
-<ul>
-<li>one problem is that when you write to the cache you are affecing the dev cache</li>
-</ul>
-</li>
-<li><p>can clear the cache with <code>Rails.cache.clear</code> <a href="http://stackoverflow.com/questions/10443535/manually-clear-fragment-cache-in-rails">found here</a></p></li>
-<li><p><a href="http://broadcastingadam.com/2011/05/advanced_caching_in_rails/">complicated caching</a></p></li>
-</ul>
-
-
-<h3>Progress bar</h3>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/7190898/progress-bar-with-html-and-css?lq=1">stackoverflow</a></li>
-</ul>
-
-
-<h3>HAML</h3>
-
-<ul>
-<li>partial -> <code>= render :partial =&gt; "partial_name"</code></li>
-<li>yield -> <code>#masthead= yield :masthead</code></li>
-<li>setting a variable in HAML -> <code>- check_mark = image_tag("http://placehold.it/21x21", class: 'check')</code> need the <code>-</code></li>
-<li>submit button -> <code>%input{:type =&gt; "submit", :value =&gt; "Send", :class =&gt; "button"}</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>sweet helper allows you to reduce whitespace</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">=</span> <span class="n">surround</span> <span class="s1">&#39;GiftCard&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span> <span class="k">do</span>
-</span><span class='line'>   <span class="o">%</span><span class="n">sup</span> <span class="o">&amp;</span><span class="n">reg</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are a bunch <a href="http://haml.info/docs/yardoc/Haml/Helpers.html">in the docs.</a></p>
-
-<h3>Content_for</h3>
-
-<figure class='code'><figcaption><span>Using content_for</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% content_for </span><span class="ss">:not_authorized</span> <span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  alert(&#39;You are not authorized to do that!&#39;)</span>
-</span><span class='line'><span class="sx">&lt;% end %&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#You can then use content_for :not_authorized anywhere in your templates.</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sx">%= content_for :not_authorized if current_user.nil? %&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sx">#This is equivalent to:</span>
-</span><span class='line'><span class="sx">&lt;%=</span> <span class="k">yield</span> <span class="ss">:not_authorized</span> <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">nil?</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://apidock.com/rails/ActionView/Helpers/CaptureHelper/content_for">Api-dock</a></li>
-</ul>
-
-
-<h3>Escaping a space</h3>
-
-<ul>
-<li><code>&amp;nbsp;</code></li>
-<li><a href="9http://www.samuelhwong.com/blog/2011/09/29/quick-tip-ascii-codes-and-link-to/">ascii character in link_to</a>, just add <code>.html_safe</code></li>
-</ul>
-
-
-<h3>Creating or updating many records at a time in rails</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#creating new records</span>
-</span><span class='line'><span class="o">[</span><span class="s2">&quot;array&quot;</span> <span class="s2">&quot;of&quot;</span> <span class="s2">&quot;strings&quot;</span><span class="o">].</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="p">,</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>  <span class="no">Tile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#updating existing records</span>
-</span><span class='line'><span class="o">[</span><span class="s2">&quot;array&quot;</span> <span class="s2">&quot;of&quot;</span> <span class="s2">&quot;strings&quot;</span><span class="o">].</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="p">,</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>  <span class="no">Tile</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">update_attribute</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Collection in routes</h3>
-
-<figure class='code'><figcaption><span>Need collection to lose the id requirement</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:superlatives</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:create</span><span class="o">]</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:skip</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>.length</h3>
-
-<p>You can look for the number of instances in the DOM and update it accordingly if there are the right number. I used this when I was updating the DOM and to see if the page had 3 classes indicating that three friends had been nominated.</p>
-
-<figure class='code'><figcaption><span>Need collection to lose the id requirement</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="err">$</span><span class="p">(</span><span class="s1">&#39;div.friend-nomination&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">3</span>
-</span><span class='line'>  <span class="n">console?</span><span class="o">.</span><span class="n">log?</span> <span class="s1">&#39;this has three&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Heroku console</h3>
-
-<ul>
-<li><code>heroku run rails console --remote &lt;name of branch&gt;</code> or <code>heroku run console -r &lt;name of branch&gt;</code> for short</li>
-</ul>
-
-
-<h3>CSS Positioning</h3>
-
-<ul>
-<li><a href="http://www.barelyfitz.com/screencast/html-training/css/positioning/">old but cool little reference</a></li>
-</ul>
-
-
-<h3>Print Stylesheets</h3>
-
-<ul>
-<li>had a problem with getting the @media print file to recognize the sass styling that I was writing. Discovered that every single element needed to be to explicitly defined for it to work&#8230;. what a pain in the ass.</li>
-</ul>
-
-
-<h3>JQuery Migrate</h3>
-
-<ul>
-<li> Was removed from the <a href="https://github.com/jquery/jquery-migrate/">jquery core</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Paypal integration]]></title>
-    <link href="http://www.adamjonas.com/blog/paypal-integration/"/>
-    <updated>2013-02-08T14:45:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/paypal-integration</id>
-    <content type="html"><![CDATA[<h3>IPN</h3>
-
-<blockquote><p>instant payment notification</p></blockquote>
-
-<ul>
-<li>Paypal will provide an asynch call made to our server from paypal to update us of the status.
-
-<ul>
-<li>this is asynch so it could take a few seconds or it could take more.</li>
-</ul>
-</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[KCA 2]]></title>
-    <link href="http://www.adamjonas.com/blog/kca-2/"/>
-    <updated>2013-02-06T13:40:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/kca-2</id>
-    <content type="html"><![CDATA[<h3>Heroku</h3>
-
-<ul>
-<li><code>git push staging develop:master</code></li>
-</ul>
-
-
-<h3>FB</h3>
-
-<ul>
-<li>target &#8216;_top&#8217; will put the new window on top</li>
-<li><code>http://app.facebook.com/name-space</code></li>
-<li>make sure to disable secure browsing in FB</li>
-<li><p>change fields from address <code>state</code> to <code>state_loc</code> to avoid collisions with state machine gems like transitions</p></li>
-<li><p>can simulate mobile with overrides in the inspector</p></li>
-<li><p><code>heroku run rake db:migrate --remote staging</code></p></li>
-<li><code>heroku config:add &lt;env variable&gt; &lt;env variable&gt;</code></li>
-<li><p><code>heroku log --remote staging</code></p></li>
-<li><p><code>.shuffle</code> method</p></li>
-<li><code>.floor</code> returns an integer</li>
-<li><p>if diving two integers you need to th make sure one of them is a float</p></li>
-<li><p>In routes, <code>member do</code> block adds a resource on a specific record, while collect do</p></li>
-<li><p>in config/application.rb in order to load libs automatically need to change config to <code>config.autoload_paths += %W(#{config.root}/lib)</code></p></li>
-<li><p><code>has_mobile_fu false</code> in appcontroller, need false</p></li>
-<li><p><a href="https://github.com/voxdolo/decent_exposure">decent exposure</a></p>
-
-<ul>
-<li><ul>
-<li><code>expose(:articles) { current_user.articles }</code> scopes articles belonging to that user</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>output the boards on board show page, new board page, and how to play</p></li>
-<li><p><a href="http://apidock.com/rails/ActionView/Helpers/TagHelper/content_tag">content tag</a></p>
-
-<ul>
-<li>need to use .html_safe</li>
-</ul>
-</li>
-<li><p>to start memcache <code>/usr/local/opt/memcached/bin/memcached</code></p></li>
-<li><p>deploy to heroku staging with <code>git push staging develop:master</code></p></li>
-<li><p>creating a table with content tags in a helper</p></li>
-<li><code>.update_attribute!</code> versus <code>.update_attribute</code> -> raise an exception rahter than false.</li>
-</ul>
-
-
-<h3>Tests</h3>
-
-<ul>
-<li>Make sure to migrate the Test DB -> <code>rake db:migrate RAILS_ENV=test</code></li>
-<li><code>watchr .watchr</code></li>
-<li>using <a href="http://robots.thoughtbot.com/post/23673635798/remove-duplication-with-factorygirls-traits">traits with Factory Girl</a></li>
-<li><a href="http://myronmars.to/n/dev-blog/2012/06/rspecs-new-expectation-syntax">expect syntax</a></li>
-<li>rake start to start spork</li>
-<li>{:id => board.id}.merge(opts)</li>
-</ul>
-
-
-<h3>HAML</h3>
-
-<ul>
-<li><code>= f.hidden_field :customer_id, value: @customer.id</code> <a href="http://stackoverflow.com/questions/10387077/rails3-hidden-field-in-haml">from</a></li>
-<li><a href="http://html2haml.heroku.com/">html to haml</a></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>.shuffle.hidden
-</span><span class='line'>.delete.hidden</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Makes divs with classes above</p>
-
-<ul>
-<li><a href="http://9elements.github.com/haml-coffee/classes/Haml.html">HAML id and class declaration</a></li>
-<li>passing in partials with locals on <a href="http://stackoverflow.com/questions/5255874/rendering-partial-with-locals-in-haml">stackoverflow</a></li>
-</ul>
-
-
-<h3>Ajax with coffeescript</h3>
-
-<p>Used the call below to make a friend request.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>getFriends: (callback) -&gt;
-</span><span class='line'>    FB.api '/me/friends', (response) =&gt; 
-</span><span class='line'>      $.each response.data, (k, v) =&gt;
-</span><span class='line'>        @friends.push({ label: v.name, value: v.id })
-</span><span class='line'>      callback()</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The callback is to ensure that other function do not proceed before the friends are loaded asynchronously.</p>
-
-<h3>Auto-complete with JQuery UI</h3>
-
-<ul>
-<li>Got it from <a href="http://jqueryui.com/autocomplete/#custom-data">here</a></li>
-<li>also loaded the js and css minified versions in the lib directory.</li>
-<li>there was a small change to be made, <a href="http://stackoverflow.com/questions/9513251/cannot-set-property-renderitem-of-undefined-jquery-ui-autocomplete-with-html">documented here</a></li>
-</ul>
-
-
-<h3>Javascript to coffee</h3>
-
-<ul>
-<li><p><a href="http://js2coffee.org/">really cool site</a></p></li>
-<li><p>Posting to a wall, note the method and the <code>:to</code> method, taken mostly from <a href="http://developers.facebook.com/docs/reference/dialogs/feed/">here</a></p></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  sendMessage: (fb_uid, details = {}) -&gt;
-</span><span class='line'>    obj =
-</span><span class='line'>      to: fb_uid
-</span><span class='line'>      method: "feed"
-</span><span class='line'>      redirect_uri: "http://kca.dev"
-</span><span class='line'>      link: "http://google.com"
-</span><span class='line'>      picture: "http://fbrell.com/f8.jpg"
-</span><span class='line'>      name: "Facebook Dialogs"
-</span><span class='line'>      caption: "Reference Documentation"
-</span><span class='line'>      description: "Using Dialogs to interact with users."
-</span><span class='line'>
-</span><span class='line'>    obj = $.extend obj, details
-</span><span class='line'>
-</span><span class='line'>    FB.ui obj, -&gt;
-</span><span class='line'>      alert 'posted'</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p><code>= link_to "Something", some_path, :method =&gt; :post</code></p></li>
-<li><p><strong>Need to remember to add () after a method call</strong></p></li>
-<li>defaults to auth user if no <code>to:</code> method</li>
-<li><a href="https://github.com/raganwald/homoiconic/blob/master/2012/09/lexical-scope-in-coffeescript.md">discussion on lexical scope</a></li>
-</ul>
-
-
-<h3>Counter_cache</h3>
-
-<ul>
-<li>In the model -> <code>belongs_to :project, :counter_cache =&gt; true</code></li>
-<li><a href="http://railscasts.com/episodes/23-counter-cache-column">railscast #23</a></li>
-</ul>
-
-
-<h3>Jquery</h3>
-
-<ul>
-<li><code>$("div,p,span")</code> this works as a multiple selector</li>
-<li><a href="http://stackoverflow.com/questions/1992114/how-do-you-create-a-hidden-div-that-doesnt-create-a-line-break-or-horizontal-sp">hidden divs</a></li>
-</ul>
-
-
-<h3>Selecting a winner</h3>
-
-<ul>
-<li>use the <a href="https://github.com/spilliton/randumb">randumb gem</a></li>
-</ul>
-
-
-<h3>Migrate test db</h3>
-
-<ul>
-<li><code>ake db:migrate RAILS_ENV=test</code></li>
-</ul>
-
-
-<h3>No merge message for a no-ff flag</h3>
-
-<ul>
-<li><code>--no-edit</code></li>
-</ul>
-
-
-<h3>FB app auto-grow</h3>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/9197411/facebook-iframe-fb-canvas-setautogrow-does-not-auto-grow-after-initial-load">auto-grow canvas in fb app</a></li>
-</ul>
-
-
-<h3>Gem from a git url</h3>
-
-<ul>
-<li><code>gem 'redcarpet', :git =&gt; 'git://github.com/tanoku/redcarpet.git'</code></li>
-</ul>
-
-
-<h3>With an options hash</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">facepile</span><span class="p">(</span><span class="o">*</span><span class="n">options</span><span class="p">)</span>
-</span><span class='line'><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:href</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;FACEBOOK_APP_URL&#39;</span><span class="o">]</span><span class="p">,</span>
-</span><span class='line'>        <span class="ss">:max_rows</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>        <span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">300</span><span class="p">,</span>
-</span><span class='line'>        <span class="ss">:show_count</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="p">}</span>
-</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">merge!</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="k">unless</span> <span class="n">options</span><span class="o">.</span><span class="n">empty?</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">raise</span> <span class="s2">&quot;Must provide a :url option parameter or ENV[&#39;FACEBOOK_APP_URL&#39;]&quot;</span> <span class="k">unless</span> <span class="n">opts</span><span class="o">[</span><span class="ss">:href</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'><span class="sx">%Q{</span>
-</span><span class='line'><span class="sx">&lt;div class=&quot;fb-facepile&quot; </span>
-</span><span class='line'><span class="sx">data-href=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:href</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot; </span>
-</span><span class='line'><span class="sx">data-max-rows=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:max_rows</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot;</span>
-</span><span class='line'><span class="sx">data-show-count=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:show_count</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot;</span>
-</span><span class='line'><span class="sx">data-width=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:width</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot;&gt;</span>
-</span><span class='line'><span class="sx">&lt;/div&gt;</span>
-</span><span class='line'><span class="sx">}</span><span class="o">.</span><span class="n">html_safe</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>FB invite friends</h3>
-
-<figure class='code'><figcaption><span>in coffeescript</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">inviteFriend</span><span class="p">:</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="n">obj</span> <span class="o">=</span>
-</span><span class='line'>    <span class="nb">method</span><span class="p">:</span> <span class="s1">&#39;apprequests&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Come check this out&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="no">FB</span><span class="o">.</span><span class="n">ui</span> <span class="n">obj</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="n">alert</span> <span class="s1">&#39;invited&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Delpoy</h3>
-
-<ul>
-<li><code>rake deploy:staging</code> and <code>rake deploy:production</code></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MacPro Set Up]]></title>
-    <link href="http://www.adamjonas.com/blog/macpro-set-up/"/>
-    <updated>2013-02-06T13:26:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/macpro-set-up</id>
-    <content type="html"><![CDATA[<ul>
-<li><p>My postgres paths were screwed up. <a href="http://stackoverflow.com/questions/12028037/postgres-app-could-not-start-on-port-5432/13847738#13847738">This helped</a></p></li>
-<li><p>need to install bundler for every ruby install</p></li>
-<li><p>Pow path was screwed up. Need to create and set paths in <code>.powconfig</code> file.</p></li>
-<li><p>needed to rm symlink for git completion per the discussion <a href="https://github.com/mxcl/homebrew/issues/16992#issuecomment-13162321">here</a></p></li>
-<li><p>opens up the same terminal tab in a new window&#8230;</p></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#opens new tab in same dir
-</span><span class='line'>precmd () {print -Pn "\e]2; %~/ \a"}
-</span><span class='line'>preexec () {print -Pn "\e]2; %~/ \a"}</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[KCA]]></title>
-    <link href="http://www.adamjonas.com/blog/kca/"/>
-    <updated>2013-02-05T14:37:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/kca</id>
-    <content type="html"><![CDATA[<ul>
-<li><code>rails g model Model attr:string{75}</code> 75 is the char limit</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span> <span class="c1"># SELECT people.id FROM people</span>
-</span><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">uniq</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:role</span><span class="p">)</span> <span class="c1"># SELECT DISTINCT role FROM people</span>
-</span><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:confirmed</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Devise -> <code>gem 'devise'</code>, then <code>rails g install devise</code></li>
-<li><code>rails g devise &lt;model&gt;</code></li>
-<li><code>rails g devise:views</code></li>
-<li>more steps on <a href="https://github.com/carrot/hw-packages-private/blob/master/devise.rb">github</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Angular Skillshare]]></title>
-    <link href="http://www.adamjonas.com/blog/angular-skillshare/"/>
-    <updated>2013-02-04T19:11:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/angular-skillshare</id>
-    <content type="html"><![CDATA[<h2>Single Page apps with Angular.js</h2>
-
-<ul>
-<li><a href="http://docs.angularjs.org/guide/">Angular docs</a>
-
-<ul>
-<li>looks like a templating system, but more like a lightweight framework</li>
-<li>designed to be testable</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Quick ways to learn any client MVC js</h3>
-
-<ul>
-<li><a href="http://addyosmani.github.com/todomvc/">TodoMVC</a></li>
-</ul>
-
-
-<h3>Angular</h3>
-
-<ul>
-<li><code>ng-model</code> is a way of describing the parameters that are bound to it</li>
-</ul>
-
-
-<h3>Extensions</h3>
-
-<ul>
-<li><a href="https://github.com/angular/angularjs-batarang">batarang</a>
-
-<ul>
-<li><a href="http://www.youtube.com/embed/q-7mhcHXSfM">Tutorial screencast</a></li>
-</ul>
-</li>
 </ul>
 
 ]]></content>

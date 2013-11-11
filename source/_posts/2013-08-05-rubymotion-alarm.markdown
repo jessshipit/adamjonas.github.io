@@ -6,6 +6,15 @@ comments: true
 categories: rubymotion
 ---
 
+###To Read
+  - [human interface guide](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html)
+  - motion config vars
+  
+###Reachability
+  - I had all sorts of problems with the `reachability` pod on the device, while I saw no such problems on the simulator. Pretty frustrating.
+  - The reachability methods seemed to be returning true even if there was no connection and it also seemed to screw up my simple requests to an external API. 
+  - Still not quite sure what was wrong, but as soon as I stripped out reachability the behavior returned to normal. 
+    - reachability resources I consulted were [here](http://sxross-blog.herokuapp.com/2013/02/25/reachability-and-ruby-motion/) [and here](http://joshsymonds.com/blog/2013/02/04/reachability-with-rubymotion/)
 
 ##positioning
   - UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify the frame, in the following format:
@@ -164,3 +173,23 @@ NSDataSerialization.JSONObjectWithData(data, options:NSDataReadingUncached, erro
   - RubyMotion uses MacBacon and the UIAnimation framework to do UI testing. 
   - [quick tutorial](http://blog.rubymotion.com/post/26489000626/functional-view-and-controller-testing-with-rubymotion)
   - subviews are not found the same way as top level views
+
+###Location
+  - bubblewrap provides the call `BW::Location.get_once { |location|}` which get the location just once and returns a CLLManager object. Bubblewrap offers a number of methods that can be called on the this object such as latitude and longitude.
+    - a list of bubblewrap location methods [can be found here](https://github.com/rubymotion/BubbleWrap/blob/master/motion/location/location.rb)
+
+###NSData
+  -  Getting back NSConcreteData from an API call.
+    - [advice on stackoverflow](http://stackoverflow.com/questions/1113811/what-is-nsconcretedata-and-where-is-it-defined) is to: ignore the existence of NSConcreteData and treat it like NSData
+
+###Basic web service
+  - users will be able to receive random motivational messages from other users
+
+  - set up sinatra to post .json from DB
+  - BW::HTTP get (URL) data
+
+  - BW::HTTP post (URL) data
+  - sinatra receives message and writes to DB
+
+  - `BW::HTTP` also has methods to make sure the response comes back ok. Not surprisingly, this is `response.ok?`. Just make sure to use this to quasi-rescue a method that depends on a request.
+

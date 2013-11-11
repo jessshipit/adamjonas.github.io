@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails4 | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/rails4/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2013-11-11T15:27:48-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[turbolinks]]></title>
+    <link href="http://www.adamjonas.com/blog/turbolinks/"/>
+    <updated>2013-09-25T10:27:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/turbolinks</id>
+    <content type="html"><![CDATA[<p>Turbolinks replaces the body of the page but doesn't reload the header files. This limits the number of calls and makes the site appear faster to the user by a noticeable margin.</p>
+
+<h3>To remove turbolinks for Rails 4</h3>
+
+<ul>
+<li>(3 steps from Steve Klabnik)[http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4]</li>
+</ul>
+
+
+<h3>Breaking my JS</h3>
+
+<ul>
+<li>Turbolink breaks my JS calls when the page loads up the Facebook SDK. So I started disabling turbolinks on certain pages in my HAML a tag with the "data-no-turbolink" option <code>= link_to 'add friends', next_wizard_path, "data-no-turbolink" =&gt; "true"</code></li>
+<li>There are also events that one can hook into. They are (listed here)[https://github.com/rails/turbolinks/#events].</li>
+<li>You can also put the click event on the doc rather than the element which will solve this issue. In this case ajax tasks would also have the click event applied to them as well.</li>
+</ul>
+
+
+<p>```ruby Click Event on doc rather than element
+$('document').on 'click', '.edit_task input[type=checkbox]', -></p>
+
+<pre><code>$(this).parent('form').submit()
+</code></pre>
+
+<p>```</p>
+
+<h3>The jquery turbolinks gem</h3>
+
+<ul>
+<li>Using (the gem)[https://github.com/kossnocorp/jquery.turbolinks] just straight fixes it. This likely means that the turbolinks is disabled for all jquery related calls.</li>
+</ul>
+
+
+<h3>Reading</h3>
+
+<ul>
+<li>a (basic summary by treehouse)[http://blog.teamtreehouse.com/rails-4-a-look-at-turbolinks]</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

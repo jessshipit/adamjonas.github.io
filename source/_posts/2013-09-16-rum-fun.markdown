@@ -1,0 +1,67 @@
+---
+layout: post
+title: "Rum Fun"
+date: 2013-09-16 16:02
+comments: true
+categories: projects
+---
+
+###Asset Trouble
+  - Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn't compiling.
+  - [This](http://stackoverflow.com/questions/15811889/my-rails-javascript-manifest-file-doesnt-compile-nor-include-any-required-files) inspired us to roll back to 1.9.3, which worked.
+
+
+###Coffeescript hashes
+  - this one took me a hot second -> `delete obj[key]`
+    - courtesy of [the docs](http://coffeescript.org/documentation/docs/helpers.html)
+
+  - counting the keys in an object was pretty close to javascript `Object.keys(obj).length` [from](http://stackoverflow.com/questions/15629799/count-number-of-keys-in-object-with-coffeescript).
+
+
+###Thought process on adding a friend
+  - page loads
+    - checks to see if local storage has values
+      - if not it assigns empty array
+      - if so it assigns to local array which contains a hash of both the name, the uid, and its input position
+        - names are loaded into the input field
+        - names and uid(pic) are loaded with the appropriate number of beach passes
+
+    - if when a name is removed from the input field, it is removed from the local array
+      - a listener on the array updates the proper number of beach passes
+
+    - when a name is selected by the autocomplete, it assigns pushes the new record of name, uid and position into the array
+      - a listener on the array updates the proper number of beach passes
+
+    - a validator prevents the user from continuing without having at least one friend OR checking the 'alone' checkbox
+
+    - upon hitting the continue btn, the local array is assigned to local storage
+
+###Devise sign out
+  - In the `devise.rb` initializer -> The default HTTP method used to sign out a resource. Default is :delete.
+    - `config.sign_out_via = :get` will allow me to use a regular link
+
+
+###PG setup
+  - this is the [process prelaunch](https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups)
+  - otherwise you want to use a follower method
+
+###IP Spoof
+  - had a client on a plane that triggered a `ActionDispatch::RemoteIp::IpSpoofAttackError: IP spoofing attack?!` error.
+
+```ruby To turn off ip spoof
+class IpSpoof
+  def initialize(app)
+    @app = app
+  end
+  
+  def call(env)
+    @app.call(_strip_ip_spoofable_headers(env))
+  end
+  
+  def _strip_ip_spoofable_headers(env)
+    env.reject { |key, value| key.upcase == 'HTTP_CLIENT_IP' }
+  end
+end
+``` 
+
+  - this needed to be inserted before the rack middleware `ActionDispatch::RemoteIp` so used `config.middleware.insert_before ActionDispatch::RemoteIp, IpSpoof` as suggested in [rails guide](http://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack). Pretty cool.

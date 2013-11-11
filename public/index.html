@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="positioning UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify &hellip;">
+  <meta name="description" content="Grape Grape is a REST-like API micro-framework for Ruby. It&#8217;s designed to run on Rack or complement existing web application frameworks such as &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,6 +93,634 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/grape-api/">Grape Api</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-11T15:13:00-05:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="https://github.com/intridea/grape">Grape</a></h2>
+
+<ul>
+<li>Grape is a REST-like API micro-framework for Ruby. It&#8217;s designed to run on Rack or complement existing web application frameworks such as Rails and Sinatra by providing a simple DSL to easily develop RESTful APIs.</li>
+<li>Here is a nice <a href="http://www.slideshare.net/yorzi/rapid-rubyapiongrape-8674582">slide share</a> of the API possibilities (though it is from 2011).</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/memories-and-holiday/">Memories and Holiday</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-22T10:52:00-04:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Generate a new secret token</h3>
+
+<ul>
+<li>I copied over app with a foundation built in. Can&#8217;t of course copy over the secret token. <code>rake secret</code> will generate the new token <a href="http://www.jamesbadger.ca/2012/12/18/generate-new-secret-token/">via</a>.</li>
+</ul>
+
+
+<h3>Geolocation</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/2248404/about-geolocation-in-html-5">used enabled geo location in the app</a></li>
+<li>the method <a href="http://diveintohtml5.info/geolocation.html">found here</a>, which should be the canonical source didn&#8217;t work for me.</li>
+</ul>
+
+
+<h3>Print styling</h3>
+
+<ul>
+<li>needed to remove the deafult media=&#8217;screen&#8217; in order to load these styles via <a href="http://lawrencenaman.com/optimisation/print-media-queries-not-working/">this post</a></li>
+<li>in application.rb needed to include <code>config.assets.precompile += ['print_wishlist.css']</code> so that it is precompiled separately. Though it was written in sass it needed the print_wishlist.css.sass extensions as sass isn&#8217;t recognized in the app.rb as it expect the file after compilation rather than before <a href="http://jalada.co.uk/2012/01/23/adding-files-to-config-assets-precompile-in-rails-3-1.html">via</a>.</li>
+</ul>
+
+
+<h3>local storage versus cookies</h3>
+
+<ul>
+<li><strong>client versus server</strong> -> Cookies and local storage really serve difference purposes. Cookies are primarily for reading server-side, local storage can only be read client-side. So the question is, in your app, who needs this data — the client or the server? If it&#8217;s your client (your JavaScript), then by all means switch. You&#8217;re wasting bandwidth by sending all the data in each HTTP header. If it&#8217;s your server, local storage isn&#8217;t so useful because you&#8217;d have to forward the data along somehow (with Ajax or hidden form fields or something). This might be okay if the server only needs a small subset of the total data for each request.</li>
+<li><strong>Size</strong> -> Apart from being an old way of saving data, Cookies give you a limit of 4096 bytes (4095, actually) - its per cookie. Local Storage is as big as 5MB per domain.</li>
+<li>Cute -> you can test your local storage <a href="http://arty.name/localstorage.html">here</a>.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/turbolinks/">Turbolinks</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-25T10:27:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Turbolinks replaces the body of the page but doesn&#8217;t reload the header files. This limits the number of calls and makes the site appear faster to the user by a noticeable margin.</p>
+
+<h3>To remove turbolinks for Rails 4</h3>
+
+<ul>
+<li>(3 steps from Steve Klabnik)[http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4]</li>
+</ul>
+
+
+<h3>Breaking my JS</h3>
+
+<ul>
+<li>Turbolink breaks my JS calls when the page loads up the Facebook SDK. So I started disabling turbolinks on certain pages in my HAML a tag with the &#8220;data-no-turbolink&#8221; option <code>= link_to 'add friends', next_wizard_path, "data-no-turbolink" =&gt; "true"</code></li>
+<li>There are also events that one can hook into. They are (listed here)[https://github.com/rails/turbolinks/#events].</li>
+<li>You can also put the click event on the doc rather than the element which will solve this issue. In this case ajax tasks would also have the click event applied to them as well.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Click Event on doc rather than element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span><span class="p">(</span><span class="s1">&#39;document&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;.edit_task input[type=checkbox]&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="err">$</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>The jquery turbolinks gem</h3>
+
+<ul>
+<li>Using (the gem)[https://github.com/kossnocorp/jquery.turbolinks] just straight fixes it. This likely means that the turbolinks is disabled for all jquery related calls.</li>
+</ul>
+
+
+<h3>Reading</h3>
+
+<ul>
+<li>a (basic summary by treehouse)[http://blog.teamtreehouse.com/rails-4-a-look-at-turbolinks]</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rum-fun/">Rum Fun</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-16T16:02:00-04:00" pubdate data-updated="true">Sep 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Asset Trouble</h3>
+
+<ul>
+<li>Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn&#8217;t compiling.</li>
+<li><a href="http://stackoverflow.com/questions/15811889/my-rails-javascript-manifest-file-doesnt-compile-nor-include-any-required-files">This</a> inspired us to roll back to 1.9.3, which worked.</li>
+</ul>
+
+
+<h3>Coffeescript hashes</h3>
+
+<ul>
+<li><p>this one took me a hot second -> <code>delete obj[key]</code></p>
+
+<ul>
+<li>courtesy of <a href="http://coffeescript.org/documentation/docs/helpers.html">the docs</a></li>
+</ul>
+</li>
+<li><p>counting the keys in an object was pretty close to javascript <code>Object.keys(obj).length</code> <a href="http://stackoverflow.com/questions/15629799/count-number-of-keys-in-object-with-coffeescript">from</a>.</p></li>
+</ul>
+
+
+<h3>Thought process on adding a friend</h3>
+
+<ul>
+<li>page loads
+
+<ul>
+<li><p>checks to see if local storage has values</p>
+
+<ul>
+<li>if not it assigns empty array</li>
+<li>if so it assigns to local array which contains a hash of both the name, the uid, and its input position
+
+<ul>
+<li>names are loaded into the input field</li>
+<li>names and uid(pic) are loaded with the appropriate number of beach passes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>if when a name is removed from the input field, it is removed from the local array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>when a name is selected by the autocomplete, it assigns pushes the new record of name, uid and position into the array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>a validator prevents the user from continuing without having at least one friend OR checking the &#8216;alone&#8217; checkbox</p></li>
+<li><p>upon hitting the continue btn, the local array is assigned to local storage</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Devise sign out</h3>
+
+<ul>
+<li>In the <code>devise.rb</code> initializer -> The default HTTP method used to sign out a resource. Default is :delete.
+
+<ul>
+<li><code>config.sign_out_via = :get</code> will allow me to use a regular link</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>PG setup</h3>
+
+<ul>
+<li>this is the <a href="https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups">process prelaunch</a></li>
+<li>otherwise you want to use a follower method</li>
+</ul>
+
+
+<h3>IP Spoof</h3>
+
+<ul>
+<li>had a client on a plane that triggered a <code>ActionDispatch::RemoteIp::IpSpoofAttackError: IP spoofing attack?!</code> error.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>To turn off ip spoof</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">IpSpoof</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">env</span><span class="o">.</span><span class="n">reject</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">key</span><span class="o">.</span><span class="n">upcase</span> <span class="o">==</span> <span class="s1">&#39;HTTP_CLIENT_IP&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<ul>
+<li>this needed to be inserted before the rack middleware <code>ActionDispatch::RemoteIp</code> so used <code>config.middleware.insert_before ActionDispatch::RemoteIp, IpSpoof</code> as suggested in <a href="http://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack">rails guide</a>. Pretty cool.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/objective-c-for-rubyists/">Objective-c for Rubyists</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-11T16:35:00-04:00" pubdate data-updated="true">Sep 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So RubyMotion is great. I can create an app in a few minutes by leveraging resources like <a href="http://bubblewrap.io/">Bubblewrap</a> and styling becomes pretty straight-forward with <a href="https://github.com/rubymotion/teacup">Teacup</a> and syntax looks much more Ruby-ish with <a href="https://github.com/rubymotion/sugarcube">SugarCube</a>.</p>
+
+<p>Here&#8217;s the thing. As a spoiled Rubyist, Objective-C as a language and CocoaTouch/iOS as is a framework is a verbose. That means that the code comes out really sounding like English. Not the poetry that Ruby is, but more like prose.  The fact that I am not learning the language isolated from the framework has led to problems for me in the past when I initially learned Rails before I learned Ruby. It isn&#8217;t really a great way to learn, but I have always been driven by the application of a language more than the language itself, which is the case here.</p>
+
+<h3>That whole thing is the method?</h3>
+
+<p>So RubyMotion isn&#8217;t a superiority thing. I&#8217;d certainly prefer to be 100% fluent in objective-c from day one. Apple&#8217;s documentation appears to be pretty steller. The problem for me however, is that everything just looks so hard in obj-c. Method declarations are pretty intimidating. So here I go to look up how to set the title of a UIButton and I find <code>- (void)setTitle:(NSString *)title forState:(UIControlState)state</code>. Now come on. That&#8217;s a little much to set a title of a button right? A guideline I have always tried to follow with my own code is to only create complicated methods for complicated tasks.</p>
+
+<ul>
+<li>This declaration is preceded by a minus (-) sign, which indicates that this is an instance method, as opposed to a class method. It requires an object to call it, and instance variables of the object are available to it inside its definition.</li>
+<li>The (void) indicates the return type. This method doesn&#8217;t return anything, so its result can&#8217;t be assigned to anything.</li>
+<li>This method name is <code>setTitle:forState:</code></li>
+<li>The number of colons (:) indicate how many arguments it takes. T</li>
+<li>The first argument is the string to set the title to.</li>
+<li>The second argument is the button state (such as normal or pressed) in which to set the title.</li>
+</ul>
+
+
+<p>Here&#8217;s an example of this method in use: <code>[myButton setTitle:@"Clicked!" forState:UIControlStateHighlighted];</code>. So after you break it down things seems little more reasonable, but it feels like it shouldn&#8217;t be this hard.</p>
+
+<h3></h3>
+
+<p>The specification of a class in Objective-C requires two distinct pieces: the interface and the implementation. The interface portion contains the class declaration and defines the instance variables and methods associated with the class. The interface is usually in a .h file. The implementation portion contains the actual code for the methods of the class. The implementation is usually in a .m file.</p>
+
+<p>A class in Objective-C can declare two types of methods: instance methods and class methods. An instance method is a method whose execution is scoped to a particular instance of the class. In other words, before you call an instance method, you must first create an instance of the class. Class methods, by comparison, do not require you to create an instance</p>
+
+<p>There&#8217;s strong and weak typing for variables.</p>
+
+<p>Objective-c is from around 1983, invented by Brad Cox. Ruby is from 1995, which makes it a contemporary of Java.</p>
+
+<p>Ruby is more script oriented, obj-c looks a lot more like lisp. The semi-colon takes some getting used to.</p>
+
+<p>Underscore versus camelCase. Short method names in Ruby, while the cocoa convention is much more verbose.</p>
+
+<p>Name spacing in Ruby which Objective-C doesn&#8217;t have.</p>
+
+<p>On the surface, these look like very different languages.</p>
+
+<p>Ruby is a decedent of Smalltalk, Perl, Eiffel, and Lisp. While Objective-C comes purely from Smalltalk and C.</p>
+
+<p>Smalltalk was really the first object oriented programming language. Alan Kay and the X PARC geniuses invented the OOP concept in the early 70s.</p>
+
+<p>Conway&#8217;s Law: software architecture reflects the communication structures of the community that is building it.</p>
+
+<p>Objective-c and cocoa are dictated by Apple. It&#8217;s Apple&#8217;s app store and they dictate what is appropriate and what isn&#8217;t. It is a benevolent (sometimes not so benevolent) dictatorship.</p>
+
+<p>Ruby is on the other hand is a product of Rails. DHH singlehandedly put Ruby on the map in 2004. Rails is what the web needed in 2005. Github, heroku and twitter were all started as Rails apps.
+  - most Rails devs were noobs
+  - iconoclasts
+  - dillitants
+  - hipsters
+  - scavengers -> turning to other languages
+  - establishmentarians</p>
+
+<ul>
+<li>TDD</li>
+<li>Tooling -> throw out older tools</li>
+<li>progress versus subsistence</li>
+<li>overthinking</li>
+</ul>
+
+
+<p>We have entered the era of CocoaPods, which is now 2 years old. It is written in Ruby. 1300 projects on CocoaPods. This is the rise of Ruby gem. A dependency manager. This is a place to share creations.</p>
+
+<ul>
+<li><p><a href="https://peepcode.com/products/objective-c-for-rubyists">objective c for Rubyists</a> from peepcode</p></li>
+<li><p><a href="https://github.com/tombenner/nui">NUI</a> -> sass for objective-c</p></li>
+<li><a href="https://github.com/kif-framework/KIF">KIF</a> -> usable testing framework</li>
+<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa">reactiveCocoa</a> -> functional programmning for ios</li>
+<li><a href="http://www.testingwithfrank.com/">Testing with Frank</a> -> cucumber</li>
+<li><a href="https://github.com/helios-framework">Helios</a> -></li>
+</ul>
+
+
+<p>http://www.slideshare.net/abdels/my-adventuresinobjc</p>
+
+<ul>
+<li>unlike ruby, obj-c is a strict superset of c</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">say:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>obj-c message passing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">say:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">performSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">say:</span><span class="p">)</span> <span class="nl">withObject:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">objc_sendMSG</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">selector</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>ruby message passing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:say</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>non-strict typing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="kt">id</span> <span class="n">world</span> <span class="o">=</span> <span class="p">[[</span><span class="n">World</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">]</span>
+</span><span class='line'><span class="p">[</span><span class="n">world</span> <span class="n">peace</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm">&#39;id&#39; is a pointer to any object</span>
+</span><span class='line'><span class="cm">*/</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>objective-c non-strict typing
+World *world = [[World alloc] init]
+[world peace];</p>
+
+<p>/<em>
+this ensures the method compiler checks.
+</em>/
+&#8220;`</p>
+
+<p>attr_accessor equivalent
+@synthesize creates dynamic setters and getters and performs the neccessary memory allocaiton
+- interfaces with protocols</p>
+
+<p>objective-c has blocks</p>
+
+<p><a href="https://github.com/nomad/cupertino">cupertino</a></p>
+
+<h3>Strong versus weak pointers</h3>
+
+<p>The difference is that an object will be deallocated as soon as there are no strong pointers to it. Even if weak pointers point to it, once the last strong pointer is gone, the object will be deallocated, and all remaining weak pointers will be zeroed out.</p>
+
+<p>Perhaps an example is in order.</p>
+
+<p>Imagine our object is a dog, and that the dog wants to run away (be deallocated).</p>
+
+<p>Strong pointers are like a leash on the dog. As long as you have the leash attached to the dog, the dog will not run away. If five people attach their leash to one dog, (five strong pointers to one object), then the dog will not run away until all five leashes are detached.</p>
+
+<p>Weak pointers, on the other hand, are like little kids pointing at the dog and saying &#8220;Look! A dog!&#8221; As long as the dog is still on the leash, the little kids can still see the dog, and they&#8217;ll still point to it. As soon as all the leashes are detached, though, the dog runs away no matter how many little kids are pointing to it.</p>
+
+<p>As soon as the last strong pointer (leash) no longer points to an object, the object will be deallocated, and all weak pointers will be zeroed out.</p>
+
+<p><a href="http://stackoverflow.com/questions/9262535/explanation-of-strong-and-weak-storage-in-ios5">from</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/git-cheatsheet/">Git Cheatsheet</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-28T18:31:00-04:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><code>git clean -f -d</code> removes all untracked files. <code>git reset --hard HEAD</code> won&#8217;t remove untracked files.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/imagemagick-ummm-dot-dot-dot-magic/">ImageMagick Ummm&#8230; Magic</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-27T16:41:00-04:00" pubdate data-updated="true">Aug 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>entension conversion</h3>
+
+<ul>
+<li>discovered <a href="http://www.imagemagick.org/script/mogrify.php">mogrify</a> which does bulk actions. I really need to convert .svgs to .pngs and this was a life saver.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
         <h1 class="entry-title"><a href="/blog/rubymotion-alarm/">RubyMotion Alarm</a></h1>
       
     
@@ -117,7 +745,29 @@
   </header>
 
 
-  <div class="entry-content"><h2>positioning</h2>
+  <div class="entry-content"><h3>To Read</h3>
+
+<ul>
+<li><a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html">human interface guide</a></li>
+<li>motion config vars</li>
+</ul>
+
+
+<h3>Reachability</h3>
+
+<ul>
+<li>I had all sorts of problems with the <code>reachability</code> pod on the device, while I saw no such problems on the simulator. Pretty frustrating.</li>
+<li>The reachability methods seemed to be returning true even if there was no connection and it also seemed to screw up my simple requests to an external API.</li>
+<li>Still not quite sure what was wrong, but as soon as I stripped out reachability the behavior returned to normal.
+
+<ul>
+<li>reachability resources I consulted were <a href="http://sxross-blog.herokuapp.com/2013/02/25/reachability-and-ruby-motion/">here</a> <a href="http://joshsymonds.com/blog/2013/02/04/reachability-with-rubymotion/">and here</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>positioning</h2>
 
 <ul>
 <li>UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify the frame, in the following format:
@@ -410,6 +1060,42 @@
 <li>subviews are not found the same way as top level views</li>
 </ul>
 
+
+<h3>Location</h3>
+
+<ul>
+<li>bubblewrap provides the call <code>BW::Location.get_once { |location|}</code> which get the location just once and returns a CLLManager object. Bubblewrap offers a number of methods that can be called on the this object such as latitude and longitude.
+
+<ul>
+<li>a list of bubblewrap location methods <a href="https://github.com/rubymotion/BubbleWrap/blob/master/motion/location/location.rb">can be found here</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>NSData</h3>
+
+<ul>
+<li> Getting back NSConcreteData from an API call.
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/1113811/what-is-nsconcretedata-and-where-is-it-defined">advice on stackoverflow</a> is to: ignore the existence of NSConcreteData and treat it like NSData</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Basic web service</h3>
+
+<ul>
+<li><p>users will be able to receive random motivational messages from other users</p></li>
+<li><p>set up sinatra to post .json from DB</p></li>
+<li><p>BW::HTTP get (URL) data</p></li>
+<li><p>BW::HTTP post (URL) data</p></li>
+<li><p>sinatra receives message and writes to DB</p></li>
+<li><p><code>BW::HTTP</code> also has methods to make sure the response comes back ok. Not surprisingly, this is <code>response.ok?</code>. Just make sure to use this to quasi-rescue a method that depends on a request.</p></li>
+</ul>
+
 </div>
   
   
@@ -547,724 +1233,6 @@ config.include FactoryGirl::Syntax::Methods
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/english-tennis/">English Tennis</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-18T18:21:00-04:00" pubdate data-updated="true">Jun 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Active Admin</h3>
-
-<ul>
-<li>weird error was based on <a href="https://github.com/gregbell/active_admin/issues/2053">routes order</a></li>
-</ul>
-
-
-<h3>Heroku add key</h3>
-
-<ul>
-<li>heroku git:remote -a rolex-wimbledon</li>
-</ul>
-
-
-<h3>Twitter Gem</h3>
-
-<ul>
-<li>can passing in <a href="https://github.com/sferik/twitter/blob/887f72586c323a9d9750072697edf78b9d4c29ab/lib/twitter/api/timelines.rb#L43">parameters to limit the call</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/moving-spoof/">Moving Spoof</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-23T11:28:00-04:00" pubdate data-updated="true">May 23<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Roots</h3>
-
-<ul>
-<li>Used <a href="http://roots.cx/">roots</a> on this. Super fast. It is probably faster to prototype in roots than it would be to design it in photoshop.</li>
-<li><a href="http://roots.cx/axis/">the grid</a> is easy to add to any stylesheet.</li>
-</ul>
-
-
-<h3>CSS Magic</h3>
-
-<ul>
-<li><a href="http://jsfiddle.net/kdFdt/8/">dog ear background</a></li>
-<li><a href="http://css-tricks.com/snippets/css/css-box-shadow/">box-shadow</a></li>
-</ul>
-
-
-<h3>Custom twitter button</h3>
-
-<ul>
-<li><a href="http://www.webpop.com/blog/2011/02/16/add-a-custom-twitter-button-to-your-website">pop-up window trigger</a>
-
-<ul>
-<li>I did have a little trouble loading the javascript in jade, so I put it in the main coffee file</li>
-</ul>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/service-objects/">Service Objects</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-08T10:00:00-04:00" pubdate data-updated="true">May 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>rails cast #398</h2>
-
-<h3>Modules</h3>
-
-<ul>
-<li><p>models may have lots of behavior that isn&#8217;t related, so it probably doesn&#8217;t belong in the model layer -> usually a result of pushing behavior from the controller to the model</p>
-
-<ul>
-<li>create a concerns folder that lives in the models folder
-
-<ul>
-<li>possibly namespace the module in a class folder if only used for a specific model</li>
-</ul>
-</li>
-<li>change the autoload config path to include the concerns folder</li>
-<li>include module in the model</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#namespace in class if only going to use it in that class</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">User</span>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">Authentication</span>
-</span><span class='line'>    <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#this gets scoped to the context of the class when included</span>
-</span><span class='line'>    <span class="n">included</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">has_secure_password</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#this makes these class methods instead of instance methods</span>
-</span><span class='line'>    <span class="k">module</span> <span class="nn">ClassMethods</span>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-</span><span class='line'>       <span class="c1">#code</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Ryan Bates&#8217; <a href="https://gist.github.com/ryanb/4172391">issues with modules</a></li>
-<li><a href="http://stevenharman.net/bag-of-methods-module-and-grep-driven-development">BOMM and GDD</a></li>
-<li><p><a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/">7 ways to decompose fat models</a></p></li>
-<li><p><a href="http://37signals.com/svn/posts/3372-put-chubby-models-on-a-diet-with-concerns"><em>Chubby models</em>, a blog post by DHH</a></p>
-
-<ul>
-<li>in rails 4, the concerns folder will be created by default</li>
-<li>&#8220;This approach to breaking up domain logic into concerns is similar in some ways to the DCI notion of Roles&#8221;</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Service Objects</h3>
-
-<ul>
-<li>we are in the habit of pushing behavior from the controller to the model, but often the behavior in the controller is nicely isolated. Sometimes we need a new kind of object commonly referred to as a <em>service object</em>.</li>
-<li>the service object gets it&#8217;s own folder in the app folder and <a href="https://github.com/railscasts/398-service-objects/blob/master/auth-services/app/services/authentication.rb">looks like this</a></li>
-<li>this puts all the action related behavior in one place and keeps the model focused on validations, accessibility, etc.</li>
-<li><p>likely works best when we have a complex controller action that interacts with a complex model</p></li>
-<li><p><strong>testing</strong>:</p>
-
-<ul>
-<li>create a services level dir and and easily test the class directly similarly to how one would test the models</li>
-</ul>
-</li>
-<li><p><strong>Further Reading</strong></p>
-
-<ul>
-<li><a href="http://stevelorek.com/service-objects.html">Steve Lorek explains service objects</a></li>
-</ul>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ugc-aka-david/">Ugc Aka David</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-06T12:07:00-04:00" pubdate data-updated="true">May 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It is common to create apps that heavily depend on user generated content. David is an attempt to build the prototypical user generated content app. One that we will be able to reuse in the future.</p>
-
-<p>The structure on creating such an app was challenging for me to conceptualize. I would anticipate that we will use David most of the time for image submissions only, but juggling multiple MIME type submission is the real challenge and therefore would be the greatest benefit to solve. Given this, how should this application be structured? Should the individual types (images, videos, text, audio, etc) inherit from a centralized submission class? Should that centralized class be a module that is included in each of the individual classes? Where would one build out the features for a custom app?</p>
-
-<p>After discussing with Kyle for a while, he decided that it was probably safest to build an add-on to CarrierWave that would accomplish this for us. This would leave the uploaders available for customization, while keeping the classes more pristine.</p>
-
-<p>There are a whole mess of add-ons <a href="https://github.com/jnicklas/carrierwave/wiki">listed</a>.</p>
-
-<p>Next, deciding on where this add-on would live. Should this be a gem or live in the lib folder?</p>
-
-<h3>Mixed context processor uploading</h3>
-
-<ul>
-<li><a href="https://github.com/jnicklas/carrierwave/wiki/How-to%3A-Do-conditional-processing">how to do conditional processing</a></li>
-<li><a href="https://gist.github.com/ahamid/995663">a gist</a></li>
-</ul>
-
-
-<h3>Adding Versions</h3>
-
-<ul>
-<li><a href="https://github.com/jnicklas/carrierwave#adding-versions">Adding versions straight from the horses mouth</a></li>
-</ul>
-
-
-<h3>FB SDK</h3>
-
-<ul>
-<li>so I jumped right into trying to call SDK methods without understanding how the SDK was initialized.
-
-<ul>
-<li><a href="https://developers.facebook.com/docs/reference/javascript/#loading">the documentation</a> is pretty clear, but I had just been able to call on the SDK in previous projects, so I didn&#8217;t understand what was different. Carrot-facebook had taken care of this under the hood.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Javascript Event Listeners</h3>
-
-<ul>
-<li>excellent explanation of the difference between</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">someFunction</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">code</span>
-</span><span class='line'>    <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>and</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span> <span class="nx">someFunction</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>which is REALLY different from:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">someFunction</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;this doesn&#39;t work&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I don&#8217;t have a firm handle on event listeners, but this is a good lesson to get my feet wet.</p>
-
-<h3>Asset Path</h3>
-
-<ul>
-<li>stupid problem. I loaded a library to the vendor folder, but it wasn&#8217;t loading. I tried specifying the route even though I know that the asset pipeline picks up everything in the vendor folder.
-
-<ul>
-<li>ended up being the .min extension. Once I explicitly specified the extension (.min.js), it found it.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Instagram</h3>
-
-<ul>
-<li>there is a <a href="https://github.com/Instagram/instagram-ruby-gem">instagram ruby gem</a> that looks very similar the <a href="https://github.com/pengwynn/">Pengwynn</a> style ruby wrappers</li>
-<li>for David, I&#8217;ll be using <a href="http://mikefowler.me/instajam/">instajam</a> by Mike Fowler so that I can load the photo via javascript</li>
-</ul>
-
-
-<h3>Factory Girl</h3>
-
-<ul>
-<li><a href="http://robots.thoughtbot.com/post/9713995255/factorygirl-2-1-0-brings-the-heat">factory girl hooks</a></li>
-<li><a href="http://icelab.com.au/articles/factorygirl-and-has-many-associations/">factory girl associations</a></li>
-</ul>
-
-
-<h3>Rating system</h3>
-
-<ul>
-<li><a href="http://railscasts.com/episodes/364-active-record-reputation-system">active record reputation system</a></li>
-</ul>
-
-
-<h3>Responds with</h3>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/6118639/rails-respond-with-how-does-it-work">solid responds with explanation</a></li>
-</ul>
-
-
-<h3>Pagination</h3>
-
-<ul>
-<li><a href="https://github.com/amatsuda/kaminari">kaminari</a> -> uses several partials to render the different options, need to override partials to customize the behavior. Because of this technique, Kaminari might be a wee bit slower than will_paginate. ActiveAdmin uses Kaminari.</li>
-<li><a href="https://github.com/mislav/will_paginate">will_paginate</a> -> uses Ruby options to customize.</li>
-</ul>
-
-
-<h3>Integration Tests</h3>
-
-<ul>
-<li>with rspec
-
-<ul>
-<li>install rspec
-
-<ul>
-<li><code>rails g integration_test modelname</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Copy to clipboard</h3>
-
-<ul>
-<li>it appears that the most dependable implementation is with flash. See <a href="http://www.jquery4u.com/plugins/jquery-copy-clipboard-4-options/">4 different ways</a> and ZeroClipboard(https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md) which I eventually settled on. There is a nice step-by-step tutorial by <a href="http://davidwalsh.name/clipboard">David Walsh</a>.</li>
-<li>put the flash file in the public folder rather than the asset path since it will remain untouched rather than serve dynamic content.</li>
-</ul>
-
-
-<h3>completed</h3>
-
-<ul>
-<li>one central controller with meta programmed methods to redirect to the proper path using service</li>
-<li>models that inherit from a specific media type</li>
-<li>override file column on submissions model -> just made it optional for text, can I make that only the case for text?</li>
-<li>do for images and video what I did for text</li>
-<li><p>create a whitelist of acceptable uploads per type / identify the type by the extension?</p></li>
-<li><p>Facebook</p>
-
-<ul>
-<li>create credentials table with type, uid, access token, and user_id from Omniauth</li>
-<li>pull photos with javascript like in oakley</li>
-<li>authenticate with button and pull up a gallery of FB photos
-
-<ul>
-<li>select which one you want and store the URL</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>instagram gallery of photos</li>
-</ul>
-
-
-<p>  -testing
-  - once photos selected, they need to be saved to DB under UrlSubmission
-  - reassigning the token for FB auth</p>
-
-<h3>Goals</h3>
-
-<ul>
-<li><p>understand how version works</p></li>
-<li><p>testing js with jasmine</p></li>
-<li><p>gallery (what&#8217;s been submitted and saved to DB)</p>
-
-<ul>
-<li>highest rated (rating system)</li>
-<li>/most recent (reverse time)</li>
-<li>/pagination</li>
-<li><p>see friend&#8217;s photos (hold off)</p></li>
-<li><p>copy url from submission show page functionality</p>
-
-<ul>
-<li>https://github.com/jonrohan/ZeroClipboard</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>rating system</p>
-
-<ul>
-<li>limit frequency</li>
-<li>time gate</li>
-</ul>
-</li>
-<li><p>winner selection lib (maybe in the end, randomly, highest rated?)</p></li>
-</ul>
-
-
-<h3>Deficiencies</h3>
-
-<ul>
-<li>no photo resizing thus far</li>
-<li>lacks integration/JS/Ajax. limited unit tests.</li>
-<li>distinguish types by white labeling extensions per type, just one white labeling group right now for all types</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fancy-specs/">Fancy Specs</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-30T11:10:00-04:00" pubdate data-updated="true">Apr 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Multiple content tags</h3>
-
-<ul>
-<li><a href="http://gabriel-dehan.github.io/2012/08/07/render-multiple-tags-in-a-helper/">need to concat multiple content tags</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/pergola/">Pergola</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-25T11:25:00-04:00" pubdate data-updated="true">Apr 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Names</h3>
-
-<ul>
-<li>Taken
-
-<ul>
-<li>ivy</li>
-<li>trellis</li>
-<li>grapevine</li>
-<li>chlorophyll</li>
-<li>vinify</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Building the gem</h3>
-
-<ul>
-<li>Ryan Bates <a href="http://railscasts.com/episodes/245-new-gem-with-bundler">you stud</a></li>
-<li>create the gem with builder <strong>before</strong> you create files within it.</li>
-</ul>
-
-
-<h3>Removing a file from Github</h3>
-
-<ul>
-<li><code>git rm examples/all.rb</code></li>
-<li><code>git rm examples/all.rb --cached</code> leaves a local version</li>
-</ul>
-
-
-<h3>class &lt;&lt; self</h3>
-
-<ul>
-<li>see nice stackoverflow responses <a href="http://stackoverflow.com/questions/2505067/class-self-idiom-in-ruby">here</a> and <a href="http://stackoverflow.com/questions/2567956/rails-class-self">here</a></li>
-<li><a href="http://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/">katz write up</a></li>
-</ul>
-
-
-<h3>Reading</h3>
-
-<ul>
-<li><a href="https://github.com/starlock/vino/wiki/API-Reference">API reference</a></li>
-<li><a href="http://www.gironda.org/2013/02/25/digging-in-the-vineyard-part-1.html">Digging in the Vineyard</a></li>
-</ul>
-
-
-<h3>Hacking vine</h3>
-
-<ul>
-<li><p>thumbnails and videos are posted to s3, they cannot be self hosted for example, so one could repost other videos from the validated s3 bucket.</p>
-
-<ul>
-<li>thumbnails seem to be able to be hosted from anywhere&#8230;</li>
-</ul>
-</li>
-<li><p>20 second vines.</p>
-
-<ul>
-<li><a href="http://www.addictivetips.com/ios/how-to-share-vine-videos-longer-than-6-seconds/">here</a> and <a href="http://animalnewyork.com/2013/how-to-make-a-20-second-vine/">here</a></li>
-<li>this hack has been closed. They just crash the app now.</li>
-</ul>
-</li>
-<li><p>hacking the AWS s3 bucket</p>
-
-<ul>
-<li>wonder if they can be hosted by any s3 bucket? likely not, but worth a try.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Publishing the Gem</h3>
-
-<ul>
-<li>Used <a href="https://github.com/carrot/hw/blob/master/hw.gemspec">Hemingway</a> as a nice template.
-
-<ul>
-<li>notice he used gem instead of spec as the variable name</li>
-<li>added the dependencies in the gemspec</li>
-</ul>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/calendar-app-2/">Calendar App 2</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-24T12:35:00-04:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Active Admin</h3>
-
-<ul>
-<li><a href="http://www.tomordonez.com/blog/2012/06/22/add-an-activeadmin-adminuser-through-rails-console/">creating a user through the console</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1280,23 +1248,23 @@ config.include FactoryGirl::Syntax::Methods
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/rubymotion-alarm/">RubyMotion Alarm</a>
+        <a href="/blog/grape-api/">Grape Api</a>
       </li>
     
       <li class="post">
-        <a href="/blog/planes/">planes</a>
+        <a href="/blog/memories-and-holiday/">memories and holiday</a>
       </li>
     
       <li class="post">
-        <a href="/blog/ruby-motion-meetup/">ruby motion meetup</a>
+        <a href="/blog/turbolinks/">turbolinks</a>
       </li>
     
       <li class="post">
-        <a href="/blog/english-tennis/">English Tennis</a>
+        <a href="/blog/rum-fun/">Rum Fun</a>
       </li>
     
       <li class="post">
-        <a href="/blog/moving-spoof/">Moving Spoof</a>
+        <a href="/blog/objective-c-for-rubyists/">objective-c for rubyists</a>
       </li>
     
   </ul>
