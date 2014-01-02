@@ -135,97 +135,10 @@ This the gem we used to install the UA code in the footer, also used this for re
 <h3>Local Storage</h3>
 
 <ul>
-<li>used <a href="https://github.com/marcuswestin/store.js">store.js</a></li>
-<li>nice <a href="http://javascriptplayground.com/blog/2012/06/javascript-local-storage-store-js-tutorial">little screencast</a></li>
-<li>here is an <a href="http://coding.smashingmagazine.com/2010/10/11/local-storage-and-how-to-use-it/">older article</a> from 2010</li>
-<li><em>NOTE:</em> We ended up using <a href="https://github.com/marcuswestin/store.js/blob/master/store%2Bjson2.min.js">store.js with json</a> because ie7 apparently doesn&#8217;t come equiped with JSON. Tom and I broke our heads trying to figure out why <code>store.enabled</code> wasn&#8217;t <code>true</code> for ie7. It came down to the fact that ie7 didn&#8217;t have JSON.</li>
+<li>see the local storage article</li>
+<li>I think this was the first time I used the <a href="http://stackoverflow.com/questions/7398354/in-coffeescript-how-do-you-append-a-value-to-an-array">push method</a> in coffeescript.</li>
 </ul>
 
-
-<p>Thought this was a cool little way to store whether a td square had been clicked on&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>addRedTiles: -&gt;
-</span><span class='line'>  selected = store.get("board_#{@board_id}")
-</span><span class='line'>
-</span><span class='line'>  for tile_number in selected
-</span><span class='line'>    $("[data-title-num=#{tile_number}]").addClass('clicked_space')
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>duringBoardClick: -&gt;
-</span><span class='line'>  if store.enabled
-</span><span class='line'>    $('td').click =&gt;
-</span><span class='line'>      $(event.target).toggleClass('clicked_space')
-</span><span class='line'>      clicked_tiles = []
-</span><span class='line'>      all_clicked = $('td.clicked_space')
-</span><span class='line'>
-</span><span class='line'>      for tile in all_clicked
-</span><span class='line'>        clicked_tiles.push $(tile).attr('data-title-num')
-</span><span class='line'>
-</span><span class='line'>      store.set("board_#{@board_id}", clicked_tiles)
-</span><span class='line'>  else
-</span><span class='line'>    console?.log? 'store is not enabled'</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>This needed to be updated b/c of event.targer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">duringBoardClick</span><span class="o">:</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">store</span><span class="p">.</span><span class="nx">enabled</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">board_id</span> <span class="o">=</span> <span class="err">@</span><span class="nx">board_id</span>
-</span><span class='line'>    <span class="err">\\</span><span class="nx">notice</span> <span class="nx">that</span> <span class="nx">I</span> <span class="nx">declared</span> <span class="nx">the</span> <span class="nx">above</span> <span class="nx">variable</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">).</span><span class="nx">click</span> <span class="o">-&gt;</span> <span class="err">\\</span><span class="nx">and</span> <span class="nx">changed</span> <span class="k">this</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">single</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="err">@</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;clicked_space&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">clicked_tiles</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span class='line'>      <span class="nx">all_clicked</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td.clicked_space&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">tile</span> <span class="k">in</span> <span class="nx">all_clicked</span>
-</span><span class='line'>        <span class="nx">clicked_tiles</span><span class="p">.</span><span class="nx">push</span> <span class="nx">$</span><span class="p">(</span><span class="nx">tile</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-title-num&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">store</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;board_#{board_id}&quot;</span><span class="p">,</span> <span class="nx">clicked_tiles</span><span class="p">)</span>
-</span><span class='line'>      <span class="err">\\</span><span class="nx">board</span> <span class="nx">then</span> <span class="nx">becomes</span> <span class="nx">a</span> <span class="nx">local</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="nx">console</span><span class="o">?</span><span class="p">.</span><span class="nx">log</span><span class="o">?</span> <span class="s1">&#39;store is not enabled&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I think this was the first time I used the <a href="http://stackoverflow.com/questions/7398354/in-coffeescript-how-do-you-append-a-value-to-an-array">push method</a> in coffeescript.</p>
 
 <h3>Z-index</h3>
 
@@ -338,23 +251,23 @@ This the gem we used to install the UA code in the footer, also used this for re
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/grape-api/">Grape Api</a>
+        <a href="/blog/require-dot-js/">require.js</a>
       </li>
     
       <li class="post">
-        <a href="/blog/memories-and-holiday/">memories and holiday</a>
+        <a href="/blog/wearables/">wearables</a>
       </li>
     
       <li class="post">
-        <a href="/blog/turbolinks/">turbolinks</a>
+        <a href="/blog/rack/">rack</a>
       </li>
     
       <li class="post">
-        <a href="/blog/rum-fun/">Rum Fun</a>
+        <a href="/blog/bash/">bash</a>
       </li>
     
       <li class="post">
-        <a href="/blog/objective-c-for-rubyists/">objective-c for rubyists</a>
+        <a href="/blog/asynch-js/">asynch js</a>
       </li>
     
   </ul>
@@ -400,7 +313,7 @@ This the gem we used to install the UA code in the footer, also used this for re
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Adam Jonas -
+  Copyright &copy; 2014 - Adam Jonas -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

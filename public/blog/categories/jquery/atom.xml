@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jquery | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/jquery/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2013-11-11T15:27:48-05:00</updated>
+  <updated>2014-01-01T21:27:38-05:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,20 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[jquery promises]]></title>
+    <link href="http://www.adamjonas.com/blog/jquery-promises/"/>
+    <updated>2013-11-15T15:41:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/jquery-promises</id>
+    <content type="html"><![CDATA[<p>A <strong>Promise</strong> is an object that represents a one-time event, typically the outcome of an async task like an AJAX call.</p>
+
+<ul>
+<li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/wrangle-async-tasks-with-jquery-promises/">started here</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[FIS Day29]]></title>
@@ -765,154 +779,6 @@ So it looks for tag.js as the default...</p>
 <li>push in tag name signal</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[jquery-air-intermediate]]></title>
-    <link href="http://www.adamjonas.com/blog/jquery-air-intermediate/"/>
-    <updated>2012-08-15T15:35:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/jquery-air-intermediate</id>
-    <content type="html"><![CDATA[<p><code>javascript Retriving the href
-$('#tabs ul li:last a').attr('href')
-$('#tabs ul li:last a').data('flights') //this would be from an html5 data tag
-</code></p>
-
-<ul>
-<li>event delegation-</li>
-<li>it can be method chained and performs faster than live</li>
-<li>'$(document).delegate'</li>
-</ul>
-
-
-<p><strong><em>Don't forget the brackets on the selector!!</em></strong></p>
-
-<h3>eq selector</h3>
-
-<p><code>javascript eq(element#) - a selector
-$('ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3)').html­()
-</code></p>
-
-<p><code>javascript
-$('ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a').a­ttr('href'­);
-// to access the href you need to specify the a tag
-$('ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a').d­ata('seat'­);
-</code></p>
-
-<p><code>javascript
-$('div.seating-chart a.available').click(function (event){
-  event.preventDefault();
-  $('a.available').removeClass("selected")
-  $(this).addClass("selected")
-});
-</code></p>
-
-<h3>Bind Element</h3>
-
-<ul>
-<li>jQuery bind() function is used to attach an event handler to elements, while the unbind() is used to detached an existing event handler from elements.</li>
-</ul>
-
-
-<p><code>javascript
-$('div.seating-chart a.available').bind({
-  click: selectSeat
-});
-</code></p>
-
-<ul>
-<li>This allows you to list multiple events for each element. NOTE the different syntax, this becomes like a MAP now (very similar to a hash)</li>
-</ul>
-
-
-<h3>Unbind Element</h3>
-
-<ul>
-<li>Let’s imagine the following scenario...</li>
-<li>The user clicks on a “vote” button.</li>
-<li>Some AJAX calls are performed.</li>
-<li>After a successful AJAX call you setup a cookie to deny further votes from this machine.</li>
-<li><p>So one possible solution is to unbind the click event...</p></li>
-<li><p>Have something happen on a click event, but only once! Unbind the click handler after the element has been clicked once.</p></li>
-</ul>
-
-
-<p>```javascript Once and only once...
-$('#my-selector').bind('click', function() {</p>
-
-<pre><code>   $(this).unbind('click');
-   alert('Clicked and unbound!');
-</code></pre>
-
-<p>});
-<code>
-</code>javascript Jquery Air
-function selectSeat(e) {
-  e.preventDefault();
-  $('.selected').removeClass('selected');
-  $(this).addClass('selected').unbind("click", selectSeat);
-  $('#seatSelected').text($(this).data('seat'));
-  $('#confirm-seat').show();
-}</p>
-
-<p>$('div.seating-chart li a.available').click(selectSeat);
-```</p>
-
-<h3>Live Event</h3>
-
-<p><code>$('a.confirm-upgrade').live("click", confirmUpgrade);</code></p>
-
-<ul>
-<li>Bind binds to the event one time</li>
-<li>Live will look for that event now or in the future and will catch it and call the right function</li>
-</ul>
-
-
-<h3>Delegate</h3>
-
-<p><code>javascript Delegate &gt; live
-$('#flights a').live("click", selectFlight);
-// is the same as
-$(document).delegate("#flights a", "click", selectFlight);
-// this is too general. It would be better if you just checked inside a specific element
-$(#tabs div).delegate("#flights a", "click", selectFlight);
-// check inside the element rather than the entire page
-</code></p>
-
-<ul>
-<li>Delegate can be method chained and it is more performant</li>
-</ul>
-
-
-<h3>Ajax</h3>
-
-<ul>
-<li>Video2</li>
-<li>$.get and $.ajax are alternatives. $.ajax is slightly more</li>
-<li>cache: false option ensures that your browser won't cache the html for every request</li>
-<li>Error handling</li>
-<li>Loading div - call beforeSend the AJAX invoked then hide it in the complete:</li>
-<li>If it returns successfully - success: and if not - error:</li>
-</ul>
-
-
-<h3>Mistake I keep making</h3>
-
-<p>```javascript
-function fetchFirstClassConfirm() {
-  var flight_id = 815;
-  var url = '/flights/' + flight_id
-  $.ajax(url, {</p>
-
-<pre><code>success: function(result) {
-  $('#confirm-first-class').html(result).show();
-  //I have a big problem missing the '' in the selector!
-}
-</code></pre>
-
-<p>  });
-}
-```</p>
 ]]></content>
   </entry>
   

@@ -9,3 +9,19 @@ categories: api grape
 ##[Grape](https://github.com/intridea/grape)
   - Grape is a REST-like API micro-framework for Ruby. It's designed to run on Rack or complement existing web application frameworks such as Rails and Sinatra by providing a simple DSL to easily develop RESTful APIs.
   - Here is a nice [slide share](http://www.slideshare.net/yorzi/rapid-rubyapiongrape-8674582) of the API possibilities (though it is from 2011).
+  - [some tips here](http://joeybeninghove.com/2012/01/21/grape-apis-few-quick-tidbits/)
+
+###Rack::Cors
+  - Rack::Cors provides support for Cross-Origin Resource Sharing (CORS) for Rack compatible web applications. The CORS spec allows web applications to make cross domain AJAX calls without using workarounds such as JSONP.
+  - [explaination worth reading](http://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/)
+
+###Trouble with protected_attributes
+  - rails 4 -- learned via [issue 12360](https://github.com/rails/rails/issues/12360) that protected_attr needs to be up to date. In my case, v 1.0.5.
+
+###Rack Console
+  - used gem [`racksh`](https://github.com/sickill/racksh) for a rack console. Pretty dandy.
+
+###Mind f^ck
+  - [active_record_migrations](https://github.com/rosenfeld/active_record_migrations) worked when vendored locally, but the config options were not configuring anything when remote.
+    - went hunting in [active_record](https://github.com/rails/rails/tree/master/activerecord) (specifically in the [postgres adapter](https://github.com/rails/rails/blob/d8b173607da94419e841c4d36f251987c9acf156/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb), but didn't find anything to solve the problem. Some [cool datatypes](https://github.com/rails/rails/blob/d8b173607da94419e841c4d36f251987c9acf156/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb#L390) in there though. 
+  - ended up using the `DATABASE_URL` env instead of database.yml to configure the postgres DB.

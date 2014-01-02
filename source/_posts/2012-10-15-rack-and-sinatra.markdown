@@ -15,12 +15,12 @@ categories: rack sinatra
 *Think about solutions not syntax*
 
 ###Rack 
->A modular web server interface
+> A modular web server interface
 
   - Rack App
     - a ruby object that responses to a call method, taking a single hash parameter and returning an array which contains the response status code, response headers
 
->Rack applications are objects that respond to call. They must return a "triplet". A triplet contains the status code, headers, and body. Here's an example class that shows "hello world."
+> Rack applications are objects that respond to call. They must return a "triplet". A triplet contains the status code, headers, and body. Here's an example class that shows "hello world."
 
     class HelloWorld
       def response
@@ -33,7 +33,7 @@ categories: rack sinatra
   - Middleware
     - stuff stuck in the middle of a process
 
-rack sits in the middle of your app and webserver
+  - rack sits in the middle of your app and webserver
   
   - You have to instantiate the Rack application (oh duh)[http://stackoverflow.com/questions/15572392/why-does-rails-generate-a-config-ru-that-runs-a-class-not-an-object]
 
