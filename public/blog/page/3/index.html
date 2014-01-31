@@ -9,7 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Active Admin weird error was based on routes order Heroku add key heroku git:remote -a rolex-wimbledon Twitter Gem can passing in parameters to limit &hellip;">
+  <meta name="description" content="To Read human interface guide
+motion config vars Reachability I had all sorts of problems with the reachability pod on the device, while I saw no &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,524 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-alarm/">RubyMotion Alarm</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-05T13:34:00-04:00" pubdate data-updated="true">Aug 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>To Read</h3>
+
+<ul>
+<li><a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html">human interface guide</a></li>
+<li>motion config vars</li>
+</ul>
+
+
+<h3>Reachability</h3>
+
+<ul>
+<li>I had all sorts of problems with the <code>reachability</code> pod on the device, while I saw no such problems on the simulator. Pretty frustrating.</li>
+<li>The reachability methods seemed to be returning true even if there was no connection and it also seemed to screw up my simple requests to an external API.</li>
+<li>Still not quite sure what was wrong, but as soon as I stripped out reachability the behavior returned to normal.
+
+<ul>
+<li>reachability resources I consulted were <a href="http://sxross-blog.herokuapp.com/2013/02/25/reachability-and-ruby-motion/">here</a> <a href="http://joshsymonds.com/blog/2013/02/04/reachability-with-rubymotion/">and here</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>positioning</h2>
+
+<ul>
+<li>UI elements in iOS have a frame. Think of it as the frame for a photograph on your wall. When you create elements, you have to specify the frame, in the following format:
+
+<ul>
+<li>[[x, y], [width, height]]</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>CocoaPods</h2>
+
+<ul>
+<li>like RubyGems for ruby</li>
+<li>nice summary <a href="http://mobile.tutsplus.com/tutorials/iphone/streamlining-cocoa-development-with-cocoapods/">here</a></li>
+</ul>
+
+
+<h2>add_periodic_timer</h2>
+
+<ul>
+<li>run this code every second -> <code>EM.add_periodic_timer 1.0 do</code></li>
+<li><code>add_periodic_timer</code> is actaully an <a href="http://eventmachine.rubyforge.org/EventMachine.html">event machine</a> method</li>
+<li>this is made possible by the bubblewrap which used BW::Reactor
+
+<ul>
+<li>BW::Reactor is a simplified, mostly complete implementation of the Event Machine API. In fact BW::Reactor is aliased to EM in the runtime environment.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Leading zeros</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/5810468/leading-zeros-in-rails"><code>rjust(integer, padstr=' ') → new_str</code></a></li>
+</ul>
+
+
+<h3>Promotion slide menu</h3>
+
+<ul>
+<li>we started by using <a href="https://github.com/macfanatic/promotion_slide_menu">this</a> but dropped it and dropped promotion altogether.</li>
+</ul>
+
+
+<h3>Colors with bubble wrap</h3>
+
+<ul>
+<li>instead of <code>UIColor.whiteColor</code> you can just do <code>'white'.to_color</code></li>
+</ul>
+
+
+<h3>Delegates for input field</h3>
+
+<figure class='code'><figcaption><span>Delegate pattern</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">on_load</span>
+</span><span class='line'>    <span class="vi">@input_field</span> <span class="o">=</span> <span class="no">UITextField</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">add</span><span class="p">(</span><span class="vi">@input_field</span><span class="p">,</span> <span class="n">setting_input_style</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@input_field</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># - (BOOL)textFieldShouldReturn:(UITextField *)textField</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">textFieldShouldReturn</span><span class="p">(</span><span class="n">textField</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">urlString</span> <span class="o">=</span> <span class="n">textField</span><span class="o">.</span><span class="n">text</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">urlString</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="n">loadRequest</span><span class="p">(</span><span class="n">urlString</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">textField</span><span class="o">.</span><span class="n">resignFirstResponder</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>initWithFrame</h3>
+
+<ul>
+<li>Can&#8217;t pass in parameters to initWithFrame and having trouble setting variables. So invoke a new method called &#8216;initWithFrameAndImage&#8217; passing the neccessary parameters and then call initWithFrame within that method.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">initWithFrameAndImage</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">picture</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">initWithFrame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@time_pic</span> <span class="o">=</span> <span class="no">UIImageView</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithImage</span><span class="p">(</span><span class="no">UIImage</span><span class="o">.</span><span class="n">imageNamed</span><span class="p">(</span><span class="n">picture</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">add</span><span class="p">(</span><span class="vi">@time_pic</span><span class="p">)</span> <span class="c1">#, tile_style)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">set_attributes</span> <span class="nb">self</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">background_color</span><span class="p">:</span> <span class="n">hex_color</span><span class="p">(</span><span class="s2">&quot;F6F6F6&quot;</span><span class="p">),</span>
+</span><span class='line'>    <span class="ss">layer</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">shadow_radius</span><span class="p">:</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">shadow_opacity</span><span class="p">:</span> <span class="mi">0</span><span class="o">.</span><span class="mi">4</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">shadow_color</span><span class="p">:</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">blackColor</span><span class="o">.</span><span class="n">CGColor</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nb">self</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Scrolling</h3>
+
+<ul>
+<li>adding elements to a scroll is rather easy with promotion. Keep in mind that you can&#8217;t be adding multiple elements as a splat or anything. If you are iterating over a bunch of tiles, for example, they need to be added to the UIScrollView individually.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">on_load</span>
+</span><span class='line'>  <span class="vi">@scroll</span> <span class="o">=</span> <span class="n">add</span> <span class="no">UIScrollView</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">add_to</span> <span class="vi">@scroll</span><span class="p">,</span> <span class="n">element</span>
+</span><span class='line'>  <span class="vi">@scroll</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">bounds</span>
+</span><span class='line'>  <span class="vi">@scroll</span><span class="o">.</span><span class="n">contentSize</span> <span class="o">=</span> <span class="no">CGSizeMake</span><span class="p">(</span><span class="vi">@scroll</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">content_height</span><span class="p">(</span><span class="vi">@scroll</span><span class="p">)</span> <span class="o">+</span> <span class="mi">20</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Stuff I didn&#8217;t understand</h3>
+
+<ul>
+<li><code>makeKeyAndVisible</code> specifies which window is current. Despite the fact that most apps only have one window, there is no way to assume that your primary window is to be the key window. Therefore you must explicitly call makeKeyAndVisible. <a href="http://stackoverflow.com/questions/14714688/examples-where-makekeyandvisible-is-not-required-for-uiwindow">see</a></li>
+<li>Use a UIScrollView with pagingEnabled=YES to switch between pages, but you need pagingEnabled=NO to scroll vertically. <a href="http://stackoverflow.com/questions/728014/uiscrollview-paging-horizontally-scrolling-vertically">see</a></li>
+<li>The purpose of dequeueReusableCellWithIdentifier is to use less memory. If the screen can fit 4 or 5 table cells, then with reuse you only need to have 4 or 5 table cells allocated in memory even if the table has 1000 entries.<a href="http://stackoverflow.com/questions/2928873/iphone-dequeuereusablecellwithidentifier-usage">see</a></li>
+<li>can&#8217;t add a target to a UIView. Need to add a UIButton to the UIView and THEN add a target to the UIButton.</li>
+<li>bringSubviewToFront</li>
+<li>clipsToBounds -> like overflow hidden. great for circular mask type images.</li>
+<li>toll-free bridge => ruby class inheriting from objective-c ancestors so that both ruby and objective-c methods can be called on an object.</li>
+</ul>
+
+
+<h3>CALayers</h3>
+
+<ul>
+<li>CALayers are simply classes representing a rectangle on the screen with visual content. A <a href="http://www.raywenderlich.com/2502/calayers-tutorial-for-ios-introduction-to-calayers-tutorial">tutorial</a></li>
+</ul>
+
+
+<h3>RMQ => JQuery for RubyMotion</h3>
+
+<ul>
+<li>jQuery-like <a href="https://github.com/infinitered/rmq">library for RubyMotion</a></li>
+<li><a href="https://ir_public.s3.amazonaws.com/projects/rmq/rmq_guide.pdf">pdf reference of methods</a></li>
+</ul>
+
+
+<h3>Garbage Collection</h3>
+
+<ul>
+<li>RubyMotion’s memory management system is designed to simplify the development process. Unlike traditional Objective-C programming, object references are automatically created and destroyed by the system. It is very similar to Objective-C’s ARC, in design, but it is differently implemented. <a href="https://groups.google.com/forum/#!topic/rubymotion/hXvb9PVX0_Y">via</a>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/6385212/how-does-the-new-automatic-reference-counting-mechanism-work">An explanation of ARC</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Observer Pattern vs. NSNotificationCenter vs. Key/Value Observing (KVO)</h3>
+
+<ul>
+<li>micheal erasmus has a gem <a href="https://github.com/michael-erasmus/rubymotion-observer">observable</a>, which is a compatible implementation of the ruby stdlib Observable library.</li>
+<li>bubblewrap provides helper methods to give NSNotificationCenter a Ruby-like interface.</li>
+<li>bubblewrap also allows you to observe for object&#8217;s changes and trigger blocks.</li>
+</ul>
+
+
+<h3>Deploy to device</h3>
+
+<ul>
+<li>This was a <a href="http://joshsymonds.com/blog/2012/05/10/from-the-rubymotion-simulator-to-your-friends-iphone/">tremendous help</a>. I did all the steps up to step 6.</li>
+<li>we also created dot files which stored the dev cert and the path of the mobile provision</li>
+</ul>
+
+
+<h3>Obj-c to rubymotion</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">UIWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIWindow</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">frame</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>UIWindow</code> is the type of the variable pointer. <code>*window</code> is the pointer. <code>UIWindow alloc</code> allocates memory and returns a new object. <code>initWithFrame</code> is calling on the new object that is created via the <code>UIWindow alloc</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We are setting @window as an instance variable to prevent premature garbare collection.</p>
+
+<p><strong>Another Example</strong></p>
+
+<figure class='code'><figcaption><span>Method in Obj-C</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>  <span class="n">UITapGestureRecognizer</span> <span class="o">*</span><span class="n">recognizer</span> <span class="o">=</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">UITapGestureRecognizer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTarget:</span><span class="n">self</span>
+</span><span class='line'>                                    <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">tapped_purchase_button:</span><span class="p">)];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>This is a two parameter method. This first parameter is the target, which is self. Second param, is the action or method that we want to send to that target.</li>
+<li>to call methods dynamically in objective-c you use the @selector(method_name). This is how it is invoked in objective-c</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>In Ruby</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">recognizer</span> <span class="o">=</span> <span class="no">UITapGestureRecognizer</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithTarget</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="ss">action</span><span class="p">:</span><span class="s1">&#39;tapped_purchase_button&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Loading a json file</h3>
+
+<ul>
+<li>need to create a NSData Object and read in the data.</li>
+<li>need to use a pointer for error handling.</li>
+<li>NSDataSerialization.JSONObjectWithData(raw_data, options:NSDataReadingUncached, error:errorPointer)</li>
+<li><a href="http://pragmaticstudio.com/screencasts/rubymotion">38:04 in prag screencast</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">loadAnswers</span>
+</span><span class='line'>  <span class="n">answerFile</span> <span class="o">=</span> <span class="no">NSBundle</span><span class="o">.</span><span class="n">mainBundle</span><span class="o">.</span><span class="n">pathForResource</span><span class="p">(</span><span class="s1">&#39;answers&#39;</span><span class="p">,</span> <span class="ss">ofType</span><span class="p">:</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">errorPointer</span> <span class="o">=</span> <span class="no">Pointer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:object</span><span class="p">)</span>
+</span><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="no">NSData</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithContentOfFile</span><span class="p">(</span><span class="n">answerFile</span><span class="p">,</span> <span class="ss">options</span><span class="p">:</span><span class="no">NSDataReadUncached</span><span class="p">,</span> <span class="ss">error</span><span class="p">:</span><span class="n">errorPointer</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">NSDataSerialization</span><span class="o">.</span><span class="n">JSONObjectWithData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="ss">options</span><span class="p">:</span><span class="no">NSDataReadingUncached</span><span class="p">,</span> <span class="ss">error</span><span class="p">:</span><span class="n">errorPointer</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Push Notifications</h3>
+
+<ul>
+<li>Your service (a.k.a. the publisher of the app) sends a message with a token that is wants to send a push notifcation to Apple Push Notification Service (APNS).</li>
+<li>APNS then decides whether to relay your push notification onto the app.</li>
+<li>there a good tutorial at <a href="https://parse.com/tutorials/ios-push-notifications">parse</a></li>
+</ul>
+
+
+<h3>Testing</h3>
+
+<ul>
+<li>RubyMotion uses MacBacon and the UIAnimation framework to do UI testing.</li>
+<li><a href="http://blog.rubymotion.com/post/26489000626/functional-view-and-controller-testing-with-rubymotion">quick tutorial</a></li>
+<li>subviews are not found the same way as top level views</li>
+</ul>
+
+
+<h3>Location</h3>
+
+<ul>
+<li>bubblewrap provides the call <code>BW::Location.get_once { |location|}</code> which get the location just once and returns a CLLManager object. Bubblewrap offers a number of methods that can be called on the this object such as latitude and longitude.
+
+<ul>
+<li>a list of bubblewrap location methods <a href="https://github.com/rubymotion/BubbleWrap/blob/master/motion/location/location.rb">can be found here</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>NSData</h3>
+
+<ul>
+<li> Getting back NSConcreteData from an API call.
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/1113811/what-is-nsconcretedata-and-where-is-it-defined">advice on stackoverflow</a> is to: ignore the existence of NSConcreteData and treat it like NSData</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Basic web service</h3>
+
+<ul>
+<li><p>users will be able to receive random motivational messages from other users</p></li>
+<li><p>set up sinatra to post .json from DB</p></li>
+<li><p>BW::HTTP get (URL) data</p></li>
+<li><p>BW::HTTP post (URL) data</p></li>
+<li><p>sinatra receives message and writes to DB</p></li>
+<li><p><code>BW::HTTP</code> also has methods to make sure the response comes back ok. Not surprisingly, this is <code>response.ok?</code>. Just make sure to use this to quasi-rescue a method that depends on a request.</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/planes/">Planes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-01T11:11:00-04:00" pubdate data-updated="true">Jul 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Devise on rails 4</h3>
+
+<ul>
+<li>http://blog.plataformatec.com.br/2013/05/devise-and-rails-4/</li>
+<li><a href="http://blog.barbershoplabs.com/blog/2013/02/27/upgrading-from-rails-32-to-rails-40">upgrading from rails 3.2 to 4</a></li>
+</ul>
+
+
+<h3>Factory Girl</h3>
+
+<ul>
+<li>in the spec_helper remember to:
+
+<pre><code>require 'factory_girl'
+require 'factory_girl_rails'
+
+config.use_transactional_fixtures = false
+config.include FactoryGirl::Syntax::Methods
+</code></pre></li>
+</ul>
+
+
+<h3>Patch vs. Post</h3>
+
+<ul>
+<li><a href="http://blog.remarkablelabs.com/2012/12/http-patch-verb-rails-4-countdown-to-2013">understanding patch vs. put</a></li>
+</ul>
+
+
+<h3>Jquery</h3>
+
+<ul>
+<li><p>make sure you wait for the jquery to load you dumbass&#8230;</p>
+
+<p>$ ->
+  $(&#8216;.balloon&#8217;).on &#8216;click&#8217;, -></p>
+
+<pre><code>$(@).hide()
+</code></pre></li>
+</ul>
+
+
+<p>NOT</p>
+
+<pre><code>  $('.balloon').on 'click', -&gt;
+    $(@).hide()
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/ruby-motion-meetup/">Ruby Motion Meetup</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-18T20:06:00-04:00" pubdate data-updated="true">Jun 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>instruments for performance
+  - start through Xcode and attach it to your phone
+  - <a href="http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html">see</a></p>
+
+<p>promotion
+  - cuts down on the cocoa complexity</p>
+
+<p>joybox
+  - framework to enable games with ruby motion</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -805,473 +1324,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/dot-powconfig/">.powconfig</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-27T11:27:00-04:00" pubdate data-updated="true">Mar 27<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span>.powconfig</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">eval</span> <span class="err">$</span><span class="p">(</span><span class="n">rbenv</span> <span class="n">init</span> <span class="o">-</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">export</span> <span class="no">POW_DOMAINS</span><span class="o">=</span><span class="n">dev</span><span class="p">,</span><span class="nb">test</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#because I loaded pow with brew and not manually it was a different path...</span>
-</span><span class='line'><span class="n">export</span> <span class="no">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/opt/rbenv/shims:$PATH&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">export</span> <span class="no">POW_TIMEOUT</span><span class="o">=</span><span class="mi">900</span>
-</span><span class='line'><span class="n">export</span> <span class="no">POW_WORKERS</span><span class="o">=</span><span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/calendar-app-1/">Calendar App 1</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-26T10:17:00-04:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Setup</h3>
-
-<ul>
-<li>added a EventTimeValidator to lib. this needed to be updated in the app config file as well so that the autoload path would pick up the changes in the lib dir.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>rspec tests on valdidations</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">to_not</span> <span class="n">be_valid</span>
-</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">errors</span><span class="o">[</span><span class="ss">:end_date</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="o">[</span><span class="s2">&quot;must be after start date&quot;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Git global config github</h3>
-
-<ul>
-<li>needed to link email from my new macbook
-
-<ul>
-<li><a href="https://help.github.com/articles/setting-your-email-in-git">used this as a guide</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Uploads</h3>
-
-<ul>
-<li>we used carrierwave
-
-<ul>
-<li>remember to set multipart to true</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Extend self</h3>
-
-<ul>
-<li>from <a href="http://stackoverflow.com/a/11607912/1496757">stackoverflow</a></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">A</span>
-</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-</span><span class='line'>    <span class="kp">include</span> <span class="n">A</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">x</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="s1">&#39;x&#39;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">y</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s1">&#39;y&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">A</span><span class="o">.</span><span class="n">x</span> <span class="c1">#=&gt; &#39;x&#39;</span>
-</span><span class='line'><span class="n">A</span><span class="o">.</span><span class="n">y</span> <span class="c1">#=&gt; &#39;y&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://ozmm.org/posts/singin_singletons.html">classic post</a></li>
-</ul>
-
-
-<h3>Method Stubs</h3>
-
-<ul>
-<li>A method stub is an implementation that returns a pre-determined value. Method stubs can be declared on test doubles or real objects using the same syntax.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">book</span><span class="o">.</span><span class="n">stub</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;The RSpec Book&quot;</span> <span class="p">}</span>
-</span><span class='line'><span class="n">book</span><span class="o">.</span><span class="n">stub</span><span class="p">(</span><span class="ss">:title</span> <span class="o">=&gt;</span> <span class="s2">&quot;The RSpec Book&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">book</span><span class="o">.</span><span class="n">stub</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span><span class="o">.</span><span class="n">and_return</span><span class="p">(</span><span class="s2">&quot;The RSpec Book&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>any_instance</h3>
-
-<ul>
-<li>stub on any instance of a class
-
-<ul>
-<li>Use <code>any_instance.stub</code> on a class to tell any instance of that class to return a value (or values) in response to a given message. If no instance receives the message, nothing happens.</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="s2">&quot;any_instance.stub&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;returns the specified value on any instance of the class&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="no">Object</span><span class="o">.</span><span class="n">any_instance</span><span class="o">.</span><span class="n">stub</span><span class="p">(</span><span class="ss">:foo</span><span class="p">)</span><span class="o">.</span><span class="n">and_return</span><span class="p">(</span><span class="ss">:return_value</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">o</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>    <span class="n">o</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">should</span> <span class="n">eq</span><span class="p">(</span><span class="ss">:return_value</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="https://www.relishapp.com/rspec/rspec-mocks/v/2-6/docs/method-stubs/stub-on-any-instance-of-a-">from</a></li>
-</ul>
-
-
-<h3>Alias Attribute</h3>
-
-<ul>
-<li><code>alias_attribute :value, :url</code></li>
-</ul>
-
-
-<h3>Chop v. Chomp</h3>
-
-<ul>
-<li>subtle difference between <code>chop</code> and <code>chomp</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#chop</span>
-</span><span class='line'><span class="s2">&quot;string</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">chop</span>   <span class="c1">#=&gt; &quot;string&quot;</span>
-</span><span class='line'><span class="s2">&quot;string</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">chop</span>   <span class="c1">#=&gt; &quot;string\n&quot;</span>
-</span><span class='line'><span class="s2">&quot;string</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">chop</span>     <span class="c1">#=&gt; &quot;string&quot;</span>
-</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">chop</span>       <span class="c1">#=&gt; &quot;strin&quot;</span>
-</span><span class='line'><span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">chop</span><span class="o">.</span><span class="n">chop</span>       <span class="c1">#=&gt; &quot;&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#chomp</span>
-</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">chomp</span>            <span class="c1">#=&gt; &quot;hello&quot;</span>
-</span><span class='line'><span class="s2">&quot;hello</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">chomp</span>          <span class="c1">#=&gt; &quot;hello&quot;</span>
-</span><span class='line'><span class="s2">&quot;hello</span><span class="se">\r</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">chomp</span>          <span class="c1">#=&gt; &quot;hello&quot;</span>
-</span><span class='line'><span class="s2">&quot;hello </span><span class="se">\n</span><span class="s2"> there&quot;</span><span class="o">.</span><span class="n">chomp</span>   <span class="c1">#=&gt; &quot;hello \n there&quot;</span>
-</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">chomp</span><span class="p">(</span><span class="s2">&quot;llo&quot;</span><span class="p">)</span>     <span class="c1">#=&gt; &quot;he&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://ruby-doc.org/core-2.0/String.html#method-i-chop">see</a></li>
-</ul>
-
-
-<h3>Setting develop as the default</h3>
-
-<ul>
-<li><code>git branch --track develop origin/develop</code></li>
-</ul>
-
-
-<h3>Formtastic</h3>
-
-<ul>
-<li>collection groups together elements for a select box
-
-<ul>
-<li>include blank false</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Deploying</h3>
-
-<ul>
-<li>need to add new deploy instructions to .git/config file</li>
-</ul>
-
-
-<h3>Nano</h3>
-
-<ul>
-<li>basic text editor that appears to be pre-loaded&#8230;</li>
-</ul>
-
-
-<h3>Offsetting an image and a link</h3>
-
-<ul>
-<li>use padding to offset an image from its link
-
-<ul>
-<li>I use this a lot when putting an icon in front of a link</li>
-<li>see <a href="http://shapeshed.com/using_background_images_with_links/">here</a> for more</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Deploying to heroku</h3>
-
-<ul>
-<li><code>git push staging develop:master</code></li>
-</ul>
-
-
-<h3>Each with index</h3>
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@something</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">thing</span><span class="p">,</span><span class="n">index</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">index</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>S3</h3>
-
-<ul>
-<li>used <a href="https://github.com/fog/fog">fog</a> to store the carrierwave uploaded images on AWS</li>
-<li>needed to config heroku with the <code>heroku config:add ENV_VARIABLE=bucket-name -r staging</code> to make it work</li>
-<li>in carrierwave.rb need to specify the <code>config.fog_host</code>, but this is NOT the right method. It is supposed to be <code>config.asset_host</code>
-
-<ul>
-<li>implemented via <a href="https://github.com/carrot/rolex-world-of-rolex/commit/b58dbf36c38a3932c51eeab1700ac09171cae338">this commit</a></li>
-<li>and <a href="http://stackoverflow.com/questions/13041498/undefined-method-fog-host">corrected by</a>
-
-<ul>
-<li>also push the config variable via <code>heroku config:add CLOUDFRONT='&lt;cloudfront URL&gt;' -r staging</code></li>
-</ul>
-</li>
-<li><a href="http://stackoverflow.com/questions/10777712/carrierwave-s3-how-to-specify">this post was helpful</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>xip.io</h3>
-
-<ul>
-<li>Construct your xip.io domain by appending your application&#8217;s name to your LAN IP address followed by .xip.io. For example, if your development computer&#8217;s LAN IP address is 10.0.1.43, you can visit myapp.dev from another computer on your local network using the URL http://myapp.10.0.1.43.xip.io/. <a href="http://pow.cx/manual.html#section_2.1.5">via</a></li>
-</ul>
-
-
-<h3>Sweepers and caching actions</h3>
-
-<ul>
-<li><code>caches_action :index</code> is all that is needed to cache an action <a href="http://api.rubyonrails.org/classes/ActionController/Caching/Actions.html">via</a></li>
-<li><code>cache_sweeper :event_sweeper</code> is added to the Events controller to trigger the sweeper&#8230;</li>
-<li>Cache sweeping is a mechanism which allows you to get around having a ton of expire_{page,action,fragment} calls in your code. It does this by moving all the work required to expire cached content into an ActionController::Caching::Sweeper subclass. This class is an observer and looks for changes to an object via callbacks, and when a change occurs it expires the caches associated with that object in an around or after filter.</li>
-<li><a href="http://guides.rubyonrails.org/caching_with_rails.html#sweepers">Rails Guide</a></li>
-<li><p>also need to turn on <code>config.cache_store = :dalli_store, ENV['MEMCACHE_SERVERS']</code></p></li>
-<li><p>In the context of ActiveAdmin</p>
-
-<ul>
-<li>We weren&#8217;t expiring the events index page, but were rather expiring the ActiveAdmin page instead. <a href="http://stackoverflow.com/questions/11600087/how-do-i-expire-home-page-cache-when-an-article-is-updated">This solved the problem</a>, but more specifically specifying the controller.
-
-<ul>
-<li>see <a href="https://github.com/carrot/rolex-world-of-rolex/commit/1a217f8b2f8e1ba49a79c2b07dab4347c30604b0">here</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/another-new-macbook-air-load/">Another New MacBook Air Load</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-12T13:34:00-04:00" pubdate data-updated="true">Mar 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>RBENV</h3>
-
-<ul>
-<li>ran into a pow issue not recognizing my gemset -> similar <a href="https://github.com/37signals/pow/issues/202">issue to the one here</a> and <a href="http://thelucid.com/2012/10/11/pow-meet-rbenv/">here</a>.
-
-<ul>
-<li>it ended up because I had installed rbenv with homebrew which meant it was in the opts directory. What a pain.</li>
-</ul>
-</li>
-<li>the rbenv install went pretty smoothly save for that. Used [this as a guide](http://www.bounga.org/ruby/2012/02/06/pow-using-rbenv/.</li>
-</ul>
-
-
-<h3>PSQL</h3>
-
-<ul>
-<li><p>the install went much smoother this time. I used this <a href="http://stackoverflow.com/questions/12028037/postgres-app-could-not-start-on-port-5432/13847738#13847738">ref</a> when I ran into problems.</p></li>
-<li><p><a href="http://stackoverflow.com/questions/6867401/postgres-postgresql-fatal-database-ew-dev-does-not-exist">this helped</a> on my old air&#8230; the app installed without a hitch, but I was missing the creating of the databases.</p></li>
-<li><p>when the psql app wasn&#8217;t active</p>
-
-<p>♕ psql
-psql: could not connect to server: No such file or directory
-  Is the server running locally and accepting
-  connections on Unix domain socket &#8220;/var/pgsql_socket/.s.PGSQL.5432&#8221;?</p></li>
-<li><p>after turning it on, I got this</p>
-
-<p>♕ psql
-psql: FATAL:  database &#8220;Ajonas&#8221; does not exist</p></li>
-<li><p>the PATH clearly isn&#8217;t right, but by adding <code>rake db:create:all</code> I got the app to bootup.</p></li>
-</ul>
-
-
-<h3>Bundler and Octopress reinstall</h3>
-
-<ul>
-<li>bundler wasn&#8217;t recognized because of the different ruby version. Installed the new version and <code>gem install bundler</code> as [advised](http://stackoverflow.com/questions/7483515/rake-aborted-no-such-file-to-load-bundler-setup-rails-3-1.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1289,23 +1341,23 @@ psql: FATAL:  database &#8220;Ajonas&#8221; does not exist</p></li>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/computer-chips-rd2/">computer chips rd2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/marionette-cms/">marionette-cms</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/node-express-backbone-marionette-sorting-out-the-pieces/">node, express, backbone and marionette &#8211; sorting out the pieces</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/require-dot-js/">require.js</a>
       </li>
     
       <li class="post">
         <a href="/blog/wearables/">wearables</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rack/">rack</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/bash/">bash</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/asynch-js/">asynch js</a>
       </li>
     
   </ul>

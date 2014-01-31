@@ -9,7 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="What is it? Let me say it a few different ways&#8230; Big-O measures how well an operation will “scale” when you increase the amount of “things” it &hellip;">
+  <meta name="description" content="Adding a comma for big numbers &lt;%= number_with_delimiter(repo.watchers, :delimiter =&gt; ',')
+From UI/UX strategy kickstarter- encouraging click &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,262 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/jan-3-notes/">Jan 3 Notes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-03T12:12:00-05:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Adding a comma for big numbers</h3>
+
+<p><code>&lt;%= number_with_delimiter(repo.watchers, :delimiter =&gt; ',')</code>
+<a href="http://stackoverflow.com/questions/1078347/is-there-a-rails-trick-to-adding-commas-to-large-numbers">From</a></p>
+
+<h3>UI/UX strategy</h3>
+
+<ul>
+<li>kickstarter- encouraging click through rather than interaction.</li>
+<li>digg, stackoverflow, and reddit are closer to the functionality we want.</li>
+<li>don&#8217;t reinvent the wheel -> move forward.</li>
+</ul>
+
+
+<h3>Bounty Claims</h3>
+
+<ul>
+<li><p>Psuedo code: collect the info from the user (modal)</p></li>
+<li><p>this is sent to verification layer</p>
+
+<ul>
+<li><p>bounty controller?</p></li>
+<li><p>make sure the issue is closed</p></li>
+<li>make sure that an issue has a bounty</li>
+<li>make sure the issue was solved by the bounty claimer</li>
+</ul>
+</li>
+<li><p>if true- send verification to both bounty claimer and bounty author</p>
+
+<ul>
+<li>write the user id for all bounties the claimer solved</li>
+<li>change the badge/trigger payment on the profile pages of the bounty issuer</li>
+<li>tell gitbo admin that this was solved.</li>
+</ul>
+</li>
+<li><p>if false tell them why</p></li>
+</ul>
+
+
+<h3>A modal mess</h3>
+
+<ul>
+<li>We were trying to pass in multiple parameters in the url. But why do that?</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>This is simpler</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;modal-body&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= form_tag(bounty_claim_path) do %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;div class=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;owner_name&quot;</span><span class="o">&gt;</span><span class="no">Repo</span> <span class="no">Owner</span> <span class="no">Name</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
+</span><span class='line'><span class="sr">    &lt;input id=&quot;owner_name&quot; name=&quot;owner_name&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;div class=&quot;field&quot;&gt;</span>
+</span><span class='line'><span class="sr">    &lt;label for=&quot;repo_name&quot;&gt;Repo Name&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="sr">/&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;git_number&quot;</span><span class="o">&gt;</span><span class="no">Github</span> <span class="no">Issue</span> <span class="no">Number</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
+</span><span class='line'><span class="sr">    &lt;input id=&quot;git_number&quot; name=&quot;git_number&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;div class=&quot;modal-footer&quot;&gt;</span>
+</span><span class='line'><span class="sr">    &lt;span id=&quot;error&quot;&gt;&lt;/s</span><span class="n">pan</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s1">&#39;btn btn-success btn-small&#39;</span><span class="o">&gt;</span><span class="no">Submit</span><span class="o">&lt;</span><span class="sr">/button&gt;</span>
+</span><span class='line'><span class="sr">      &lt;button class=&quot;btn btn-danger btn-small&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;Oopsy&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Just submit to a static url and pass in the info via params.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/jan-2-notes/">Jan 2 Notes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-02T13:11:00-05:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Bash Environment Variables</h3>
+
+<p>I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify Gitbo&#8217;s server issue last week. Since <code>issue.js</code> has been compiled into <code>application.js</code>, it is listening twice.</p>
+
+<p>StackOverflow had <a href="http://stackoverflow.com/questions/9641320/rails-assets-dont-get-updated">this to say</a> and this solution <code>bundle exec RAILS_ENV=development rake rails_group=assets assets:clean</code>.</p>
+
+<ol>
+<li>The <code>bundle exec</code> would be needed if the gem file and my system files were different. In Gitbo&#8217;s case, there is no discrepancy. On the server, that can&#8217;t be assumed and <code>bundle exec</code> would be needed.</li>
+<li>The default environment for a rake task is development <strong>except</strong> for assets which obviously have more to do with production.</li>
+<li>Rake tasks are very flexible in terms of how they take <em>bash environment variables</em> (they are sort of like arguments, but they aren&#8217;t). Passing in the rails_environment before the rake task is how I did it, but they could be passed in afterwards and that would be fine because BASH reads the entire line of code before it executes it.</li>
+</ol>
+
+
+<p>Here was the final command I used: <code>RAILS_ENV=development RAILS_GROUP=assets rake assets:clean</code></p>
+
+<h3>Skeleton</h3>
+
+<ul>
+<li>Site is <a href="http://www.getskeleton.com/">here</a></li>
+<li>Installed <a href="https://github.com/helios-technologies/skeleton-rails">skeleton-rails</a></li>
+<li>An alternative to rails</li>
+</ul>
+
+
+<h3>Instance Variables</h3>
+
+<ul>
+<li><p>Show does have an instance variable. The view is attached to an instance of a controller</p></li>
+<li><p>In a partial, this is just crazy&#8230;</p>
+
+<ul>
+<li>a view is not part of the controller, so why should it have access to an instance of a controller.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Further reading on this: <a href="http://rails-bestpractices.com/posts/27-replace-instance-variable-with-local-variable">Rails Best Practices</a> and <a href="http://programmers.stackexchange.com/questions/127838/why-do-people-suggest-not-to-use-instance-variable-for-views-in-ruby-on-rails">Stack Exchange</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/parallelism/">Parallelism</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-01T21:30:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Threads  and  processes:</h3>
+
+<p>A  computer  will  often  appear  to  be  doing  many  things  simultaneously,  such  as  checking  for  new  e‐mail  messages,  saving  a  Word  document,  and  loading  a  website. Each  program  is  a  separate  &#8220;process&#8221;.   Each  process  has  one  or  more  &#8220;threads. &#8220;  If  a  process  has  several  threads,  they  appear  to  run  simultaneously.  For  example,  an  e‐mail  client  may  have  one  thread  that  checks  for  new  e‐mail  messages  and  one  thread  for  the  GUI  so  that  it  can  show  a  button  being  pressed.  In  fact,  only  one  thread  is  being  run  at  any  given  time.  The  processor  switches  between  threads  so  quickly  that  they  appear  to  be  running  simultaneously. Multiple  threads  in  a  single  process  have  access  to  the  same  memory.   By  contrast,  multiple  processes  have  separate  regions  of  memory  and  can  only  communicate  by  special  mechanisms.  The  processor  loads  and  saves  a  separate  set  of  registers  for  each  thread. Remember,  each  process  has  one  or  more  threads,  and  the  processor  switches  between  threads.</p>
+
+<ul>
+<li><a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">From</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1000,286 +1257,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/marketing-your-app/">Marketing Your App</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-12T09:48:00-05:00" pubdate data-updated="true">Dec 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Sr. Hacker @ Ordr.in</p>
-
-<ul>
-<li>FakeGirlfriend.co</li>
-<li><p>Co-creator of world of Fourcraft</p></li>
-<li><p><a href="http://blog.rickyrobinett.com/">Ricky&#8217;s Blog</a></p></li>
-<li><a href="http://www.helpareporter.com/">Help a reporter out</a></li>
-<li><a href="http://www.garysguide.com/jobs?region=newyork">Gary&#8217;s Guide</a></li>
-<li><a href="http://hackweekends.com/city-detail.html?city=New%20York">Hack Weekends</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/testing-gitbo/">Testing Gitbo</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-11T19:18:00-05:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">Factory Girl</a></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Defining Attributes in FactoryGirl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">provider</span> <span class="s2">&quot;github&quot;</span>
-</span><span class='line'>    <span class="n">uid</span>  <span class="s2">&quot;xxxx5826&quot;</span>
-</span><span class='line'>    <span class="nb">name</span> <span class="s2">&quot;Adam Jonas&quot;</span>
-</span><span class='line'>    <span class="n">nickname</span> <span class="s2">&quot;ajonas04&quot;</span>
-</span><span class='line'>    <span class="n">email</span> <span class="s2">&quot;francestown@gmail.com&quot;</span>
-</span><span class='line'>    <span class="n">image</span> <span class="s2">&quot;string&quot;</span>
-</span><span class='line'>    <span class="n">token</span> <span class="s2">&quot;xxxxx&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>config.include FactoryGirl::Syntax::Methods</code></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/advanced-sinatra/">Advanced Sinatra</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-10T13:14:00-05:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Sinatra</h3>
-
-<ul>
-<li><p>Sinatra is a DSL for creating a web</p></li>
-<li><p>Sinatra is library, not a framework (rails is a framework)</p></li>
-<li><p><a href="http://stackoverflow.com/questions/148747/what-is-the-difference-between-a-framework-and-a-library">difference between lib and framework</a></p></li>
-<li><p><a href="http://martinfowler.com/bliki/InversionOfControl.html">inversion of control</a> by Martin Fowler</p>
-
-<ul>
-<li>Sinatra supports inline templates</li>
-<li>variables are passed in via @instance variables</li>
-<li>Filters</li>
-<li>Helpers: takes a block and then anything defined are available in the templates</li>
-<li>Configuration: looks at the rack env variable and executes code based on the env</li>
-<li><a href="http://www.mnot.net/cache_docs/">cache docs</a></li>
-<li>By default don&#8217;t have sessions. Need to config sessions.</li>
-<li><p>Testing -> a lot of the tests that come with rails aren&#8217;t in sinatra</p>
-
-<ul>
-<li>test with rack-test</li>
-</ul>
-</li>
-<li><p>classic app -></p>
-
-<ul>
-<li>all the routes are in one file, it is straight Ruby code</li>
-</ul>
-</li>
-<li><p>Modular app -></p>
-
-<ul>
-<li>don&#8217;t want to pollute the Object namespace</li>
-<li>combinging multiple Sinatra apps in a single process</li>
-<li>use Sinatra app as middleware</li>
-</ul>
-</li>
-<li><p>Supports extensions</p>
-
-<ul>
-<li>could be helpers, routes, configurations pacakged into a Gem and used on other apps</li>
-</ul>
-</li>
-<li><p>Registered</p>
-
-<ul>
-<li>when the app is registered is has a method (<code>def self.registered(app)</code>) that allows config settings</li>
-</ul>
-</li>
-<li><p>extensions</p>
-
-<ul>
-<li><a href="http://www.sinatrarb.com/extensions.html">writing extensions</a></li>
-<li><a href="http://www.sinatrarb.com/extensions-wild.html">using extensions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Sinatra vs. Rails</h3>
-
-<ul>
-<li>when to use Sinatra&#8230;
-
-<ul>
-<li><p>Thick client web applications for performance or heavily visualizations</p>
-
-<ul>
-<li>majority of the logic is on the client, not on the server</li>
-<li>sinatra serves things really fast</li>
-</ul>
-</li>
-<li><p>API servers for iOS/Android/Javascript Apps</p></li>
-<li>HTML5 Mobile Apps (<a href="http://www.jqtouch.com/">jq touch</a> or jquery mobile)</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Rack</h3>
-
-<ul>
-<li><a href="http://m.onkey.org/ruby-on-rack-1-hello-rack">Hello Rack</a></li>
-</ul>
-
-
-<h3>Gems</h3>
-
-<ul>
-<li><a href="http://middlemanapp.com/getting-started/welcome/">Middleman Gem</a></li>
-<li>Sprockets- pretty much the asset pipeline</li>
-<li><a href="https://github.com/rtomayko/shotgun">shotgun</a> is a must.</li>
-</ul>
-
-
-<h3>Sinatra integrated into Rails</h3>
-
-<ul>
-<li>it is all Rack under the hood so you use <code>mount</code> in the route file and then all the urls defined in the sinatra app are available in the rails app</li>
-</ul>
-
-
-<h3>Sinatra on Heroku</h3>
-
-<ul>
-<li>heroku requires sinatra to have a <code>gem</code> file as well as a <code>config.ru</code> file</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>config.ru example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;./myapp&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">run</span> <span class="ss">Sinatra</span><span class="p">:</span><span class="ss">:Application</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>gemfile example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="s2">&quot;https://rubygems.org&quot;</span>
-</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sinatra&#39;</span><span class="p">,</span> <span class="s1">&#39;1.1.0&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1297,23 +1274,23 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/computer-chips-rd2/">computer chips rd2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/marionette-cms/">marionette-cms</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/node-express-backbone-marionette-sorting-out-the-pieces/">node, express, backbone and marionette &#8211; sorting out the pieces</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/require-dot-js/">require.js</a>
       </li>
     
       <li class="post">
         <a href="/blog/wearables/">wearables</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rack/">rack</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/bash/">bash</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/asynch-js/">asynch js</a>
       </li>
     
   </ul>
