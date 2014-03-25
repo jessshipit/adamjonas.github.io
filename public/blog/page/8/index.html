@@ -9,11 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Bryan Helmkamp, founder of Code Climate Static Analysis object design issues
-code style
-potential bugs
-security vulnerabilities
-conformance with &hellip;">
+  <meta name="description" content="Deleting Remote Github Branches There are some solutions here, but I wasn&#8217;t overjoyed with them considering I have 70 some branches to prune. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +86,659 @@ conformance with &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/back-to-gitbo/">Back to Gitbo</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-28T21:37:00-05:00" pubdate data-updated="true">Dec 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Deleting Remote Github Branches</h3>
+
+<ul>
+<li>There are some solutions <a href="http://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-both-locally-and-in-github">here</a>, but I wasn&#8217;t overjoyed with them considering I have 70 some branches to prune. There are some other ideas <a href="http://www.gitguys.com/topics/adding-and-removing-remote-branches/">here</a> and in the <a href="http://git-scm.com/book/ch3-5.html">GitBook</a>.</li>
+</ul>
+
+
+<h3>Responsive Layout</h3>
+
+<ul>
+<li>we have been having issues with the homepage loading with two of the three buttons in one row and the third on the bottom.
+
+<ul>
+<li>The lion share of the fix was changing the layout from grid to responsive and changing the span number from 3 to 4.
+
+<ul>
+<li>A fuller explanation can be found <a href="http://twitter.github.com/bootstrap/scaffolding.html">here</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Server issues</h3>
+
+<ul>
+<li>I had some problems with deploying. After some frustration, I saw that the <code>application.yml</code> file was not being included. There was no sym link and there was no actual file in the shared folder on the server. I ssh&#8217;ed into the server, but didn&#8217;t have much luck. At the end, I simply used an FTP uploader to create the <code>application.yml</code> file and cut and pasted the content. It worked, but I didn&#8217;t feel great about the solution.</li>
+</ul>
+
+
+<h3>Oauth Permissions</h3>
+
+<ul>
+<li>Previously we required users to give us read/write access to both there public and private repos. That isn&#8217;t really necessary. Changing the scope permissions in outlined <a href="http://developer.github.com/v3/oauth/#scopes">here</a>.
+
+<ul>
+<li>I changed the permissions and saw that I need to restart the server for those changes to take effect locally. I assume the same is necessary on the server.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/interview-prep/">Interview Prep</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-27T21:05:00-05:00" pubdate data-updated="true">Dec 27<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>from <a href="https://github.com/afeld/rails_interview_questions">https://github.com/afeld/rails_interview_questions</a></p>
+
+<h3>Q: What is the difference between a lambda, a block and a proc?</h3>
+
+<p>A:  In Ruby we create an anonymous chunk of code called a proc with the code <code>Proc.new</code>. We call this using the <code>.call</code> method.</p>
+
+<p>Lambdas appear to be the same as procs, but lambdas are pickier about arguments. You can&#8217;t pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.</p>
+
+<p>Lambda return statement just exit execution of the statement itself while the proc ended execution of containing method.</p>
+
+<p>As a rule, stick with lambdas until you find a specific reason not to.</p>
+
+<p>It is often convenient to write methods that accepts a single proc as arguments. Callers can pass in whatever code they want to be executed once for each name for example. It is so common to write a method that has a single argument that is expected to be a proc that it got it&#8217;s own name &#8211; a block. Every ruby method can implicitly receive a proc arg with the yield keyword.</p>
+
+<h3>Q: How do you sort an Array of objects by a particular attribute? What is a better way to do sorting with ActiveRecord?</h3>
+
+<p>A: Let SQL do its job. It will be more efficient than writing it in Ruby.</p>
+
+<figure class='code'><figcaption><span>For example&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">u</span><span class="o">|</span> <span class="n">u</span><span class="o">.</span><span class="n">first_name</span><span class="p">}</span> <span class="c1">#=&gt; O(log n)</span>
+</span><span class='line'><span class="c1">#versus</span>
+</span><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="err">“</span><span class="n">first_name</span> <span class="no">DESC</span><span class="err">”</span><span class="p">)</span> <span class="c1">#=&gt; O(1)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Q: What are some of your favorite gems? What are their alternatives?</h3>
+
+<ul>
+<li>Dalli over the standard Memcached library- Higher performance memcached client</li>
+<li>paperclip and carrierwave.</li>
+</ul>
+
+
+<h3>Q: In Ruby, which is generally the better option: a recursive function or an iterative one?</h3>
+
+<p>A: Loops may achieve a performance gain for your computer. Recursion may achieve a performance gain for your programmer. Choose which is more important in your situation!</p>
+
+<p>Comparing recursion to iteration is like comparing a phillips head screwdriver to a flat head screwdriver. For the most part you could remove any phillips head screw with a flat head, but it would just be easier if you used the screwdriver designed for that screw right?
+Some algorithms just lend themselves to recursion because of the way they are designed (Fibonacci sequences, traversing a tree like structure, etc.). Recursion makes the algorithm more succinct and easier to understand (therefore shareable and reusable).<a href="http://stackoverflow.com/questions/72209/recursion-or-iteration">Pulled from</a></p>
+
+<p>Recursion is, in general, the more natural approach in functional languages, and iteration is normally more intuitive in imperative languages.</p>
+
+<h3>Q: What are #method_missing and #send? Why are they useful?</h3>
+
+<ul>
+<li><a href="http://rubylearning.com/satishtalim/ruby_method_missing.html">Method Missing</a></li>
+</ul>
+
+
+<h3>Q: What is the general history of Rails?</h3>
+
+<ul>
+<li>Rails open sourced in 2004</li>
+<li> 2006 macs were shipped with rails</li>
+<li>Dec 2008 merb was merged with rails 3.0</li>
+<li>‘11-> rails 3.1 had reversible db migrations, jquery, asset pipeline</li>
+</ul>
+
+
+<h3>Q: Explain the different pieces of Rails.</h3>
+
+<ul>
+<li>ActiveRecord -> ORM</li>
+<li>ActiveResource -> the main class for mapping RESTful resources as models in a Rails application.</li>
+<li>ActionPack ->  the Controller and View layers are handled together by Action Pack.</li>
+<li>ActiveSupport-> Active Support is a grab bag of utility methods and extensions to the Ruby standard library that accelerate development by providing syntactic sugar and easy ways to write expressive and DRY code</li>
+<li>ActionMailer -> mailer</li>
+</ul>
+
+
+<h3>Q: Walk through the flow of a request through Rails.</h3>
+
+<p>A: The primary components of a Rails app relating to general request cycle are ActionPack (ActionController, ActionDispatch, ActionView), ActiveModel and ActiveRecord. Let’s take the example of a contact management app where each instance of a contact has many addresses, phone number and emails, and we click on a link to a specific contact and are expecting to see a “show” view of some sort.</p>
+
+<h3>Q: What are the different server options for running a Rails/Rack app?</h3>
+
+<ul>
+<li>Apache vs. Nginx (webservers)
+
+<ul>
+<li>Apache is more popular, nginx is smaller and faster</li>
+</ul>
+</li>
+</ul>
+
+
+<p><strong>Mongrel vs Webrick</strong>
+mongrel is a ruby application server. Which means it:</p>
+
+<ol>
+<li>Loads your rails app inside its own process space.</li>
+<li>sets up a TCP socket, allowing it to communicate with the outside world.</li>
+</ol>
+
+
+<p><strong>WEBrick does the same thing but:</strong></p>
+
+<ol>
+<li>it’s written entirely in C</li>
+<li>slower and less robust</li>
+<li>installed in rails by default</li>
+</ol>
+
+
+<p><strong>Phusion Passenger</strong></p>
+
+<ul>
+<li>Ruby app server, but works differently than mongrel</li>
+<li><p>integrates directly into apache or nginx.</p></li>
+<li><p>loads the ruby code and sends a request to my application</p></li>
+</ul>
+
+
+<p><strong>Capistrano</strong></p>
+
+<ul>
+<li>Allows you to upload the rails app’s code and files to the server machine</li>
+<li>set up/ migrate DB</li>
+<li>install libs that your app depends on</li>
+<li>Capistrano is not the application server&#8211; it is a tool for automating all the preparation work. Technically you could upload with FTP.</li>
+</ul>
+
+
+<p><a href="http://stackoverflow.com/questions/4113299/ruby-on-rails-server-options">http://stackoverflow.com/questions/4113299/ruby-on-rails-server-options</a></p>
+
+<h3>Q: Explain CSRF and how Rails combats it.</h3>
+
+<p>A: <a href="http://www.adamjonas.com/blog/cross-site-request-forgery/">http://www.adamjonas.com/blog/cross-site-request-forgery/</a>
+<a href="http://stackoverflow.com/questions/941594/understand-rails-authenticity-token">http://stackoverflow.com/questions/941594/understand-rails-authenticity-token</a></p>
+
+<p>protect from forgery in the application_controller to add authenticity token that is unique for each user session -> checked for all post/put/delete request.
+This token is not checked for GET requests, so make sure you don’t do anything damaging with a GET request.</p>
+
+<p>Rails 3 escapes all HTML content <code>&lt;%=h task.name %&gt;</code> to prevent cross-site scripting. Can also look into the sanitize methods.</p>
+
+<h3>Q: Explain mass-assignment vulnerability.</h3>
+
+<p>A: <a href="http://blog.mhartl.com/2008/09/21/mass-assignment-in-rails-applications/">http://blog.mhartl.com/2008/09/21/mass-assignment-in-rails-applications/</a>
+Mass assignment throws all the parameter from the form so the user can update any of the attributes or associations</p>
+
+<h3>Rails Security in general</h3>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/178-seven-security-tips">Railscasts 178</a></li>
+</ul>
+
+
+<p>SQL injection (railscasts episode 25)</p>
+
+<figure class='code'><figcaption><span>Eliminating SQL injection</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>  <span class="vi">@projects</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;name like ?&quot;</span><span class="p">,</span> <span class="s2">&quot;%</span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="ss">:search</span><span class="o">]</span><span class="si">}</span><span class="s2">%&quot;</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="sb">``</span>
+</span><span class='line'><span class="no">Can</span> <span class="n">just</span> <span class="n">enter</span> <span class="k">in</span> <span class="sb">`) or (&#39;`</span> <span class="ow">and</span> <span class="n">that</span> <span class="n">will</span> <span class="n">retrieve</span> <span class="n">all</span> <span class="n">the</span> <span class="n">projects</span><span class="o">.</span> <span class="no">Can</span> <span class="n">just</span> <span class="n">use</span> <span class="n">the</span> <span class="n">question</span> <span class="n">mark</span> <span class="n">syntax</span> <span class="n">to</span> <span class="n">avoid</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">###Q: Law of Demeter - </span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Refers</span> <span class="n">to</span> <span class="n">loose</span> <span class="n">coupling</span> <span class="n">of</span> <span class="n">objects</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Refers</span> <span class="n">to</span> <span class="n">sending</span> <span class="n">messages</span><span class="p">,</span> <span class="n">prohibits</span> <span class="n">sending</span> <span class="n">a</span> <span class="n">message</span> <span class="n">from</span> <span class="n">object</span> <span class="n">A</span> <span class="n">to</span> <span class="n">object</span> <span class="n">C</span> <span class="n">through</span> <span class="n">object</span> <span class="n">B</span><span class="p">,</span> <span class="k">if</span> <span class="n">object</span> <span class="n">B</span> <span class="n">is</span> <span class="n">of</span> <span class="n">a</span> <span class="n">different</span> <span class="n">type</span><span class="o">.</span>
+</span><span class='line'><span class="no">States</span> <span class="n">that</span> <span class="n">objects</span> <span class="n">should</span> <span class="ow">not</span> <span class="n">reach</span> <span class="n">through</span> <span class="n">other</span> <span class="n">objects</span> <span class="n">to</span> <span class="k">return</span> <span class="n">information</span> <span class="n">about</span> <span class="n">a</span> <span class="n">third</span> <span class="n">object</span><span class="o">.</span> <span class="no">Using</span> <span class="n">dot</span> <span class="n">notation</span> <span class="n">examples</span><span class="p">,</span> <span class="n">loosely</span> <span class="n">means</span> <span class="n">to</span> <span class="n">reduce</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">dot</span> <span class="nb">methods</span> <span class="n">strung</span> <span class="n">together</span><span class="p">,</span> <span class="n">so</span> <span class="n">that</span> <span class="n">you</span><span class="s1">&#39;re not performing actions on some intermediary returned object or data. </span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">LoD violations are more tolerable if reaching through objects to return ‘attributes’, as opposed to invoking ‘behavior’ - ex. customer.bicycle.wheel.tire ← many dots, but is only returning what may be a stable attribute </span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">More about the ‘type’ of object returned by each expression in a method chain than by the amount of dots, don’t want to be traversing different types, as this is more tightly coupling your code</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">###Q: SOLID design</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Coined by Michael Feathers, popularized by Uncle Bob Martin</span>
+</span><span class='line'><span class="s1">5 of the most well known design principles </span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Single Responsibility - separation of concerns, classes should have a single responsibility, methods should have a single responsibility, makes your code more modular and more adaptable</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Open/Closed - Related to inheritance hierarchies. By using classical inheritance and modules, you&#39;</span><span class="n">re</span> <span class="n">declaring</span> <span class="n">that</span> <span class="n">objects</span> <span class="p">(</span><span class="n">classes</span><span class="p">)</span> <span class="n">are</span> <span class="err">‘</span><span class="nb">open</span><span class="err">’</span> <span class="k">for</span> <span class="n">extension</span> <span class="n">but</span> <span class="err">‘</span><span class="n">closed</span><span class="err">’</span> <span class="n">to</span> <span class="n">modification</span><span class="o">.</span> <span class="no">In</span> <span class="n">this</span> <span class="n">way</span><span class="p">,</span> <span class="n">the</span> <span class="n">developer</span> <span class="n">is</span> <span class="n">encouraged</span> <span class="n">to</span> <span class="err">‘</span><span class="kp">extend</span><span class="err">’</span> <span class="n">an</span> <span class="n">objects</span> <span class="n">behavior</span> <span class="ow">or</span> <span class="n">capabilities</span> <span class="n">through</span> <span class="n">subclasses</span><span class="p">,</span> <span class="ow">and</span> <span class="n">discouraged</span> <span class="n">from</span> <span class="n">modifying</span> <span class="n">existing</span> <span class="n">objects</span><span class="o">.</span> <span class="no">Open</span> <span class="k">for</span> <span class="n">extension</span> <span class="n">creates</span> <span class="n">hierarchies</span> <span class="n">that</span> <span class="n">are</span> <span class="n">well</span> <span class="n">suited</span> <span class="n">to</span> <span class="n">change</span> <span class="ow">and</span> <span class="n">growth</span> <span class="k">in</span> <span class="n">an</span> <span class="n">application</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Liskov</span> <span class="no">Substitution</span> <span class="o">-</span> <span class="no">Subclasses</span> <span class="n">should</span> <span class="n">be</span> <span class="n">substitutable</span> <span class="k">for</span> <span class="n">the</span> <span class="no">Superclasses</span><span class="o">.</span> <span class="no">Subclasses</span> <span class="n">are</span> <span class="n">expected</span> <span class="n">to</span> <span class="n">conform</span> <span class="n">to</span> <span class="n">their</span> <span class="n">superclasses</span> <span class="n">interfaces</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">must</span> <span class="n">respond</span> <span class="n">to</span> <span class="n">every</span> <span class="n">message</span> <span class="k">in</span> <span class="n">that</span> <span class="n">interface</span><span class="o">.</span> <span class="no">Other</span> <span class="n">objects</span> <span class="n">should</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">to</span> <span class="n">check</span> <span class="n">the</span> <span class="n">type</span> <span class="n">of</span> <span class="n">a</span> <span class="n">subclass</span><span class="o">.</span> <span class="no">Subclasses</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">a</span> <span class="err">‘</span><span class="n">kind</span><span class="err">’</span> <span class="n">of</span> <span class="n">their</span> <span class="n">superclass</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Interface</span> <span class="no">Segregation</span> <span class="o">-</span> <span class="n">separation</span> <span class="n">between</span> <span class="kp">public</span> <span class="ow">and</span> <span class="kp">private</span> <span class="n">interfaces</span><span class="o">.</span> <span class="no">Public</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="k">for</span> <span class="n">messages</span> <span class="p">(</span><span class="nb">methods</span><span class="p">)</span> <span class="n">that</span> <span class="n">will</span> <span class="n">be</span> <span class="n">sent</span> <span class="n">to</span> <span class="n">other</span> <span class="n">objects</span><span class="o">.</span> <span class="no">Private</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="k">for</span> <span class="n">messages</span> <span class="n">that</span> <span class="n">will</span> <span class="n">only</span> <span class="n">ever</span> <span class="n">be</span> <span class="n">sent</span> <span class="n">to</span> <span class="nb">self</span><span class="o">.</span> <span class="no">Private</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="n">where</span> <span class="n">a</span> <span class="n">majority</span> <span class="n">of</span> <span class="n">the</span> <span class="n">how</span><span class="p">,</span> <span class="ow">or</span> <span class="n">the</span> <span class="n">logic</span> <span class="p">(</span><span class="n">manipulating</span> <span class="n">data</span> <span class="n">structures</span><span class="p">,</span> <span class="n">etc</span><span class="o">.</span><span class="p">)</span> <span class="n">should</span> <span class="n">occur</span><span class="p">,</span> <span class="k">while</span> <span class="no">Public</span> <span class="n">interfaces</span> <span class="n">should</span> <span class="n">just</span> <span class="n">declare</span> <span class="n">the</span> <span class="err">‘</span><span class="n">what</span><span class="err">’</span> <span class="p">(</span><span class="n">largely</span> <span class="n">by</span> <span class="n">calling</span> <span class="kp">private</span> <span class="n">interface</span> <span class="nb">methods</span><span class="p">)</span><span class="o">.</span> <span class="no">This</span> <span class="n">is</span> <span class="n">because</span> <span class="kp">public</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="n">accessible</span> <span class="n">by</span> <span class="n">other</span> <span class="n">objects</span><span class="p">,</span> <span class="ow">and</span> <span class="n">by</span> <span class="n">exposing</span> <span class="n">too</span> <span class="n">much</span> <span class="n">of</span> <span class="n">the</span> <span class="n">how</span><span class="p">,</span> <span class="n">you</span><span class="err">’</span><span class="n">re</span> <span class="n">giving</span> <span class="n">too</span> <span class="n">much</span> <span class="n">information</span> <span class="n">to</span> <span class="n">other</span> <span class="n">objects</span><span class="p">,</span> <span class="n">which</span> <span class="n">results</span><span class="p">,</span> <span class="ow">or</span> <span class="n">is</span> <span class="n">a</span> <span class="n">symptom</span> <span class="n">of</span><span class="p">,</span> <span class="n">tight</span> <span class="n">coupling</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Dependency</span> <span class="no">Inversion</span> <span class="o">-</span> <span class="no">Less</span> <span class="no">Stable</span> <span class="n">objects</span> <span class="n">should</span> <span class="n">depend</span> <span class="n">on</span> <span class="n">more</span> <span class="n">stable</span> <span class="n">objects</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">more</span> <span class="n">concrete</span> <span class="n">objects</span> <span class="n">should</span> <span class="n">depend</span> <span class="n">on</span> <span class="n">more</span> <span class="n">abstract</span> <span class="n">objects</span><span class="p">,</span> <span class="n">making</span> <span class="n">your</span> <span class="n">code</span> <span class="n">less</span> <span class="n">brittle</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">###Q: Ruby Closures - </span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Blocks</span><span class="o">/</span><span class="no">Procs</span><span class="o">/</span><span class="no">Lambdas</span> <span class="o">-</span> <span class="n">essentially</span> <span class="n">anonymous</span> <span class="nb">methods</span><span class="o">/</span><span class="n">functions</span><span class="o">.</span> <span class="no">Procs</span> <span class="ow">and</span> <span class="no">Lambdas</span> <span class="n">are</span> <span class="no">Blocks</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">passed</span> <span class="n">around</span> <span class="n">as</span> <span class="n">variables</span><span class="o">.</span> <span class="no">By</span> <span class="n">defining</span> <span class="n">the</span> <span class="nb">proc</span> <span class="ow">or</span> <span class="nb">lambda</span> <span class="n">as</span> <span class="n">such</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ruby
+proc = Proc.new do |name|
+  puts “Hello #{name}”
+end</p>
+
+<p>can run proc.(“Matt”) -> “Hello Matt”</p>
+
+<figure class='code'><figcaption><span>Eliminating SQL injection</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">essentially</span> <span class="n">acts</span> <span class="n">as</span> <span class="n">a</span> <span class="nb">method</span> <span class="n">that</span> <span class="n">can</span> <span class="n">take</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">but</span> <span class="n">is</span> <span class="n">an</span> <span class="n">unnamed</span> <span class="nb">method</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">called</span> <span class="n">by</span> <span class="n">other</span> <span class="nb">methods</span> <span class="n">as</span> <span class="n">an</span> <span class="n">argument</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">can</span> <span class="n">use</span> <span class="k">yield</span> <span class="n">to</span> <span class="nb">send</span> <span class="n">to</span> <span class="n">the</span> <span class="nb">proc</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="nb">lambda</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ruby
+def named_method(&amp;block)
+  yield “Matt”
+end
+&#8220;`</p>
+
+<p><code>named_method{|name| proc.(name)} -&gt; “Hello Matt”</code></p>
+
+<p>procs and lambdas differ in how they deal with ‘return’ statements and arguments</p>
+
+<p>ORMs - ActiveRecord vs. DataMapper</p>
+
+<h3>Pros and cons of Datamapper</h3>
+
+<ul>
+<li>don’t have to write migrations (this can be a pro or con)</li>
+</ul>
+
+
+<p>Datamapper has ‘eager loading’ by default, while ActiveRecord, you need to stipulate using the ‘includes’ method. This basically can cut down the amount of database queries in a normalized database by an order of magnitude. Instead of first running a query on the parent table, then running the same numbers of queries on the association table to get associated data, it just collects foreign keys for all the associations and then loads all associated objects with one query. Pretty cool!</p>
+
+<p>Datamapper - model driven, whereas ActiveRecord is Database driven. Meaning, once the needs of the application dictate that the database become fairly complex, it can be a pain point when using AR.</p>
+
+<h3>Recursion</h3>
+
+<ul>
+<li><p><a href="http://ruby.bastardsbook.com/chapters/recursion/">Bastards Book on recursion (still a draft at this time )</a></p></li>
+<li><p>There are two principles of recursion</p>
+
+<ol>
+<li>An end goal, or base case</li>
+<li>A process in which the task at hand is reduced towards that end goal</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Pointer-based algorithms</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Pointer_(computer_programming">Pointers</a>)</li>
+</ul>
+
+
+<h3>P = NP?</h3>
+
+<ul>
+<li>Are there situations where brute-force search— that is, trying an exponential number of possibilities one-by-one, until we find a solution that satisfies all the stated constraints— is essentially the best algorithm possible? (<a href="http://www.scottaaronson.com/blog/?p=459">from p vs. np for dummies</a>)</li>
+<li><a href="http://en.wikipedia.org/wiki/P_versus_NP_problem">wikipedia</a>
+
+<ul>
+<li>P vs NP is basically talking about problems where you can checking each possibility in a reasonable amount of time, but the number of possibility&#8217;s keeps growing faster as the numbers get larger.</li>
+<li>some of these problems are such that there is no way to come up with an exact solution that is faster than being forced to do a brute force check of all or many of the possible solutions.</li>
+<li>The essence of P vs. NP. P is the class of problems where the cost of computing an exact solution doesn&#8217;t necessarily grow too fast relative to input sizes to be impractical with real-world computers. NP is the class of problems that are equivalent to P problems if you happen to have a magical computer which could evaluate and compare any number of possible solutions simultaneously. Naturally, NP will include all of the P problems, so NP-complete problems are taken to be the set of problem for which only the magical computer would be suitable. (from <a href="http://news.ycombinator.com/item?id=1605415">Hacker news discussion</a>)</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Practice</h3>
+
+<ul>
+<li><a href="http://www.reddit.com/r/dailyprogrammer/">Daily programmer</a></li>
+<li><a href="http://rubyquiz.com/">Ruby Quiz</a></li>
+<li><a href="https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions">5 essential phone screens</a></li>
+<li><a href="http://courses.csail.mit.edu/iap/interview/materials.php">Hacking a google interview</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/ruby-bits-2/">Ruby Bits 2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T12:39:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Multiple Lambdas</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">exec_game</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">error_handler</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">game</span> <span class="o">=</span> <span class="n">games</span><span class="o">.</span><span class="n">detect</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="n">game</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">name</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="n">action</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="n">error_handler</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Lambda or Proc to Block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">library</span> <span class="o">=</span> <span class="no">Library</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">GAMES</span><span class="p">)</span>
+</span><span class='line'><span class="n">printer</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">) - </span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="n">library</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">printer</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Calling a method with &amp; in front of a parameter</em>
+<code>tweets.each(&amp;printer)</code></p>
+
+<p><em>Defining a method with &amp; in front of a parameter</em>
+<code>def each(&amp;block)</code></p>
+
+<figure class='code'><figcaption><span>Passing blocks around&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">each</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">yield</span> <span class="n">game</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#refactored as</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/javascript-hoisting/">Javascript Hoisting</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-19T12:34:00-05:00" pubdate data-updated="true">Dec 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-javascript-hoisting-explained/">Hoisting Explained Video</a></h3>
+
+<ul>
+<li><p>Some variables and functions get hoisted to the top of the scope. Just the declaration, not the inialization.</p>
+
+<ul>
+<li>Recommend to put all your variable declarations at the top of the function.</li>
+</ul>
+</li>
+<li><p>Functions are hoisted to the top too, but not function expressions.</p></li>
+</ul>
+
+
+<h3>Further reading</h3>
+
+<ul>
+<li><a href="http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting">JS Scopting and Hoisting</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/cache-layer/">Cache Layer</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-18T17:02:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our cache layer lives between the Github API and our Octokit Wrapper. We pull in the data on an authenticated user from the API and serialize the data in the user model (which allows us to access the data in multiple views). In a future refactor, we should probably be doing this in the wrapper model or even a memcache manager model.</p>
+
+<p>Given the fact that I didn&#8217;t fully grasp the cache system that I had a heavy hand in designing, I did a little more research on the subject&#8230; The cache storage system in Rails is very modular. It uses the file system to store the cache by default, but can be customized as we did. We used <a href="https://github.com/mperham/dalli">Dalli</a> instead of <code>mem_cache_store</code> because it has support for memcached&#8217;s binary protocol. (I believe Dalli will be the default in Rails 4.)</p>
+
+<h3>Methods</h3>
+
+<p>From the <a href="http://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store">documentation</a>, the main methods to call are <code>read</code>, <code>write</code>, <code>delete</code>, <code>exist?</code>, and <code>fetch</code>. The <code>fetch</code> method accepts a block and will either return an existing value from the cache or write the result to the cache if none exists.</p>
+
+<h3>Page Caching:</h3>
+
+<p>This allows the request for a page to be served by the webserver (nginx in our case), without ever having to hit the Rails stack. Obviously, this is highly performant, but cannot be used across all situations (e.g. where authentication is required or any actions that have before filters).</p>
+
+<h3>Action Caching:</h3>
+
+<p>This is similar to page caching except the incoming web request hits the Rails stack to allow the before-filters to run before the cache is served. This is the best option for when authentication and other restrictions need to be run while still serving the result of the output from a cached copy.</p>
+
+<h3>Fragment Caching:</h3>
+
+<p>This allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in. We tried running this for our indexed table views, but we need to work on bettering our server-side processing before this can be fully implemented.</p>
+
+<h3>SQL Caching:</h3>
+
+<p>This caches the results returned by each query so that if Rails encounters the same query again for that request, it will use the cached result rather than running the query against the database again.</p>
+
+<h3>Need to the look into&#8230;</h3>
+
+<p>In the future, I&#8217;d like to look how we might be better able to use <code>Rack::Cache</code> to better take advantage of HTTP caching regarding freshness (expires, cache-control) and/or validation (last-modified, ETags).</p>
+
+<h3>Further Reading:</h3>
+
+<ul>
+<li><a href="http://code.google.com/p/memcached/wiki/TutorialCachingStory">Memcache Wiki</a></li>
+<li><a href="http://guides.rubyonrails.org/caching_with_rails.html">Rails Guide on Caching</a></li>
+<li><a href="https://github.com/rtomayko/rack-cache">Rack cache</a></li>
+<li><a href="http://nubyonrails.com/articles/memcached-basics-for-rails">Memcached basics for Rails</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -586,376 +1235,6 @@ conformance with &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/conways-game-of-life/">Conways Game of Life</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-08T11:23:00-05:00" pubdate data-updated="true">Dec 8<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://stackoverflow.com/questions/1720932/create-two-dimensional-arrays-and-access-sub-arrays-in-ruby">Initializing new arrays</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/backbone-dot-js-intro/">Backbone.js Intro</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-07T14:57:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Intro with <a href="http://www.youtube.com/watch?v=PqtYcHyyWJA">Nick Gauthier</a></h3>
-
-<ul>
-<li><p>7min 3seconds</p></li>
-<li><p>Backbone is a library, not a framework</p>
-
-<ul>
-<li>it is injectable, like Jquery</li>
-</ul>
-</li>
-<li><p>Ember is much larger and does more for you, but in backbone you call the shots</p></li>
-<li><p>Router</p>
-
-<ul>
-<li>Bind urls to actions with hashbang route or pushstate route</li>
-<li>if you have a route that it recognizes it triggers your code</li>
-<li>extend backbone default router</li>
-<li>looks at a route and triggers an action -> like Rails</li>
-</ul>
-</li>
-<li><p>Views</p>
-
-<ul>
-<li>When you instantiate a view, you create a new DOM element
-
-<ul>
-<li>The view&#8217;s job is to listen to events, like jQuery to trigger actions</li>
-</ul>
-</li>
-<li></li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Listens for a click&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="err">\\</span><span class="nx">code</span>
-</span><span class='line'>  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s2">&quot;click .pet&quot;</span><span class="o">:</span> <span class="s2">&quot;woof&quot;</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="err">\\</span><span class="nx">more</span> <span class="nx">code</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/dynamic-gif-on-github/">Dynamic GIF on Github</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-07T13:06:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ol>
-<li><p>How is the GIF embedded in the markdown?</p></li>
-<li><p>Where can I see it?</p></li>
-<li>TravisCI</li>
-<li>The only .png match points to Repositories#show</li>
-<li><p><code>repo = service(:find_repo, params).run</code> -> line 31 in the repo controller, this must be how it is done.</p></li>
-<li><p>How do we dynamically generate a png in ruby</p></li>
-</ol>
-
-
-<h3><a href="https://github.com/citrus/magick_title#readme">Magick_title</a></h3>
-
-<ul>
-<li><code>MagickTitle.say("Hello")</code> builds a PNG that predictably says &#8220;Hello&#8221;</li>
-<li><p>the gifs on github are 13 pixels tall</p></li>
-<li><p>svg image url</p></li>
-<li>Moveable ink</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/object-oriented-design-sandi-metz/">Object Oriented Design Sandi Metz</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-07T12:31:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Solid Object Oriented Design</h3>
-
-<p><a href="http://vimeo.com/12350535">Video of Sandi Metz</a></p>
-
-<h3>Less the path to better design</h3>
-
-<p><a href="http://vimeo.com/26330100">Video</a></p>
-
-<ul>
-<li><p>Code needs to work today just once, but needs to be easy to change forever</p>
-
-<ul>
-<li>purpose of design is reduce the cost of change</li>
-</ul>
-</li>
-<li><p>Patterns are prescriptions</p>
-
-<ul>
-<li>patterns work at the correct dosage</li>
-</ul>
-</li>
-<li><p>principles</p>
-
-<ul>
-<li>SOLID</li>
-<li>Demeter</li>
-</ul>
-</li>
-<li><p>Need diagnostics</p>
-
-<ul>
-<li>need simple ways to judge the goodness of code (the inverse of Bob Martin&#8217;s list of ailments)</li>
-</ul>
-</li>
-<li><p>4 Diagnostics : True</p>
-
-<ol>
-<li>Code should be <em>transparent</em></li>
-<li><em>Reasonable</em>: cost of making any change should be to proportional to its value</li>
-<li>Code should be <em>useable</em> -> if you wrote the code, you should be able to reuse it</li>
-<li><em>Exemplary</em> -> more code like this would be good for your app</li>
-</ol>
-</li>
-<li><p>These principles tell you when to quit</p></li>
-<li><p>Don&#8217;t be a know-it-all</p></li>
-<li><p>Code is more stable when the objects communicate less</p>
-
-<ul>
-<li>For example, all the work that goes into building and curating bounties belongs in the bounty class and not in the issue class, even though bounties belong to issues
-
-<blockquote><p>managing dependencies is at the center of design. Depend on things that are more stable than you are.</p></blockquote></li>
-<li>early on in an app, you actually don&#8217;t know which is more stable
-
-<ul>
-<li>embrace uncertainty. If two objects must collaborate and you don&#8217;t know who is more uncertain. Then you need to make them know as a little of each other as possible. <em>A directive to decouple.</em></li>
-</ul>
-</li>
-<li>Don&#8217;t have to guess what changes will come. Loosen the coupling so that when a change came (and we didn&#8217;t know what the change was) it would be ok.</li>
-</ul>
-</li>
-<li><p>It&#8217;s Ducks all the way down</p></li>
-<li>identify the underlying abstractions, from trip&#8217;s point of view it just wants to be prepared</li>
-<li>preparer is an agreement about the public interface of an idea -> it&#8217;s a <em>duck type</em></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">preparer</span><span class="p">(</span><span class="n">preparers</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">preparers</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">preparer</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">preparer</span><span class="o">.</span><span class="n">prepare_trip</span><span class="p">(</span><span class="nb">self</span><span class="p">)}</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#then each class has it&#39;s own prepare_trip(trip) method which sends back a prepared trip.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Abstractions are more stable than concretions. It is the duck type.
-
-<ul>
-<li>You can trade the unpredictability for the constancy for what you want.</li>
-<li>We share no code, there are no modules</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Trip expects preparers and prepares trust that they can pass the object to that called them</h3>
-
-<ul>
-<li><p>Trustworthy objects</p>
-
-<ul>
-<li>Understand more about themselves and what they want and know less about what others do</li>
-<li>Depend less on concretions and more on abstractions</li>
-</ul>
-</li>
-<li><p>The space between objects</p></li>
-<li>When objects have space around them they have room to move</li>
-<li>Design allows you to put off design decision until you know more about the application</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/elastic-search/">Elastic Search</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-02T10:21:00-05:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://github.com/karmi/tire">Ruby API and DSL for the ElasticSearch search engine</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
-</span><span class='line'>Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
-</span><span class='line'>No Java runtime present, requesting install.</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Load: true</code> will load the active record object as opposed to the</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -973,23 +1252,23 @@ conformance with &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/new-beginnings/">New Beginnings</a>
+        <a href="/blog/service-objects-versus-concerns/">service objects versus concerns</a>
       </li>
     
       <li class="post">
-        <a href="/blog/computer-chips-rd2/">computer chips rd2</a>
+        <a href="/blog/pow-config/">pow config</a>
       </li>
     
       <li class="post">
-        <a href="/blog/marionette-cms/">marionette-cms</a>
+        <a href="/blog/cucumber-with-scott/">Cucumber with Scott</a>
       </li>
     
       <li class="post">
-        <a href="/blog/node-express-backbone-marionette-sorting-out-the-pieces/">node, express, backbone and marionette &#8211; sorting out the pieces</a>
+        <a href="/blog/cucumber/">Cucumber</a>
       </li>
     
       <li class="post">
-        <a href="/blog/require-dot-js/">require.js</a>
+        <a href="/blog/wit/">wit</a>
       </li>
     
   </ul>

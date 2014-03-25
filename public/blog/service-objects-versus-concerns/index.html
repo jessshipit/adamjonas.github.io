@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>service objects versus concerns - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="I wrote this last May. Obviously, @scottcreynolds doesn&#8217;t think it sunk in. We were writing a URL sanitizer that stripped the user&#8217;s URL &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://www.adamjonas.com/blog/service-objects-versus-concerns/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Service Objects Versus Concerns</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T15:03:00-05:00" pubdate data-updated="true">Feb 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="/blog/service-objects/">I wrote this</a> last May. Obviously, <a href="https://github.com/scottcreynolds">@scottcreynolds</a> doesn&#8217;t think it sunk in.</p>
+
+<p>We were writing a URL sanitizer that stripped the user&#8217;s URL input of <code>http://</code> and <code>www</code> to store in the DB. Because we were using it for multiple models. I had viewed this &#8220;stipper&#8221; method as a behavior and thus had thought it belonged in the the DHH blessed concerns folder.</p>
+
+<p>Scott disagreed:</p>
+
+<blockquote><p>A concern or mixin should describe a <strong>behavior</strong> that is being given to the object. That&#8217;s the &#8220;able&#8221; nomenclature. A behavior is something like &#8220;it can support tags&#8221; or &#8220;it can be authenticated with a devise token&#8221;.</p></blockquote>
+
+<p>What I should have seen was this is a utility method. He writes:</p>
+
+<blockquote><p>What was being created here is a utility or service method, intended to be used across any entity in the system that chooses to sanitize a url. This is not a behavior that the object has. Yes, you could go so far as to say &#8220;this object can sanitize its urls&#8221; but that&#8217;s a bit of semantic gymnastics when what we&#8217;re really describing is a <strong>service object</strong> - something that provides a service to any part of the system that requires it. In this case, scrubbing user input.</p></blockquote>
+
+<p>Something that may have helped me futher understand this was thinking about who was responsible for this sanitization. Is the Event object responsible for url sanitization?</p>
+
+<blockquote><p>It might seem like a fine hair to split, but if we examine further, we see that we weren&#8217;t really adding a common behavior to the <code>event</code> and <code>admin_user</code> classes.</p>
+
+<p>The <code>parseable</code> module as designed only handled the case where the thing it was being mixed into had a field called <code>website</code>. Including it in <code>event</code> would have done absolutely nothing because that field doesn&#8217;t exist. What an <code>event</code> does have, however, is a <code>registration_link</code>. Already, we can see that we haven&#8217;t truly identified a common <em>behavior</em> so much as a common <em>need</em> - hence a service object.</p>
+
+<p>Finally, just in the naming we can tell that we&#8217;re not really describing what we mean. If a class includes a module <code>parseable</code>, that include line, in English, reads <code>an admin user is parseable</code>. To me that means something significantly different than <code>before save, strip some characters out of a field</code>. The module being described didn&#8217;t do what it claimed to do by its name.</p></blockquote>
+
+<p>These things seem small, but they&#8217;re extremely important to care about because code bases grow and all you have in a dynamic language is your tests and your naming to help you understand the system a year from now. I could show you a rails project I just came into where no care was given to naming and structure, and you could spend days following the labyrinth of modules and classes and end up hoping the Minotaur finds you and eats you and spares you the hassle of figuring out what&#8217;s going on.</p>
+
+<p>So in short, use concerns when extracting common behavior (active record finders, authentication, etc). Use service objects when extracting common needs.</p>
+
+<p>Finally, a note on tests. It&#8217;s great we&#8217;re doing the cucumber, and doing it well, but we still need tests at model and controller levels too. If you make a new class/module it should have a test file and some tests.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T15:03:00-05:00" pubdate data-updated="true">Feb 25<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/pow-config/" title="Previous Post: pow config">&laquo; pow config</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/service-objects-versus-concerns/">service objects versus concerns</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/pow-config/">pow config</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/cucumber-with-scott/">Cucumber with Scott</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/cucumber/">Cucumber</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/wit/">wit</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.adamjonas.com/blog/service-objects-versus-concerns/';
+        var disqus_url = 'http://www.adamjonas.com/blog/service-objects-versus-concerns/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

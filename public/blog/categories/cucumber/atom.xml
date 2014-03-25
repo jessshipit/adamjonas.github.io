@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cucumber | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/cucumber/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2014-03-25T18:10:46-04:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cucumber]]></title>
+    <link href="http://www.adamjonas.com/blog/cucumber/"/>
+    <updated>2014-02-17T11:34:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/cucumber</id>
+    <content type="html"><![CDATA[<h2>Cucumber</h2>
+
+<p>Cucumber is a BDD tool that supports Outside-in development by running plain text features or user stories as acceptance tests.</p>
+
+<ul>
+<li><a href="http://blog.codeship.io/2013/04/30/BDD-With-Cucumber.html">Intro screencast</a></li>
+<li><a href="http://35qk152ejao6mi5pan29erbr9.wpengine.netdna-cdn.com/wp-content/uploads/2011/08/Cucumber-Regular-Expressions-Cheat-Sheet.pdf">cucumber regex cheatsheet</a></li>
+<li><a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">An Introduction to Outside-in Development</a></li>
+</ul>
+
+
+<h3>Features</h3>
+
+<p>Let’s create our first feature. The anatomy of a feature is the following:</p>
+
+<p><code>
+Feature: [feature]
+  In order to [business value]
+  As a [role]
+  I want to [some action]
+</code></p>
+
+<p>Notice how a feature includes who, what and most importantly: <strong><em>why</em></strong>.</p>
+
+<p>For example:</p>
+
+<p><code>
+Feature: Manage Articles
+  In order to make a blog
+  As an author
+  I want to create and manage articles
+</code></p>
+
+<h3>Scenarios</h3>
+
+<p>There will be many scenarios accompanying a feature. Scenarios will follow the four stages of testing: setup, exercise, verify and teardown. A simple scenario looks like this:</p>
+
+<p><code>
+Given [context]
+When I do [action]
+Then I should see [outcome]
+</code></p>
+
+<ul>
+<li> The <code>Given</code> step is where you set up the context of your scenario. Every scenario starts with a blank slate, so it is important to create a state in your application for example by creating data in the database, or by navigating to a specific page.</li>
+<li> The <code>When</code> step is where you exercise the application in order to accomplish what needs testing. This is usually where you might fill in forms, press buttons, click links, or otherwise interact with the system in some way.</li>
+<li> The <code>Then</code> step is where you verify the result, and it’s where we check that the correct pages are rendered, that we see a success or error message, or anything that could help us verify that the prior action was successful.</li>
+<li> The teardown, is taken care of by cucumber automatically.</li>
+</ul>
+
+
+<p>For example:</p>
+
+<p><code>
+Scenario: Articles List
+  Given I have articles titled Pizza, Breadsticks
+  When I go to the list of articles
+  Then I should see "Pizza"
+  And I should see "Breadsticks"
+</code></p>
+
+<p><code>
+Scenario: User signs up with valid data
+  When I go to the sign up page
+  And I fill in "Email" with "email@person.com"
+  And I fill in "Username" with "user"
+  And I fill in "Password" with "password"
+  And I fill in "Confirm password" with "password"
+  And I press "Sign up"
+  Then I should see "instructions for confirming"
+  And a confirmation message should be sent to "email@person.com"
+</code></p>
+
+<p>We can also test a user attempting to sign up without filling in all the fields:</p>
+
+<p><code>
+Scenario: User tries to sign up without a twiddr name
+  When I go to the sign up page
+  And I fill in "Email" with "email@person.com"
+  And I fill in "Password" with "password"
+  And I fill in "Confirm password" with "password"
+  And I press "Sign up"
+  Then the "Username" field should have the "can't be blank" error
+</code></p>
+
+<h3>Tags</h3>
+
+<p>  <code>cucumber --tags @billing --tags @important</code> -> Runs the first scenario (Scenarios with @important AND @billing)
+  <code>cucumber --tags @billing,@important</code> -> Runs both scenarios (Scenarios with @important OR @billing)</p>
+]]></content>
+  </entry>
+  
+</feed>

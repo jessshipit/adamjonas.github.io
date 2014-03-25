@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Cocoa touch is the high-level Objective C programming API for iOS. What is a framework a collection of classes that are intended to be used together &hellip;">
+  <meta name="description" content="CA Animation - Animation family tree - CA Animattion - CA Animation Group - CA Property Animation - CA Transition - CA basic animation is for linear &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,727 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-day-5/">RubyMotion Day 5</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-25T09:54:00-05:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>CA Animation</h3>
+
+<pre><code>- Animation family tree
+    - CA Animattion
+        - CA Animation Group    
+        - CA Property Animation
+        - CA Transition
+            - CA basic animation is for linear animation
+            - keyanimattion is for more specific or non-linear animation
+
+
+- Animated Properties
+    - CGColorRef -&gt; shadowColor, borderColor
+    - NSNumber (float) -&gt; opactity, shadowRadius
+    - NSVAlue (CGRect) -&gt; bounds, contentsRect
+    - NSValue (CGPoint) -&gt; anchorPoint (is the center point for rotation), position
+    - NSValue (CATransform3D) -&gt; transform
+
+- CATransform3d
+    - CoreGraphics is just in 2 dimensions
+    - Can add a perspective column in the z column -- (as opposed to just x and y planes (the 3rd column is for perspective) -- to create the illusion that it is tilted backs
+    -  
+
+- Easing
+&gt;Easing means to control the acceleration or deceleration of the objects in the animation. This is used to simulate real life forces like friction or gravity.
+</code></pre>
+
+<h2>Web Services</h2>
+
+<pre><code>- Synchronous URL Fetch (not recommended) -&gt; *if you block the main thread, your application will freeze*
+    - NSURLConnection -(request)-&gt; NSMutableURLRequest -(URL)-&gt; NSURL
+        - NSURLConnection, the class of CocoaTouch to send requests to web services
+-  Asynchronous URL Fetch (the one we are going to use)
+
+- we can block the whole app execution until the web service responds OR send the request and forget about it, avoiding blocking the app execution. Once the service responds we process the result.
+    - The later option is the right one.
+- We send and Asynchronous request to the service using a NSOperationQueue. This block of code will be executed in a background Queue defined by the NSOperationQueue.
+        - This block receives three parameters:
+            - response: An object with an instance of NSURLResponse.
+            - data: The response returned by the service as a NSData object.
+            - error: An NSError with the error, if any, returned by the service.
+</code></pre>
+
+<h3>Core Data</h3>
+
+<pre><code>- StoreTypes
+    - SQlite, binary file, NOT xml formats (only available in OS10)
+- Predicates
+- NSManagedObject
+    - class capable of storing data for an instance of any entity.
+    - access properties (attributes, relationships) via key-value coding methods (valueForKey:, setValue:forKey)
+- Relationships
+    - delete rule: "if an attempt is made to delete the source object..."
+        - nullify (the inverse relationship)
+        - deny (if any destination relationships)
+        - cascade (delete any destination relationships, too) -&gt; *very dangeous*
+        - No action
+</code></pre>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># In Core Data we can have relationship between objects, so lets add one</span>
+</span><span class='line'>  <span class="c1"># to the Director Object</span>
+</span><span class='line'>  <span class="vi">@relationships</span> <span class="o">||=</span> <span class="o">[</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># IMPORTANT: In Core Data is required to have a circular relationships between</span>
+</span><span class='line'>    <span class="c1"># the two objects. In these case we are adding a Relationship from Movie to Director</span>
+</span><span class='line'>    <span class="c1"># but also we will need one from Director to Movie, these relationship is called Inverse</span>
+</span><span class='line'>    <span class="c1"># Relationship</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Relationship Name, Relationship Class, Inverse Relationship, Is Optional, Is Indexed,</span>
+</span><span class='line'>    <span class="c1"># Is Ordered, Min Count, Max Count, Delete Rule</span>
+</span><span class='line'>    <span class="o">[</span><span class="s1">&#39;director&#39;</span><span class="p">,</span> <span class="s1">&#39;Director&#39;</span><span class="p">,</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="no">NSNullifyDeleteRule</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>- The relationships in Core Data are circular, what these means is that if we want to create a relationship from Movie to Director we also need another one from Director to Movie.
+</code></pre>
+
+<h3>Debugger</h3>
+
+<pre><code>- rake debug=1, backtrace (or bt), fr &lt;number&gt;
+    - n to step to the next line in the file
+    - quit to quit.
+</code></pre>
+
+<h3>3rd Party Libs</h3>
+
+<pre><code>- CorePlot -&gt; to build graphs
+</code></pre>
+
+<h3>Wrappers</h3>
+
+<pre><code>- [formotion](https://github.com/clayallsopp/formotion -&gt; to easily create complex forms
+- [walt](https://github.com/clayallsopp/formotion) -&gt; wrapper of core animation
+-   [teacup](https://github.com/clayallsopp/formotion) -&gt; pretty much create a stylesheet for the views
+- [sugarcube](https://github.com/clayallsopp/formotion) -&gt; redefining methods to be more semantic
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-day-5/">RubyMotion Day 5</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-25T09:54:00-05:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>CA Animation</h3>
+
+<ul>
+<li><p>Animation family tree</p>
+
+<ul>
+<li>CA Animattion
+
+<ul>
+<li>CA Animation Group</li>
+<li>CA Property Animation</li>
+<li>CA Transition
+
+<ul>
+<li>CA basic animation is for linear animation</li>
+<li>keyanimattion is for more specific or non-linear animation</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Animated Properties</p>
+
+<ul>
+<li>CGColorRef -> shadowColor, borderColor</li>
+<li>NSNumber (float) -> opactity, shadowRadius</li>
+<li>NSVAlue (CGRect) -> bounds, contentsRect</li>
+<li>NSValue (CGPoint) -> anchorPoint (is the center point for rotation), position</li>
+<li>NSValue (CATransform3D) -> transform</li>
+</ul>
+</li>
+<li><p>CATransform3d</p>
+
+<ul>
+<li>CoreGraphics is just in 2 dimensions</li>
+<li>Can add a perspective column in the z column &#8211; (as opposed to just x and y planes (the 3rd column is for perspective) &#8211; to create the illusion that it is tilted back</li>
+</ul>
+</li>
+<li><p>Easing: to control the acceleration or deceleration of the objects in the animation. This is used to simulate real life forces like friction or gravity.</p></li>
+</ul>
+
+
+<h2>Web Services</h2>
+
+<ul>
+<li>Synchronous URL Fetch (not recommended) -> <em>if you block the main thread, your application will freeze</em>
+
+<ul>
+<li>NSURLConnection -(request)-> NSMutableURLRequest -(URL)-> NSURL
+
+<ul>
+<li>NSURLConnection, the class of CocoaTouch to send requests to web services</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Asynchronous URL Fetch (the one we are going to use)</p></li>
+<li><p>we can block the whole app execution until the web service responds OR send the request and forget about it, avoiding blocking the app execution. Once the service responds we process the result.</p>
+
+<ul>
+<li>The later option is the right one.</li>
+</ul>
+</li>
+<li>We send and Asynchronous request to the service using a NSOperationQueue. This block of code will be executed in a background Queue defined by the NSOperationQueue.
+
+<ul>
+<li>This block receives three parameters:
+
+<ul>
+<li>response: An object with an instance of NSURLResponse.</li>
+<li>data: The response returned by the service as a NSData object.</li>
+<li>error: An NSError with the error, if any, returned by the service.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Core Data</h3>
+
+<ul>
+<li>StoreTypes
+
+<ul>
+<li>SQlite, binary file, NOT xml formats (only available in OS10)</li>
+</ul>
+</li>
+<li>Predicates</li>
+<li>NSManagedObject
+
+<ul>
+<li>class capable of storing data for an instance of any entity.</li>
+<li>access properties (attributes, relationships) via key-value coding methods (valueForKey:, setValue:forKey)</li>
+</ul>
+</li>
+<li>Relationships
+
+<ul>
+<li>delete rule: &#8220;if an attempt is made to delete the source object&#8230;&#8221;
+
+<ul>
+<li>nullify (the inverse relationship)</li>
+<li>deny (if any destination relationships)</li>
+<li>cascade (delete any destination relationships, too) -> <em>very dangeous</em></li>
+<li>No action</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># In Core Data we can have relationship between objects, so lets add one</span>
+</span><span class='line'>  <span class="c1"># to the Director Object</span>
+</span><span class='line'>  <span class="vi">@relationships</span> <span class="o">||=</span> <span class="o">[</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># IMPORTANT: In Core Data is required to have a circular relationships between</span>
+</span><span class='line'>    <span class="c1"># the two objects. In these case we are adding a Relationship from Movie to Director</span>
+</span><span class='line'>    <span class="c1"># but also we will need one from Director to Movie, these relationship is called Inverse</span>
+</span><span class='line'>    <span class="c1"># Relationship</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Relationship Name, Relationship Class, Inverse Relationship, Is Optional, Is Indexed,</span>
+</span><span class='line'>    <span class="c1"># Is Ordered, Min Count, Max Count, Delete Rule</span>
+</span><span class='line'>    <span class="o">[</span><span class="s1">&#39;director&#39;</span><span class="p">,</span> <span class="s1">&#39;Director&#39;</span><span class="p">,</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="no">NSNullifyDeleteRule</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>The relationships in Core Data are circular, what these means is that if we want to create a relationship from Movie to Director we also need another one from Director to Movie.</li>
+</ul>
+
+
+<h3>Debugger</h3>
+
+<ul>
+<li>rake debug=1, backtrace (or bt), fr <number>
+
+<ul>
+<li>n to step to the next line in the file</li>
+<li>quit to quit.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>3rd Party Libs</h3>
+
+<ul>
+<li>CorePlot -> to build graphs</li>
+</ul>
+
+
+<h3>Wrappers</h3>
+
+<ul>
+<li>[formotion](https://github.com/clayallsopp/formotion -> to easily create complex forms</li>
+<li><a href="https://github.com/clayallsopp/formotion">walt</a> -> wrapper of core animation</li>
+<li><a href="https://github.com/clayallsopp/formotion">teacup</a> -> pretty much create a stylesheet for the views</li>
+<li><a href="https://github.com/clayallsopp/formotion">sugarcube</a> -> redefining methods to be more semantic</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/ember-dot-js-meetup/">Ember.js Meetup</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-25T09:48:00-05:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Watch router v2 video. Seattle.
+  - <a href="http://www.youtube.com/watch?v=_6yMxU-_ARs">Tom Dale on Ember Data</a>
+  - <a href="http://www.youtube.com/watch?v=4Ed_o3_59ME">Yahuda Katz on the router</a>
+  - <a href="https://gist.github.com/3981133">Guide to the router is here</a></p>
+
+<p>Log _transitions = true. Lets you see the log with the new router.</p>
+
+<p>Emblem.js. compiles down to handlebars but has lots of syntactic sugar. Its just a parser.</p>
+
+<p>Dependency injection is giving instance variables to an object.</p>
+
+<ul>
+<li><a href="https://github.com/emberjs-addons/ember-bootstrap">Ember Bootstrap</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-day-4/">RubyMotion Day 4</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T09:58:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Auto-rotation in View Controller</h3>
+
+<h3>Notifications</h3>
+
+<h3>File Structure</h3>
+
+<ul>
+<li>the RubyMotion compiler recursively checks all the file directories and adds the files. If I brake out a method it will find it and I don&#8217;t need to wrap it in a class or anything in the other file.</li>
+</ul>
+
+
+<h3>Variables</h3>
+
+<ul>
+<li>always want to use the sdk_version</li>
+<li>the deployment_target is the lowest version of the iOS device that you want to run on
+
+<ul>
+<li>in the app delegate file I can set the deployment target to <code>app.deployment_target = 5.1</code></li>
+<li><code>rake target=5.1</code> launches the device in the specified iOS
+
+<ul>
+<li>check the device with <code>UIDevice.currentDevice.systemVersion</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>States</h3>
+
+<ul>
+<li><a href="http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneosprogrammingguide/ManagingYourApplicationsFlow/ManagingYourApplicationsFlow.html">Apple Explains States and Multi-tasking</a></li>
+</ul>
+
+
+<h3>CA Layers</h3>
+
+<blockquote><p>The CALayer class manages image-based content and allows you to perform animations on that content <a href="The%20CALayer%20class%20manages%20image-based%20content%20and%20allows%20you%20to%20perform%20animations%20on%20that%20content">See Apple Docs</a></p></blockquote>
+
+<ul>
+<li><p>can create a tree structure for CA Layers just like you can create a tree structure for controllers and views</p></li>
+<li><p>Using the REPL to play with the layers p. 138</p></li>
+<li><p>We are using gradients in Chapter 20 p. 141-42.</p></li>
+<li><p><code>addSublayer(grass_layer)</code> is for adding on top of an inserted sublayer</p></li>
+</ul>
+
+
+<h3>Bug with Objective-c array</h3>
+
+<ul>
+<li>ran into another instance of when the compiler breaks on an objective-c array. This happened on the first day as well. Need to pay attention to this.
+
+<ul>
+<li>the steps to debug are: <code>rake debug=1</code>, then <code>backtrace</code>, lower-case <code>quit</code> to quit the debugger</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Deploy to your device</h3>
+
+<ul>
+<li><code>rake device</code> will deploy it to the device</li>
+<li><code>rake device debug=1</code> will deploy with a debugger</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-day-3/">RubyMotion Day 3</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-23T10:27:00-05:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>UIViewControllers</h2>
+
+<blockquote><p>a view controller manages a set of views that makes up a portion of your app&#8217;s user interface.</p></blockquote>
+
+<ul>
+<li>UIViewController:
+
+<ul>
+<li>sends data to NSArray</li>
+<li>sends view to UIView</li>
+<li>sends a target to UIButton</li>
+<li>Receives a delegate from UITextField</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>UITabBarController</h3>
+
+<ul>
+<li>common to use that as the main controller</li>
+<li>this controls the display of the main screen</li>
+</ul>
+
+
+<h3>UITabBarItem</h3>
+
+<ul>
+<li>displays the tab buttons in the along the top or bottom</li>
+</ul>
+
+
+<h2>TableViews</h2>
+
+<ul>
+<li>Very flexible</li>
+<li>Uses the delegate pattern
+
+<ul>
+<li>UITableViewController is a controller object that manages a table view.
+
+<ul>
+<li>when the table view is about to appear the first time it&#8217;s loaded, it reloads the table view&#8217;s data</li>
+<li>whent he table view has appeared, the controller flashes the tbale view&#8217;s scroll indicators</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>inherits from the view controller adn dispays the table view cells</p></li>
+<li><p>supports different kinds of layouts</p>
+
+<ul>
+<li>plain</li>
+<li>grouped -> Like the ones you can find in the Settings app of an iPhone.</li>
+</ul>
+</li>
+<li><p>the UITableView has subviews that will contain the cells</p></li>
+<li><p>Data sources</p>
+
+<ul>
+<li>special type of delegate
+used by the tableView in order to get info needed to display
+
+<ul>
+<li><h1>of rows, etc</h1></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>like tabs this is set in the app delegate</p></li>
+<li><p>when you have data that is more than will fit on the screen, you probably only need to create 9 or so cells and then you can send in the data to fit in those cells. Loading 50 cells will make the interface very slow.</p>
+
+<ul>
+<li>We reuse the cells with <em>dequeue</em> like <code>tableView.dequeueReusableCellWithIdentifier(NEWS_CELL_REUSE_ID)</code></li>
+<li>Only if the table view can not find a cached cell with that identifier, we build it: <code>UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier: NEWS_CELL_REUSE_ID)</code></li>
+</ul>
+</li>
+<li><p>System Cell Types</p>
+
+<ul>
+<li>four kinds provided by apple</li>
+<li>can also create your own cells</li>
+</ul>
+</li>
+<li><p><em>creating custom tableviews is a good example of using when to use Interface Builder.</em></p></li>
+<li><p><code>viewWillAppear</code> method will be called every time the view is shown</p></li>
+<li><p><code>initWithStyle:</code> This is the initializer method used to create instances of UITableViewController</p></li>
+<li><p><code>p.list files</code> are Property list files -> files that store serialized objects</p>
+
+<ul>
+<li>Objective-C supports these files natively</li>
+</ul>
+</li>
+<li><p>Animation for adding or deleting a cell with:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Animation for deleting and inserting</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#to delete</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="n">deleteRowsAtIndexPaths</span><span class="p">(</span><span class="o">[</span><span class="n">selected_cell_index_path</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">withRowAnimation</span><span class="p">:</span><span class="no">UITableViewRowAnimationMiddle</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#to insert</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="n">insertRowsAtIndexPaths</span><span class="p">(</span><span class="o">[</span><span class="n">index_path</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">withRowAnimation</span><span class="p">:</span><span class="no">UITableViewRowAnimationRight</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Custom Cells</h3>
+
+<ul>
+<li>Need UITableViewCell as the super class</li>
+</ul>
+
+
+<h2>Navigation Controllers</h2>
+
+<ul>
+<li><p>very similar to TabBarControllers, but like a chain of views.</p>
+
+<ul>
+<li>when you have a master, detail relationship you should use a Navigation controller
+
+<ul>
+<li>you get a back button for free!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>can use CoreAnimation to create your own animation instead of using the standard transition.</p></li>
+<li><p>A Navigation Bar can only have two buttons, one to the left and one to right. T</p></li>
+<li>The buttons should be instances of UIBarButtonItem not of UIButton.</li>
+</ul>
+
+
+<h3>Dirty Views</h3>
+
+<ul>
+<li>needed to update a view -> <code>@receiver.setNeedsDisplay</code></li>
+</ul>
+
+
+<h2>A ruby aside</h2>
+
+<figure class='code'><figcaption><span>&#8216;not&#8217; examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="o">!</span> <span class="n">me</span>
+</span><span class='line'>  <span class="ow">not</span> <span class="n">me</span>
+</span><span class='line'>  <span class="n">i</span> <span class="o">!=</span> <span class="n">you</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#in the wild</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">isFormValid</span>
+</span><span class='line'>    <span class="ow">not</span> <span class="vi">@email_textfield</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">empty?</span> <span class="ow">and</span> <span class="ow">not</span> <span class="vi">@password_textfield</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1005,596 +1726,6 @@ and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.green
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jan-14-notes/">Jan 14 Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-15T11:05:00-05:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Simple Search</h3>
-
-<p><a href="http://railscasts.com/episodes/37-simple-search-form">Ryan Bates to the rescue</a></p>
-
-<h3>Find</h3>
-
-<p>Getting back to basics (or at least closer to SQL). I haven&#8217;t used find much in the couple months, but it was what I needed for the set up search on the index pages.</p>
-
-<p>The <a href="http://apidock.com/rails/ActiveRecord/Base/find/class">documentation is awesome</a>.</p>
-
-<h3>ActiveRelation Queries</h3>
-
-<p><a href="http://blog.mitchcrowe.com/blog/2012/04/14/10-most-underused-activerecord-relation-methods/">Good article on underused queries</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/xmpp/">XMPP</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-12T06:57:00-05:00" pubdate data-updated="true">Jan 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>XMPP</h2>
-
-<ul>
-<li>instant messaging for servers -> mobile, desktop or whatever</li>
-<li>it&#8217;s an open standard -> what google uses.</li>
-<li>rss -> needs to ask every server if they have info.
-
-<ul>
-<li><strong>Polling is inefficient</strong></li>
-</ul>
-</li>
-<li>In email, messages are push to the recipient -> it&#8217;s push notification.
-
-<ul>
-<li>the server and the client need to stay online constantly.</li>
-</ul>
-</li>
-</ul>
-
-
-<blockquote><p>XMPP is about pushing out info rather than pulling (which would be a continuous poll).</p></blockquote>
-
-<h3>XMPP is built around push (not pull)</h3>
-
-<ul>
-<li>a not guaranteed queue, if a client is offline when it is sent, it may be lost</li>
-<li>XMPP is built around XML</li>
-<li>it can be secure, but it isn&#8217;t required by default</li>
-</ul>
-
-
-<h3>Upsides</h3>
-
-<ul>
-<li>publish notifications to a list of subscribers (maybe a replacement for RSS)</li>
-<li>Declare presence (think about status messages)</li>
-<li>control</li>
-</ul>
-
-
-<h3>Message status is an attribute</h3>
-
-<ul>
-<li>:normal</li>
-<li>:chat</li>
-<li>:groupchat</li>
-<li>:heading</li>
-<li>:error</li>
-</ul>
-
-
-<h3>Presence is also an attribute</h3>
-
-<ul>
-<li>nil</li>
-<li>:chat</li>
-<li>:away</li>
-<li>:dnd</li>
-<li>:xa</li>
-</ul>
-
-
-<h3>Jabber account</h3>
-
-<ul>
-<li>sign up at &lt;jabber.orb></li>
-<li>IM client applications that speak jabber e.g. Psi, cross platform, can monitor raw xml sent in between</li>
-<li>openfire on mac os 10 is a jabber server</li>
-<li>&lt;ejabberd.im> an open source jabber server written in erlang</li>
-<li><code>cd /Applications/ejabberd-2.0.1/bin</code></li>
-<li><code>./ejabberdctl start</code></li>
-<li>there is a web intergace on port 5280 by default</li>
-<li>can only register one account every 10 minutes</li>
-</ul>
-
-
-<h3>xmpp4r Gem</h3>
-
-<ul>
-<li><a href="http://home.gna.org/xmpp4r/">Docs</a></li>
-<li><a href="https://github.com/ln/xmpp4r">The source files on github</a></li>
-</ul>
-
-
-<h3>XMPP callbacks</h3>
-
-<ul>
-<li>receive parameters about the context, the sender, and the message</li>
-</ul>
-
-
-<h3>Create a config</h3>
-
-<ul>
-<li>create outside the class and then just pass it in later</li>
-</ul>
-
-
-<h3>Jabber is not the place for complicated logic</h3>
-
-<ul>
-<li>Keep your jabber simple as possible and use the rails API for more complicated business logic</li>
-</ul>
-
-
-<h3>There are examples in xmpp4r gem</h3>
-
-<ul>
-<li>There are some inconsistencies, but they are decent templates</li>
-</ul>
-
-
-<h3>Tips</h3>
-
-<ul>
-<li>can customize the avatar</li>
-</ul>
-
-
-<h3>Interacting with rails</h3>
-
-<ul>
-<li><code>render_then_call(render)</code> from merb (not sure what it&#8217;s current status is)</li>
-<li>can also sent this to a job queue so that it is done asynchronously, but this uses two jabber accounts which will send the original message from the other</li>
-<li>keep a DRb port open on your jabber script, its not fully asynchronous, but it works since the slowest part is opening the connection</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/recursion/">Recursion</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-11T22:04:00-05:00" pubdate data-updated="true">Jan 11<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p><a href="http://www.youtube.com/watch?v=MyzFdthuUcA">How to write a recursive method</a></p></li>
-<li><p>Step one- write &#8216;if&#8217;
-a. There must be two cases: a recursive case (where the method calls itself)
-b. and a base case (where the method does not)</p></li>
-<li>Handle the simplest case(s).
-a. Simplest = no recursive call needed (no looping)</li>
-<li>Write the recurisve call(s)
-a. On the next simplest input/state</li>
-<li>Assume the recursive call works (maybe store the result in a variable)
-a. Ask yourself, what does it do?
-b. How does it help?</li>
-</ul>
-
-
-<p>9! = <code>9*8*7*6..</code>
-10! = <code>10*9!</code>
-n! = n * (n - 1)! -> a recursive definition of factorial</p>
-
-<p>&#8220;`ruby
-def factorial(n)
-  if n == 0</p>
-
-<pre><code>return 1
-</code></pre>
-
-<p>  else</p>
-
-<pre><code>result = factorial(n - 1) #computes n-1 factorial
-result * n
-</code></pre>
-
-<p>  end
-end</p>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=ozmE8G6YKww">How recursion works</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/data-structures/">Data Structures</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-11T17:55:00-05:00" pubdate data-updated="true">Jan 11<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>MIT lecture on Intro to Algorithms</h3>
-
-<p><em>Analysis of algorithms:</em></p>
-
-<blockquote><p>the theoretical study of computer program performance and resource usage</p></blockquote>
-
-<ul>
-<li><p>What is more important than performance?</p>
-
-<ul>
-<li>correctness</li>
-<li>simplicity</li>
-<li>maintainability</li>
-<li>stability / robustness</li>
-<li>features / functionality</li>
-<li>modularity</li>
-<li>security</li>
-<li>user friendliness</li>
-</ul>
-</li>
-<li><p>Why study this then?</p>
-
-<ul>
-<li>real time constraints</li>
-<li>sometime user friendliness is a function of performance</li>
-<li>performance measures the line between feasible and infeasible -> algorithms are on the edge of entrepreneurship</li>
-<li>algorithms provides a common language to talk about programming behavior</li>
-</ul>
-</li>
-<li><p>Permutation (an arrangement of numbers)</p></li>
-</ul>
-
-
-<blockquote><p>Take a bunch of numbers and arrangement them in order</p></blockquote>
-
-<ul>
-<li>Insertion sort:
-
-<ul>
-<li>depends on the input order. If sorted, there is little work to do. Worst case is if it is reverse sorted.</li>
-<li>depends also on the input size.</li>
-<li><em>expected time</em> is the time of every input multiplied by the probability of every input AKA a weighted average.
-
-<ul>
-<li>the assumption is based on the statistical distribution of the inputs
-
-<ul>
-<li>all inputs are equally likely -> uniform distribution</li>
-</ul>
-</li>
-<li>a best case analysis is bogus&#8230;</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<p>Relative speed:</p>
-
-<blockquote><p>speed that depends on the speed of the</p></blockquote>
-
-<p>Absolute speed:</p>
-
-<blockquote><p>speed that depends on the speed of the</p></blockquote>
-
-<p>Asymptotic Analysis:</p>
-
-<blockquote><p>Considers the performance of algorithms when applied to very large input datasets. It ignores machine dependent constants and focuses on the growth of the running time.</p></blockquote>
-
-<ul>
-<li>Asymptotic notation:
-
-<ul>
-<li>Theta notation -> drop low order terms and ignore leading constants</li>
-<li>e.g. -> <code>3n^3 + 90n^2 - 5n + 6046 = θ(n^3)</code> in asymptotic notation
-
-<ul>
-<li>As n approaches infinity, <code>θ(n^2)</code> <strong>always beats</strong> <code>θ(n^3)</code> alogrithm.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<p>Sometimes choosing a slower algorithm allows you to attack a problem that a faster algorithm would not allow you to. (56 min)</p>
-
-<ul>
-<li>can</li>
-</ul>
-
-
-<h3>Selection Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=MZ-ZeQnUL1Q">Vid</a></li>
-<li>Time complexity is O(n<sup>2).</sup> It makes n comparisons, n times. It needs to make a pass through the list for every element it sorts.</li>
-<li>For whatever data you give it, it will make the exact same amount of comparisons. Even if you give selection sort a sorted list, it still will have to make the same amount of passes. Thus, the best case, worst case and average case are all O(n<sup>2).</sup></li>
-</ul>
-
-
-<h3>Bubble Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=jAoBsroEow4">Vid</a></li>
-<li>Compare items with the item to its right (or left).</li>
-<li>Large numbers are pushed to the right side of an unsorted list.</li>
-<li>Called a bubble sort since the large numbers rise up to the right.</li>
-<li>A O(n<sup>2),</sup> same time complexity as selection sort.
-
-<ul>
-<li>while selection sort will always be a O(n<sup>2),</sup> bubble sort may be more efficient if the list is fully sorted.</li>
-<li>the best case is a O(n), while the average and worst case are both O(n<sup>2)</sup></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Cocktail Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=Xmx_6YRBaq8">Vid</a></li>
-<li>Saw in bubble sort, that larger numbers rise to the right.
-
-<ul>
-<li>The larger numbers are sorted to the right and on the pass back, the smaller numbers are bubbled to the left.</li>
-<li>The time complexity is still O(n<sup>2)</sup> and is pretty similar to bubble sort.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Insertion Sort</h3>
-
-<ul>
-<li>Only makes one pass through the list. This doesn&#8217;t mean it is an efficient algorithm.</li>
-<li>Start at the second element</li>
-<li>with each new item, you are sorting the item in its correct position it will be sorted in its relative position.
-
-<ul>
-<li>Every arrow to the left are sorted properly.</li>
-</ul>
-</li>
-<li>As it is inserting itself back through the list, but this is still n comparisons or n items meaning it is a O(n<sup>2)</sup> time complexity.</li>
-<li>The best case scenario is like bubble sort of n comparisons. An inversely sorted list will require O(n<sup>2).</sup>
--> moderately fast for small n, but not at all for large n</li>
-</ul>
-
-
-<h3>Bucket Sort</h3>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?NR=1&amp;feature=endscreen&amp;v=ovAfqUafjAA">Vid</a></li>
-<li>Not a sorting algorithm. It breaks down a list into sub-lists. The purpose is to break it down into smaller chunks so that each list takes less time to sort than the larger list.
-
-<ul>
-<li>Instead of sorting one list of 8 items, I could sort two lists of 4 items.
-
-<ul>
-<li>need to know the upper and lower items of each list.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Why do this? Because if you use bubble sort you reduce the overall time complexity of N<sup>2</sup> if the list 8<sup>2</sup> items by making it 2 x 4<sup>2.</sup></li>
-<li>Average case is O(n+k), k represents the number of buckets created. Worst case scenario is still O(n<sup>2).</sup></li>
-</ul>
-
-
-<h3>Recursion</h3>
-
-<ul>
-<li>similar to recurrence relations in math</li>
-<li>any form of recursion must have a base case for the recursion to stop as well as a recursive case which makes recursive calls to itself.</li>
-</ul>
-
-
-<h3>Quick Sort</h3>
-
-<ul>
-<li>sorting algorithm that relies on recursion.</li>
-<li>where you put the pivot doesn&#8217;t matter, pointers go to the extreme left or right of the list</li>
-<li>the items at the pointers are compared</li>
-<li>when both pointers and pivot are at the same value, it is in the right position</li>
-<li>recursively done on the left sublist and then the right sublist.</li>
-<li>Time complexity -> O(nlogn) for best and average. An inversely sorted list will still require O(n<sup>2).</sup></li>
-</ul>
-
-
-<h3>Merge Sort</h3>
-
-<ul>
-<li>MIT-> 1:03</li>
-<li><p>A[1..n]</p></li>
-<li><p>If n=1, done</p></li>
-<li>Recursively sort A[1..(n/2)] &amp;&amp; A[n/2+1..n] (we are sorting two halves of the input)</li>
-<li>Take the two lists and merge them
-a. say you have two lists [2, 7, 13, 20], [1, 9, 11, 12]
-b. check the head of the two arrays, then ouput the smallest.</li>
-<li><p>The time to do this is θ(n) or linear time which is proportional to the size of n.</p></li>
-<li><p>Worst case this is a O(nlogn). Anything more than 30 this would be more performant than insert sort (1:20 MIT)</p></li>
-</ul>
-
-
-<h3>Example</h3>
-
-<p>Given  a  sorted  array  of  integers,  how  can  you  find  the  location  of  a  particular  integer  x?</p>
-
-<p><em>Good  answer:</em>  Use  binary  search.   Compare  the  number  in  the  middle  of  the  array  with  x.   If  it  is  equal,  we  are  done.   If  the  number  is  greater,  we  know  to  look  in  the  second  half  of  the  array.   If  it  is  smaller,  we  know  to  look  in  the  first  half.   We  can  repeat  the  search  on  the  appropriate  half  of  the  array  by  comparing  the  middle element  of  that  array  with  x,  once  again  narrowing  our  search  by  a  factor  of  2.   We  repeat  this  process  until  we  find  x.  This  algorithm  takes  <em>O(log n)</em>  time.</p>
-
-<p><em>Not‐so‐good  answer</em>:  Go  through  each  number  in  order  and  compare  it  to  x.  This 
-algorithm  takes  <em>O(n)</em>  time.</p>
-
-<ul>
-<li>(<a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">from</a>)</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jan-8-notes/">Jan 8 Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-08T12:14:00-05:00" pubdate data-updated="true">Jan 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Railscast 240 8min</h3>
-
-<ul>
-<li>Sortable table columns #228 railscast</li>
-<li>pagination with will_paginate gem, 3.0.pre2 version</li>
-<li>Will ajax improve the user experience?</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -1612,23 +1743,23 @@ algorithm  takes  <em>O(n)</em>  time.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/new-beginnings/">New Beginnings</a>
+        <a href="/blog/service-objects-versus-concerns/">service objects versus concerns</a>
       </li>
     
       <li class="post">
-        <a href="/blog/computer-chips-rd2/">computer chips rd2</a>
+        <a href="/blog/pow-config/">pow config</a>
       </li>
     
       <li class="post">
-        <a href="/blog/marionette-cms/">marionette-cms</a>
+        <a href="/blog/cucumber-with-scott/">Cucumber with Scott</a>
       </li>
     
       <li class="post">
-        <a href="/blog/node-express-backbone-marionette-sorting-out-the-pieces/">node, express, backbone and marionette &#8211; sorting out the pieces</a>
+        <a href="/blog/cucumber/">Cucumber</a>
       </li>
     
       <li class="post">
-        <a href="/blog/require-dot-js/">require.js</a>
+        <a href="/blog/wit/">wit</a>
       </li>
     
   </ul>

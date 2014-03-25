@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2014-02-04T10:14:50-05:00</updated>
+  <updated>2014-03-25T18:10:46-04:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,389 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[service objects versus concerns]]></title>
+    <link href="http://www.adamjonas.com/blog/service-objects-versus-concerns/"/>
+    <updated>2014-02-25T15:03:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/service-objects-versus-concerns</id>
+    <content type="html"><![CDATA[<p><a href="http://www.adamjonas.com/blog/service-objects/">I wrote this</a> last May. Obviously, <a href="https://github.com/scottcreynolds">@scottcreynolds</a> doesn&#8217;t think it sunk in.</p>
+
+<p>We were writing a URL sanitizer that stripped the user&#8217;s URL input of <code>http://</code> and <code>www</code> to store in the DB. Because we were using it for multiple models. I had viewed this &#8220;stipper&#8221; method as a behavior and thus had thought it belonged in the the DHH blessed concerns folder.</p>
+
+<p>Scott disagreed:</p>
+
+<blockquote><p>A concern or mixin should describe a <strong>behavior</strong> that is being given to the object. That&#8217;s the &#8220;able&#8221; nomenclature. A behavior is something like &#8220;it can support tags&#8221; or &#8220;it can be authenticated with a devise token&#8221;.</p></blockquote>
+
+<p>What I should have seen was this is a utility method. He writes:</p>
+
+<blockquote><p>What was being created here is a utility or service method, intended to be used across any entity in the system that chooses to sanitize a url. This is not a behavior that the object has. Yes, you could go so far as to say &#8220;this object can sanitize its urls&#8221; but that&#8217;s a bit of semantic gymnastics when what we&#8217;re really describing is a <strong>service object</strong> - something that provides a service to any part of the system that requires it. In this case, scrubbing user input.</p></blockquote>
+
+<p>Something that may have helped me futher understand this was thinking about who was responsible for this sanitization. Is the Event object responsible for url sanitization?</p>
+
+<blockquote><p>It might seem like a fine hair to split, but if we examine further, we see that we weren&#8217;t really adding a common behavior to the <code>event</code> and <code>admin_user</code> classes.</p>
+
+<p>The <code>parseable</code> module as designed only handled the case where the thing it was being mixed into had a field called <code>website</code>. Including it in <code>event</code> would have done absolutely nothing because that field doesn&#8217;t exist. What an <code>event</code> does have, however, is a <code>registration_link</code>. Already, we can see that we haven&#8217;t truly identified a common <em>behavior</em> so much as a common <em>need</em> - hence a service object.</p>
+
+<p>Finally, just in the naming we can tell that we&#8217;re not really describing what we mean. If a class includes a module <code>parseable</code>, that include line, in English, reads <code>an admin user is parseable</code>. To me that means something significantly different than <code>before save, strip some characters out of a field</code>. The module being described didn&#8217;t do what it claimed to do by its name.</p></blockquote>
+
+<p>These things seem small, but they&#8217;re extremely important to care about because code bases grow and all you have in a dynamic language is your tests and your naming to help you understand the system a year from now. I could show you a rails project I just came into where no care was given to naming and structure, and you could spend days following the labyrinth of modules and classes and end up hoping the Minotaur finds you and eats you and spares you the hassle of figuring out what&#8217;s going on.</p>
+
+<p>So in short, use concerns when extracting common behavior (active record finders, authentication, etc). Use service objects when extracting common needs.</p>
+
+<p>Finally, a note on tests. It&#8217;s great we&#8217;re doing the cucumber, and doing it well, but we still need tests at model and controller levels too. If you make a new class/module it should have a test file and some tests.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[pow config]]></title>
+    <link href="http://www.adamjonas.com/blog/pow-config/"/>
+    <updated>2014-02-19T16:01:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/pow-config</id>
+    <content type="html"><![CDATA[<p>I had a bunch of issues getting pow up and running after I upgraded to Mavricks. I ended up not installing via the <code>curl</code> method that the <a href="http://pow.cx/">37signals suggests</a> as it wasn&#8217;t recognizing my rbenv and was running on my system ruby. So I uninstalled and tried it with <code>homebrew</code>, which required a different path in my <code>.powconfig</code> file. Just like the <a href="https://github.com/basecamp/pow/wiki/Troubleshooting#rbenv">troubleshooter</a> said it would via the <a href="https://github.com/basecamp/pow/issues/202#issuecomment-2640707">github issue</a>, this worked.</p>
+
+<p>Final code: <code>export PATH="/usr/local/opt/rbenv/shims:/usr/local/opt/rbenv/bin:$PATH"</code></p>
+
+<p>Boom! Smack! Pow!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cucumber with Scott]]></title>
+    <link href="http://www.adamjonas.com/blog/cucumber-with-scott/"/>
+    <updated>2014-02-17T15:09:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/cucumber-with-scott</id>
+    <content type="html"><![CDATA[<p>The point of BDD is to build a system form a perspective of a user, rather than just as a developer.</p>
+
+<h2>Login</h2>
+
+<p>As a partner, I need to be able to login, so that I can update my upcoming events.</p>
+
+<p>Need to deliver a story and prove that it works.</p>
+
+<p>An integration test is any test that cross the boundries of a system</p>
+
+<h3>Why cucumber</h3>
+
+<ul>
+<li>Gherkin language for feature files</li>
+<li>rspec for tests</li>
+<li>capybara to drive the browser</li>
+</ul>
+
+
+<p>The tools are the same just when with gherkin thrown on top
+  - cucumber is platform and language agnostic</p>
+
+<p>So a problem I have is when to test built in features of the framework or gem.</p>
+
+<h2>Given, When, Then</h2>
+
+<ul>
+<li><p>same as Arrage, Act, Assert (which is what ALL tests do) in people talk</p></li>
+<li><p>Arrage</p>
+
+<p><code>let(:something) {do_something}</code></p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">arrange_things</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Act, and Assert</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;does something when I do this&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">do_a_thing</span> <span class="c1">#=&gt; act</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">that_thing</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="c1">#=&gt; assert</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Misc</h3>
+
+<ul>
+<li>user regex in the step file if you are going to reuse it</li>
+<li>acceptance tests should be used to test large swatches rather than every permuation</li>
+</ul>
+
+
+<h3>tags</h3>
+
+<ul>
+<li><code>@pause</code> like a binding</li>
+<li><code>@wip</code> won&#8217;t run unless specified to run</li>
+<li>custom tags work too, so even then you&#8217;d run it with <code>cucumber -t @jonas</code></li>
+<li>or you can run multiple tags at one time, e.g. <code>cucumber --tags @billing,@important</code></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cucumber]]></title>
+    <link href="http://www.adamjonas.com/blog/cucumber/"/>
+    <updated>2014-02-17T11:34:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/cucumber</id>
+    <content type="html"><![CDATA[<h2>Cucumber</h2>
+
+<p>Cucumber is a BDD tool that supports Outside-in development by running plain text features or user stories as acceptance tests.</p>
+
+<ul>
+<li><a href="http://blog.codeship.io/2013/04/30/BDD-With-Cucumber.html">Intro screencast</a></li>
+<li><a href="http://35qk152ejao6mi5pan29erbr9.wpengine.netdna-cdn.com/wp-content/uploads/2011/08/Cucumber-Regular-Expressions-Cheat-Sheet.pdf">cucumber regex cheatsheet</a></li>
+<li><a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">An Introduction to Outside-in Development</a></li>
+</ul>
+
+
+<h3>Features</h3>
+
+<p>Let’s create our first feature. The anatomy of a feature is the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Feature: [feature]
+</span><span class='line'>  In order to [business value]
+</span><span class='line'>  As a [role]
+</span><span class='line'>  I want to [some action]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice how a feature includes who, what and most importantly: <strong><em>why</em></strong>.</p>
+
+<p>For example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Feature: Manage Articles
+</span><span class='line'>  In order to make a blog
+</span><span class='line'>  As an author
+</span><span class='line'>  I want to create and manage articles</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Scenarios</h3>
+
+<p>There will be many scenarios accompanying a feature. Scenarios will follow the four stages of testing: setup, exercise, verify and teardown. A simple scenario looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Given [context]
+</span><span class='line'>When I do [action]
+</span><span class='line'>Then I should see [outcome]</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> The <code>Given</code> step is where you set up the context of your scenario. Every scenario starts with a blank slate, so it is important to create a state in your application for example by creating data in the database, or by navigating to a specific page.</li>
+<li> The <code>When</code> step is where you exercise the application in order to accomplish what needs testing. This is usually where you might fill in forms, press buttons, click links, or otherwise interact with the system in some way.</li>
+<li> The <code>Then</code> step is where you verify the result, and it’s where we check that the correct pages are rendered, that we see a success or error message, or anything that could help us verify that the prior action was successful.</li>
+<li> The teardown, is taken care of by cucumber automatically.</li>
+</ul>
+
+
+<p>For example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: Articles List
+</span><span class='line'>  Given I have articles titled Pizza, Breadsticks
+</span><span class='line'>  When I go to the list of articles
+</span><span class='line'>  Then I should see "Pizza"
+</span><span class='line'>  And I should see "Breadsticks"</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: User signs up with valid data
+</span><span class='line'>  When I go to the sign up page
+</span><span class='line'>  And I fill in "Email" with "email@person.com"
+</span><span class='line'>  And I fill in "Username" with "user"
+</span><span class='line'>  And I fill in "Password" with "password"
+</span><span class='line'>  And I fill in "Confirm password" with "password"
+</span><span class='line'>  And I press "Sign up"
+</span><span class='line'>  Then I should see "instructions for confirming"
+</span><span class='line'>  And a confirmation message should be sent to "email@person.com"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can also test a user attempting to sign up without filling in all the fields:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: User tries to sign up without a twiddr name
+</span><span class='line'>  When I go to the sign up page
+</span><span class='line'>  And I fill in "Email" with "email@person.com"
+</span><span class='line'>  And I fill in "Password" with "password"
+</span><span class='line'>  And I fill in "Confirm password" with "password"
+</span><span class='line'>  And I press "Sign up"
+</span><span class='line'>  Then the "Username" field should have the "can't be blank" error</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Tags</h3>
+
+<p>  <code>cucumber --tags @billing --tags @important</code> -> Runs the first scenario (Scenarios with @important AND @billing)
+  <code>cucumber --tags @billing,@important</code> -> Runs both scenarios (Scenarios with @important OR @billing)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[wit]]></title>
+    <link href="http://www.adamjonas.com/blog/wit/"/>
+    <updated>2014-02-13T14:15:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/wit</id>
+    <content type="html"><![CDATA[<h2>.ruby-version &amp; rbenv</h2>
+
+<ul>
+<li>so rbenv now does support a ruby version file but doesn&#8217;t support fuzzy matching. <a href="http://stackoverflow.com/questions/18634933/how-can-i-make-rbenv-recognise-1-9-3-p-ruby-versions">See</a>.</li>
+</ul>
+
+
+<h2>Multipart = true</h2>
+
+<ul>
+<li>HTML forms provide two methods of encoding. The default is application/x-www-form-urlencoded, which is more or less the same as a query string on the end of the URL. The other, multipart/form-data, is a more complicated encoding but one which allows entire files to be included in the data. <a href="http://stackoverflow.com/a/4526286/1496757">via</a></li>
+</ul>
+
+
+<h2>Devise</h2>
+
+<ul>
+<li>had trouble with validation requirements built into the <code>validatable</code> module and configuring it to allow a user to edit their profile without requiring a password, which involved destroying the session because the salted password had changed. I ended up ripping it out and going with a <code>validates_presence_of :password, :on =&gt; :create</code> instead.
+
+<ul>
+<li><a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password">I had attempted this</a>, but it seemed like a lot of work.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Factory Girl Associations</h2>
+
+<p><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">From the docs</a> it&#8217;s possible to set up associations within factories. If the factory name is the same as the association name, the factory name can be left out.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>  <span class="n">author</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>To not save the associated object, specify strategy: <code>:build</code> in the factory:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>  <span class="n">association</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">factory</span><span class="p">:</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">strategy</span><span class="p">:</span> <span class="ss">:build</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This does <em>not</em> work; causes author_id to be nil</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>  <span class="n">author</span> <span class="ss">strategy</span><span class="p">:</span> <span class="ss">:build</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Staging assets broken</h2>
+
+<p>Racked my brain (and everyone elses) over this one&#8230; It ended up I hadn&#8217;t added the <code>rails_12factor</code> gem to staging though I had added that environment.</p>
+
+<h2>Capybara cheatsheet</h2>
+
+<p><a href="https://gist.github.com/zhengjia/428105">Cheatsheet</a></p>
+
+<h2>Server TimeZone</h2>
+
+<ul>
+<li>had a feature that pulls events once they have passed. Heroku&#8217;s time zone is by default set to <code>UTC</code>. So I did two things:
+
+<ol>
+<li>heroku config:add TZ=&#8221;America/New_York&#8221; as described <a href="http://blog.pardner.com/2012/08/setting-the-default-time-zone-for-a-heroku-app/">here</a>.</li>
+<li>Set <code>config.time_zone = 'Eastern Time (US &amp; Canada)'</code> in <code>application.rb</code> as described in the <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html">rails docs</a>.</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Fragment Caching</h3>
+
+<ul>
+<li><p>Had an issue expiring the fragment cache. The issue was that when you cache the fragment in your view, a cache digest is being added to the cache key (views/all_available_releases/41cb0a928326986f35f41c52bb3d8352), but <code>expire_fragment</code> is not using the digest (views/all_available_releases).</p></li>
+<li><p>By adding <code>skip_digest: true</code> to the cache call in the view it should prevent the digest from being used.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="s2">&quot;all_available_releases&quot;</span><span class="p">,</span> <span class="n">skip_digest</span><span class="p">:</span> <span class="kp">true</span> <span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx"> &lt;% @releases.each do |release| %&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% cache(release) </span><span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">   &lt;html code with&gt;</span>
+</span><span class='line'>   <span class="o">&lt;%</span><span class="n">ruby</span> <span class="n">code</span> <span class="vi">@release</span><span class="o">.</span><span class="n">name</span> <span class="n">blah</span> <span class="n">blah</span> <span class="n">blah</span><span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%end%&gt;</span>
+</span><span class='line'> <span class="o">&lt;%</span><span class="k">end</span><span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;%end%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Cache digests are only intended to be used with automatic cache expiration. If you need to manually expire cache keys then you can&#8217;t use cache digests.</li>
+<li>Saved by <a href="http://stackoverflow.com/a/17619414/1496757">stackoverflow</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[New Beginnings]]></title>
@@ -513,402 +896,6 @@ pusher.execute('event_name', ctx.fn.bind(ctx))
 </ul>
 </li>
 <li>ended up using the <code>DATABASE_URL</code> env instead of database.yml to configure the postgres DB.</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[memories and holiday]]></title>
-    <link href="http://www.adamjonas.com/blog/memories-and-holiday/"/>
-    <updated>2013-10-22T10:52:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/memories-and-holiday</id>
-    <content type="html"><![CDATA[<h3>Generate a new secret token</h3>
-
-<ul>
-<li>I copied over app with a foundation built in. Can&#8217;t of course copy over the secret token. <code>rake secret</code> will generate the new token <a href="http://www.jamesbadger.ca/2012/12/18/generate-new-secret-token/">via</a>.</li>
-</ul>
-
-
-<h3>Geolocation</h3>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/2248404/about-geolocation-in-html-5">used enabled geo location in the app</a></li>
-<li>the method <a href="http://diveintohtml5.info/geolocation.html">found here</a>, which should be the canonical source didn&#8217;t work for me.</li>
-</ul>
-
-
-<h3>Print styling</h3>
-
-<ul>
-<li>needed to remove the deafult media=&#8217;screen&#8217; in order to load these styles via <a href="http://lawrencenaman.com/optimisation/print-media-queries-not-working/">this post</a></li>
-<li>in application.rb needed to include <code>config.assets.precompile += ['print_wishlist.css']</code> so that it is precompiled separately. Though it was written in sass it needed the print_wishlist.css.sass extensions as sass isn&#8217;t recognized in the app.rb as it expect the file after compilation rather than before <a href="http://jalada.co.uk/2012/01/23/adding-files-to-config-assets-precompile-in-rails-3-1.html">via</a>.</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[turbolinks]]></title>
-    <link href="http://www.adamjonas.com/blog/turbolinks/"/>
-    <updated>2013-09-25T10:27:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/turbolinks</id>
-    <content type="html"><![CDATA[<p>Turbolinks replaces the body of the page but doesn&#8217;t reload the header files. This limits the number of calls and makes the site appear faster to the user by a noticeable margin.</p>
-
-<h3>To remove turbolinks for Rails 4</h3>
-
-<ul>
-<li>(3 steps from Steve Klabnik)[http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4]</li>
-</ul>
-
-
-<h3>Breaking my JS</h3>
-
-<ul>
-<li>Turbolink breaks my JS calls when the page loads up the Facebook SDK. So I started disabling turbolinks on certain pages in my HAML a tag with the &#8220;data-no-turbolink&#8221; option <code>= link_to 'add friends', next_wizard_path, "data-no-turbolink" =&gt; "true"</code></li>
-<li>There are also events that one can hook into. They are (listed here)[https://github.com/rails/turbolinks/#events].</li>
-<li>You can also put the click event on the doc rather than the element which will solve this issue. In this case ajax tasks would also have the click event applied to them as well.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Click Event on doc rather than element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span><span class="p">(</span><span class="s1">&#39;document&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;.edit_task input[type=checkbox]&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="err">$</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>The jquery turbolinks gem</h3>
-
-<ul>
-<li>Using (the gem)[https://github.com/kossnocorp/jquery.turbolinks] just straight fixes it. This likely means that the turbolinks is disabled for all jquery related calls.</li>
-</ul>
-
-
-<h3>Reading</h3>
-
-<ul>
-<li>a (basic summary by treehouse)[http://blog.teamtreehouse.com/rails-4-a-look-at-turbolinks]</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rum Fun]]></title>
-    <link href="http://www.adamjonas.com/blog/rum-fun/"/>
-    <updated>2013-09-16T16:02:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/rum-fun</id>
-    <content type="html"><![CDATA[<h3>Asset Trouble</h3>
-
-<ul>
-<li>Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn&#8217;t compiling.</li>
-<li><a href="http://stackoverflow.com/questions/15811889/my-rails-javascript-manifest-file-doesnt-compile-nor-include-any-required-files">This</a> inspired us to roll back to 1.9.3, which worked.</li>
-</ul>
-
-
-<h3>Coffeescript hashes</h3>
-
-<ul>
-<li><p>this one took me a hot second -> <code>delete obj[key]</code></p>
-
-<ul>
-<li>courtesy of <a href="http://coffeescript.org/documentation/docs/helpers.html">the docs</a></li>
-</ul>
-</li>
-<li><p>counting the keys in an object was pretty close to javascript <code>Object.keys(obj).length</code> <a href="http://stackoverflow.com/questions/15629799/count-number-of-keys-in-object-with-coffeescript">from</a>.</p></li>
-</ul>
-
-
-<h3>Thought process on adding a friend</h3>
-
-<ul>
-<li>page loads
-
-<ul>
-<li><p>checks to see if local storage has values</p>
-
-<ul>
-<li>if not it assigns empty array</li>
-<li>if so it assigns to local array which contains a hash of both the name, the uid, and its input position
-
-<ul>
-<li>names are loaded into the input field</li>
-<li>names and uid(pic) are loaded with the appropriate number of beach passes</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>if when a name is removed from the input field, it is removed from the local array</p>
-
-<ul>
-<li>a listener on the array updates the proper number of beach passes</li>
-</ul>
-</li>
-<li><p>when a name is selected by the autocomplete, it assigns pushes the new record of name, uid and position into the array</p>
-
-<ul>
-<li>a listener on the array updates the proper number of beach passes</li>
-</ul>
-</li>
-<li><p>a validator prevents the user from continuing without having at least one friend OR checking the &#8216;alone&#8217; checkbox</p></li>
-<li><p>upon hitting the continue btn, the local array is assigned to local storage</p></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Devise sign out</h3>
-
-<ul>
-<li>In the <code>devise.rb</code> initializer -> The default HTTP method used to sign out a resource. Default is :delete.
-
-<ul>
-<li><code>config.sign_out_via = :get</code> will allow me to use a regular link</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>PG setup</h3>
-
-<ul>
-<li>this is the <a href="https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups">process prelaunch</a></li>
-<li>otherwise you want to use a follower method</li>
-</ul>
-
-
-<h3>IP Spoof</h3>
-
-<ul>
-<li>had a client on a plane that triggered a <code>ActionDispatch::RemoteIp::IpSpoofAttackError: IP spoofing attack?!</code> error.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>To turn off ip spoof</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">IpSpoof</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">env</span><span class="o">.</span><span class="n">reject</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">key</span><span class="o">.</span><span class="n">upcase</span> <span class="o">==</span> <span class="s1">&#39;HTTP_CLIENT_IP&#39;</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<ul>
-<li>this needed to be inserted before the rack middleware <code>ActionDispatch::RemoteIp</code> so used <code>config.middleware.insert_before ActionDispatch::RemoteIp, IpSpoof</code> as suggested in <a href="http://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack">rails guide</a>. Pretty cool.</li>
-</ul>
-
-
-<h3>Location Tracking</h3>
-
-<ul>
-<li>after many protests, I was forced to include a tracking script that pilled down users&#8217; lat and long coordinates. Not sure I believe it is right to pull down location info without providing the user with some benefit.</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[objective-c for rubyists]]></title>
-    <link href="http://www.adamjonas.com/blog/objective-c-for-rubyists/"/>
-    <updated>2013-09-11T16:35:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/objective-c-for-rubyists</id>
-    <content type="html"><![CDATA[<p>So RubyMotion is great. I can create an app in a few minutes by leveraging resources like <a href="http://bubblewrap.io/">Bubblewrap</a> and styling becomes pretty straight-forward with <a href="https://github.com/rubymotion/teacup">Teacup</a> and syntax looks much more Ruby-ish with <a href="https://github.com/rubymotion/sugarcube">SugarCube</a>.</p>
-
-<p>Here&#8217;s the thing. As a spoiled Rubyist, Objective-C as a language and CocoaTouch/iOS as is a framework is a verbose. That means that the code comes out really sounding like English. Not the poetry that Ruby is, but more like prose.  The fact that I am not learning the language isolated from the framework has led to problems for me in the past when I initially learned Rails before I learned Ruby. It isn&#8217;t really a great way to learn, but I have always been driven by the application of a language more than the language itself, which is the case here.</p>
-
-<h3>That whole thing is the method?</h3>
-
-<p>So RubyMotion isn&#8217;t a superiority thing. I&#8217;d certainly prefer to be 100% fluent in objective-c from day one. Apple&#8217;s documentation appears to be pretty steller. The problem for me however, is that everything just looks so hard in obj-c. Method declarations are pretty intimidating. So here I go to look up how to set the title of a UIButton and I find <code>- (void)setTitle:(NSString *)title forState:(UIControlState)state</code>. Now come on. That&#8217;s a little much to set a title of a button right? A guideline I have always tried to follow with my own code is to only create complicated methods for complicated tasks.</p>
-
-<ul>
-<li>This declaration is preceded by a minus (-) sign, which indicates that this is an instance method, as opposed to a class method. It requires an object to call it, and instance variables of the object are available to it inside its definition.</li>
-<li>The (void) indicates the return type. This method doesn&#8217;t return anything, so its result can&#8217;t be assigned to anything.</li>
-<li>This method name is <code>setTitle:forState:</code></li>
-<li>The number of colons (:) indicate how many arguments it takes. T</li>
-<li>The first argument is the string to set the title to.</li>
-<li>The second argument is the button state (such as normal or pressed) in which to set the title.</li>
-</ul>
-
-
-<p>Here&#8217;s an example of this method in use: <code>[myButton setTitle:@"Clicked!" forState:UIControlStateHighlighted];</code>. So after you break it down things seems little more reasonable, but it feels like it shouldn&#8217;t be this hard.</p>
-
-<h3></h3>
-
-<p>The specification of a class in Objective-C requires two distinct pieces: the interface and the implementation. The interface portion contains the class declaration and defines the instance variables and methods associated with the class. The interface is usually in a .h file. The implementation portion contains the actual code for the methods of the class. The implementation is usually in a .m file.</p>
-
-<p>A class in Objective-C can declare two types of methods: instance methods and class methods. An instance method is a method whose execution is scoped to a particular instance of the class. In other words, before you call an instance method, you must first create an instance of the class. Class methods, by comparison, do not require you to create an instance</p>
-
-<p>There&#8217;s strong and weak typing for variables.</p>
-
-<p>Objective-c is from around 1983, invented by Brad Cox. Ruby is from 1995, which makes it a contemporary of Java.</p>
-
-<p>Ruby is more script oriented, obj-c looks a lot more like lisp. The semi-colon takes some getting used to.</p>
-
-<p>Underscore versus camelCase. Short method names in Ruby, while the cocoa convention is much more verbose.</p>
-
-<p>Name spacing in Ruby which Objective-C doesn&#8217;t have.</p>
-
-<p>On the surface, these look like very different languages.</p>
-
-<p>Ruby is a decedent of Smalltalk, Perl, Eiffel, and Lisp. While Objective-C comes purely from Smalltalk and C.</p>
-
-<p>Smalltalk was really the first object oriented programming language. Alan Kay and the X PARC geniuses invented the OOP concept in the early 70s.</p>
-
-<p>Conway&#8217;s Law: software architecture reflects the communication structures of the community that is building it.</p>
-
-<p>Objective-c and cocoa are dictated by Apple. It&#8217;s Apple&#8217;s app store and they dictate what is appropriate and what isn&#8217;t. It is a benevolent (sometimes not so benevolent) dictatorship.</p>
-
-<p>Ruby is on the other hand is a product of Rails. DHH singlehandedly put Ruby on the map in 2004. Rails is what the web needed in 2005. Github, heroku and twitter were all started as Rails apps.
-  - most Rails devs were noobs
-  - iconoclasts
-  - dillitants
-  - hipsters
-  - scavengers -> turning to other languages
-  - establishmentarians</p>
-
-<ul>
-<li>TDD</li>
-<li>Tooling -> throw out older tools</li>
-<li>progress versus subsistence</li>
-<li>overthinking</li>
-</ul>
-
-
-<p>We have entered the era of CocoaPods, which is now 2 years old. It is written in Ruby. 1300 projects on CocoaPods. This is the rise of Ruby gem. A dependency manager. This is a place to share creations.</p>
-
-<ul>
-<li><p><a href="https://peepcode.com/products/objective-c-for-rubyists">objective c for Rubyists</a> from peepcode</p></li>
-<li><p><a href="https://github.com/tombenner/nui">NUI</a> -> sass for objective-c</p></li>
-<li><a href="https://github.com/kif-framework/KIF">KIF</a> -> usable testing framework</li>
-<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa">reactiveCocoa</a> -> functional programmning for ios</li>
-<li><a href="http://www.testingwithfrank.com/">Testing with Frank</a> -> cucumber</li>
-<li><a href="https://github.com/helios-framework">Helios</a> -></li>
-</ul>
-
-
-<p>http://www.slideshare.net/abdels/my-adventuresinobjc</p>
-
-<ul>
-<li>unlike ruby, obj-c is a strict superset of c</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">say:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>obj-c message passing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">say:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="n">world</span> <span class="nl">performSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">say:</span><span class="p">)</span> <span class="nl">withObject:</span><span class="s">@&quot;hello&quot;</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">objc_sendMSG</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">selector</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>ruby message passing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:say</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>non-strict typing</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="kt">id</span> <span class="n">world</span> <span class="o">=</span> <span class="p">[[</span><span class="n">World</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">]</span>
-</span><span class='line'><span class="p">[</span><span class="n">world</span> <span class="n">peace</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm">&#39;id&#39; is a pointer to any object</span>
-</span><span class='line'><span class="cm">*/</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>objective-c non-strict typing
-World *world = [[World alloc] init]
-[world peace];</p>
-
-<p>/<em>
-this ensures the method compiler checks.
-</em>/
-&#8220;`</p>
-
-<p>attr_accessor equivalent
-@synthesize creates dynamic setters and getters and performs the neccessary memory allocaiton
-- interfaces with protocols</p>
-
-<p>objective-c has blocks</p>
-
-<p><a href="https://github.com/nomad/cupertino">cupertino</a></p>
-
-<h3>Strong versus weak pointers</h3>
-
-<p>The difference is that an object will be deallocated as soon as there are no strong pointers to it. Even if weak pointers point to it, once the last strong pointer is gone, the object will be deallocated, and all remaining weak pointers will be zeroed out.</p>
-
-<p>Perhaps an example is in order.</p>
-
-<p>Imagine our object is a dog, and that the dog wants to run away (be deallocated).</p>
-
-<p>Strong pointers are like a leash on the dog. As long as you have the leash attached to the dog, the dog will not run away. If five people attach their leash to one dog, (five strong pointers to one object), then the dog will not run away until all five leashes are detached.</p>
-
-<p>Weak pointers, on the other hand, are like little kids pointing at the dog and saying &#8220;Look! A dog!&#8221; As long as the dog is still on the leash, the little kids can still see the dog, and they&#8217;ll still point to it. As soon as all the leashes are detached, though, the dog runs away no matter how many little kids are pointing to it.</p>
-
-<p>As soon as the last strong pointer (leash) no longer points to an object, the object will be deallocated, and all weak pointers will be zeroed out.</p>
-
-<p><a href="http://stackoverflow.com/questions/9262535/explanation-of-strong-and-weak-storage-in-ios5">from</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Git Cheatsheet]]></title>
-    <link href="http://www.adamjonas.com/blog/git-cheatsheet/"/>
-    <updated>2013-08-28T18:31:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/git-cheatsheet</id>
-    <content type="html"><![CDATA[<ul>
-<li><code>git clean -f -d</code> removes all untracked files. <code>git reset --hard HEAD</code> won&#8217;t remove untracked files.</li>
-<li><code>git checkout &lt;filename&gt;</code> untracks a file and returns it to its original state.</li>
-<li><code>git push -u origin my_branch</code> sets upstream. Here is a <a href="http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time">good explanation</a>.</li>
 </ul>
 
 ]]></content>

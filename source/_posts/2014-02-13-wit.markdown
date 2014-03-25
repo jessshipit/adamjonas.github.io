@@ -1,0 +1,76 @@
+---
+layout: post
+title: "wit"
+date: 2014-02-13 14:15
+comments: true
+categories: fis rails
+---
+
+## .ruby-version & rbenv
+  - so rbenv now does support a ruby version file but doesn't support fuzzy matching. [See](http://stackoverflow.com/questions/18634933/how-can-i-make-rbenv-recognise-1-9-3-p-ruby-versions).
+
+
+## Multipart = true
+  - HTML forms provide two methods of encoding. The default is application/x-www-form-urlencoded, which is more or less the same as a query string on the end of the URL. The other, multipart/form-data, is a more complicated encoding but one which allows entire files to be included in the data. [via](http://stackoverflow.com/a/4526286/1496757)
+
+## Devise
+  - had trouble with validation requirements built into the `validatable` module and configuring it to allow a user to edit their profile without requiring a password, which involved destroying the session because the salted password had changed. I ended up ripping it out and going with a `validates_presence_of :password, :on => :create` instead.
+    - [I had attempted this](https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password), but it seemed like a lot of work.
+
+## Factory Girl Associations
+[From the docs](https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations) it's possible to set up associations within factories. If the factory name is the same as the association name, the factory name can be left out.
+
+```ruby
+factory :post do
+  # ...
+  author
+end
+``` 
+  
+To not save the associated object, specify strategy: `:build` in the factory:
+
+```ruby
+factory :post do
+  # ...
+  association :author, factory: :user, strategy: :build
+end
+```
+
+This does *not* work; causes author_id to be nil
+
+```
+factory :post do
+  # ...
+  author strategy: :build
+```
+
+## Staging assets broken
+Racked my brain (and everyone elses) over this one... It ended up I hadn't added the `rails_12factor` gem to staging though I had added that environment.
+
+## Capybara cheatsheet
+[Cheatsheet](https://gist.github.com/zhengjia/428105)
+
+## Server TimeZone
+  - had a feature that pulls events once they have passed. Heroku's time zone is by default set to `UTC`. So I did two things:
+    1. heroku config:add TZ="America/New_York" as described [here](http://blog.pardner.com/2012/08/setting-the-default-time-zone-for-a-heroku-app/).
+    2. Set `config.time_zone = 'Eastern Time (US & Canada)'` in `application.rb` as described in the [rails docs](http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html).
+
+
+###Fragment Caching
+  - Had an issue expiring the fragment cache. The issue was that when you cache the fragment in your view, a cache digest is being added to the cache key (views/all_available_releases/41cb0a928326986f35f41c52bb3d8352), but `expire_fragment` is not using the digest (views/all_available_releases).
+
+  - By adding `skip_digest: true` to the cache call in the view it should prevent the digest from being used.
+
+```
+<% cache "all_available_releases", skip_digest: true do %>
+ <% @releases.each do |release| %>
+  <% cache(release) do %>
+   <html code with>
+   <%ruby code @release.name blah blah blah%>
+  <%end%>
+ <%end%>
+<%end%>
+```
+
+  - Cache digests are only intended to be used with automatic cache expiration. If you need to manually expire cache keys then you can't use cache digests.
+  - Saved by [stackoverflow](http://stackoverflow.com/a/17619414/1496757)
