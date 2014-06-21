@@ -1,0 +1,83 @@
+---
+layout: post
+title: "feyonce"
+date: 2014-03-27 15:43
+comments: true
+categories: misc
+---
+
+##cancan's bitmask
+  - [bitmask](https://github.com/ryanb/cancan/issues/145)
+
+  - by the way, it appears that cancan has been abandoned. We ended up rolling out our authorization.
+
+##devise
+  - You can override the default behaviour by creating an after_sign_in_path_for [via](https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-and-sign-out)
+
+###Switch to omniauth  
+  - we made a major overhaul by switching to omniauth rather than using the devise email & password. 
+    - As per the [omniauth wiki](https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview#using-omniauth-without-other-authentications) I needed to rebuild many of the paths that devise had created for us via the `registerable` and `Database Authenticatable` modules and reconfigure the appropriate controllers as well.
+    - To its credit, the `Devise::TestHelpers, type: :controller` held up through the transition, which was a big help.
+
+
+###Bundle clean is the jam
+  - `bundle clean --force`
+  - `bundle update`
+  Saved my @ss.
+
+###Before block versus let in rspec
+  - use `let` to define all of the dependent objects, and to use `before do` to setup needed configuration or any mocks/stubs needed by the examples. [via the comments section](http://stackoverflow.com/a/5359979/1496757)
+
+###Transient Factory Girl Properties
+
+I needed a way to pass in some parameters into my factory. Enter transient properties.
+
+  - [This helped](http://robots.thoughtbot.com/factory-girl-2-2-your-new-best-friend)
+  - [And](http://stackoverflow.com/a/9693284/1496757)
+  - [And the docs](http://rubydoc.info/gems/factory_girl/2.3.2/file/GETTING_STARTED.md#Transient_Attributes)
+
+```ruby The Eventual Code
+factory :track_with_lessons do
+  ignore do
+    lesson_count 3
+    topic_count 2
+  end
+
+  after(:create) do |track, evaluator|
+    evaluator.topic_count.times { track.add_topic(create(:topic_with_lessons, lesson_count: evaluator.lesson_count))}
+    track.save!
+  end
+end
+```
+
+A gotcha: The [getting started readme](https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#transient-attributes) was outdated so I was trying to use `transient do` which was not working. It appears that this will be fixed in the next release...
+
+###Capybara within block
+When searching for an element with a div like `within('div#first.drawer') do` it truly means within, not like this can be the same element you are looking for, it has to be nested inside this element.
+
+
+###Testing with JSON
+[Found this](http://kakubei.blogspot.com/2013/05/testing-controller-with-json-data-draft.html) to be a good place to start but I couldn't get his method to actually work.
+
+```ruby What he did
+it "updates empty summary field" do
+  @incoming_params[:id] = @dvd.id
+  @incoming_params[:summary] =  'some summary'
+  post 'entry/update', @incoming_params.to_json
+  @entry.reload
+  expect(@entry.summary).to eq 'some summary'
+end
+```
+
+```ruby This is what worked for me
+describe 'POST #topic_order' do
+  it 'saves a new topic order' do
+    sign_in_teacher
+    track = create(:track_with_lessons)
+    original_order = track.topic_order
+    post :topic_order, "data"=> {"topic_order"=>"#{track.topic_order.last},#{track.topic_order.first}", "track_id"=>"#{track.id}"}, format: :json
+    track.reload
+    expect(track.topic_order).to eq original_order.reverse
+  end
+end
+```

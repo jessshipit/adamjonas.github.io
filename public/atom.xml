@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2014-03-25T18:10:46-04:00</updated>
+  <updated>2014-06-21T08:45:29-04:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,371 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Presenter Objects]]></title>
+    <link href="http://www.adamjonas.com/blog/presenter-objects/"/>
+    <updated>2014-06-17T18:49:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/presenter-objects</id>
+    <content type="html"><![CDATA[<h3>From our PR thread</h3>
+
+<ul>
+<li><p>A presenter object is a simply a PORO (plain ol&#8217; ruby object), constructed by the controller out of the data of one or more models, whose attributes serve the view
+layer. So in our case we give a view a <code>LessonPresenter</code> that has a <code>css_class</code> attribute and remove all decision making from the view layer (which is the ideal goal).</p></li>
+<li><p>It&#8217;s not a &#8220;service&#8221; object, it&#8217;s a presenter so it would go in the <code>presenters</code> folder. This is also sometimes called a &#8220;view model&#8221; or a &#8220;view object&#8221;. The word &#8220;presenter&#8221; is overloaded a lot.</p></li>
+<li><p>This an interesting read on a few <a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/"><code>model refactoring patterns</code></a>:</p></li>
+<li><p>So instead of a collection of Lessons at the view level, you&#8217;d be dealing with a collection of LessonPresenters or similar. Alternatively, you can just put that method on the lesson object itself, which is simpler and more straightforward but not strictly Single Responsibility Principle/Seperation of Concerns/Model View Controller compliant. tradeoffs.</p></li>
+</ul>
+
+
+<blockquote><p>Is it a terrible idea to have LessonPresenter inherit from Lesson?</p></blockquote>
+
+<p>A: Strictly speaking in terms of OO, inheritance describes an &#8220;is-a&#8221; relationship, and you can&#8217;t say that a lessonpresenter is a lesson, so introducing an inheritance chain is probably inappropriate. There is some duplication to this pattern. Typically a viewmodel exposes only the attributes needed to satisfy the needs of the view, and you&#8217;d fill them in from the corresponding model on construction.</p>
+
+<p>While this seems on the surface to violate DRY (and be duplicate work), i&#8217;d argue that it&#8217;s no more repetition than creating factories with the same attributes as models. Separate objects for separate purposes.</p>
+
+<p>You could get away with hanging a lesson off of the presenter so that you could access it at the view level, but that&#8217;s a law of demeter violation and breaks encapsulation.</p>
+
+<p>You could do the method_missing bit and delegate to the object. that&#8217;s slick and rubyish. Where that falls apart though is implementing this pattern across more than one model. Because we&#8217;re not really building a &#8220;presenter for a lesson&#8221;, we&#8217;re building a presentation object for a view that represents the model data behind it.</p>
+
+<p>Already this answer is complicated, but there&#8217;s just always a lot of decisions that go into making architectural choices. It may be the case that for this one thing, creating a method on the Lesson itself is the &#8220;simplest thing that could possibly work&#8221; and satisfies one of our tenets of agile, and then we delay the big architectural choice until we need a second or third thing.</p>
+
+<p>I support whichever choice you make (probably) as long as you have unit tests to support later refactoring :smile_cat:</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[okrs for engineers]]></title>
+    <link href="http://www.adamjonas.com/blog/okrs-for-engineers/"/>
+    <updated>2014-06-17T18:05:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/okrs-for-engineers</id>
+    <content type="html"><![CDATA[<h3>Notes</h3>
+
+<ul>
+<li>lead developer&#8217;s OKRs mostly product focused
+
+<ul>
+<li>and their product responsibilites become one piece of their bonus compensation (also would include overall company success (no bonus is the company didn&#8217;t make money)).</li>
+</ul>
+</li>
+<li>break to feature or objective into smaller product pieces for engineers if possible.</li>
+</ul>
+
+
+<p>OKRs for engineers below lead devs are difficult. Goals become more task oriented. E.g.</p>
+
+<ul>
+<li>2 ruby meetups a month</li>
+<li>satisfactory 360 feedback</li>
+<li>biweekly one on ones (address concerns of manager)</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[cucumber trick shots]]></title>
+    <link href="http://www.adamjonas.com/blog/cucumber-trick-shots/"/>
+    <updated>2014-05-14T13:34:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/cucumber-trick-shots</id>
+    <content type="html"><![CDATA[<h3>Remove unused step definitions</h3>
+
+<ul>
+<li><code>cucumber --dry-run -f stepdefs</code> will show a list of all unused step definitions <a href="http://stackoverflow.com/a/9164676/1496757">via</a>.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rspec keywords]]></title>
+    <link href="http://www.adamjonas.com/blog/rspec-keywords/"/>
+    <updated>2014-05-08T14:24:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rspec-keywords</id>
+    <content type="html"><![CDATA[<p>Feedback on my misuse of rspec keywords (and <code>context</code> in particular):</p>
+
+<ul>
+<li><code>Context</code> describes an execution context, or an arrangement of the system, not an action.</li>
+<li>It helps to always think of <code>context</code> blocks in terms of &#8220;when &#8230;&#8221; and it is usual to begin <code>contexts</code> with a when.</li>
+</ul>
+
+
+<p>The layout is like this:</p>
+
+<ul>
+<li><code>describe</code> some system/class/function
+
+<ul>
+<li><code>context</code> &#8220;when condition A is true about the system&#8221;
+
+<ul>
+<li>it &#8220;behaves thusly&#8221;</li>
+</ul>
+</li>
+<li>context &#8220;when condition B is true about the system&#8221;
+
+<ul>
+<li>it &#8220;behaves thusly&#8221;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>A classic example might be:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">SomeController</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">describe</span> <span class="s2">&quot;GET new&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">context</span> <span class="s2">&quot;when logged in&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;renders this page&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">context</span> <span class="s2">&quot;when admin&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;renders this other page&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">context</span> <span class="s2">&quot;when visitor&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;redirects to login&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 4 CSRF handling]]></title>
+    <link href="http://www.adamjonas.com/blog/rails-4-csrf-handling/"/>
+    <updated>2014-05-01T11:19:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rails-4-csrf-handling</id>
+    <content type="html"><![CDATA[<h2>Setup</h2>
+
+<p>Right now we are building &#8220;Ironboard&#8221; (title is WIP) &#8211; an application that makes makes consuming prework a breeze for students and creating and organizing prework a breeze for teachers. This application is going to fit into a workflow that kicks off when a student pays their deposit. The short version is that another internal app is going to ping an endpoint on Ironboard, which internally will generate an email invitation and enroll that student in course so that the instructor can track their progress.</p>
+
+<h2>CSRF</h2>
+
+<p>I&#8217;ve read the <a href="http://guides.rubyonrails.org/security.html">rails security guide</a>. I searched <a href="http://stackoverflow.com/questions/16258911/rails-4-authenticity-token">stackoverflow</a> and quite frankly the documentation for handling CSRF in rails 4 is sucky. <a href="http://alexcoco.com/forgery-protection-strategy/">Alex Coco</a> seems to have done the most documentation here. Buried in all of this is the <a href="http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/">proper way to handle cross-domain requests</a> in 2011:</p>
+
+<blockquote><p>Users can override this behaviour by overriding <code>handle_unverified_request</code> in their own controllers.</p></blockquote>
+
+<p>Most answers that are out there have to do with disabling the <code>protect_from_forgery</code> method in a specfic controller for a specific action. This hides csrf vulnerability, but I&#8217;m not sure that disabling token authenticity makes things any better. Why use <code>protect_from_forgery except: :ping_from_registrar</code> when we could use the <code>handle_unverified_request</code></p>
+
+<p>We ended up using:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">FooController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">skip_before_action</span> <span class="ss">:authenticate_user!</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">handle_unverified_request</span>
+</span><span class='line'>    <span class="n">authenticate_token</span> <span class="o">||</span> <span class="n">render_unauthorized</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">authenticate_token</span>
+</span><span class='line'>    <span class="n">authenticate_with_http_token</span> <span class="k">do</span> <span class="o">|</span><span class="n">token</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">token</span><span class="o">.</span><span class="n">eql?</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;API_TOKEN&#39;</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">render_unauthorized</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">headers</span><span class="o">[</span><span class="s1">&#39;WWW-Authenticate&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Token realm=&quot;Application&quot;&#39;</span>
+</span><span class='line'>    <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="s1">&#39;Bad credentials&#39;</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="mi">401</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I think this is pretty awesome.</p>
+
+<p><a href="http://stackoverflow.com/questions/12761544/rspec-request-how-to-set-http-authorization-header-for-all-requests">This was helpful</a> as was <a href="http://blog.envylabs.com/post/75521798481/token-based-authentication-in-rails">this</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[user stories]]></title>
+    <link href="http://www.adamjonas.com/blog/user-stories/"/>
+    <updated>2014-04-14T10:38:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/user-stories</id>
+    <content type="html"><![CDATA[<p>Each user story should INVEST</p>
+
+<p>I - <strong>Independent</strong> The user story should be self-contained, in a way that there is no inherent dependency on another user story.
+N - <strong>Negotiable</strong>  User stories, up until they are part of an iteration, can always be changed and rewritten.
+V - <strong>Valuable</strong>  A user story must deliver value to the end user.
+E - <strong>Estimable</strong> You must always be able to estimate the size of a user story.
+S - <strong>Sized</strong> appropriately or Small  User stories should not be so big as to become impossible to plan/task/prioritize with a certain level of certainty.
+T - <strong>Testable</strong>  The user story or its related description must provide the necessary information to make test development possible.</p>
+
+<blockquote><p>Iteration 0 -> is foundational work that is performed prior to development starting.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[feyonce]]></title>
+    <link href="http://www.adamjonas.com/blog/feyonce/"/>
+    <updated>2014-03-27T15:43:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/feyonce</id>
+    <content type="html"><![CDATA[<h2>cancan&#8217;s bitmask</h2>
+
+<ul>
+<li><p><a href="https://github.com/ryanb/cancan/issues/145">bitmask</a></p></li>
+<li><p>by the way, it appears that cancan has been abandoned. We ended up rolling out our authorization.</p></li>
+</ul>
+
+
+<h2>devise</h2>
+
+<ul>
+<li>You can override the default behaviour by creating an after_sign_in_path_for <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-and-sign-out">via</a></li>
+</ul>
+
+
+<h3>Switch to omniauth</h3>
+
+<ul>
+<li>we made a major overhaul by switching to omniauth rather than using the devise email &amp; password.
+
+<ul>
+<li>As per the <a href="https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview#using-omniauth-without-other-authentications">omniauth wiki</a> I needed to rebuild many of the paths that devise had created for us via the <code>registerable</code> and <code>Database Authenticatable</code> modules and reconfigure the appropriate controllers as well.</li>
+<li>To its credit, the <code>Devise::TestHelpers, type: :controller</code> held up through the transition, which was a big help.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Bundle clean is the jam</h3>
+
+<ul>
+<li><code>bundle clean --force</code></li>
+<li><code>bundle update</code>
+Saved my @ss.</li>
+</ul>
+
+
+<h3>Before block versus let in rspec</h3>
+
+<ul>
+<li>use <code>let</code> to define all of the dependent objects, and to use <code>before do</code> to setup needed configuration or any mocks/stubs needed by the examples. <a href="http://stackoverflow.com/a/5359979/1496757">via the comments section</a></li>
+</ul>
+
+
+<h3>Transient Factory Girl Properties</h3>
+
+<p>I needed a way to pass in some parameters into my factory. Enter transient properties.</p>
+
+<ul>
+<li><a href="http://robots.thoughtbot.com/factory-girl-2-2-your-new-best-friend">This helped</a></li>
+<li><a href="http://stackoverflow.com/a/9693284/1496757">And</a></li>
+<li><a href="http://rubydoc.info/gems/factory_girl/2.3.2/file/GETTING_STARTED.md#Transient_Attributes">And the docs</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>The Eventual Code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:track_with_lessons</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">ignore</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">lesson_count</span> <span class="mi">3</span>
+</span><span class='line'>    <span class="n">topic_count</span> <span class="mi">2</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">after</span><span class="p">(</span><span class="ss">:create</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">track</span><span class="p">,</span> <span class="n">evaluator</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">evaluator</span><span class="o">.</span><span class="n">topic_count</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="n">track</span><span class="o">.</span><span class="n">add_topic</span><span class="p">(</span><span class="n">create</span><span class="p">(</span><span class="ss">:topic_with_lessons</span><span class="p">,</span> <span class="n">lesson_count</span><span class="p">:</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">lesson_count</span><span class="p">))}</span>
+</span><span class='line'>    <span class="n">track</span><span class="o">.</span><span class="n">save!</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A gotcha: The <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#transient-attributes">getting started readme</a> was outdated so I was trying to use <code>transient do</code> which was not working. It appears that this will be fixed in the next release&#8230;</p>
+
+<h3>Capybara within block</h3>
+
+<p>When searching for an element with a div like <code>within('div#first.drawer') do</code> it truly means within, not like this can be the same element you are looking for, it has to be nested inside this element.</p>
+
+<h3>Testing with JSON</h3>
+
+<p><a href="http://kakubei.blogspot.com/2013/05/testing-controller-with-json-data-draft.html">Found this</a> to be a good place to start but I couldn&#8217;t get his method to actually work.</p>
+
+<figure class='code'><figcaption><span>What he did</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;updates empty summary field&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="vi">@incoming_params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@dvd</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="vi">@incoming_params</span><span class="o">[</span><span class="ss">:summary</span><span class="o">]</span> <span class="o">=</span>  <span class="s1">&#39;some summary&#39;</span>
+</span><span class='line'>  <span class="n">post</span> <span class="s1">&#39;entry/update&#39;</span><span class="p">,</span> <span class="vi">@incoming_params</span><span class="o">.</span><span class="n">to_json</span>
+</span><span class='line'>  <span class="vi">@entry</span><span class="o">.</span><span class="n">reload</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="vi">@entry</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="s1">&#39;some summary&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>This is what worked for me</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="s1">&#39;POST #topic_order&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;saves a new topic order&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">sign_in_teacher</span>
+</span><span class='line'>    <span class="n">track</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:track_with_lessons</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">original_order</span> <span class="o">=</span> <span class="n">track</span><span class="o">.</span><span class="n">topic_order</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:topic_order</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;topic_order&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">track</span><span class="o">.</span><span class="n">topic_order</span><span class="o">.</span><span class="n">last</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="n">track</span><span class="o">.</span><span class="n">topic_order</span><span class="o">.</span><span class="n">first</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;track_id&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">track</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="nb">format</span><span class="p">:</span> <span class="ss">:json</span>
+</span><span class='line'>    <span class="n">track</span><span class="o">.</span><span class="n">reload</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">track</span><span class="o">.</span><span class="n">topic_order</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="n">original_order</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[service objects versus concerns]]></title>
@@ -571,331 +936,6 @@
 
 <ul>
 <li><code>sudo chown -R $USER /usr/local</code></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[asynch js]]></title>
-    <link href="http://www.adamjonas.com/blog/asynch-js/"/>
-    <updated>2013-12-04T10:52:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/asynch-js</id>
-    <content type="html"><![CDATA[<h3>Asynch</h3>
-
-<ul>
-<li>Async is a tool for your Javascript utility belt that helps you out with the asynchronous tasks
-
-<ul>
-<li><a href="https://github.com/caolan/async">asynch.js</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Promises</h3>
-
-<ul>
-<li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/wrangle-async-tasks-with-jquery-promises/">Wrangle Async Tasks With JQuery Promises</a></li>
-<li><a href="http://blog.parse.com/2013/01/29/whats-so-great-about-javascript-promises/">What’s so great about JavaScript Promises?</a></li>
-</ul>
-
-
-<h3>Reading</h3>
-
-<ul>
-<li><a href="http://javascriptplayground.com/blog/2013/06/think-async/">think asynch</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Context and functions in Javascript]]></title>
-    <link href="http://www.adamjonas.com/blog/context-and-functions-in-javascript/"/>
-    <updated>2013-11-19T17:55:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/context-and-functions-in-javascript</id>
-    <content type="html"><![CDATA[<p>Bind and fat arrow result in something similar but with different implementations.</p>
-
-<pre><code>fn = -&gt; console.log @
-ctx = {foo: 'bar', fn: -&gt; console.log(@)}
-pusher.execute('event_name', ctx.fn.bind(ctx))
-</code></pre>
-
-<p>In most cases, the context of the function (also known as <code>@</code>) is based on the receiver. In this contrived example, to execute the function on the pusher object, we might pass in the function name and then the callback function. When we call a function to an outside source, we have no idea in what context it might be executed. In our case, <code>ctx.fn</code> and <code>@fn</code> might be the exact same &#8211; these are just references to how to call the function, but an important takeaway is that these do not pass determine the context. To ensure the context, one must specify it with the bind function. <code>pusher.execute('event_name', ctx.fn.bind(ctx))</code> is essentially equal to <code>pusher.execute('event_name', @fn.bind(ctx))</code>. The receiver in this case doesn&#8217;t matter.</p>
-
-<p>JS OOP isn&#8217;t a joy ride. Oh well.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Backbone beginner's basics]]></title>
-    <link href="http://www.adamjonas.com/blog/backbone-beginners-basics/"/>
-    <updated>2013-11-19T17:02:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/backbone-beginners-basics</id>
-    <content type="html"><![CDATA[<h3>Validations</h3>
-
-<p>  This is a neat little <a href="https://github.com/thedersen/backbone.validation">validation plugin</a> that passes back error objects.</p>
-
-<h3>Form serialization</h3>
-
-<ul>
-<li>Used <a href="https://github.com/derickbailey/backbone.syphon/blob/master/apidoc.md">syphon</a> built by Derick Bailey.</li>
-</ul>
-
-
-<h3>onBeforeRender versus onRender</h3>
-
-<ul>
-<li>Was trying to call a function <code>onBeforeRender</code> but it wouldn&#8217;t execute until it was changed to <code>onRender</code>.</li>
-</ul>
-
-
-<h3>Resources</h3>
-
-<ul>
-<li>code school backbone.js class</li>
-<li>watch this for <a href="http://vimeo.com/59431658">explanation for backbone.js to marionette</a></li>
-</ul>
-
-
-<h3>Google Analytics on Backbone</h3>
-
-<ul>
-<li>this was a <a href="https://gist.github.com/daveaugustine/1771986">good guide</a> though it did not include the fact that</li>
-<li>used <code>universal.js</code> so had to use the <code>ga('create', 'UA-XXXX-Y', 'auto');</code> syntax</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[jquery promises]]></title>
-    <link href="http://www.adamjonas.com/blog/jquery-promises/"/>
-    <updated>2013-11-15T15:41:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/jquery-promises</id>
-    <content type="html"><![CDATA[<p>A <strong>Promise</strong> is an object that represents a one-time event, typically the outcome of an async task like an AJAX call.</p>
-
-<ul>
-<li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/wrangle-async-tasks-with-jquery-promises/">started here</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Marionette]]></title>
-    <link href="http://www.adamjonas.com/blog/marionette/"/>
-    <updated>2013-11-14T11:54:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/marionette</id>
-    <content type="html"><![CDATA[<h3>Backbone.Model And Backbone.Collection</h3>
-
-<ul>
-<li><strong>model</strong> in Backbone represent a singular entity — a record in a database if you will.</li>
-<li><strong>collections</strong> in Backbone are essentially just a collection of models
-
-<ul>
-<li>e.g. collections are the results of a query where the results consists of a number of records [models]</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Backbone.View</h3>
-
-<ul>
-<li>Is the HTML representation of the model</li>
-<li>A view handles two duties fundamentally:
-
-<ul>
-<li>Listen to events thrown by the DOM and models/collections.</li>
-<li>Represent the application’s state and data model to the user.</li>
-</ul>
-</li>
-<li>Said another way, the primary responsibility of a view is to coordinate interactions between the end user and the application’s services.</li>
-<li>In spite of their importance and having their fingers in all the pies of Backbone, views are not in control. They respond to changes in the application state in order to render the right HTML at the right time. They also facilitate changing the state by calling other objects that can change the state, but only on behalf of the user who initiates a state change by interacting with the DOM. Views are effectively the middle-man of a Backbone app.</li>
-</ul>
-
-
-<h3>Backbone.Events</h3>
-
-<ul>
-<li>The primary responsibility of Backbone.Events is to decouple the knowledge of state changes from the response to those state changes, through the use of the observer pattern.</li>
-<li>Backbone.Events is the little powerhouse that facilitates nearly every aspect of a Backbone application. This is the one piece of Backbone that is found in every other piece of Backbone. Every time you call “bind” or “trigger” on any Backbone object, you’re using Backbone.Events. <a href="http://lostechies.com/derickbailey/2011/12/27/the-responsibilities-of-the-various-pieces-of-backbone-js/">From</a></li>
-</ul>
-
-
-<h3>App.vent</h3>
-
-<ul>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md#appvent-event-aggregator">appvent-event-aggregator</a>
-
-<ul>
-<li>from the <a href="https://github.com/marionettejs/backbone.wreqr">wreqr</a></li>
-<li>basic example is <code>MyApp.vent.on("foo", function(){ alert("bar"); });</code> triggered by <code>MyApp.vent.trigger("foo");</code></li>
-</ul>
-</li>
-<li>one can also pass along an object or a string as a second parameter such as <code>App.vent.trigger('user_loaded', true)</code> or <code>App.vent.trigger('user_loaded', false)</code> that means that the listener can adjust accordingly (i.e. <code>App.vent.once('user_loaded', (user_loaded) -&gt; $('.change-scene').show() if user_loaded ))</code></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Local Storage]]></title>
-    <link href="http://www.adamjonas.com/blog/local-storage/"/>
-    <updated>2013-11-11T15:38:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/local-storage</id>
-    <content type="html"><![CDATA[<h3>From KCA</h3>
-
-<ul>
-<li>used <a href="https://github.com/marcuswestin/store.js">store.js</a></li>
-<li>nice <a href="http://javascriptplayground.com/blog/2012/06/javascript-local-storage-store-js-tutorial">little screencast</a></li>
-<li>here is an <a href="http://coding.smashingmagazine.com/2010/10/11/local-storage-and-how-to-use-it/">older article</a> from 2010</li>
-<li><em>NOTE:</em> We ended up using <a href="https://github.com/marcuswestin/store.js/blob/master/store%2Bjson2.min.js">store.js with json</a> because ie7 apparently doesn&#8217;t come equiped with JSON. Tom and I broke our heads trying to figure out why <code>store.enabled</code> wasn&#8217;t <code>true</code> for ie7. It came down to the fact that ie7 didn&#8217;t have JSON.</li>
-</ul>
-
-
-<p>Thought this was a cool little way to store whether a td square had been clicked on&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>addRedTiles: -&gt;
-</span><span class='line'>  selected = store.get("board_#{@board_id}")
-</span><span class='line'>
-</span><span class='line'>  for tile_number in selected
-</span><span class='line'>    $("[data-title-num=#{tile_number}]").addClass('clicked_space')
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>duringBoardClick: -&gt;
-</span><span class='line'>  if store.enabled
-</span><span class='line'>    $('td').click =&gt;
-</span><span class='line'>      $(event.target).toggleClass('clicked_space')
-</span><span class='line'>      clicked_tiles = []
-</span><span class='line'>      all_clicked = $('td.clicked_space')
-</span><span class='line'>
-</span><span class='line'>      for tile in all_clicked
-</span><span class='line'>        clicked_tiles.push $(tile).attr('data-title-num')
-</span><span class='line'>
-</span><span class='line'>      store.set("board_#{@board_id}", clicked_tiles)
-</span><span class='line'>  else
-</span><span class='line'>    console?.log? 'store is not enabled'</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>This needed to be updated b/c of event.targer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">duringBoardClick</span><span class="o">:</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">store</span><span class="p">.</span><span class="nx">enabled</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">board_id</span> <span class="o">=</span> <span class="err">@</span><span class="nx">board_id</span>
-</span><span class='line'>    <span class="err">\\</span><span class="nx">notice</span> <span class="nx">that</span> <span class="nx">I</span> <span class="nx">declared</span> <span class="nx">the</span> <span class="nx">above</span> <span class="nx">variable</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">).</span><span class="nx">click</span> <span class="o">-&gt;</span> <span class="err">\\</span><span class="nx">and</span> <span class="nx">changed</span> <span class="k">this</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">single</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="err">@</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;clicked_space&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">clicked_tiles</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span class='line'>      <span class="nx">all_clicked</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td.clicked_space&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">tile</span> <span class="k">in</span> <span class="nx">all_clicked</span>
-</span><span class='line'>        <span class="nx">clicked_tiles</span><span class="p">.</span><span class="nx">push</span> <span class="nx">$</span><span class="p">(</span><span class="nx">tile</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-title-num&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">store</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;board_#{board_id}&quot;</span><span class="p">,</span> <span class="nx">clicked_tiles</span><span class="p">)</span>
-</span><span class='line'>      <span class="err">\\</span><span class="nx">board</span> <span class="nx">then</span> <span class="nx">becomes</span> <span class="nx">a</span> <span class="nx">local</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="nx">console</span><span class="o">?</span><span class="p">.</span><span class="nx">log</span><span class="o">?</span> <span class="s1">&#39;store is not enabled&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>local storage versus cookies</h3>
-
-<ul>
-<li><strong>client versus server</strong> -> Cookies and local storage really serve difference purposes. Cookies are primarily for reading server-side, local storage can only be read client-side. So the question is, in your app, who needs this data — the client or the server? If it&#8217;s your client (your JavaScript), then by all means switch. You&#8217;re wasting bandwidth by sending all the data in each HTTP header. If it&#8217;s your server, local storage isn&#8217;t so useful because you&#8217;d have to forward the data along somehow (with Ajax or hidden form fields or something). This might be okay if the server only needs a small subset of the total data for each request.</li>
-<li><strong>Size</strong> -> Apart from being an old way of saving data, Cookies give you a limit of 4096 bytes (4095, actually) - its per cookie. Local Storage is as big as 5MB per domain.</li>
-<li>you can test your local storage <a href="http://arty.name/localstorage.html">here</a>.</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Grape Api]]></title>
-    <link href="http://www.adamjonas.com/blog/grape-api/"/>
-    <updated>2013-11-11T15:13:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/grape-api</id>
-    <content type="html"><![CDATA[<h2><a href="https://github.com/intridea/grape">Grape</a></h2>
-
-<ul>
-<li>Grape is a REST-like API micro-framework for Ruby. It&#8217;s designed to run on Rack or complement existing web application frameworks such as Rails and Sinatra by providing a simple DSL to easily develop RESTful APIs.</li>
-<li>Here is a nice <a href="http://www.slideshare.net/yorzi/rapid-rubyapiongrape-8674582">slide share</a> of the API possibilities (though it is from 2011).</li>
-<li><a href="http://joeybeninghove.com/2012/01/21/grape-apis-few-quick-tidbits/">some tips here</a></li>
-</ul>
-
-
-<h3>Rack::Cors</h3>
-
-<ul>
-<li>Rack::Cors provides support for Cross-Origin Resource Sharing (CORS) for Rack compatible web applications. The CORS spec allows web applications to make cross domain AJAX calls without using workarounds such as JSONP.</li>
-<li><a href="http://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/">explaination worth reading</a></li>
-</ul>
-
-
-<h3>Trouble with protected_attributes</h3>
-
-<ul>
-<li>rails 4 &#8211; learned via <a href="https://github.com/rails/rails/issues/12360">issue 12360</a> that protected_attr needs to be up to date. In my case, v 1.0.5.</li>
-</ul>
-
-
-<h3>Rack Console</h3>
-
-<ul>
-<li>used gem <a href="https://github.com/sickill/racksh"><code>racksh</code></a> for a rack console. Pretty dandy.</li>
-</ul>
-
-
-<h3>Mind f<sup>ck</sup></h3>
-
-<ul>
-<li><a href="https://github.com/rosenfeld/active_record_migrations">active_record_migrations</a> worked when vendored locally, but the config options were not configuring anything when remote.
-
-<ul>
-<li>went hunting in <a href="https://github.com/rails/rails/tree/master/activerecord">active_record</a> (specifically in the <a href="https://github.com/rails/rails/blob/d8b173607da94419e841c4d36f251987c9acf156/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb">postgres adapter</a>, but didn&#8217;t find anything to solve the problem. Some <a href="https://github.com/rails/rails/blob/d8b173607da94419e841c4d36f251987c9acf156/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb#L390">cool datatypes</a> in there though.</li>
-</ul>
-</li>
-<li>ended up using the <code>DATABASE_URL</code> env instead of database.yml to configure the postgres DB.</li>
 </ul>
 
 ]]></content>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2014-03-25T18:10:46-04:00</updated>
+  <updated>2014-06-21T08:45:29-04:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 4 CSRF handling]]></title>
+    <link href="http://www.adamjonas.com/blog/rails-4-csrf-handling/"/>
+    <updated>2014-05-01T11:19:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rails-4-csrf-handling</id>
+    <content type="html"><![CDATA[<h2>Setup</h2>
+
+<p>Right now we are building "Ironboard" (title is WIP) -- an application that makes makes consuming prework a breeze for students and creating and organizing prework a breeze for teachers. This application is going to fit into a workflow that kicks off when a student pays their deposit. The short version is that another internal app is going to ping an endpoint on Ironboard, which internally will generate an email invitation and enroll that student in course so that the instructor can track their progress.</p>
+
+<h2>CSRF</h2>
+
+<p>I've read the <a href="http://guides.rubyonrails.org/security.html">rails security guide</a>. I searched <a href="http://stackoverflow.com/questions/16258911/rails-4-authenticity-token">stackoverflow</a> and quite frankly the documentation for handling CSRF in rails 4 is sucky. <a href="http://alexcoco.com/forgery-protection-strategy/">Alex Coco</a> seems to have done the most documentation here. Buried in all of this is the <a href="http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/">proper way to handle cross-domain requests</a> in 2011:</p>
+
+<blockquote><p>Users can override this behaviour by overriding <code>handle_unverified_request</code> in their own controllers.</p></blockquote>
+
+<p>Most answers that are out there have to do with disabling the <code>protect_from_forgery</code> method in a specfic controller for a specific action. This hides csrf vulnerability, but I'm not sure that disabling token authenticity makes things any better. Why use <code>protect_from_forgery except: :ping_from_registrar</code> when we could use the <code>handle_unverified_request</code></p>
+
+<p>We ended up using:</p>
+
+<p>```ruby
+class Api::FooController &lt; ApplicationController
+  skip_before_action :authenticate_user!</p>
+
+<p>  private
+  def handle_unverified_request</p>
+
+<pre><code>authenticate_token || render_unauthorized
+</code></pre>
+
+<p>  end</p>
+
+<p>  def authenticate_token</p>
+
+<pre><code>authenticate_with_http_token do |token, options|
+  token.eql?(ENV['API_TOKEN'])
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def render_unauthorized</p>
+
+<pre><code>self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+render json: 'Bad credentials', status: 401
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>I think this is pretty awesome.</p>
+
+<p><a href="http://stackoverflow.com/questions/12761544/rspec-request-how-to-set-http-authorization-header-for-all-requests">This was helpful</a> as was <a href="http://blog.envylabs.com/post/75521798481/token-based-authentication-in-rails">this</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[wit]]></title>
@@ -621,62 +676,6 @@ end
   - min 6 javascript</p>
 
 <p>destroy -> allow_destroy: true</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Agile Web Development with Rails]]></title>
-    <link href="http://www.adamjonas.com/blog/agile-web-development-with-rails/"/>
-    <updated>2012-10-30T10:33:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/agile-web-development-with-rails</id>
-    <content type="html"><![CDATA[<ul>
-<li>ORM libraries map database tables to classes, rows to objects, and columns to attributes of those objects.</li>
-<li>Class methods are used to perform table-level operations</li>
-<li>Instance methods are used to perform operations on individual rows.</li>
-<li>Modules server two purposes
-
-<ul>
-<li>namespace: letting you define methods whose names will not clash with those defined elsewhere</li>
-<li>And they allow you to share functionality between classes</li>
-</ul>
-</li>
-<li>a ||= b
-```ruby a operation= b is the same as a = a operation b
-count += 1
-
-<h1>same as</h1>
-
-<p>count = count + 1</p></li>
-</ul>
-
-
-<p>price *= discount</p>
-
-<h1>same as</h1>
-
-<p>price = price * discount</p>
-
-<p>count ||= 0</p>
-
-<h1>same as</h1>
-
-<p>count = count || 0
-```
-- lambda
-- numericality
-- catalog display is really just a glorified product listing.
-- every time a request comes in, we can recover the identity from the session and use it to find the cart in the database
-- dependent: :destroy -> indicates that the existence of line items is dependent on the existence of the cart
-- if a table has foreign keys, the corresponding model should have a belongs_to for each.
-- the default HTTP method for a link is a get, the default HTTP method for a button is a post.
-- @cart.line_items.build -> this causes a new line item relationship to be built between the @cart object and the product. You can build the relationship from either end.
-- Rails matches on is add_XXX_to_TABLE and remove_XXX_from_TABLE where the value XXX is ignored; what matters is the list of the column names and the types that appear after the migration name.
-- link_to_unless_current
-- if @person is just an empty object structure, form_form will work on the assumption that this is to create a new object. If @person actually contains data, however, form_for will assume that its form is editing that object and create a different looking form element, a hidden field to enable Rails' REST capabilities.
-- helpers are simply modules containing methods that assist a view.
-- link_to and link_to_if take a condition parameter
-- a flash is a bucket (actually closer to a hash) in which you can store stuff as you process a request.
-- you can pass parameters to a partial, so that the partial can render different results.</p>
 ]]></content>
   </entry>
   

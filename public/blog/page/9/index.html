@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Initializing new arrays
-">
+  <meta name="description" content="Hoisting Explained Video Some variables and functions get hoisted to the top of the scope. Just the declaration, not the inialization. Recommend to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +86,631 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/javascript-hoisting/">Javascript Hoisting</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-19T12:34:00-05:00" pubdate data-updated="true">Dec 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-javascript-hoisting-explained/">Hoisting Explained Video</a></h3>
+
+<ul>
+<li><p>Some variables and functions get hoisted to the top of the scope. Just the declaration, not the inialization.</p>
+
+<ul>
+<li>Recommend to put all your variable declarations at the top of the function.</li>
+</ul>
+</li>
+<li><p>Functions are hoisted to the top too, but not function expressions.</p></li>
+</ul>
+
+
+<h3>Further reading</h3>
+
+<ul>
+<li><a href="http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting">JS Scopting and Hoisting</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/cache-layer/">Cache Layer</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-18T17:02:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our cache layer lives between the Github API and our Octokit Wrapper. We pull in the data on an authenticated user from the API and serialize the data in the user model (which allows us to access the data in multiple views). In a future refactor, we should probably be doing this in the wrapper model or even a memcache manager model.</p>
+
+<p>Given the fact that I didn&#8217;t fully grasp the cache system that I had a heavy hand in designing, I did a little more research on the subject&#8230; The cache storage system in Rails is very modular. It uses the file system to store the cache by default, but can be customized as we did. We used <a href="https://github.com/mperham/dalli">Dalli</a> instead of <code>mem_cache_store</code> because it has support for memcached&#8217;s binary protocol. (I believe Dalli will be the default in Rails 4.)</p>
+
+<h3>Methods</h3>
+
+<p>From the <a href="http://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store">documentation</a>, the main methods to call are <code>read</code>, <code>write</code>, <code>delete</code>, <code>exist?</code>, and <code>fetch</code>. The <code>fetch</code> method accepts a block and will either return an existing value from the cache or write the result to the cache if none exists.</p>
+
+<h3>Page Caching:</h3>
+
+<p>This allows the request for a page to be served by the webserver (nginx in our case), without ever having to hit the Rails stack. Obviously, this is highly performant, but cannot be used across all situations (e.g. where authentication is required or any actions that have before filters).</p>
+
+<h3>Action Caching:</h3>
+
+<p>This is similar to page caching except the incoming web request hits the Rails stack to allow the before-filters to run before the cache is served. This is the best option for when authentication and other restrictions need to be run while still serving the result of the output from a cached copy.</p>
+
+<h3>Fragment Caching:</h3>
+
+<p>This allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in. We tried running this for our indexed table views, but we need to work on bettering our server-side processing before this can be fully implemented.</p>
+
+<h3>SQL Caching:</h3>
+
+<p>This caches the results returned by each query so that if Rails encounters the same query again for that request, it will use the cached result rather than running the query against the database again.</p>
+
+<h3>Need to the look into&#8230;</h3>
+
+<p>In the future, I&#8217;d like to look how we might be better able to use <code>Rack::Cache</code> to better take advantage of HTTP caching regarding freshness (expires, cache-control) and/or validation (last-modified, ETags).</p>
+
+<h3>Further Reading:</h3>
+
+<ul>
+<li><a href="http://code.google.com/p/memcached/wiki/TutorialCachingStory">Memcache Wiki</a></li>
+<li><a href="http://guides.rubyonrails.org/caching_with_rails.html">Rails Guide on Caching</a></li>
+<li><a href="https://github.com/rtomayko/rack-cache">Rack cache</a></li>
+<li><a href="http://nubyonrails.com/articles/memcached-basics-for-rails">Memcached basics for Rails</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/code-climate-and-quality/">Code Climate and Quality</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-13T11:10:00-05:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Bryan Helmkamp, founder of Code Climate</h2>
+
+<h3>Static Analysis</h3>
+
+<ul>
+<li>object design issues</li>
+<li>code style</li>
+<li>potential bugs</li>
+<li>security vulnerabilities</li>
+<li>conformance with conventions</li>
+</ul>
+
+
+<p>Churn:</p>
+
+<ul>
+<li><p><a href="http://ablogaboutcode.com/2012/02/27/understanding-the-law-of-demeter/">Understanding the law of demeter</a></p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/Remote_procedure_call">remote procedure call</a></p></li>
+<li><p>Could get read-only access to the repo so that we wouldn&#8217;t need to pull down issues via the api? Would use fetches to stay up to date.</p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/Composite_pattern">Composite pattern</a></p></li>
+<li><p>be holistic about accomplishing 80% of a problem with 20% of the work. Understand why you are</p></li>
+<li><p>Game of four book. Domain driven design.</p></li>
+<li><a href="https://github.com/brynary/webrat">Webrat</a></li>
+<li><p>Conferences and meetups</p></li>
+<li><p>Feedback on Gitbo</p>
+
+<ul>
+<li>upvote bookmarklet. missing upvote button.</li>
+<li>&lt;moveable.ink></li>
+<li>before i take pledges, get the owner to approve.</li>
+<li>high activity&#8230; post comment to the issue if there is a pledge.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/marketing-your-app/">Marketing Your App</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-12T09:48:00-05:00" pubdate data-updated="true">Dec 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sr. Hacker @ Ordr.in</p>
+
+<ul>
+<li>FakeGirlfriend.co</li>
+<li><p>Co-creator of world of Fourcraft</p></li>
+<li><p><a href="http://blog.rickyrobinett.com/">Ricky&#8217;s Blog</a></p></li>
+<li><a href="http://www.helpareporter.com/">Help a reporter out</a></li>
+<li><a href="http://www.garysguide.com/jobs?region=newyork">Gary&#8217;s Guide</a></li>
+<li><a href="http://hackweekends.com/city-detail.html?city=New%20York">Hack Weekends</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/testing-gitbo/">Testing Gitbo</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T19:18:00-05:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">Factory Girl</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Defining Attributes in FactoryGirl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">provider</span> <span class="s2">&quot;github&quot;</span>
+</span><span class='line'>    <span class="n">uid</span>  <span class="s2">&quot;xxxx5826&quot;</span>
+</span><span class='line'>    <span class="nb">name</span> <span class="s2">&quot;Adam Jonas&quot;</span>
+</span><span class='line'>    <span class="n">nickname</span> <span class="s2">&quot;ajonas04&quot;</span>
+</span><span class='line'>    <span class="n">email</span> <span class="s2">&quot;francestown@gmail.com&quot;</span>
+</span><span class='line'>    <span class="n">image</span> <span class="s2">&quot;string&quot;</span>
+</span><span class='line'>    <span class="n">token</span> <span class="s2">&quot;xxxxx&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>config.include FactoryGirl::Syntax::Methods</code></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/advanced-sinatra/">Advanced Sinatra</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-10T13:14:00-05:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Sinatra</h3>
+
+<ul>
+<li><p>Sinatra is a DSL for creating a web</p></li>
+<li><p>Sinatra is library, not a framework (rails is a framework)</p></li>
+<li><p><a href="http://stackoverflow.com/questions/148747/what-is-the-difference-between-a-framework-and-a-library">difference between lib and framework</a></p></li>
+<li><p><a href="http://martinfowler.com/bliki/InversionOfControl.html">inversion of control</a> by Martin Fowler</p>
+
+<ul>
+<li>Sinatra supports inline templates</li>
+<li>variables are passed in via @instance variables</li>
+<li>Filters</li>
+<li>Helpers: takes a block and then anything defined are available in the templates</li>
+<li>Configuration: looks at the rack env variable and executes code based on the env</li>
+<li><a href="http://www.mnot.net/cache_docs/">cache docs</a></li>
+<li>By default don&#8217;t have sessions. Need to config sessions.</li>
+<li><p>Testing -> a lot of the tests that come with rails aren&#8217;t in sinatra</p>
+
+<ul>
+<li>test with rack-test</li>
+</ul>
+</li>
+<li><p>classic app -></p>
+
+<ul>
+<li>all the routes are in one file, it is straight Ruby code</li>
+</ul>
+</li>
+<li><p>Modular app -></p>
+
+<ul>
+<li>don&#8217;t want to pollute the Object namespace</li>
+<li>combinging multiple Sinatra apps in a single process</li>
+<li>use Sinatra app as middleware</li>
+</ul>
+</li>
+<li><p>Supports extensions</p>
+
+<ul>
+<li>could be helpers, routes, configurations pacakged into a Gem and used on other apps</li>
+</ul>
+</li>
+<li><p>Registered</p>
+
+<ul>
+<li>when the app is registered is has a method (<code>def self.registered(app)</code>) that allows config settings</li>
+</ul>
+</li>
+<li><p>extensions</p>
+
+<ul>
+<li><a href="http://www.sinatrarb.com/extensions.html">writing extensions</a></li>
+<li><a href="http://www.sinatrarb.com/extensions-wild.html">using extensions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Sinatra vs. Rails</h3>
+
+<ul>
+<li>when to use Sinatra&#8230;
+
+<ul>
+<li><p>Thick client web applications for performance or heavily visualizations</p>
+
+<ul>
+<li>majority of the logic is on the client, not on the server</li>
+<li>sinatra serves things really fast</li>
+</ul>
+</li>
+<li><p>API servers for iOS/Android/Javascript Apps</p></li>
+<li>HTML5 Mobile Apps (<a href="http://www.jqtouch.com/">jq touch</a> or jquery mobile)</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Rack</h3>
+
+<ul>
+<li><a href="http://m.onkey.org/ruby-on-rack-1-hello-rack">Hello Rack</a></li>
+</ul>
+
+
+<h3>Gems</h3>
+
+<ul>
+<li><a href="http://middlemanapp.com/getting-started/welcome/">Middleman Gem</a></li>
+<li>Sprockets- pretty much the asset pipeline</li>
+<li><a href="https://github.com/rtomayko/shotgun">shotgun</a> is a must.</li>
+</ul>
+
+
+<h3>Sinatra integrated into Rails</h3>
+
+<ul>
+<li>it is all Rack under the hood so you use <code>mount</code> in the route file and then all the urls defined in the sinatra app are available in the rails app</li>
+</ul>
+
+
+<h3>Sinatra on Heroku</h3>
+
+<ul>
+<li>heroku requires sinatra to have a <code>gem</code> file as well as a <code>config.ru</code> file</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>config.ru example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;./myapp&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">run</span> <span class="ss">Sinatra</span><span class="p">:</span><span class="ss">:Application</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>gemfile example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="s2">&quot;https://rubygems.org&quot;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sinatra&#39;</span><span class="p">,</span> <span class="s1">&#39;1.1.0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/script-bootstrap/">Script Bootstrap</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-10T11:16:00-05:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Zach Holman&#8217;s Slides on <a href="http://zachholman.com/talk/ruby-patterns">setting up a boostrap script</a></h3>
+
+<ul>
+<li>dependency check
+
+<ul>
+<li>is MySQL installed</li>
+<li>is redis running</li>
+</ul>
+</li>
+<li>bundler
+
+<ul>
+<li>bundle install \
+&#8211;binstubs \
+&#8211;local \
+&#8211;path=vendor/gems \
+&#8211;without=production</li>
+</ul>
+</li>
+<li>db creation
+
+<ul>
+<li>rake db:create</li>
+</ul>
+</li>
+<li>db migration
+
+<ul>
+<li>rake db:migrate</li>
+</ul>
+</li>
+<li>db seeding
+
+<ul>
+<li><a href="https://github.com/rtomayko/replicate">script/replicate-repo</a></li>
+</ul>
+</li>
+<li>static page compilation
+
+<ul>
+<li>404,500</li>
+</ul>
+</li>
+<li>language compilation
+
+<ul>
+<li>python, c, erlang</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Check to see if we need bundle install</h3>
+
+<figure class='code'><figcaption><span>Need to bundle install?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">md5</span>       <span class="o">&lt;&lt;</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Gemfile&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">checksum</span>  <span class="o">=</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span>
+</span><span class='line'><span class="n">installed</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;.bundle/checksum&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="https://github.com/holman/hopper/blob/master/script/bootstrap">Some examples</a></li>
+</ul>
+
+
+<h3>Using Foreman</h3>
+
+<ul>
+<li><a href="http://blog.daviddollar.org/2011/05/06/introducing-foreman.html">An Intro</a></li>
+</ul>
+
+
+<h3>Permission Issues</h3>
+
+<ul>
+<li><p>Once we changed the server script and we pushed, the permission issue went away. <a href="http://shalinjain.com/index.php/2009/05/27/scriptserver-permission-denied-ruby-on-rails-error">This is how we changed the permission</a> in the first place.</p></li>
+<li><p><a href="http://stubbisms.wordpress.com/2009/07/10/git-script-to-show-largest-pack-objects-and-trim-your-waist-line/">Git Script To Show Largest Pack Objects</a></p></li>
+</ul>
+
+
+<h3>script prompt</h3>
+
+<figure class='code'><figcaption><span>Slick Prompts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">echo</span> <span class="s2">&quot;the database will now be created, migrated and seeded&quot;</span>
+</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;the current default is sqlite, if you&#39;d like to customize your db settings&quot;</span>
+</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;update the config/database.yml file&quot;</span>
+</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;when finished, you may continue...&quot;</span>
+</span><span class='line'><span class="n">read</span> <span class="o">-</span><span class="nb">p</span> <span class="s2">&quot;continue (y/n)?&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="vg">$REPLY</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="n">echo</span> <span class="s2">&quot;Exiting...&quot;</span>
+</span><span class='line'>    <span class="nb">exit</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="n">fi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -268,729 +892,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/object-oriented-design-sandi-metz/">Object Oriented Design Sandi Metz</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-07T12:31:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Solid Object Oriented Design</h3>
-
-<p><a href="http://vimeo.com/12350535">Video of Sandi Metz</a></p>
-
-<h3>Less the path to better design</h3>
-
-<p><a href="http://vimeo.com/26330100">Video</a></p>
-
-<ul>
-<li><p>Code needs to work today just once, but needs to be easy to change forever</p>
-
-<ul>
-<li>purpose of design is reduce the cost of change</li>
-</ul>
-</li>
-<li><p>Patterns are prescriptions</p>
-
-<ul>
-<li>patterns work at the correct dosage</li>
-</ul>
-</li>
-<li><p>principles</p>
-
-<ul>
-<li>SOLID</li>
-<li>Demeter</li>
-</ul>
-</li>
-<li><p>Need diagnostics</p>
-
-<ul>
-<li>need simple ways to judge the goodness of code (the inverse of Bob Martin&#8217;s list of ailments)</li>
-</ul>
-</li>
-<li><p>4 Diagnostics : True</p>
-
-<ol>
-<li>Code should be <em>transparent</em></li>
-<li><em>Reasonable</em>: cost of making any change should be to proportional to its value</li>
-<li>Code should be <em>useable</em> -> if you wrote the code, you should be able to reuse it</li>
-<li><em>Exemplary</em> -> more code like this would be good for your app</li>
-</ol>
-</li>
-<li><p>These principles tell you when to quit</p></li>
-<li><p>Don&#8217;t be a know-it-all</p></li>
-<li><p>Code is more stable when the objects communicate less</p>
-
-<ul>
-<li>For example, all the work that goes into building and curating bounties belongs in the bounty class and not in the issue class, even though bounties belong to issues
-
-<blockquote><p>managing dependencies is at the center of design. Depend on things that are more stable than you are.</p></blockquote></li>
-<li>early on in an app, you actually don&#8217;t know which is more stable
-
-<ul>
-<li>embrace uncertainty. If two objects must collaborate and you don&#8217;t know who is more uncertain. Then you need to make them know as a little of each other as possible. <em>A directive to decouple.</em></li>
-</ul>
-</li>
-<li>Don&#8217;t have to guess what changes will come. Loosen the coupling so that when a change came (and we didn&#8217;t know what the change was) it would be ok.</li>
-</ul>
-</li>
-<li><p>It&#8217;s Ducks all the way down</p></li>
-<li>identify the underlying abstractions, from trip&#8217;s point of view it just wants to be prepared</li>
-<li>preparer is an agreement about the public interface of an idea -> it&#8217;s a <em>duck type</em></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">preparer</span><span class="p">(</span><span class="n">preparers</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">preparers</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">preparer</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">preparer</span><span class="o">.</span><span class="n">prepare_trip</span><span class="p">(</span><span class="nb">self</span><span class="p">)}</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#then each class has it&#39;s own prepare_trip(trip) method which sends back a prepared trip.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Abstractions are more stable than concretions. It is the duck type.
-
-<ul>
-<li>You can trade the unpredictability for the constancy for what you want.</li>
-<li>We share no code, there are no modules</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Trip expects preparers and prepares trust that they can pass the object to that called them</h3>
-
-<ul>
-<li><p>Trustworthy objects</p>
-
-<ul>
-<li>Understand more about themselves and what they want and know less about what others do</li>
-<li>Depend less on concretions and more on abstractions</li>
-</ul>
-</li>
-<li><p>The space between objects</p></li>
-<li>When objects have space around them they have room to move</li>
-<li>Design allows you to put off design decision until you know more about the application</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/elastic-search/">Elastic Search</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-02T10:21:00-05:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://github.com/karmi/tire">Ruby API and DSL for the ElasticSearch search engine</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
-</span><span class='line'>Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
-</span><span class='line'>No Java runtime present, requesting install.</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Load: true</code> will load the active record object as opposed to the</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day37/">FIS Day37</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-30T10:12:00-05:00" pubdate data-updated="true">Nov 30<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p>click around without being authenticated</p>
-
-<h2>- modal prompt</h2></li>
-<li><p>upload repo</p>
-
-<ul>
-<li>user stories of issues that needs to be fixed</li>
-</ul>
-</li>
-<li>as a fixer
-
-<ul>
-<li>user story of finding an issue
-
-<ul>
-<li>sort by popularity/ bounty$</li>
-</ul>
-</li>
-<li>fix an issue
-
-<ul>
-<li>notify bounty issuer</li>
-</ul>
-</li>
-<li></li>
-</ul>
-</li>
-</ul>
-
-
-<p>tech challenges
-  - sidekiq
-  - memcache</p>
-
-<ul>
-<li><code>git reset --hard &lt;tag/branch/commit id&gt;</code></li>
-<li><code>git branch -D bugfix</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>None of this worked&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_upvote.icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up icon-circle-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="c1">// $(&#39;i#index_downvote.icon-arrow-down&#39;).removeClass().addClass(&#39;icon-arrow-down&#39;);</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_downvote.icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down icon-arrow-down &#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="c1">// $(&#39;i#index_upvote.icon-arrow-up&#39;).removeClass().addClass(&#39;icon-arrow-up&#39;);</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_upvote.icon-arrow-up, i#index_downvote.icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">$parent</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">parent</span><span class="p">(),</span>
-</span><span class='line'>  <span class="nx">up</span> <span class="o">=</span> <span class="nx">$parent</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;i.icon-arrow-down&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;icon-circle-arrow-down icon-arrow-up&quot;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;i.icon-arrow-down&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>This Did It in Vote Js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$upvoteIcon</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;tr#issue_&lt;%= @issue.id %&gt; i#upvote-icon-&lt;%= @issue.id %&gt;&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">$downvoteIcon</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;tr#issue_&lt;%= @issue.id %&gt; i#down-vote-icon-&lt;%= @issue.id %&gt;&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;%</span> <span class="k">if</span> <span class="nx">params</span><span class="p">[</span><span class="o">:</span><span class="nx">direction</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;upvote&quot;</span> <span class="o">%&gt;</span>
-</span><span class='line'>  <span class="nx">$downvoteIcon</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">$upvoteIcon</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;%</span> <span class="nx">elsif</span> <span class="nx">params</span><span class="p">[</span><span class="o">:</span><span class="nx">direction</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;downvote&quot;</span> <span class="o">%&gt;</span>
-</span><span class='line'>  <span class="nx">$downvoteIcon</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">$upvoteIcon</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-up&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;%</span> <span class="nx">end</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>CSS IDs</h3>
-
-<ul>
-<li>SO that badge class was overwritten in an attempt to make them bigger. A fix is to simply assign the overwrite to an id and then call it on the element.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>This Did It in Vote Js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">#</span><span class="nx">endorsement</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">code</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">span</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;endorsement&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;badge badge-success&quot;</span><span class="o">&gt;</span><span class="nx">Endorsed</span><span class="o">&lt;</span><span class="err">/span&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cool.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day36/">FIS Day36</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-29T10:30:00-05:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><code>$ rake db:migrate:down VERSION=20080930121212</code></p>
-
-<h3>Lessons Learned</h3>
-
-<ul>
-<li>We were having trouble adding styling to the vote button after a click, like on stackoverflow.
-
-<ul>
-<li>the javascript was located in the vote.js file and would only trigger after the second event
-
-<ul>
-<li><em>ANSWER:</em> The vote is only created after the vote button is clicked the first time, thus if we moved it to issue.js it would work fine.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Merging an upstream and updating the gem</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git fetch upstream
-</span><span class='line'>♕ git merge upstream/master
-</span><span class='line'>#resolve your conflicts
-</span><span class='line'>
-</span><span class='line'>#bundle update gem --source git_user_name
-</span><span class='line'>bundle update octokit --source ajonas04</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>A Simple Click Event</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a.upvote&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://www.w3resource.com/twitter-bootstrap/modals-tutorial.php">Twitter bootstrap modal tutorial</a></li>
-</ul>
-
-
-<p>Data-backdrop:</p>
-
-<blockquote><p>Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn&#8217;t close the modal on click.</p></blockquote>
-
-<h2>Andrew Koch VP of Product Management @ Lot18</h2>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day35/">FIS Day35</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-28T09:13:00-05:00" pubdate data-updated="true">Nov 28<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>Goal:
-
-<ul>
-<li>if there is a no bounty div</li>
-<li>dont just render the TR for that bounty</li>
-<li>rather render the entire bounty table for that issue and insert that</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//the [0] is to make sure the element has something in it</span>
-</span><span class='line'><span class="c1">//it is the equivalent to a .exists? method</span>
-</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#bounties_table&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]){</span>
-</span><span class='line'><span class="c1">//this adds the tr object defined in the controller</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounties_table tbody&#39;</span><span class="p">).</span><span class="nx">prepend</span><span class="p">(</span><span class="s2">&quot;&lt;%= j render(@bounty) %&gt;&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'><span class="c1">//replace with requires that you pass in the HTML-- not a selector</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#no_bounty&quot;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="s2">&quot;&lt;%= j render &#39;bounties/bounties_table&#39;, :issue =&gt; @bounty.issue %&gt;&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="c1">//the j escape is necessary to render the html</span>
-</span><span class='line'>  <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Comparing the inputs&#8230;.</p>
-
-<figure class='code'><figcaption><span>Pulling out values for two different forms</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;button#pledge&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">pageValue</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounty_price_page&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
-</span><span class='line'>    <span class="nx">modalValue</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}));</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">modalValue</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#create-bounty&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">modal</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounty_price&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">modal</span><span class="p">)</span><span class="o">!=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">)){</span>
-</span><span class='line'>      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span#error&#39;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="s1">&#39;&lt;span class=&quot;label label-important&quot;&gt;Please Enter The Same Value&lt;/span&gt;&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}));</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p><a href="http://www.elasticsearch.org/">elastic search</a></p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a></p>
-
-<ul>
-<li><a href="http://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html">rails documentation</a></li>
-<li><a href="http://railscasts.com/episodes/322-rabl?view=asciicast">rabl</a></li>
-<li><p><a href="http://jonathanjulian.com/2010/04/rails-to_json-or-as_json/">to_json</a></p></li>
-<li><p><a href="https://github.com/features/projects/issues">pull request to solve an issue</a></p></li>
-</ul>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day34/">FIS Day34</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-27T19:14:00-05:00" pubdate data-updated="true">Nov 27<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p><a href="https://github.com/apneadiving/Google-Maps-for-Rails">Google Maps for Rails</a></p>
-
-<ul>
-<li><a href="http://www.youtube.com/watch?v=Yg5-33zedqM">screencast</a></li>
-</ul>
-</li>
-<li><p><a href="http://jsonviewer.stack.hu/">json viewer</a></p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Handhistory</span><span class="o">.</span><span class="n">find_each</span><span class="p">(</span><span class="ss">:batch_size</span> <span class="o">=&gt;</span> <span class="mi">100000</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">hand</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">bb</span> <span class="o">=</span> <span class="n">hand</span><span class="o">.</span><span class="n">gametype</span><span class="o">.</span><span class="n">bigblind</span>
-</span><span class='line'>  <span class="c1">#etc</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>add indexes</li>
-<li><p>database driver connects database to active record</p>
-
-<ul>
-<li>for example sqlite3 gem</li>
-</ul>
-</li>
-<li><p><a href="http://www.highcharts.com/">high charts</a> -> javascript lib</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day33/">FIS Day33</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-26T10:04:00-05:00" pubdate data-updated="true">Nov 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p><a href="http://rubular.com/r/TicDjjCz2S">http://rubular.com/r/TicDjjCz2S</a></p></li>
-<li><p>Httparty:</p>
-
-<ul>
-<li><a href="https://github.com/jnunemaker/httparty/blob/master/examples/whoismyrep.rb">https://github.com/jnunemaker/httparty/blob/master/examples/whoismyrep.rb</a></li>
-<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">http://blog.teamtreehouse.com/its-time-to-httparty</a></li>
-</ul>
-</li>
-<li><p>JQuery:</p>
-
-<ul>
-<li><a href="http://www.unheap.com/section/inputs-forms/input-sliders/">http://www.unheap.com/section/inputs-forms/input-sliders/</a></li>
-</ul>
-</li>
-<li><p>JRating:</p>
-
-<ul>
-<li><a href="http://www.myjqueryplugins.com/jquery-plugin/jrating">http://www.myjqueryplugins.com/jquery-plugin/jrating</a></li>
-</ul>
-</li>
-<li><p>Stars:</p>
-
-<ul>
-<li><a href="http://jsfiddle.net/leaverou/CGP87/light/">http://jsfiddle.net/leaverou/CGP87/light/</a></li>
-</ul>
-</li>
-</ul>
-
-
-<p>Submitting a <a href="http://forum.jquery.com/topic/how-to-submit-form-on-click-radio-button-with-jquery-mobile">radio button</a>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;:radio&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">).</span><span class="nx">submit</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p><a href="http://stackoverflow.com/questions/1716965/ruby-and-nil-object">passing in local variables to a partial</a></p></li>
-<li><p>rounding <code>34567.89.round(1)  #=&gt; 34567.9</code></p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -1008,23 +909,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/service-objects-versus-concerns/">service objects versus concerns</a>
+        <a href="/blog/presenter-objects/">Presenter Objects</a>
       </li>
     
       <li class="post">
-        <a href="/blog/pow-config/">pow config</a>
+        <a href="/blog/okrs-for-engineers/">okrs for engineers</a>
       </li>
     
       <li class="post">
-        <a href="/blog/cucumber-with-scott/">Cucumber with Scott</a>
+        <a href="/blog/cucumber-trick-shots/">cucumber trick shots</a>
       </li>
     
       <li class="post">
-        <a href="/blog/cucumber/">Cucumber</a>
+        <a href="/blog/rspec-keywords/">rspec keywords</a>
       </li>
     
       <li class="post">
-        <a href="/blog/wit/">wit</a>
+        <a href="/blog/rails-4-csrf-handling/">Rails 4 CSRF handling</a>
       </li>
     
   </ul>

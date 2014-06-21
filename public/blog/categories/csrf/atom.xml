@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: csrf | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/csrf/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2014-06-21T08:45:29-04:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 4 CSRF handling]]></title>
+    <link href="http://www.adamjonas.com/blog/rails-4-csrf-handling/"/>
+    <updated>2014-05-01T11:19:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rails-4-csrf-handling</id>
+    <content type="html"><![CDATA[<h2>Setup</h2>
+
+<p>Right now we are building "Ironboard" (title is WIP) -- an application that makes makes consuming prework a breeze for students and creating and organizing prework a breeze for teachers. This application is going to fit into a workflow that kicks off when a student pays their deposit. The short version is that another internal app is going to ping an endpoint on Ironboard, which internally will generate an email invitation and enroll that student in course so that the instructor can track their progress.</p>
+
+<h2>CSRF</h2>
+
+<p>I've read the <a href="http://guides.rubyonrails.org/security.html">rails security guide</a>. I searched <a href="http://stackoverflow.com/questions/16258911/rails-4-authenticity-token">stackoverflow</a> and quite frankly the documentation for handling CSRF in rails 4 is sucky. <a href="http://alexcoco.com/forgery-protection-strategy/">Alex Coco</a> seems to have done the most documentation here. Buried in all of this is the <a href="http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/">proper way to handle cross-domain requests</a> in 2011:</p>
+
+<blockquote><p>Users can override this behaviour by overriding <code>handle_unverified_request</code> in their own controllers.</p></blockquote>
+
+<p>Most answers that are out there have to do with disabling the <code>protect_from_forgery</code> method in a specfic controller for a specific action. This hides csrf vulnerability, but I'm not sure that disabling token authenticity makes things any better. Why use <code>protect_from_forgery except: :ping_from_registrar</code> when we could use the <code>handle_unverified_request</code></p>
+
+<p>We ended up using:</p>
+
+<p>```ruby
+class Api::FooController &lt; ApplicationController
+  skip_before_action :authenticate_user!</p>
+
+<p>  private
+  def handle_unverified_request</p>
+
+<pre><code>authenticate_token || render_unauthorized
+</code></pre>
+
+<p>  end</p>
+
+<p>  def authenticate_token</p>
+
+<pre><code>authenticate_with_http_token do |token, options|
+  token.eql?(ENV['API_TOKEN'])
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def render_unauthorized</p>
+
+<pre><code>self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+render json: 'Bad credentials', status: 401
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>I think this is pretty awesome.</p>
+
+<p><a href="http://stackoverflow.com/questions/12761544/rspec-request-how-to-set-http-authorization-header-for-all-requests">This was helpful</a> as was <a href="http://blog.envylabs.com/post/75521798481/token-based-authentication-in-rails">this</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
