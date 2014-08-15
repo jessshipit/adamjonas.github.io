@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rspec | Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/blog/categories/rspec/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2014-06-21T08:45:29-04:00</updated>
+  <updated>2014-08-15T09:20:54-04:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,89 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing With Logan]]></title>
+    <link href="http://www.adamjonas.com/blog/testing-with-logan/"/>
+    <updated>2014-07-25T12:37:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/testing-with-logan</id>
+    <content type="html"><![CDATA[<h3>Receive Message Chain</h3>
+
+<ul>
+<li>In lieu of the depreciated <code>stub_chain</code> there is now <a href="https://github.com/rspec/rspec-mocks/pull/467"><code>receive_message_chain</code></a>.</li>
+</ul>
+
+
+<p><code>ruby receive_message_chain
+allow(obj).to receive_message_chain(:foo, :bar).and_return(double)
+expect(obj.foo.bar).to receive(:bazz).with(/adfads/)
+</code></p>
+
+<h3>Yielding multiple variables</h3>
+
+<ul>
+<li><code>allow(fake_container).to receive(:attach).and_yield("stdout", "some message\n")</code></li>
+</ul>
+
+
+<h3><code>expect_any_instance_of</code></h3>
+
+<ul>
+<li>expect_any_instance_of(Object).to receive(:subscribe) <a href="http://stackoverflow.com/a/17577942/1496757">isn't very well documented</a>, but <a href="http://rubydoc.info/gems/rspec-mocks/RSpec/Mocks/ExampleMethods:expect_any_instance_of">it's in there</a>.</li>
+</ul>
+
+
+<h3>Testing Sidekiq</h3>
+
+<ul>
+<li><a href="https://github.com/mperham">Mike Perham</a> did a nice job documenting the <a href="https://github.com/mperham/sidekiq/wiki/Testing">testing options for workers</a>.
+
+<h3>Detecting pending migrations</h3></li>
+<li>A neat little trick to see if there are pending migrations <code>rake db:migrate:status</code>. This must have been built into rails because I see a message every time I haven't run a migration and I am running my test suite. It's cool nonetheless. <a href="http://stackoverflow.com/questions/1349047/show-pending-migrations-in-rails">Source</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stubbing Out Faraday]]></title>
+    <link href="http://www.adamjonas.com/blog/stubbing-out-faraday/"/>
+    <updated>2014-07-15T11:49:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/stubbing-out-faraday</id>
+    <content type="html"><![CDATA[<h3>Webmock to disable net connections</h3>
+
+<ul>
+<li><a href="https://github.com/bblimke/webmock#real-requests-to-network-can-be-allowed-or-disabled">Just toss it in the <code>spec_helper</code></a>
+
+<ul>
+<li><strong><em>Note</em></strong> that I had to use <code>WebMock.disable_net_connect!(:allow_localhost =&gt; true)</code> in the cucumber <code>support/env.rb</code> because my local host wasn't being allowed to run on the ci. <a href="https://github.com/bblimke/webmock/issues/284">picked this up from issue #284 on webmocks</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Rspec Mocks</h3>
+
+<ul>
+<li>Can use the <a href="https://github.com/rspec/rspec-mocks#method-stubs">new syntax</a> or mocha.</li>
+</ul>
+
+
+<h3>To stub it out I could either</h3>
+
+<p>```ruby These Both Work
+before do
+  allow(MyService).to receive(:new) { double }
+end</p>
+
+<p>before do
+  allow_any_instance_of(MyService).to receive(:publish)
+end
+```</p>
+
+<p>Really cool. The <code>allow_any_instance_of()</code> is pretty sweet to reference an unnamed instance of a class. Pretty sweet.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rspec keywords]]></title>
@@ -454,634 +537,6 @@ end
 <p>Procedural code- solutions for very specific problems</p>
 
 <p>dependencies will kill your code, but design will save it</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test Driven Development]]></title>
-    <link href="http://www.adamjonas.com/blog/test-driven-development/"/>
-    <updated>2012-10-24T13:26:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/test-driven-development</id>
-    <content type="html"><![CDATA[<p>??browser testing? this falls under acceptance tests?</p>
-
-<p><em>Difference between mock, stub, and fixture?</em> They are all a mechanisms to decouple data from the database. If your DB is down, you couldn't run your test suite.</p>
-
-<p><em>Fixtures and factories</em> sort of relate to each other so that you don't have to instantiate a bunch of objects. <em>Fixtures-</em> are stable data to be used in the test environment. Fixtures are written in YAML.</p>
-
-<p><em>mocks and stubs</em>: connect to the FB api, but you don't need to, so you create something that responses with canned data like it is the facebook api.
-<a href="http://martinfowler.com/articles/mocksArentStubs.html">See mocks aren't stubs by Martin Fowler</a></p>
-
-<p>why does a spec folder hold the tests? This outlines the specifications?
-  - A specification is an explicit set of requirements to be satisfied by a material, product, or service.</p>
-
-<p>??ping ponging - if someone writes a test and the other passes it are you switching off every 5 minutes</p>
-
-<p><a href="http://railscasts.com/episodes/275-how-i-test">"How I test" with Ryan Bates</a></p>
-
-<p>only open the browser when you need to focus on UI. Otherwise use tests.</p>
-
-<ul>
-<li><a href="https://github.com/jnicklas/capybara">capybara</a> to simulate the user
-factory-girl instead of fixtures -> where you store your factories</li>
-<li><p>guard</p></li>
-<li><p>integeration_test</p></li>
-</ul>
-
-
-<p>```ruby Capybara DSL Methods
-visit login_path</p>
-
-<pre><code>click_link "password"
-fill_in "Email", :with =&gt; user.email
-click_button "Reset Password"
-</code></pre>
-
-<p>```</p>
-
-<p><a href="http://www.skorks.com/2010/01/thoughts-on-tdd-a-case-study-with-ruby-and-rspec/">Good article on the process of testing</a></p>
-
-<h2>Steven Nunez</h2>
-
-<p>@_StevenNunez
-conway's game of life</p>
-
-<p>Testing is: the act of isolating parts of your code with a known state to ensure it works as expected</p>
-
-<p>Acceptance testing, integration and tests: cucumber, capybara, webrat</p>
-
-<p>unit tests - take a class, take tests and make objects</p>
-
-<h3>Why test?</h3>
-
-<ul>
-<li>want to know when things break</li>
-<li>allows for courageous refactoring</li>
-<li>gives documentation on how your code is SUPPOSED to work. Learn to expect tests.</li>
-<li>It is your duty to deliver working code. Verification.</li>
-</ul>
-
-
-<h3>Testing sounds like an extra step...</h3>
-
-<ul>
-<li>Forces you to think small</li>
-<li>Less thoughts to juggle</li>
-<li>Leads to modular code</li>
-<li>write less code</li>
-<li>increase documentation: see what the intention was</li>
-<li>small victories: always chasing green</li>
-</ul>
-
-
-<h3>RSpec</h3>
-
-<ul>
-<li>RSpec provides something called subject
-
-<ul>
-<li>subject = Class.new</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Write the code you wish you had</h3>
-
-<ul>
-<li>test with none, test with 1, test with some</li>
-<li>can write a pending test by just writing it blocks</li>
-</ul>
-
-
-<p>BDD is more route => controller => model
-TDD is more model => controller => route</p>
-
-<p>practical object oriented design by <a href="http://www.poodr.info">sandi metz</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RSpec]]></title>
-    <link href="http://www.adamjonas.com/blog/rspec/"/>
-    <updated>2012-09-24T13:21:00-04:00</updated>
-    <id>http://www.adamjonas.com/blog/rspec</id>
-    <content type="html"><![CDATA[<ul>
-<li><p><a href="https://gist.github.com/663876">cheatsheet</a></p></li>
-<li><p><a href="http://blog.carbonfive.com/2010/10/21/rspec-best-practices/">Good article</a> read it.</p></li>
-</ul>
-
-
-<p>```ruby
-it "has no brains" do</p>
-
-<pre><code>zombie = Zombie.new
-#modifier is should
-#matcher is the less than sign
-zombie.brains.should &lt; 1
-</code></pre>
-
-<p>end
-```</p>
-
-<p><code>ruby Matchers and Modifiers
-zombie.name.should == 'Ash'
-zombie.alive.should == false
-zombie.rotting.should == true
-zombie.height.should &gt; 5
-zombie.height.should &gt;= 5
-zombie.height.should &lt; 5
-zombie.height.should_not == 5
-</code></p>
-
-<p>```ruby Predicate 'be'
-describe Tweet do
-  it 'without a leading @ symbol should be public' do</p>
-
-<pre><code>tweet = Tweet.new(status: 'Nom nom nom')
-tweet.status.should be_true
-#this is equivalent to tweet.status.should == true
-#the predicate is a better way though
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>```ruby Mark as Pending
-it "is named Ash"
-end</p>
-
-<h1>to mark it as pending</h1>
-
-<p>xit "is named Ash" do
-end</p>
-
-<h1>OR</h1>
-
-<p>it "is named Ash" do</p>
-
-<pre><code>pending
-</code></pre>
-
-<p>end
-```</p>
-
-<p>```ruby Should be
-describe Tweet do
-  it 'truncates the status to 140 characters' do</p>
-
-<pre><code>tweet = Tweet.new(status: 'Nom nom nom' * 100)
-# notice the space between the 'should' and 'be'
-tweet.status.length.should be &lt;= 140
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<h2>Level 2</h2>
-
-<p>Installing RSpec
-```
-gem install rspec
-rspec --init</p>
-
-<h1>in rails</h1>
-
-<p>rails generate rspec:install
-```</p>
-
-<p>Running RSpec:
-```
-rspec</p>
-
-<h1>to run a directory</h1>
-
-<p>rspec spec/models/</p>
-
-<h1>to run a specific test</h1>
-
-<p>rspec spec/models/zombie_spec.rb</p>
-
-<h1>to run a specific line</h1>
-
-<p>rspec spec/models/zombie_spec.rb:4
-```</p>
-
-<p>Should match:
-<code>zombie.name.should matchj(/Ash Clone \d/)</code></p>
-
-<p>Include should be used anywhere where an item should be part of an array...
-```ruby Matchers: include
-describe Zombie do
-  it 'includes a tweet' do</p>
-
-<pre><code>tweet = Tweet.new
-zombie = Zombie.new(tweets: [tweet])
-zombie.tweets.should include(tweet)
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>```ruby Matchers: have</p>
-
-<h1>this</h1>
-
-<p>zombie.weapons.count.should == 2</p>
-
-<h1>is better written as</h1>
-
-<p>zombie.should have(2).weapons</p>
-
-<p>describe Zombie do
-  it 'increases the number of tweets' do</p>
-
-<pre><code>zombie = Zombie.new(name: 'Ash')
-zombie.tweets.new(message: "Arrrgggggggghhhhh")
-zombie.should have(1).tweets
-</code></pre>
-
-<p>  end
-end
-<code>
-</code>ruby Can also have
-have(n)
-have_at_least(n)
-have_at_most(n)
-```</p>
-
-<p>```ruby Expect Block and Change Methods
-describe Zombie do
-  it 'gains 3 IQ points by eating brains' do</p>
-
-<pre><code>zombie = Zombie.new
-expect { zombie.eat_brains }.to change { zombie.iq }.by(3)
-</code></pre>
-
-<p>  end
-end
-<code>
-</code>ruby Can also use
-.by(n)
-.from(n)
-.to(n)</p>
-
-<h1>and they can be chained</h1>
-
-<p>.from(1).to(5)
-<code>
-</code>ruby should have
-describe Zombie do
-  it 'increases the number of tweets' do</p>
-
-<pre><code>zombie = Zombie.new(name: 'Ash')
-zombie.tweets.new(message: "Arrrgggggggghhhhh")
-zombie.should have(1).tweets
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>```ruby Raise_error
-describe Zombie do
-  it 'raises a Zombie::NotSmartEnoughError if not able to make a decision' do</p>
-
-<pre><code>zombie = Zombie.new
-expect { zombie.make_decision! }.to raise_error(StandardError)
-</code></pre>
-
-<p>  end
-end</p>
-
-<h1>these modifiers also work</h1>
-
-<p>to
-not_to
-to_not
-```</p>
-
-<h3>More Matchers</h3>
-
-<p><code>ruby A list
-@zombie.should respond_to(hungry?)
-@zombie.should be_within(0.1).of(33.3)
-@zombie.should exist
-@zombie.should satisfy { |zombie| zombie.hungry? }
-@hungry_zombie.should be_kind_of(Zombie) #Inheritance: HungryZombie &lt; Zombie
-@status.should be_an_instance_of(String)
-</code></p>
-
-<h3>Drying up specs</h3>
-
-<p>```ruby Subject</p>
-
-<h1>this</h1>
-
-<p>describe Zombie do
-  it 'should not be a genius' do</p>
-
-<pre><code>zombie = Zombie.new
-zombie.should_not be_genius
-</code></pre>
-
-<p>  end
-end</p>
-
-<h1>can be simplified to</h1>
-
-<p>describe Zombie do
-  it 'should not be a genius' do</p>
-
-<pre><code>subject.should_not be_genius
-</code></pre>
-
-<p>  end
-end</p>
-
-<h1>this can be further simplified to</h1>
-
-<p>describe Zombie do
-  it 'should not be a genius' do</p>
-
-<pre><code>#implicit subject
-should_not be_genius
-</code></pre>
-
-<p>  end
-end</p>
-
-<h1>OR</h1>
-
-<p>describe Zombie do
-  it {should_not be_genius}
-end
-```
-This is only going to work if using a describe block with a class in it...</p>
-
-<p>```ruby it
-describe Zombie do</p>
-
-<pre><code>it { subject.name.should == 'Ash' }
-</code></pre>
-
-<p>end
-```</p>
-
-<p>```ruby its
-describe Zombie do
-  it 'should have an iq of zero' do</p>
-
-<pre><code>subject.iq.should == 0
-</code></pre>
-
-<p>  end
-end</p>
-
-<h1>can simplify it all the way to</h1>
-
-<p>describe Zombie do
-  its(:iq) { should == 0 }
-end
-```</p>
-
-<p>```ruby its examples
-describe Zombie do</p>
-
-<pre><code>its(:name) { should == 'Ash' }
-its(:weapons) { should include(weapon) }
-its(:brain) { should be_nil }
-its('tweet.size') { should == 2 }
-</code></pre>
-
-<p>end
-```</p>
-
-<p>```ruby Refactoring with Context
-describe Zombie do
-  it { should_not be_genius }
-  its(:iq) { should == 0 }</p>
-
-<p>  it "should be_genius with high iq" do</p>
-
-<pre><code>zombie = Zombie.new(iq: 3)
-zombie.should be_genius
-</code></pre>
-
-<p>  end</p>
-
-<p>  it 'should have a brains_eaten_count of 1 with high iq' do</p>
-
-<pre><code>zombie = Zombie.new(iq: 3)
-zombie.brains_eaten_count.should == 1
-</code></pre>
-
-<p>  end
-end</p>
-
-<h1>Refactored with context and subject and its</h1>
-
-<p>describe Zombie do
-  it { should_not be_genius }
-  its(:iq) { should == 0 }</p>
-
-<p>  context "with high iq" do</p>
-
-<pre><code>subject { Zombie.new(iq: 3) }
-it { should be_genius }
-its(:brains_eaten_count) { should == 1 }
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>Use the let keyword to create different objects since you can only use subject once.
-```ruby Let
-describe Zombie do
-  let(:tweet) { Tweet.new }</p>
-
-<pre><code>subject { Zombie.new(tweets: [tweet], name: [zombie]) }
-#moved zombie to its own let
-    let(:zombie) { Zombie.new}
-</code></pre>
-
-<p>  its(:tweets) { should include(tweet) }
-  its(:latest_tweet) { should == tweet }
-end
-```</p>
-
-<p>```ruby Let! instantiates the zombie everytime instead of lazy eval
-describe Zombie do
-  context "with high iq" do
-  #changed Zombie.new to Zombie.create</p>
-
-<pre><code> let!(:zombie) { Zombie.create(iq: 3, name: 'Anna') }
- subject { zombie }
-
- it "should be returned with genius" do
-   Zombie.genius.should include(zombie)
- end
-
- it "should have a genius count of 1" do     
-   Zombie.genius.count.should == 1
- end
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>Using let with FactoryGirl
-```ruby</p>
-
-<p>   let(:issue) { create(:issue) }
-   let(:user) { create(:user) }
-```</p>
-
-<h3>Hooks</h3>
-
-<p><code>ruby
-before(:each)
-before(:all)
-after(:each)
-aftter(:all)
-</code></p>
-
-<p>```ruby
-describe Zombie do
-  let(:zombie) { Zombie.create }
-  subject { zombie }
-  before { zombie.eat_brains }</p>
-
-<pre><code>it { subject.should_not be_dummy}
-it { subject.should be_genius }  
-</code></pre>
-
-<p>end
-```</p>
-
-<p>```ruby
-before { zombie.hungry! }</p>
-
-<h1>by default, a before clock runs each time before an example is about to run</h1>
-
-<p><code>
-</code>ruby Before Hook
-describe Zombie do
-  let(:zombie) { Zombie.create }
-  subject { zombie }</p>
-
-<p>  it 'is not a dummy zombie' do</p>
-
-<pre><code>zombie.eat_brains
-zombie.should_not be_dummy
-</code></pre>
-
-<p>  end</p>
-
-<p>  it 'is a genius zombie' do</p>
-
-<pre><code>zombie.eat_brains
-zombie.should be_genius
-</code></pre>
-
-<p>  end
-end</p>
-
-<h1>refactored as</h1>
-
-<p>describe Zombie do
-  let(:zombie) { Zombie.create }
-  subject { zombie }
-  before { zombie.eat_brains }</p>
-
-<p>  it 'is not a dummy zombie' do</p>
-
-<pre><code>zombie.should_not be_dummy
-</code></pre>
-
-<p>  end</p>
-
-<p>  it 'is a genius zombie' do</p>
-
-<pre><code>zombie.should be_genius
-</code></pre>
-
-<p>  end
-end
-<code>
-</code>ruby
-describe Zombie do
-  let(:zombie) { Zombie.create }
-  before { zombie.iq = 0 }
-  subject { zombie }</p>
-
-<p>  context 'with a dummy zombie' do</p>
-
-<pre><code>before { zombie.iq &lt; 3 } 
-it { should be_dummy }
-</code></pre>
-
-<p>  end</p>
-
-<p>  context 'with a smart zombie' do</p>
-
-<pre><code>before { zombie.iq = 3 }
-it { should_not be_dummy }
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<h3>Shared Examples</h3>
-
-<p>```ruby Shared Examples</p>
-
-<h1>used to call shared examples</h1>
-
-<p>it_behaves_like 'yada yada yada'</p>
-
-<h1>refers to the implicit subject</h1>
-
-<p>shared_examples_for 'the undead' do</p>
-
-<pre><code>it 'does not have a pulse' do
-    subject.pulse.should == false
-end
-</code></pre>
-
-<p>end
-```</p>
-
-<p>```ruby for a more explicit subject
-describe Zombie do</p>
-
-<h1>this is clearer</h1>
-
-<p>  it_behaves_like 'the undead' do</p>
-
-<pre><code>let(:undead) {Zombie.new}
-</code></pre>
-
-<p>  end</p>
-
-<h1>can do this</h1>
-
-<p>  it_behaves_like 'the undead', Zombie.new</p>
-
-<p>shared_examples_for 'the undead' do |undead|
-  it 'does not have a pulse' do</p>
-
-<pre><code>undead.pulse.should == false
-</code></pre>
-
-<p>  end
-end
-```</p>
 ]]></content>
   </entry>
   

@@ -3,7 +3,7 @@ layout: post
 title: "Presenter Objects"
 date: 2014-06-17 18:49
 comments: true
-categories: presenter_object
+categories: presenter_objects
 ---
 
 ###From our PR thread

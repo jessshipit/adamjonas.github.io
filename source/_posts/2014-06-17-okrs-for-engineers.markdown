@@ -5,6 +5,7 @@ date: 2014-06-17 18:05
 comments: true
 categories: okrs
 ---
+
 ###Notes
 
   - lead developer's OKRs mostly product focused
