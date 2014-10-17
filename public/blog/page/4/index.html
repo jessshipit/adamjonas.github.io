@@ -9,7 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Validations This is a neat little validation plugin that passes back error objects. Form serialization Used syphon built by Derick Bailey. &hellip;">
+  <meta name="description" content="Bind and fat arrow result in something similar but with different implementations. fn = -&gt; console.log @
+ctx = {foo: 'bar', fn: -&gt; console.log &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/context-and-functions-in-javascript/">Context and Functions in Javascript</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-19T17:55:00-05:00" pubdate data-updated="true">Nov 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Bind and fat arrow result in something similar but with different implementations.</p>
+
+<pre><code>fn = -&gt; console.log @
+ctx = {foo: 'bar', fn: -&gt; console.log(@)}
+pusher.execute('event_name', ctx.fn.bind(ctx))
+</code></pre>
+
+<p>In most cases, the context of the function (also known as <code>@</code>) is based on the receiver. In this contrived example, to execute the function on the pusher object, we might pass in the function name and then the callback function. When we call a function to an outside source, we have no idea in what context it might be executed. In our case, <code>ctx.fn</code> and <code>@fn</code> might be the exact same &#8211; these are just references to how to call the function, but an important takeaway is that these do not pass determine the context. To ensure the context, one must specify it with the bind function. <code>pusher.execute('event_name', ctx.fn.bind(ctx))</code> is essentially equal to <code>pusher.execute('event_name', @fn.bind(ctx))</code>. The receiver in this case doesn&#8217;t matter.</p>
+
+<p>JS OOP isn&#8217;t a joy ride. Oh well.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1003,49 +1051,6 @@ this ensures the method compiler checks.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/git-cheatsheet/">Git Cheatsheet</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-28T18:31:00-04:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><code>git clean -f -d</code> removes all untracked files. <code>git reset --hard HEAD</code> won&#8217;t remove untracked files.</li>
-<li><code>git checkout &lt;filename&gt;</code> untracks a file and returns it to its original state.</li>
-<li><code>git push -u origin my_branch</code> sets upstream. Here is a <a href="http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time">good explanation</a>.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1063,6 +1068,10 @@ this ensures the method compiler checks.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/polymorphic-brain-hurt/">polymorphic brain hurt</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/vim-shortcuts/">VIM shortcuts</a>
       </li>
     
@@ -1076,10 +1085,6 @@ this ensures the method compiler checks.
     
       <li class="post">
         <a href="/blog/intro-to-docker/">Intro to Docker</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/testing-with-logan/">Testing With Logan</a>
       </li>
     
   </ul>

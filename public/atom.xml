@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://www.adamjonas.com/atom.xml" rel="self"/>
   <link href="http://www.adamjonas.com/"/>
-  <updated>2014-08-15T09:20:54-04:00</updated>
+  <updated>2014-10-17T14:47:05-04:00</updated>
   <id>http://www.adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[polymorphic brain hurt]]></title>
+    <link href="http://www.adamjonas.com/blog/polymorphic-brain-hurt/"/>
+    <updated>2014-08-21T17:38:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/polymorphic-brain-hurt</id>
+    <content type="html"><![CDATA[<h2>Polymorphic association from parent to child</h2>
+
+<p>So <a href="http://blog.hasmanythrough.com/2006/4/3/polymorphic-through">this</a> succinctly summed up my issue.</p>
+
+<h2>Deprecated conditions in rails 4</h2>
+
+<p><code>Deprecation warning when using has_many :through :uniq in Rails 4</code></p>
+
+<p>Then once I did get it working with:</p>
+
+<figure class='code'><figcaption><span>Conditions Refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># lesson model</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:readmes</span><span class="p">,</span> <span class="ss">:through</span> <span class="o">=&gt;</span> <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:readme</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="s2">&quot;lesson_contents.content_type = &#39;Readme&#39;&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:labs</span><span class="p">,</span> <span class="ss">:through</span> <span class="o">=&gt;</span> <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:lab</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="s2">&quot;lesson_contents.content_type = &#39;Lab&#39;&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># stabby lambda</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:readmes</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;content_type = &#39;Readme&#39;&quot;</span><span class="p">)</span> <span class="p">},</span>
+</span><span class='line'>    <span class="ss">:through</span> <span class="o">=&gt;</span> <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:readme</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:labs</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;content_type = &#39;Lab&#39;&quot;</span><span class="p">)</span> <span class="p">},</span> <span class="ss">:through</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:lab</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://stackoverflow.com/a/16702101/1496757">Hat Tip</a></p>
+
+<h2>Polymorphic Migration</h2>
+
+<figure class='code'><figcaption><span>Creating a [polymorphic migration](http://stackoverflow.com/a/5534614/1496757)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AddImageableToProducts</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">up</span>
+</span><span class='line'>    <span class="n">change_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">references</span> <span class="ss">:imageable</span><span class="p">,</span> <span class="ss">:polymorphic</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[VIM shortcuts]]></title>
@@ -1038,134 +1105,6 @@ Saved my @ss.</li>
 
 <p>  <code>cucumber --tags @billing --tags @important</code> -> Runs the first scenario (Scenarios with @important AND @billing)
   <code>cucumber --tags @billing,@important</code> -> Runs both scenarios (Scenarios with @important OR @billing)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[wit]]></title>
-    <link href="http://www.adamjonas.com/blog/wit/"/>
-    <updated>2014-02-13T14:15:00-05:00</updated>
-    <id>http://www.adamjonas.com/blog/wit</id>
-    <content type="html"><![CDATA[<h2>.ruby-version &amp; rbenv</h2>
-
-<ul>
-<li>so rbenv now does support a ruby version file but doesn&#8217;t support fuzzy matching. <a href="http://stackoverflow.com/questions/18634933/how-can-i-make-rbenv-recognise-1-9-3-p-ruby-versions">See</a>.</li>
-</ul>
-
-
-<h2>Multipart = true</h2>
-
-<ul>
-<li>HTML forms provide two methods of encoding. The default is application/x-www-form-urlencoded, which is more or less the same as a query string on the end of the URL. The other, multipart/form-data, is a more complicated encoding but one which allows entire files to be included in the data. <a href="http://stackoverflow.com/a/4526286/1496757">via</a></li>
-</ul>
-
-
-<h2>Devise</h2>
-
-<ul>
-<li>had trouble with validation requirements built into the <code>validatable</code> module and configuring it to allow a user to edit their profile without requiring a password, which involved destroying the session because the salted password had changed. I ended up ripping it out and going with a <code>validates_presence_of :password, :on =&gt; :create</code> instead.
-
-<ul>
-<li><a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password">I had attempted this</a>, but it seemed like a lot of work.</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>Factory Girl Associations</h2>
-
-<p><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">From the docs</a> it&#8217;s possible to set up associations within factories. If the factory name is the same as the association name, the factory name can be left out.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'>  <span class="n">author</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>To not save the associated object, specify strategy: <code>:build</code> in the factory:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'>  <span class="n">association</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">factory</span><span class="p">:</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">strategy</span><span class="p">:</span> <span class="ss">:build</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This does <em>not</em> work; causes author_id to be nil</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'>  <span class="n">author</span> <span class="ss">strategy</span><span class="p">:</span> <span class="ss">:build</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Staging assets broken</h2>
-
-<p>Racked my brain (and everyone elses) over this one&#8230; It ended up I hadn&#8217;t added the <code>rails_12factor</code> gem to staging though I had added that environment.</p>
-
-<h2>Capybara cheatsheet</h2>
-
-<p><a href="https://gist.github.com/zhengjia/428105">Cheatsheet</a></p>
-
-<h2>Server TimeZone</h2>
-
-<ul>
-<li>had a feature that pulls events once they have passed. Heroku&#8217;s time zone is by default set to <code>UTC</code>. So I did two things:
-
-<ol>
-<li>heroku config:add TZ=&#8221;America/New_York&#8221; as described <a href="http://blog.pardner.com/2012/08/setting-the-default-time-zone-for-a-heroku-app/">here</a>.</li>
-<li>Set <code>config.time_zone = 'Eastern Time (US &amp; Canada)'</code> in <code>application.rb</code> as described in the <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html">rails docs</a>.</li>
-</ol>
-</li>
-</ul>
-
-
-<h3>Fragment Caching</h3>
-
-<ul>
-<li><p>Had an issue expiring the fragment cache. The issue was that when you cache the fragment in your view, a cache digest is being added to the cache key (views/all_available_releases/41cb0a928326986f35f41c52bb3d8352), but <code>expire_fragment</code> is not using the digest (views/all_available_releases).</p></li>
-<li><p>By adding <code>skip_digest: true</code> to the cache call in the view it should prevent the digest from being used.</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="s2">&quot;all_available_releases&quot;</span><span class="p">,</span> <span class="n">skip_digest</span><span class="p">:</span> <span class="kp">true</span> <span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx"> &lt;% @releases.each do |release| %&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% cache(release) </span><span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">   &lt;html code with&gt;</span>
-</span><span class='line'>   <span class="o">&lt;%</span><span class="n">ruby</span> <span class="n">code</span> <span class="vi">@release</span><span class="o">.</span><span class="n">name</span> <span class="n">blah</span> <span class="n">blah</span> <span class="n">blah</span><span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;%end%&gt;</span>
-</span><span class='line'> <span class="o">&lt;%</span><span class="k">end</span><span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">&lt;%end%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Cache digests are only intended to be used with automatic cache expiration. If you need to manually expire cache keys then you can&#8217;t use cache digests.</li>
-<li>Saved by <a href="http://stackoverflow.com/a/17619414/1496757">stackoverflow</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

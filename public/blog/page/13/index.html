@@ -9,14 +9,15 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Blog Configuration 1
+  <meta name="description" content="Nested Attributes accepts_nested_attributes_for -> creates a writer What Nested Attributes Must do1
 2
 3
 4
-♕ heroku domains:add adamjonas.com
-Adding adamjonas.com to ajonas... done
-♕ heroku domains:add blog.adamjonas.com
-Adding &hellip;">
+5
+6
+7
+8
+def mixtape_songs_attributes=( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,6 +94,213 @@ Adding &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day24/">FIS Day24</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-09T11:26:00-05:00" pubdate data-updated="true">Nov 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Nested Attributes</h3>
+
+<p>accepts_nested_attributes_for -> creates a writer</p>
+
+<figure class='code'><figcaption><span>What Nested Attributes Must do</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">mixtape_songs_attributes</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">#attributes is an array of hashes where each individual hash</span>
+</span><span class='line'>  <span class="c1">#represents the atributes of a mixtape_song for this mixtape</span>
+</span><span class='line'>  <span class="c1">#=&gt; [{:song_id =&gt; 1}, {:song_id =&gt; 2}]</span>
+</span><span class='line'>  <span class="n">attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">mixtape_song_attr</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">mixtape_song_attr</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">mixtape_song_attributes</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Nested Attributes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">name</span><span class="o">=</span> <span class="s2">&quot;mixtape[mixtape_songs_attr][][song_id]&quot;</span> <span class="c1">#we want many mixtape_song values</span>
+</span><span class='line'><span class="nb">name</span><span class="o">=</span> <span class="s2">&quot;mixtape_songs_attr][][position]&quot;</span> <span class="c1">#yield the position</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#NOT -&gt; name= &quot;mixtape[mixtape_songs_attr][song_id][]&quot; </span>
+</span><span class='line'><span class="c1">#=&gt; this is a bunch of song_ids, not mixtape_songs_attr parameters</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#THIS WORKS!! It understands the order</span>
+</span><span class='line'><span class="nb">name</span><span class="o">=</span> <span class="s2">&quot;mixtape[mixtape_songs_attr][0][song_id]&quot;</span>
+</span><span class='line'><span class="nb">name</span><span class="o">=</span> <span class="s2">&quot;mixtape[mixtape_songs_attr][1][song_id]&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">name</span><span class="o">=</span> <span class="s2">&quot;mixtape_songs_attr][1][position]&quot;</span>
+</span><span class='line'><span class="nb">name</span><span class="o">=</span> <span class="s2">&quot;mixtape_songs_attr][0][position]&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>The fields_for level of abstraction</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= f.fields_for :mixtape_songs do |mixtape_song_form| %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">mixtape_song_form</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:song_id</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;% end %&gt;</span>
+</span><span class='line'><span class="c1">#names it perfectly =&gt; mixtape[mixtape_songs_attr][0][song_id]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#in the controller you need to build the association.</span>
+</span><span class='line'><span class="vi">@mixtape</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span>
+</span><span class='line'><span class="c1">#or this can be done directly in the form</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= f.fields_for :mixtape_songs, @mixtape.mixtape_songs.build do |mixtape_song_form| %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">#in a compartmentalized div</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">fields_for</span> <span class="s1">&#39;mixtape_songs[]&#39;</span><span class="p">,</span> <span class="no">MixtapeSong</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="ss">:index</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="k">do</span> <span class="o">|</span><span class="n">mixtape_song_form</span><span class="o">|</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= mixtape_song_form.text_field :song_id %&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% end %&gt;</span>
+</span><span class='line'><span class="sx">#the &#39;mixtape_songs[]&#39; communicates that this the first of many</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">&lt;% 1.upto(10).each do %&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;mixtape_songs[][song_id]&quot;</span> <span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>The fields_for level of abstraction</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">raw</span><span class="p">(</span><span class="n">fields_for</span>
+</span><span class='line'><span class="c1">#a bunch of html)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">fields_for</span><span class="p">(</span>
+</span><span class='line'><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Don&#8217;t access the params hash into the model&#8211;> you will have broken MVC. This is the right way to do it:</p>
+
+<figure class='code'><figcaption><span>Mass Assignment Logic in the Model</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mass</span> <span class="n">assignment</span> <span class="n">will</span> <span class="n">call</span> <span class="n">a</span> <span class="nb">method</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">songs_to_add</span><span class="o">=</span><span class="p">(</span><span class="n">song_ids</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">songs_ids</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">song_id</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">song_id</span> <span class="o">=&gt;</span> <span class="n">song_id</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#mixtape.new :songs_to_add =&gt; {a bunch of songs}</span>
+</span><span class='line'><span class="c1">#params will attempt to call_this_method=</span>
+</span><span class='line'><span class="c1">#and you can put this logic in the model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>git rebase master -> from a checked out branch will checkout master for that branch</p>
+
+<figure class='code'><figcaption><span>Nested Resources</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#routes</span>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:mixtape</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">resources</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="s1">&#39;mixtape/songs&#39;</span> <span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#Make a nested controller for a nested</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= form_for(@song, :url =</span><span class="o">&gt;</span> <span class="n">mixtape_songs_path</span><span class="p">(</span><span class="vi">@mixtape</span><span class="p">))</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>When Heroku Crashed</h3>
+
+<figure class='code'><figcaption><span>Nested Resources</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">heroku</span> <span class="n">logs</span> <span class="o">--</span><span class="n">tail</span>
+</span><span class='line'><span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">migrate</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#caught this</span>
+</span><span class='line'><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:StatementInvalid</span> <span class="p">(</span><span class="ss">PG</span><span class="p">:</span><span class="ss">:Error</span><span class="p">:</span> <span class="ss">ERROR</span><span class="p">:</span>  <span class="n">value</span> <span class="n">too</span> <span class="n">long</span> <span class="k">for</span> <span class="n">type</span> <span class="n">character</span> <span class="n">varying</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#solution- change repo description attr and issue body attr to text from strings</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1939,91 +2147,6 @@ rip out test folder</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day17andahalf/">FIS Day17andahalf</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-31T18:40:00-04:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3><a href="http://www.rubygeocoder.com/">Geocoder</a></h3>
-
-<p>This gem is amazing. I can calucalate the latitude and longitude of anywhere by an address and so much more. Not surprisingly there is a great <a href="http://railscasts.com/episodes/273-geocoder">railscast</a> on the subject.</p>
-
-<ul>
-<li>Ryan Bates also suggested that I look at <a href="https://github.com/apneadiving/Google-Maps-for-Rails">Google-Maps-for-Rails</a></li>
-</ul>
-
-
-<h3>Authentication</h3>
-
-<p>I had broken the authentication system in my <a href="http://gearshare.herokuapp.com/">gearshare app</a>. <a href="http://railscasts.com/episodes/241-simple-omniauth">Ryan Bates</a> to the rescue once again.</p>
-
-<h3>Sessions Issues</h3>
-
-<p>I was having some trouble killing the session. Avi added this code in the sessions_controller.</p>
-
-<figure class='code'><figcaption><span>In the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">destroy</span>
-</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
-</span><span class='line'>  <span class="n">reset_session</span> <span class="c1">#this was the key....</span>
-</span><span class='line'>  <span class="n">redirect_to</span> <span class="n">root_url</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s2">&quot;Signed out!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Git Rebase</h3>
-
-<p>I also rebased a branch using the following command&#8230;</p>
-
-<figure class='code'><figcaption><span>In the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">git</span> <span class="n">rebase</span> <span class="n">master</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This rebased the up-to-date master underneath my branch that was ahead by a few commits, but had a broken authentication system. There is a complete explanation of this and more in the <a href="http://git-scm.com/book/en/Git-Branching-Rebasing">git book</a>.</p>
-
-<h3>Stripe</h3>
-
-<p>Met Richard who walked me through the <a href="https://stripe.com/">stripe</a> that makes payments silly easy. Very exciting to integrate this into the bounty open-source idea&#8230;</p>
-
-<h3>Podcast</h3>
-
-<p>I should start listening to this&#8230; Peter Cooper and Jason Seifer&#8211; it&#8217;s got to be pretty solid.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -2041,6 +2164,10 @@ rip out test folder</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/polymorphic-brain-hurt/">polymorphic brain hurt</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/vim-shortcuts/">VIM shortcuts</a>
       </li>
     
@@ -2054,10 +2181,6 @@ rip out test folder</p>
     
       <li class="post">
         <a href="/blog/intro-to-docker/">Intro to Docker</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/testing-with-logan/">Testing With Logan</a>
       </li>
     
   </ul>

@@ -86,6 +86,10 @@ $ git confi­g --glo­bal user.­name "blah­ blah"
 $ git confi­g --glo­bal alias­.commit pushi­t 
 ```
 
+### Amend fanciness
+  - Checkout [Los
+  Techie's](http://lostechies.com/derickbailey/2010/06/09/git-oops-i-forgot-to-add-those-new-files-before-committing/) suggestion on amending something without writing a message. I aliased this in my dotfiles which makes it extra fancy.
+
 ###Removing a file
 
     git rm file1.txt

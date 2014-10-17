@@ -9,7 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Created deploy user or go as root? scp => ssh copy from home dir to files online Goals for payments verification is done. set up payment long form &hellip;">
+  <meta name="description" content="Railscast 240 8min Sortable table columns #228 railscast
+pagination with will_paginate gem, 3.0.pre2 version
+Will ajax improve the user experience? ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +88,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/jan-8-notes/">Jan 8 Notes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-08T12:14:00-05:00" pubdate data-updated="true">Jan 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Railscast 240 8min</h3>
+
+<ul>
+<li>Sortable table columns #228 railscast</li>
+<li>pagination with will_paginate gem, 3.0.pre2 version</li>
+<li>Will ajax improve the user experience?</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1253,80 +1300,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/cache-layer/">Cache Layer</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-18T17:02:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our cache layer lives between the Github API and our Octokit Wrapper. We pull in the data on an authenticated user from the API and serialize the data in the user model (which allows us to access the data in multiple views). In a future refactor, we should probably be doing this in the wrapper model or even a memcache manager model.</p>
-
-<p>Given the fact that I didn&#8217;t fully grasp the cache system that I had a heavy hand in designing, I did a little more research on the subject&#8230; The cache storage system in Rails is very modular. It uses the file system to store the cache by default, but can be customized as we did. We used <a href="https://github.com/mperham/dalli">Dalli</a> instead of <code>mem_cache_store</code> because it has support for memcached&#8217;s binary protocol. (I believe Dalli will be the default in Rails 4.)</p>
-
-<h3>Methods</h3>
-
-<p>From the <a href="http://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store">documentation</a>, the main methods to call are <code>read</code>, <code>write</code>, <code>delete</code>, <code>exist?</code>, and <code>fetch</code>. The <code>fetch</code> method accepts a block and will either return an existing value from the cache or write the result to the cache if none exists.</p>
-
-<h3>Page Caching:</h3>
-
-<p>This allows the request for a page to be served by the webserver (nginx in our case), without ever having to hit the Rails stack. Obviously, this is highly performant, but cannot be used across all situations (e.g. where authentication is required or any actions that have before filters).</p>
-
-<h3>Action Caching:</h3>
-
-<p>This is similar to page caching except the incoming web request hits the Rails stack to allow the before-filters to run before the cache is served. This is the best option for when authentication and other restrictions need to be run while still serving the result of the output from a cached copy.</p>
-
-<h3>Fragment Caching:</h3>
-
-<p>This allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in. We tried running this for our indexed table views, but we need to work on bettering our server-side processing before this can be fully implemented.</p>
-
-<h3>SQL Caching:</h3>
-
-<p>This caches the results returned by each query so that if Rails encounters the same query again for that request, it will use the cached result rather than running the query against the database again.</p>
-
-<h3>Need to the look into&#8230;</h3>
-
-<p>In the future, I&#8217;d like to look how we might be better able to use <code>Rack::Cache</code> to better take advantage of HTTP caching regarding freshness (expires, cache-control) and/or validation (last-modified, ETags).</p>
-
-<h3>Further Reading:</h3>
-
-<ul>
-<li><a href="http://code.google.com/p/memcached/wiki/TutorialCachingStory">Memcache Wiki</a></li>
-<li><a href="http://guides.rubyonrails.org/caching_with_rails.html">Rails Guide on Caching</a></li>
-<li><a href="https://github.com/rtomayko/rack-cache">Rack cache</a></li>
-<li><a href="http://nubyonrails.com/articles/memcached-basics-for-rails">Memcached basics for Rails</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -1344,6 +1317,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/polymorphic-brain-hurt/">polymorphic brain hurt</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/vim-shortcuts/">VIM shortcuts</a>
       </li>
     
@@ -1357,10 +1334,6 @@ end
     
       <li class="post">
         <a href="/blog/intro-to-docker/">Intro to Docker</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/testing-with-logan/">Testing With Logan</a>
       </li>
     
   </ul>
