@@ -9,15 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Nested Attributes accepts_nested_attributes_for -> creates a writer What Nested Attributes Must do1
-2
-3
-4
-5
-6
-7
-8
-def mixtape_songs_attributes=( &hellip;">
+  <meta name="description" content="Replacing the Conditional Logic on Price Code with Polymorphism [p.32] Replacing the Conditional Logic on Price Code with Polymorphism
+The first part &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +87,572 @@ def mixtape_songs_attributes=( &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/refactoring-ruby-edition-notes/">Refactoring Ruby Edition Notes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-10T11:22:00-05:00" pubdate data-updated="true">Nov 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Replacing the Conditional Logic on Price Code with Polymorphism [p.32]</h3>
+
+<blockquote><p>Replacing the Conditional Logic on Price Code with Polymorphism
+The first part of this problem is that case statement. It is a bad idea to do a case based on an attribute of another object. If you must use a case statement, it should be on your own data, not on someone else’s.
+  - <a href="http://robots.thoughtbot.com/post/31728620503/refactoring-replace-conditional-with-polymorphism">Thoughtbot Reading</a></p></blockquote>
+
+<p>??Receiver on page 35?</p>
+
+<h3>Refactoring is&#8230; [p.53]</h3>
+
+<blockquote><p>(noun) A change made to the internal structure of software to make it easier to understand and cheaper to modify with- out changing its observable behavior.</p></blockquote>
+
+<ul>
+<li><p>Programming in about saying exactly what you want. But there is another user of your source code. Someone will try to read your code in a few months’ time to make some changes. We easily forget that extra user of the code, yet that user is actually the most important.</p>
+
+<ul>
+<li>Who cares if the computer takes a few more cycles to execute something? It does matter if it takes a programmer a week to make a change that would have taken only an hour if she had understood your code.</li>
+<li>when you are trying to get the program to work, you are not thinking about that future developer.
+
+<ul>
+<li>Often this future developer is me. [p. 55]</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Kent Beck often makes about himself, “I’m not a great programmer; I’m just a good programmer with great habits.” [p. 56]</p></li>
+<li>Don Roberts: The first time you do something, you just do it. The second time you do something similar, you wince at the duplica- tion, but you do the duplicate thing anyway. The third time you do something similar, you refactor. [p. 57]</li>
+</ul>
+
+
+<h3>Problems with refactoring [p. 63]</h3>
+
+<ul>
+<li>takes a while to create nothing</li>
+<li>performance deoptimization</li>
+<li>changing behavior</li>
+</ul>
+
+
+<h3>Code Smells</h3>
+
+<ul>
+<li>Duplicated Code [p. 74]</li>
+<li>Long Method [p. 74-75]
+
+<ul>
+<li>A heuristic we follow is that whenever we feel the need to com- ment something, we write a method instead.</li>
+<li>Conditionals and loops also give signs for extractions.</li>
+</ul>
+</li>
+<li>Large Class [p. 76]
+
+<ul>
+<li>When a class is trying to do too much, it often shows up as too many instance variables. When a class has too many instance variables, duplicated code cannot be far behind.</li>
+</ul>
+</li>
+<li>Long Parameter List [p. 76]</li>
+<li>Divergent Change [p. 77]
+
+<ul>
+<li>When we make a change we want to be able to jump to a single clear point in the system and make the change. When you can’t do this you are smell- ing one of two closely related pungencies.</li>
+</ul>
+</li>
+<li>Shotgun Surgery
+
+<ul>
+<li>Every time you make a kind of change, you have to make a lot of little changes to a lot of different classes.</li>
+<li>opposite of divergent change</li>
+</ul>
+</li>
+<li><strong>Feature Envy [p. 78]</strong>
+
+<ul>
+<li>a method that seems more interested in a class other than the one it actually is in.</li>
+</ul>
+</li>
+<li></li>
+</ul>
+
+
+<h3>Extract Method [p. 102]</h3>
+
+<ul>
+<li>You have a code fragment that can be grouped together.
+
+<ul>
+<li>Turn the fragment into a method whose name explains the purpose of the method.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Inline Temp [p. 110]</h3>
+
+<ul>
+<li>You have a temp that is assigned to once with a simple expression, and the temp is getting in the way of other refactorings.
+
+<ul>
+<li>Replace all references to that temp with the expression.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Replace With Query [p. 111]</h3>
+
+<ul>
+<li>You are using a temporary variable to hold the result of an expression.
+
+<ul>
+<li>Extract the expression into a method. Replace all references to the temp with the expression. The new method can then be used in other methods.</li>
+</ul>
+</li>
+</ul>
+
+
+<h4>Ternary</h4>
+
+<figure class='code'><figcaption><span>Ternary p. 114</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#from</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">price</span>
+</span><span class='line'><span class="n">a_base_price</span> <span class="o">=</span> <span class="n">base_price</span> <span class="k">if</span> <span class="n">base_price</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+</span><span class='line'>    <span class="n">discount_factor</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">95</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">discount_factor</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">98</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">a_base_price</span> <span class="o">*</span> <span class="n">discount_factor</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#to (not an exact refactor, but good use of ternary)</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">discount_factor</span>
+</span><span class='line'>  <span class="n">base_price</span> <span class="o">&gt;</span> <span class="mi">1000</span> <span class="o">?</span> <span class="mi">0</span><span class="o">.</span><span class="mi">95</span> <span class="p">:</span> <span class="mi">0</span><span class="o">.</span><span class="mi">98</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extraction Method [p. 120]</h3>
+
+<h3>Remove assignment parameters</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">a_method</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">foo</span><span class="o">.</span><span class="n">modify_in_some_way</span> <span class="c1"># that&#39;s OK</span>
+</span><span class='line'>  <span class="n">foo</span> <span class="o">=</span> <span class="n">another_object</span> <span class="c1"># trouble and despair will follow you</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Replace Loop with Conditional</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">managers</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">employees</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">managers</span> <span class="o">&lt;&lt;</span> <span class="n">e</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">manager?</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Lazy Initialized Attribute</h3>
+
+<ul>
+<li>Initialize an attribute on access instead of at construction time.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Lazy Initialized Attribute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Employee</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="vi">@emails</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#becomes</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Employee</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">emails</span>
+</span><span class='line'>    <span class="vi">@emails</span> <span class="o">||=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Replace Methods with Method Objects</h3>
+
+<blockquote><p>Turn the method into its own object so that all the local variables become instance variables on that object. You can then decompose the method into other methods on the same object.[p. 129]</p></blockquote>
+
+<h3>Subsitute Algorithm</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Replace</span> <span class="n">the</span> <span class="n">body</span> <span class="n">of</span> <span class="n">the</span> <span class="nb">method</span> <span class="n">with</span> <span class="n">the</span> <span class="kp">new</span> <span class="n">algorithm</span><span class="o">.</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">found_friends</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">friends</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="n">people</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">person</span> <span class="o">==</span> <span class="s2">&quot;Don&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">friends</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;Don&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">person</span> <span class="o">==</span> <span class="s2">&quot;John&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">friends</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;John&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">person</span> <span class="o">==</span> <span class="s2">&quot;Kent&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">friends</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;Kent&quot;</span>
+</span><span class='line'><span class="k">end</span> <span class="k">end</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">friends</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#To</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">found_friends</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">people</span><span class="o">.</span><span class="n">select</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>    <span class="sx">%w(Don John Kent)</span><span class="o">.</span><span class="n">include?</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Replace Loop with collection p.134</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">managers</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">employees</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">managers</span> <span class="o">&lt;&lt;</span> <span class="n">e</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">manager?</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#to</span>
+</span><span class='line'><span class="n">managers</span> <span class="o">=</span> <span class="n">employees</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="o">.</span><span class="n">manager?</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">offices</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">employees</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">offices</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="o">.</span><span class="n">office</span><span class="p">}</span>
+</span><span class='line'><span class="c1">#to</span>
+</span><span class='line'><span class="n">offices</span> <span class="o">=</span> <span class="n">employees</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="o">.</span><span class="n">office</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">managerOffices</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">employees</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">managerOffices</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="o">.</span><span class="n">office</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">manager?</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#to</span>
+</span><span class='line'><span class="n">managerOffices</span> <span class="o">=</span> <span class="n">employees</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="o">.</span><span class="n">manager?</span><span class="p">}</span><span class="o">.</span>
+</span><span class='line'>                           <span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="o">.</span><span class="n">office</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="n">employees</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">total</span> <span class="o">+=</span> <span class="n">e</span><span class="o">.</span><span class="n">salary</span><span class="p">}</span>
+</span><span class='line'><span class="c1">#to</span>
+</span><span class='line'><span class="n">total</span> <span class="o">=</span> <span class="n">employees</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">e</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">salary</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extract Surround Method p.135</h3>
+
+<blockquote><p>You have two methods that contain nearly identical code. The variance is in the middle of the method.
+<em>Extract the duplication into a method that accepts a block and yields back to the caller to execute the unique code.</em></p></blockquote>
+
+<ul>
+<li>This exists in Gitbo</li>
+</ul>
+
+
+<h3>Class Annotation p.139</h3>
+
+<blockquote><p>Declare the behavior by calling a class method from the class definition.</p></blockquote>
+
+<p><code>hash_initializer :author_id, :publisher_id, :isbn</code> like <code>attr_accessor</code> or <code>repo_params</code></p>
+
+<h3>Introduce Named Parameters p.142</h3>
+
+<blockquote><p>Convert the parameter list into a Hash, and use the keys of the Hash as names for the parameters.</p></blockquote>
+
+<p><strong>This is what rails does with params!</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SearchCriteria</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">&quot;0201485672&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#TO</span>
+</span><span class='line'><span class="no">SearchCriteria</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:author_id</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="ss">:publisher_id</span> <span class="o">=&gt;</span> <span class="mi">8</span><span class="p">,</span> <span class="ss">:isbn</span> <span class="o">=&gt;</span><span class="s2">&quot;0201485672&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#like an options path</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Dynamic Method Definition p.152</h3>
+
+<p><a href="/blog/dynamic-method-definition/">see</a></p>
+
+<h3>Moving methods p.168</h3>
+
+<blockquote><p>The bread and butter of refactoring</p></blockquote>
+
+<h3>Move Field p.173</h3>
+
+<blockquote><p>I consider moving a field if I see more methods on another class using the information in the field than the class itself. I may choose to move the methods; this decision is based on interface. But if the methods seem sensible where they are, I move the field.</p></blockquote>
+
+<h3>Extract Class p.175</h3>
+
+<blockquote><p>You have one class doing work that should be done by two.</p></blockquote>
+
+<h3>Inline Class p. 179</h3>
+
+<blockquote><p>A class isn’t doing very much. <em>Move all its features into another class and delete it.</em></p></blockquote>
+
+<h3>Self Encapsulate Field p. 188</h3>
+
+<blockquote><p>You are accessing a field directly, but the coupling to the field is becoming awkward. <em>Create getting and setting methods for the field and use only those to access the field.</em></p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">total</span>
+</span><span class='line'>  <span class="vi">@base_price</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="vi">@tax_rate</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#TO</span>
+</span><span class='line'><span class="kp">attr_reader</span> <span class="ss">:base_price</span><span class="p">,</span> <span class="ss">:tax_rate</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">total</span>
+</span><span class='line'>  <span class="n">base_price</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">tax_rate</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Replace array with object p.201</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">row</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">row</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;Liverpool&quot;</span>
+</span><span class='line'><span class="n">row</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;15&quot;</span>
+</span><span class='line'><span class="c1">#TO</span>
+</span><span class='line'><span class="n">row</span> <span class="o">=</span> <span class="no">Performance</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Liverpool&quot;</span>
+</span><span class='line'><span class="n">row</span><span class="o">.</span><span class="n">wins</span> <span class="o">=</span> <span class="s2">&quot;15&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Replace hash with object p.206</h3>
+
+<h3>Encapsulate Collections p.219</h3>
+
+<blockquote><p>A method returns a collection. <em>Make it return a copy of the collection and provide add/remove methods.</em></p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">add_course</span><span class="p">(</span><span class="n">course</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@courses</span> <span class="o">&lt;&lt;</span> <span class="n">course</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">remove_course</span><span class="p">(</span><span class="n">course</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@courses</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">course</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Lazily Initialized Attributes p.255</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Employee</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="vi">@emails</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Employee</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">emails</span>
+</span><span class='line'>    <span class="vi">@emails</span> <span class="o">||=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Chapter 9: Simplifying Conditional Expressions</h2>
+
+<h3>Replace Conditional with Polymorphism p. 279</h3>
+
+<h3>Introduce Null Object p. 284</h3>
+
+<blockquote><p>You have repeated checks for a nil value. <em>Replace the nil value with a null object.</em></p></blockquote>
+
+<h3>Replace the conditional code with the more idiomatic Ruby construct.</h3>
+
+<ul>
+<li>Encapsulate if/else, and/or logic in their own methods</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">parameters</span> <span class="o">=</span> <span class="n">params</span> <span class="p">?</span> <span class="n">params</span> <span class="p">:</span> <span class="o">[]</span>
+</span><span class='line'><span class="c1">#becomes</span>
+</span><span class='line'><span class="n">parameters</span> <span class="o">=</span> <span class="n">params</span> <span class="o">||</span> <span class="o">[]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Use &amp;&amp; instead of multiple ifs</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">on_vacation?</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">length_of_service</span> <span class="o">&gt;</span> <span class="mi">10</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
+</span><span class='line'><span class="c1">#This would be changed to</span>
+</span><span class='line'><span class="k">if</span> <span class="n">on_vacation?</span> <span class="o">&amp;&amp;</span> <span class="n">length_of_service</span> <span class="o">&gt;</span> <span class="mi">10</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Quote</h3>
+
+<blockquote><p>One of the most fundamental, if not the fundamental, decision in object design is deciding where to put responsibilities. I’ve been working with objects for more than a decade, but I still never get it right the first time. That used to bother me, but now I realize that I can use refactoring to change my mind in these cases. p.167</p></blockquote>
+
+<h2>Questions:</h2>
+
+<ul>
+<li>what is the receiver on page 35?</li>
+<li>weird symbols on p127. T?L?1</li>
+<li><p>don&#8217;t understand what is happening on p. 184</p>
+
+<ul>
+<li>Stopped at p. 287</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1814,339 +2373,6 @@ destroy is for destroying objects</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day18/">FIS Day18</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-01T13:42:00-04:00" pubdate data-updated="true">Nov 1<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>POTD</h3>
-
-<ul>
-<li><p>Edsgar Dijkstra</p>
-
-<ul>
-<li>inventor of structured programming</li>
-<li>came up with &#8220;for, while, until, case&#8221;</li>
-<li>computer science is not about machines and equipment management</li>
-</ul>
-</li>
-<li><p>If you use more of a bad tool, it won&#8217;t fix it.</p>
-
-<blockquote><p>About the use of language; it is impossible to sharpen a pencil with a blunt axe. It is equally vain to try to do it with ten blunt axes instead.</p></blockquote></li>
-<li><p>Programming is just about communicating clearly.</p></li>
-<li>Once it is teachable it is concrete.</li>
-</ul>
-
-
-<h3>Ruby Tidbit</h3>
-
-<figure class='code'><figcaption><span>Semi-Colon Deliminates a Line</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span><span class="p">;</span><span class="k">end</span>
-</span><span class='line'><span class="c1">#the semi-colon deliminates the info on two lines</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Rails Lecture</h2>
-
-<figure class='code'><figcaption><span>link to unless current</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to_unless_current</span> <span class="o">%&gt;</span> <span class="c1">#this is slick for nav!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Routes</strong></p>
-
-<figure class='code'><figcaption><span>Routes File</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">match</span> <span class="s1">&#39;/name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs#name&#39;</span>
-</span><span class='line'><span class="c1">#not as specific and therefore as good as</span>
-</span><span class='line'><span class="n">get</span> <span class="s1">&#39;/name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs#name&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">get</span> <span class="s1">&#39;site/about&#39;</span> <span class="c1">#rails will assume that site is the controller and about is the action</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Generate a Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">generate</span> <span class="n">controller</span> <span class="no">CreditCard</span> <span class="nb">open</span> <span class="n">debit</span> <span class="n">credit</span> <span class="n">close</span>
-</span><span class='line'><span class="c1">#this will create a credit_card_controller with 4 actions</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>??have to delete rm-rf public/index.html</p>
-
-<figure class='code'><figcaption><span>Rendering Templates</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Sessions</span> <span class="no">Controller</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">render</span> <span class="ss">:action</span>
-</span><span class='line'><span class="n">render</span> <span class="ss">:template</span>
-</span><span class='line'><span class="c1">#in practice</span>
-</span><span class='line'><span class="n">render</span> <span class="s1">&#39;under_construction&#39;</span> <span class="c1">#this is the action in the sessions controller</span>
-</span><span class='line'><span class="n">render</span> <span class="s1">&#39;shared/under_construction&#39;</span> <span class="c1">#this is a full relative path</span>
-</span><span class='line'><span class="c1">#and more instructional of where to find the template</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Private and public methods</h3>
-
-<figure class='code'><figcaption><span>Private Method e.g.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Dog</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">bark</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">stomach_volume</span>
-</span><span class='line'>    <span class="k">when</span> <span class="ss">:very</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;woof woof!&quot;</span>
-</span><span class='line'>    <span class="k">when</span> <span class="ss">:not_at_all</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;woof&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">private</span> <span class="c1">#it would also break if this was protected.</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">stomach_volume</span>
-</span><span class='line'>    <span class="ss">:very</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">fido</span> <span class="o">=</span> <span class="no">Dog</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">fido</span><span class="o">.</span><span class="n">stomach_volume</span> <span class="c1">#this is not going to work.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>private, public, and protected all create keyword scope -> created limited, predicted interfaces</p>
-
-<p>if a method is private it can only be called on an implicit receiver- can&#8217;t call call on an explicit receiver</p>
-
-<p><strong>protected</strong> -> can only be called on self.</p>
-
-<figure class='code'><figcaption><span>When Private Methods Become Useful in the Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SomeController</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">new</span>
-</span><span class='line'>  <span class="n">under_construction</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>  <span class="n">under_constructions</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">private</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">under_construction</span>
-</span><span class='line'>  <span class="n">render</span> <span class="s1">&#39;shared/under_construction&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>In the migration</h3>
-
-<ul>
-<li>def change for when the reverse can be assumed</li>
-<li><p>def up and down for things like renaming columns -> because rails wouldn&#8217;t be able to infer what the reverse would be.</p></li>
-<li><p>t.timestamps - is a created at and updated at</p></li>
-</ul>
-
-
-<h3>Signups</h3>
-
-<p>when you login, you are creating a session between you and the website.
-when you signup you are creating a user on their system&#8211; that lives in their DB</p>
-
-<figure class='code'><figcaption><span>Routes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s1">&#39;/signup&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#new&#39;</span>
-</span><span class='line'><span class="n">post</span> <span class="s1">&#39;/signup&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#create&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Mass assignment => when you assign initialization properties during assingment.</strong></p>
-
-<ul>
-<li><p>Migrations</p>
-
-<ul>
-<li>define and edit schema</li>
-</ul>
-</li>
-<li><p>Models -ORM</p>
-
-<ul>
-<li>insert rows /update</li>
-<li>database</li>
-</ul>
-</li>
-<li><p>Routes
-maps URLs to actions in the controller</p></li>
-<li><p>controllers</p>
-
-<ul>
-<li>contains the business logic</li>
-</ul>
-</li>
-<li><p>views</p>
-
-<ul>
-<li>the actual interface</li>
-</ul>
-</li>
-</ul>
-
-
-<p>-> In sinatra the routes are built into controllers.</p>
-
-<figure class='code'><figcaption><span>This must be how form_for works</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">form_for</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">f</span> <span class="o">=</span> <span class="no">FormBuilder</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">yield</span> <span class="n">f</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>In your controller helper&#8230;</em></p>
-
-<figure class='code'><figcaption><span>Rolling My Own Form Builder</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= form_for(@song, :builder =</span> <span class="o">&gt;</span> <span class="ss">SongHelper</span><span class="p">:</span><span class="ss">:SongForm</span><span class="p">)</span> <span class="o">%&gt;</span>
-</span><span class='line'><span class="c1">#in the controller helper</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">module</span> <span class="nn">SongsHelper</span>
-</span><span class='line'>  <span class="k">class</span> <span class="nc">SongForm</span> <span class="o">&lt;</span> <span class="ss">ActionView</span><span class="p">:</span><span class="ss">:Helpers</span><span class="o">::</span><span class="no">FormBuilder</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">full_name_field</span>
-</span><span class='line'>      <span class="n">label</span><span class="p">(</span><span class="ss">:first_name</span><span class="p">)</span> <span class="o">+</span>
-</span><span class='line'>      <span class="n">text_field</span> <span class="ss">:first_name</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">label</span><span class="p">(</span><span class="ss">:last_name</span><span class="p">)</span> <span class="o">+</span>
-</span><span class='line'>      <span class="n">text_field</span> <span class="ss">:last_name</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Customizing the forms and encapsulate in the controller helpers&#8230;</p>
-
-<h3>Test::Unit to RSpec</h3>
-
-<p>change out the libraries
-add rspec to the gem file
-rip out test folder</p>
-
-<p>rails g install rspec</p>
-
-<p><a href="http://stackoverflow.com/questions/9884033/ruby-on-rails-switch-from-test-unit-to-rspec">changing from minitest to rspec</a> <a href="http://stackoverflow.com/questions/5072662/how-to-remove-unit-test-and-replace-it-with-rspec">or</a></p>
-
-<p>&#8220;when i generated the scaffold, it generated the specs for me&#8230;&#8221;</p>
-
-<h3>Posting Info to an object</h3>
-
-<ol>
-<li>instantiate an instance</li>
-<li>collect the form data</li>
-<li>and you populate the instance attribute with the proper data</li>
-</ol>
-
-
-<p>If I want to use form_for I need an active record instance.</p>
-
-<h3>Read this&#8230;</h3>
-
-<p><a href="http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions">Understand parameter naming conventions</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -2164,6 +2390,10 @@ rip out test folder</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/what-working-in-professional-baseball-taught-me-about-web-development/">What Working in Professional Baseball Taught Me about Web Development</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/polymorphic-brain-hurt/">polymorphic brain hurt</a>
       </li>
     
@@ -2177,10 +2407,6 @@ rip out test folder</p>
     
       <li class="post">
         <a href="/blog/strace/">strace</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/intro-to-docker/">Intro to Docker</a>
       </li>
     
   </ul>
@@ -2225,7 +2451,7 @@ rip out test folder</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Adam Jonas -
+  Copyright &copy; 2015 - Adam Jonas -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
