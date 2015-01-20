@@ -9,12 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="I know this is basic. I keep getting the steps wrong though. So I&#8217;m putting it here&#8230; 1
-2
-3
-4
-5
-6 git init touch README git add README git &hellip;">
+  <meta name="description" content="Install of postgresql on Mac OS X
+This helped too with installing PG on Mac mountain lion
+How do you easily change from SQLite to PostgreSQL in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +88,707 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/postgres/">Postgres</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T11:00:00-04:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p><a href="http://russbrooks.com/2010/11/25/install-postgresql-9-on-os-x">Install of postgresql on Mac OS X</a></p></li>
+<li><p><a href="http://stackoverflow.com/questions/12273815/cant-install-pg-gem-on-mountain-lion">This helped too with installing PG on Mac mountain lion</a></p></li>
+<li><p><a href="http://stackoverflow.com/questions/6710654/how-do-you-easily-change-from-sqlite-to-postgresql-in-rails">How do you easily change from SQLite to PostgreSQL in Rails</a> It hasn&#8217;t been a seemless transition for me. At least the first time around.</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/heroku/">Heroku</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-24T15:07:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Before you start!</h3>
+
+<p>Keep in mind that heroku doesn&#8217;t work with sqlite. This should be changed out if you are going to use heroku and before you push. If you forget, you need to change out the sqlite3 gem for the pg gem. Commit and re-push.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add heroku git@heroku.com:gearshare.git
+</span><span class='line'>fatal: remote heroku already exists.</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://digitalsanctum.com/2010/05/05/heroku-no-app-specified/">See</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#this initializes the heroku repo
+</span><span class='line'>♕ heroku create &lt;appname&gt; #adding the app name will allow you to name it off the bat otherwise heroku will assign it to you... like below
+</span><span class='line'>Creating ancient-tor-4530... done, stack is cedar
+</span><span class='line'>http://ancient-tor-4530.herokuapp.com/ | git@heroku.com:ancient-tor-4530.git
+</span><span class='line'>Git remote heroku added
+</span><span class='line'>
+</span><span class='line'>#check to see what remotes I've set up
+</span><span class='line'>♕ git remote -v
+</span><span class='line'>heroku    git@heroku.com:ancient-tor-4530.git (fetch)
+</span><span class='line'>heroku    git@heroku.com:ancient-tor-4530.git (push)
+</span><span class='line'>origin    https://github.com/ajonas04/*appname*.git (fetch)
+</span><span class='line'>origin    https://github.com/ajonas04/*appname*.git (push)
+</span><span class='line'>
+</span><span class='line'># need to remove heroku so that I can rename it
+</span><span class='line'>♕ git remote rm heroku
+</span><span class='line'>
+</span><span class='line'>#add new name
+</span><span class='line'>♕ git remote add heroku git@heroku.com:*appname*.git</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I was missing this command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>heroku run rake db:migrate</span></code></pre></td></tr></table></div></figure>
+
+
+<p>as outlined in the rails3 basics <a href="https://devcenter.heroku.com/articles/rails3">here&#8230;</a></p>
+
+<p>See how to point domains to your heroku project <a href="https://devcenter.heroku.com/articles/custom-domains">here</a>.</p>
+
+<p><strong>Linking Local Branches to Remote Apps:</strong>*</p>
+
+<p>Heroku is designed only to accept pushes from master. In order to push from a feature branch you need to do something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git push heroku branch_name:master</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This says push branch named &#8216;branch_name&#8217; to heroku but call it master. <a href="https://devcenter.heroku.com/articles/multiple-environments#advanced-linking-local-branches-to-remote-apps">Explanation</a></p>
+
+<p>Also look at rake tasks for heroku&#8230; its on the rake task post&#8230;</p>
+
+<h3>Pushing the seed file to heroku</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ heroku run rake db:seed</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/lecture-6-rails/">Lecture 6- Rails</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T19:08:00-04:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>if it has a belongs_to it has a foreign key&#8230;
+e.g. songs belong to an artist, so it must have an artist_id</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#the return value of this is all the songs </span>
+</span><span class='line'><span class="n">aretha</span><span class="o">.</span><span class="n">song</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Natural Woman&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#this is just one song</span>
+</span><span class='line'><span class="n">respect</span> <span class="o">=</span> <span class="n">aretha</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Respect&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7:27</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">favorites</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Thriller&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#these accomplish the same thing, but above is more expressive</span>
+</span><span class='line'><span class="n">favorites</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">first</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>the first level of keys in the params hash is usually scope.</p>
+
+<p>what is params?
+- user passes in data through forms
+- rails takes that data and makes it easy to access through forms</p>
+
+<p>so <em>accepts_nested_attributes</em> is a way for you to specify that this model should accept data for its associations</p>
+
+<p>field_for
+f.fields_for :song_genres
+is accessing params[:song][:song_genres]</p>
+
+<h3>Select Boxes</h3>
+
+<p>select(method, choices, options = {}, html_options = {})</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">song_genre</span><span class="o">.</span><span class="n">select</span> <span class="ss">:genre_id</span><span class="p">,</span> <span class="o">[</span>
+</span><span class='line'>  <span class="o">[</span><span class="s2">&quot;Rap&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">[</span><span class="s2">&quot;Pop&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">[</span><span class="s2">&quot;Whatever&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+</span><span class='line'>  <span class="o">]</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Text Boxes</strong>:
+adding functionalty</p>
+
+<p><strong><em>classes are data and behavior</em></strong>
+we have added behavior to the song_genre model because this is the only place the genre_id is being stored.</p>
+
+<p><em>LookUp</em> Ruby try method</p>
+
+<figure class='code'><figcaption><span>Delegate</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">delegate</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:genre</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:allow_nils</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'><span class="c1">#the above macro is the same as the method below method.</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">genre_name</span>
+</span><span class='line'>  <span class="n">genre</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">genre</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Normalization</h3>
+
+<p>the incision point for normalization are easy to do on writer. but if you are using a vanilla writer, then don&#8217;t write a normalizer just to normalize. Use a gem or something.</p>
+
+<figure class='code'><figcaption><span>Delegate</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">:uniq</span>
+</span><span class='line'><span class="no">If</span> <span class="kp">true</span><span class="p">,</span> <span class="n">duplicates</span> <span class="n">will</span> <span class="n">be</span> <span class="n">omitted</span> <span class="n">from</span> <span class="n">the</span> <span class="n">collection</span><span class="o">.</span> <span class="no">Useful</span> <span class="k">in</span> <span class="n">conjunction</span> <span class="n">with</span> <span class="ss">:through</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>in general this goes on the through model&#8230; which doesn&#8217;t make all that much sense, but that&#8217;s how it goes on many to many relationships
+This isn&#8217;t preventing the creation of duplicates, it&#8217;s just treating duplicates as singular&#8211; total crap</p>
+
+<p>8:15
+Allow destroy
+with a checkbox</p>
+
+<h3>Validations</h3>
+
+<figure class='code'><figcaption><span>Delegate</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#following valdiation rule is a constraint on the following attribute</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:length</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:minimum</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="ss">:maximum</span> <span class="o">=&gt;</span> <span class="mi">12</span><span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:uniqueness</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:scope</span> <span class="o">=&gt;</span> <span class="ss">:song_id</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html">See rails guides validations</a>
+<a href="http://guides.rubyonrails.org/active_record_validations_callbacks.html#uniqueness">specifically uniqueness</a></p>
+
+<h3>Technical Debt</h3>
+
+<p>Technical debt (also known as design debt or code debt) is a neologistic metaphor referring to the eventual consequences of poor or evolving software architecture and software development within a codebase. The debt can be thought of as work that needs to be done before a particular job can be considered complete.</p>
+
+<p>in console can call .valid? to debug and see if an object is valid.</p>
+
+<h3>When debugging&#8230;</h3>
+
+<p>try to reduce abstraction
+-actually need to debug the problem at hand</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/building-a-profile-page/">Building a Profile Page</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T14:32:00-04:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://rails.francik.name/tutorial/chapter/6">login and security</a>
+<a href="http://rails.francik.name/tutorial/chapter/8">extending a profile in rails</a></p>
+
+<p><a href="https://github.com/plataformatec/devise/wiki/How-To:-Redirect-to-a-specific-page-on-successful-sign-in">How to redirect to a specific page on successful sign in</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/lecture-5-rails/">Lecture 5- Rails</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-22T14:18:00-04:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>HOMEWORK:</p>
+
+<p>In the migration:</p>
+
+<figure class='code'><figcaption><span>In the migration</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>  <span class="n">add_column</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:album_id</span><span class="p">,</span> <span class="ss">:integer</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#should probably make the below code in the rake tasks (in seed/tasks)</span>
+</span><span class='line'>  <span class="n">songs</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">songs</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">album</span><span class="o">=</span> <span class="no">Album</span><span class="o">.</span><span class="n">find_or_create_by_name</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">album_name</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#update those songs to relate to that album</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;UPdating song </span><span class="si">#{</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> to album </span><span class="si">#{</span><span class="n">album</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">...&quot;</span>
+</span><span class='line'>    <span class="n">s</span><span class="o">.</span><span class="n">album</span><span class="o">=</span> <span class="n">album</span>
+</span><span class='line'>    <span class="n">s</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">remove_column</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:album_name</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Some other methods:</p>
+
+<p>find_each method: look it up in guides <a href="http://guides.rubyonrails.org/active_record_querying.html">here</a>.
+find_each yields each individual object one at a time
+find_in_batches it yields songs</p>
+
+<p>in the seeds file:</p>
+
+<figure class='code'><figcaption><span>Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">aretha</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Aretha Franklin&quot;</span>
+</span><span class='line'><span class="n">respect</span> <span class="o">=</span> <span class="n">aretha</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Respect&quot;</span>
+</span><span class='line'><span class="n">aretha</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#many to one, the reverse of above</span>
+</span><span class='line'><span class="n">monster</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Monster&quot;</span>
+</span><span class='line'><span class="n">monster</span><span class="o">.</span><span class="n">build_artist</span> <span class="nb">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Kanye West&quot;</span>
+</span><span class='line'><span class="n">monster</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">aretha</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Natural Woman&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#unintentional performance issue here because it loads the full array</span>
+</span><span class='line'><span class="c1">#in order to push one song into it</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kanye</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">find_by_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Kanye West&quot;</span>
+</span><span class='line'><span class="n">kanye</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Home&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">michael</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Michael Jackson&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">michael</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="s2">&quot;Black and white&quot;</span><span class="p">,</span> <span class="s2">&quot;Thriller&quot;</span><span class="p">,</span> <span class="s2">&quot;beat it&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">song_name</span><span class="o">|</span>
+</span><span class='line'><span class="c1"># need collect instead of each method b/c need the return</span>
+</span><span class='line'>  <span class="n">song</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="n">song_name</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">michael</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="no">Song</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Black and white&quot;</span><span class="p">,</span> <span class="s2">&quot;Thriller&quot;</span><span class="p">,</span> <span class="s2">&quot;beat it&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will output the log output of the rake tasks:</p>
+
+<figure class='code'><figcaption><span>Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="n">log</span><span class="o">/</span><span class="n">development</span><span class="o">.</span><span class="n">log</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>update the forms in the application (2:50)</p>
+
+<p>Shortcut: cmd D shortcut to highlight similar words to edit</p>
+
+<p>errors:
+when you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
+
+<h3>has_many :through</h3>
+
+<p>(2:58)
+artists have many albums through their songs
+- a many to many association</p>
+
+<p>if a model has 2 :belongs_to associations means that it is a join table
+even though it is a join model is has all the same behaviors as a has_many assoc</p>
+
+<p>INNER JOIN is SQL:
+The INNER JOIN keyword return rows when there is at least one match in both tables.</p>
+
+<h3>Foreign Key/ belongs_to RULE</h3>
+
+<p>if it belongs_to xyz it is a foreign key. if it is a foreign key than it belongs_to xyz.</p>
+
+<figure class='code'><figcaption><span>Seeds File from the lab</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">avi</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Avi&quot;</span>
+</span><span class='line'>  <span class="n">favorites</span> <span class="o">=</span> <span class="no">Mixtape</span><span class="o">.</span><span class="n">create</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Avi&#39;s favs&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">avi</span><span class="o">.</span><span class="n">mixtapes</span> <span class="o">&lt;&lt;</span> <span class="n">favorites</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">black_and_white</span> <span class="o">=</span> <span class="n">michael</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="n">black_and_white</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">build</span> <span class="c1">#when it&#39;s a many it is genres.build</span>
+</span><span class='line'>  <span class="c1">#singular is build_genre</span>
+</span><span class='line'>  <span class="n">black_and_white</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">favorites</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="n">black_and_white</span>
+</span><span class='line'>  <span class="n">favorites</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Thriller&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">#(4:34)</span>
+</span><span class='line'>  <span class="c1">#if you understand :belongs_to and has_many it doesn&#39;t matter if it&#39;s a :through</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">UserMixtape</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span class='line'>    <span class="ss">:user</span> <span class="o">=&gt;</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Roland&quot;</span><span class="p">),</span>
+</span><span class='line'>    <span class="ss">:mixtape</span> <span class="o">=&gt;</span> <span class="n">favorites</span>
+</span><span class='line'>    <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Forms</h3>
+
+<p><strong>How do we build forms that give users the same abilities we have through forms?</strong>
+If a field name end in an [], it will allow multiple fields and rails will treat it as unique values and glob them together in a params array (4:46)
+- If you want to have multiple fields anem it with an empty array</p>
+
+<p>in the mixtapes_controller</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@mixtape</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="no">Song</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this would also work</span>
+</span><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:song_ids</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">song_id</span><span class="o">|</span>
+</span><span class='line'>  <span class="vi">@mixtape</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span> <span class="ss">:song</span> <span class="o">=&gt;</span> <span class="n">song_id</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next level of abstraction up&#8230; (4:55)
+in the html we want to pass in:
+mixtape[song_ids][]</p>
+
+<p>??Mass assignment is this accordian of ____
+a writer method implies an attribute of a model
+<strong>Main goal as a programmer</strong> name your data so that it is easily accessbile in params</p>
+
+<p>TODO (5:03)
+HTML:
+scope, attribute, attribute kind</p>
+
+<h3>form_tag helper</h3>
+
+<p>NEXT: <em>A rails implementation: form_tag helper</em>, a low level rails helper
+all these methods do is generate html for you. not all that railsy.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">form_tag</span> <span class="n">mixtapes_path</span> <span class="k">do</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At least we aren&#8217;t writing HTML here now&#8230; this level of implementation gives you lots of flexibility and control but at the expense of maintainability and explicitness.</p>
+
+<h3>form helper builders</h3>
+
+<p><em>html, form_tag helpers family, form helpers in order of low level of abstraction to higher</em>
+want to bind the active record object to the form element
+e.g. text_field, label
+(5:17)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= label :mixtape, :name %&gt; #:mixtape represents @mixtape, but rails doesn&#39;t support @mixtape</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">text_field</span> <span class="ss">:mixtape</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>form_for</h3>
+
+<p>We want to bind the instance var to the form itself
+- the problem with text_field is that hte form is still built without any knowledge of the active record instance behind the form &#8211;> it should be an extension of the object
+- these are the way our scaffolds normally work</p>
+
+<p>form_for method yields a form builderthat knows the model the form is about</p>
+
+<p>mixtape_form.object would return the mixtape object because it has knowledge of the form object</p>
+
+<p>you also get access to <em>fields_for</em> -</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mixtape_form</span><span class="o">.</span><span class="n">fields_for</span> <span class="ss">:mixtape_songs</span><span class="p">,</span> <span class="vi">@mixtape</span><span class="o">.</span><span class="n">mixtape_songs</span><span class="o">.</span><span class="n">build</span><span class="p">,</span> <span class="ss">:index</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="k">do</span>
+</span><span class='line'><span class="o">|</span><span class="n">mixtape_songs_field</span><span class="o">|</span> <span class="c1">#index option will increment them automatically</span>
+</span><span class='line'>  <span class="n">mixtape_songs_fields_for</span><span class="o">.</span><span class="n">label</span> <span class="ss">:song_id</span>
+</span><span class='line'>  <span class="n">mixtape_songs_fields_for</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:song_id</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Does your model implement a method called &#8220;mixtape_songs_attributes=&#8221;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">accepts_nested_attributes_for</span> <span class="ss">:mixtape_songs</span>
+</span><span class='line'><span class="c1">#builds this method:</span>
+</span><span class='line'> <span class="k">def</span> <span class="nf">mixtape_songs_attributes</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+</span><span class='line'>   <span class="n">attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">attribute_has</span><span class="o">|</span>
+</span><span class='line'>   <span class="no">MixtapeSong</span><span class="o">.</span><span class="n">build</span><span class="o">.</span><span class="n">attribute_has</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'><span class="c1"># this assigns the attributes of the mixtape_songs</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this is the same as</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">mixtape_songs_attributes</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+</span><span class='line'>   <span class="n">attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">index</span><span class="p">,</span> <span class="n">mixtape_song_attributes</span><span class="o">|</span>
+</span><span class='line'>     <span class="no">MixtapeSong</span><span class="o">.</span><span class="n">new</span> <span class="ss">:song_id</span> <span class="o">=</span> <span class="n">mixtape_song_attributes</span><span class="o">[</span><span class="ss">:song_id</span><span class="o">]</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://masonoise.wordpress.com/2010/07/23/rails-and-forms-using-accepts_nested_attributes_for/">Read</a>
+<a href="http://railscasts.com/episodes/196-nested-model-form-part-1">railscast</a>
+<a href="http://asciicasts.com/episodes/196-nested-model-form-part-1">ascii casts</a></p>
+
+<p><strong>an attribute has a getter and setter method called the name of the attribute</strong></p>
+
+<p>Rails Casts on this subject:
+<a href="http://railscasts.com/episodes/47-two-many-to-many/">Many to Many</a></p>
+
+<p><a href="http://railscasts.com/episodes/73-complex-forms-part-1/">Complex Forms - 1</a></p>
+
+<p><a href="http://railscasts.com/episodes/74-complex-forms-part-2/">Complex Forms - 2</a></p>
+
+<p><a href="http://railscasts.com/episodes/75-complex-forms-part-3">Complex Forms - 3</a></p>
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested models 1</a></p>
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-revised">Nested Models- revised</a></p>
+
+<p><a href="http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html">API reading</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -609,441 +1307,6 @@ This is where I would do the bulk of the customization
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ruby-lecture-4/">Ruby Lecture 4</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T19:08:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Programmer of the day:
-Alan Kay</p>
-
-<h3>Object Orientation</h3>
-
-<p>once you have a user class, you can send it a message
-once you have a class you can teach the class how to do things like authenticate a user</p>
-
-<h3>Review</h3>
-
-<p>iteration: going through many things one at a time
-we refer to that character one at a time, as the iterator or yield</p>
-
-<p>.inspect allows you to look at an object that</p>
-
-<p>common to have nested iteration&#8211; iterate through them, by looping through enumerables within a loop</p>
-
-<p>Iterating a hash you get yielded two variables at once, the key first and the value second</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">alphabet</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">alphabet</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is the </span><span class="si">#{</span><span class="n">value</span><span class="si">}</span><span class="s2"> letter&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>.compact will get rid of any nil values
-.uniq will get rid of duplicates</p>
-
-<p>! methods will change the data set forever&#8230;</p>
-
-<p>.flatten will remove nesting from an array&#8211; will flatten all elements in array
-.reverse elements in the array</p>
-
-<p>side note: python believes there is one way to do something. Ruby believes there should be many ways to do it so that you can be more expressive.</p>
-
-<figure class='code'><figcaption><span>ordinalize is a integer method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">ordinalize</span>     <span class="c1"># =&gt; &quot;1st&quot;</span>
-</span><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">ordinalize</span>     <span class="c1"># =&gt; &quot;2nd&quot;</span>
-</span><span class='line'><span class="mi">1002</span><span class="o">.</span><span class="n">ordinalize</span>  <span class="c1"># =&gt; &quot;1002nd&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>multiple_of?(number)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#Check whether the integer is evenly divisible by the argument.</span>
-</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">#=&gt; true</span>
-</span><span class='line'><span class="mi">6</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1">#=&gt; false</span>
-</span><span class='line'><span class="mi">10</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Lab solution (8PM)</p>
-
-<p>hash structure with root or without root TODO</p>
-
-<p>.detect, .select and .reject methods are all useful array elements</p>
-
-<p>class CONSTANTS are really good for storing data about the class</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/rails-helpers/">Rails Helpers</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:58:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>&#8216;Helpers are methods in modules that you keep mostly hidden out of the way. The idea is to keep as much Ruby code out of the views, so helpers are mainly for use in that context. Helpers are the only methods you can access, other than instance methods for an instance you have access to.&#8217; <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">except from</a></p>
-
-<p><a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">why this is important?</a>
-and <a href="/blog/2012/07/18/solid-principles/">my own write up of Dependency Inversion Principle</a></p>
-
-<p>Declare a controller method as a helper. For example, the following makes the current_user controller method available to the view. You</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="ss">ActionController</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span><span class="p">,</span> <span class="ss">:logged_in?</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="k">def</span> <span class="nf">logged_in?</span>
-</span><span class='line'>     <span class="n">current_user</span> <span class="o">!=</span> <span class="kp">nil</span>
-</span><span class='line'>   <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In a view:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">logged_in?</span> <span class="o">-</span><span class="sx">%&gt;Welcome, &lt;%= current_user.name %&gt;</span><span class="o">&lt;</span><span class="sx">% end </span><span class="o">-%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Parameters
-method[, method] - A name or names of a method on the controller to be made available on the view.</p>
-
-<p>A solid beginner&#8217;s break-down (it&#8217;s a little old though) is <a href="http://strugglingwithruby.blogspot.com/2008/10/view-part-2-scope-helpers-and-partials.html">here</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/the-clues-errors-provide/">The Clues Errors Provide</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:35:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When you get a stack trace and it&#8217;s part of rails you can ignore it because you created the file NOT rails.</p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>     <span class="c1">#blah blah blah</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#ERROR</span>
-</span><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`authenticate&#39; for nil:NilClass</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This means that the method was called on a receiver that is nil. Meaning that <strong>the receiver not the right object or it&#8217;s nil</strong></p>
-
-<p><strong>Undefined Method:</strong></p>
-
-<figure class='code'><figcaption><span>Here&#8217;s the code in the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email_address</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email_address</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">magic</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="c1">#blah blah blah</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#The Error</span>
-</span><span class='line'><span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`magic&#39; for #&lt;User:0x007fa35e3e2fe8&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>The method magic doesn&#8217;t exist for that object.</strong></p>
-
-<p><strong>Expected an object but got an attribute in the form of a string, array, etc.</strong></p>
-
-<figure class='code'><figcaption><span>AssociationTypeMismatch</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:AssociationTypeMismatch</span><span class="p">:</span> <span class="no">City</span><span class="p">(</span><span class="c1">#17815740) expected, got String(#1138750)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>This means that you have entered an infinite loop. e.g. you have called something on itself.</strong></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">SystemStackError</span><span class="p">:</span> <span class="n">stack</span> <span class="n">level</span> <span class="n">too</span> <span class="n">deep</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>DB Errors</h3>
-
-<p>When the browser can&#8217;t locate a table that you know exists&#8211; <strong><em>make sure you migrate the DB!!</em></strong></p>
-
-<h3>Can&#8217;t save something to the DB</h3>
-
-<ul>
-<li>Open up console.</li>
-<li>When you can&#8217;t save it, send it &#8216;.save!&#8217; and it will throw off the errors.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/solid-principles/">SOLID Principles</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:05:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3><a href="http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion</a></h3>
-
-<p>Dependency inversion principle</p>
-
-<blockquote><p>one should “Depend upon Abstractions. Do not depend upon concretions.&#8221; (EDIT: Concretions, I can only assume mean the opposite of abstraction&#8211; as far as I can tell things isn&#8217;t a CS concept.)</p></blockquote>
-
-<p>This means that in the controller, it is better to define</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>  <span class="vi">@current_user</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>than using the instance variable because right now the instance var is concrete but you might want to add logic and redefine it:</p>
-
-<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
-</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">sessions</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/has-secured-password/">Has_secured_password</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T15:23:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://railscasts.com/episodes/270-authentication-in-rails-3-1">Rails Cast on Authentication Rails 3.1</a>
-also want to check out <a href="http://railscasts.com/episodes/250-authentication-from-scratch">Rails cast on Authentication from Scratch</a></p>
-
-<p>The user model rails allows you to call</p>
-
-<figure class='code'><figcaption><span>has_secure_password</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:password_confirmation</span>
-</span><span class='line'>  <span class="n">has_secure_password</span>
-</span><span class='line'>  <span class="n">validates_presence_of</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:on</span> <span class="o">=&gt;</span> <span class="ss">:create</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You will likely want to add validation for the email address as well, but that&#8217;s outside the scope of this&#8230;</p>
-
-<p>The has_secure_password setting automatically adds validation for mismatched password between the password and password confirmation fields.</p>
-
-<h3>Helper Methods: specifically :current_user</h3>
-
-<p>See the <a href="/blog/2012/07/18/rails-helpers/">post on this</a>.</p>
-
-<h3>SSL</h3>
-
-<p>can also add options for ssl with the simple line in the ApplicationController:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">protect_from_forgery</span>
-</span><span class='line'><span class="n">force_ssl</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will only be reflected in production and test environments NOT development&#8230;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/25/">&larr; Older</a>
@@ -1065,19 +1328,19 @@ also want to check out <a href="http://railscasts.com/episodes/250-authenticatio
       </li>
     
       <li class="post">
-        <a href="/blog/polymorphic-brain-hurt/">polymorphic brain hurt</a>
+        <a href="/blog/management-articles/">management articles</a>
       </li>
     
       <li class="post">
-        <a href="/blog/vim-shortcuts/">VIM shortcuts</a>
+        <a href="/blog/distributed-teams/">distributed teams</a>
       </li>
     
       <li class="post">
-        <a href="/blog/expect/">Expect</a>
+        <a href="/blog/kris-gale/">Kris Gale</a>
       </li>
     
       <li class="post">
-        <a href="/blog/strace/">strace</a>
+        <a href="/blog/oren-ellenbogen/">Oren Ellenbogen</a>
       </li>
     
   </ul>

@@ -9,7 +9,14 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="FileUtils The functions mostly involved changing dir, moving, removing, and copying files. Going to give us different options for working with dir &hellip;">
+  <meta name="description" content="cheatsheet
+Good article read it. 1
+2
+3
+4
+5
+6
+it &quot;has no brains&quot; do zombie = Zombie.new #modifier is should #matcher is the less than sign &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +93,1460 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rspec/">RSpec</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-24T13:21:00-04:00" pubdate data-updated="true">Sep 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p><a href="https://gist.github.com/663876">cheatsheet</a></p></li>
+<li><p><a href="http://blog.carbonfive.com/2010/10/21/rspec-best-practices/">Good article</a> read it.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;has no brains&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="c1">#modifier is should</span>
+</span><span class='line'>  <span class="c1">#matcher is the less than sign</span>
+</span><span class='line'>  <span class="n">zombie</span><span class="o">.</span><span class="n">brains</span><span class="o">.</span><span class="n">should</span> <span class="o">&lt;</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Matchers and Modifiers</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s1">&#39;Ash&#39;</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">alive</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">false</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">rotting</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">true</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should</span> <span class="o">&gt;</span> <span class="mi">5</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should</span> <span class="o">&gt;=</span> <span class="mi">5</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should</span> <span class="o">&lt;</span> <span class="mi">5</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">should_not</span> <span class="o">==</span> <span class="mi">5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Predicate &#8216;be&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Tweet</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;without a leading @ symbol should be public&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">tweet</span> <span class="o">=</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;Nom nom nom&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">tweet</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">should</span> <span class="n">be_true</span>
+</span><span class='line'>    <span class="c1">#this is equivalent to tweet.status.should == true</span>
+</span><span class='line'>    <span class="c1">#the predicate is a better way though</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Mark as Pending</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;is named Ash&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#to mark it as pending</span>
+</span><span class='line'><span class="n">xit</span> <span class="s2">&quot;is named Ash&quot;</span> <span class="k">do</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#OR</span>
+</span><span class='line'><span class="n">it</span> <span class="s2">&quot;is named Ash&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">pending</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Should be</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Tweet</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;truncates the status to 140 characters&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">tweet</span> <span class="o">=</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;Nom nom nom&#39;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># notice the space between the &#39;should&#39; and &#39;be&#39;</span>
+</span><span class='line'>    <span class="n">tweet</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">should</span> <span class="n">be</span> <span class="o">&lt;=</span> <span class="mi">140</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Level 2</h2>
+
+<p>Installing RSpec</p>
+
+<figure class='code'><figcaption><span>Should be</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rspec</span>
+</span><span class='line'><span class="n">rspec</span> <span class="o">--</span><span class="n">init</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#in rails</span>
+</span><span class='line'><span class="n">rails</span> <span class="n">generate</span> <span class="ss">rspec</span><span class="p">:</span><span class="n">install</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Running RSpec:</p>
+
+<figure class='code'><figcaption><span>Should be</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rspec</span>
+</span><span class='line'><span class="c1">#to run a directory</span>
+</span><span class='line'><span class="n">rspec</span> <span class="n">spec</span><span class="o">/</span><span class="n">models</span><span class="o">/</span>
+</span><span class='line'><span class="c1">#to run a specific test</span>
+</span><span class='line'><span class="n">rspec</span> <span class="n">spec</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">zombie_spec</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'><span class="c1">#to run a specific line</span>
+</span><span class='line'><span class="n">rspec</span> <span class="n">spec</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">zombie_spec</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Should match:
+<code>zombie.name.should matchj(/Ash Clone \d/)</code></p>
+
+<p>Include should be used anywhere where an item should be part of an array&#8230;</p>
+
+<figure class='code'><figcaption><span>Matchers: include</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;includes a tweet&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">tweet</span> <span class="o">=</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">tweets</span><span class="p">:</span> <span class="o">[</span><span class="n">tweet</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Matchers: have</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#this</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">weapons</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">2</span>
+</span><span class='line'><span class="c1">#is better written as</span>
+</span><span class='line'><span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">have</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">weapons</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;increases the number of tweets&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Ash&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">message</span><span class="p">:</span> <span class="s2">&quot;Arrrgggggggghhhhh&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">have</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tweets</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Can also have</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">have</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'><span class="n">have_at_least</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'><span class="n">have_at_most</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Expect Block and Change Methods</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;gains 3 IQ points by eating brains&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">expect</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span> <span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">change</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="p">}</span><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Can also use</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#and they can be chained</span>
+</span><span class='line'><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>should have</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;increases the number of tweets&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Ash&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">message</span><span class="p">:</span> <span class="s2">&quot;Arrrgggggggghhhhh&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">have</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tweets</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Raise_error</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;raises a Zombie::NotSmartEnoughError if not able to make a decision&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">expect</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">make_decision!</span> <span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">raise_error</span><span class="p">(</span><span class="no">StandardError</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#these modifiers also work</span>
+</span><span class='line'><span class="n">to</span>
+</span><span class='line'><span class="n">not_to</span>
+</span><span class='line'><span class="n">to_not</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>More Matchers</h3>
+
+<figure class='code'><figcaption><span>A list</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">respond_to</span><span class="p">(</span><span class="n">hungry?</span><span class="p">)</span>
+</span><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_within</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="mi">33</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">exist</span>
+</span><span class='line'><span class="vi">@zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">satisfy</span> <span class="p">{</span> <span class="o">|</span><span class="n">zombie</span><span class="o">|</span> <span class="n">zombie</span><span class="o">.</span><span class="n">hungry?</span> <span class="p">}</span>
+</span><span class='line'><span class="vi">@hungry_zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_kind_of</span><span class="p">(</span><span class="no">Zombie</span><span class="p">)</span> <span class="c1">#Inheritance: HungryZombie &lt; Zombie</span>
+</span><span class='line'><span class="vi">@status</span><span class="o">.</span><span class="n">should</span> <span class="n">be_an_instance_of</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Drying up specs</h3>
+
+<figure class='code'><figcaption><span>Subject</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#this</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should not be a genius&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_genius</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#can be simplified to</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should not be a genius&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">subject</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_genius</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#this can be further simplified to</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should not be a genius&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1">#implicit subject</span>
+</span><span class='line'>    <span class="n">should_not</span> <span class="n">be_genius</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#OR</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="p">{</span><span class="n">should_not</span> <span class="n">be_genius</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is only going to work if using a describe block with a class in it&#8230;</p>
+
+<figure class='code'><figcaption><span>it</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">subject</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s1">&#39;Ash&#39;</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>its</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should have an iq of zero&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">subject</span><span class="o">.</span><span class="n">iq</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#can simplify it all the way to</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:iq</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>its examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="s1">&#39;Ash&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:weapons</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">weapon</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:brain</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="n">be_nil</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="s1">&#39;tweet.size&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Refactoring with Context</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">should_not</span> <span class="n">be_genius</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:iq</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should be_genius with high iq&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_genius</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should have a brains_eaten_count of 1 with high iq&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span> <span class="o">=</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">brains_eaten_count</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#Refactored with context and subject and its</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">should_not</span> <span class="n">be_genius</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:iq</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">context</span> <span class="s2">&quot;with high iq&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">subject</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">should</span> <span class="n">be_genius</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">its</span><span class="p">(</span><span class="ss">:brains_eaten_count</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use the let keyword to create different objects since you can only use subject once.</p>
+
+<figure class='code'><figcaption><span>Let</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:tweet</span><span class="p">)</span> <span class="p">{</span> <span class="no">Tweet</span><span class="o">.</span><span class="n">new</span> <span class="p">}</span>
+</span><span class='line'>      <span class="n">subject</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">tweets</span><span class="p">:</span> <span class="o">[</span><span class="n">tweet</span><span class="o">]</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="o">[</span><span class="n">zombie</span><span class="o">]</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>      <span class="c1">#moved zombie to its own let</span>
+</span><span class='line'>      <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:tweets</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">its</span><span class="p">(</span><span class="ss">:latest_tweet</span><span class="p">)</span> <span class="p">{</span> <span class="n">should</span> <span class="o">==</span> <span class="n">tweet</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Let! instantiates the zombie everytime instead of lazy eval</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">context</span> <span class="s2">&quot;with high iq&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1">#changed Zombie.new to Zombie.create</span>
+</span><span class='line'>     <span class="n">let!</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">iq</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Anna&#39;</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>     <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">it</span> <span class="s2">&quot;should be returned with genius&quot;</span> <span class="k">do</span>
+</span><span class='line'>       <span class="no">Zombie</span><span class="o">.</span><span class="n">genius</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">zombie</span><span class="p">)</span>
+</span><span class='line'>     <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">it</span> <span class="s2">&quot;should have a genius count of 1&quot;</span> <span class="k">do</span>
+</span><span class='line'>       <span class="no">Zombie</span><span class="o">.</span><span class="n">genius</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>     <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Using let with FactoryGirl</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>   <span class="n">let</span><span class="p">(</span><span class="ss">:issue</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:issue</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>   <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Hooks</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span>
+</span><span class='line'><span class="n">before</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span>
+</span><span class='line'><span class="n">after</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span>
+</span><span class='line'><span class="n">aftter</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">subject</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_dummy</span><span class="p">}</span>
+</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">subject</span><span class="o">.</span><span class="n">should</span> <span class="n">be_genius</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">hungry!</span> <span class="p">}</span>
+</span><span class='line'><span class="c1">#by default, a before clock runs each time before an example is about to run</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Before Hook</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is not a dummy zombie&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_dummy</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is a genius zombie&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_genius</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># refactored as</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">eat_brains</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is not a dummy zombie&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_dummy</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;is a genius zombie&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">zombie</span><span class="o">.</span><span class="n">should</span> <span class="n">be_genius</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:zombie</span><span class="p">)</span> <span class="p">{</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">create</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">subject</span> <span class="p">{</span> <span class="n">zombie</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">context</span> <span class="s1">&#39;with a dummy zombie&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">should</span> <span class="n">be_dummy</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">context</span> <span class="s1">&#39;with a smart zombie&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">before</span> <span class="p">{</span> <span class="n">zombie</span><span class="o">.</span><span class="n">iq</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">should_not</span> <span class="n">be_dummy</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Shared Examples</h3>
+
+<figure class='code'><figcaption><span>Shared Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#used to call shared examples</span>
+</span><span class='line'><span class="n">it_behaves_like</span> <span class="s1">&#39;yada yada yada&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#refers to the implicit subject</span>
+</span><span class='line'><span class="n">shared_examples_for</span> <span class="s1">&#39;the undead&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;does not have a pulse&#39;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">subject</span><span class="o">.</span><span class="n">pulse</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>for a more explicit subject</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">Zombie</span> <span class="k">do</span>
+</span><span class='line'><span class="c1">#this is clearer</span>
+</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s1">&#39;the undead&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">let</span><span class="p">(</span><span class="ss">:undead</span><span class="p">)</span> <span class="p">{</span><span class="no">Zombie</span><span class="o">.</span><span class="n">new</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="c1">#can do this</span>
+</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s1">&#39;the undead&#39;</span><span class="p">,</span> <span class="no">Zombie</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">shared_examples_for</span> <span class="s1">&#39;the undead&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">undead</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;does not have a pulse&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">undead</span><span class="o">.</span><span class="n">pulse</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rails-unit-testing/">Rails Unit Testing</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-24T13:20:00-04:00" pubdate data-updated="true">Sep 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Rails Testing</h3>
+
+<ul>
+<li>Verification Testing</li>
+<li>Test First</li>
+<li>Test Driven Design</li>
+</ul>
+
+
+<h3>Unit Testing</h3>
+
+<ul>
+<li>Piecing of our applications in isolation from other parts</li>
+<li>Easy to debug</li>
+<li>Leads to good documentation</li>
+</ul>
+
+
+<p>WHY TEST::UNIT rather than RSPEC
+- More basic testing library and what rails uses by default
+- similar to other testing libraries from other languages</p>
+
+<figure class='code'><figcaption><span>Assert List</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">assert</span> <span class="o">&lt;</span><span class="n">conditional</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_equal</span> <span class="o">&lt;</span><span class="n">expected</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">actual</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_not_equal</span>
+</span><span class='line'><span class="n">assert_respond_to</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">:</span><span class="o">&lt;</span><span class="nb">method</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_nil</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_not_nil</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_match</span> <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_no_match</span> <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_raise</span><span class="p">(</span><span class="o">&lt;</span><span class="n">error</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span> <span class="o">&lt;</span><span class="n">code</span> <span class="n">to</span> <span class="k">raise</span> <span class="n">error</span><span class="o">&gt;</span> <span class="p">}</span>
+</span><span class='line'><span class="n">assert_kind_of</span><span class="p">(</span><span class="o">&lt;</span><span class="no">Class</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">subject</span><span class="o">&gt;</span><span class="n">_test</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;test/unit&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="o">&lt;</span><span class="no">Subject</span><span class="o">&gt;</span><span class="no">Test</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_</span><span class="o">&lt;</span><span class="n">what_we_are_testing</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">assertion</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#E.g.</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;test/unit&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">BooleanTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_true_is_true</span>
+</span><span class='line'>  <span class="c1">#the 2nd parameter is puts on failure.</span>
+</span><span class='line'>      <span class="n">assert</span> <span class="kp">true</span><span class="p">,</span> <span class="s2">&quot;True should be truthy&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#another e.g.</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;test/unit&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">ConditionalTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_one_is_greater_than_one</span>
+</span><span class='line'>    <span class="n">assert</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;One is not greater than zero&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#e.g.</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MultipleTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_multiple_of</span>
+</span><span class='line'>    <span class="n">assert</span> <span class="no">Multiple</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="s2">&quot;10 should be a multiple of 5&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>The best tests have one assertion.</em></p>
+
+<h3>Red, Green, Refactor</h3>
+
+<ol>
+<li>Red: Write a failing test</li>
+<li>Green: Write enough code to make it pass</li>
+<li>Refactor: Refactor your code</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>assert_respond_to</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_humanize_function_added_to_string</span>
+</span><span class='line'><span class="c1"># assert_respond_to &lt;object&gt;, &lt;:method&gt;</span>
+</span><span class='line'>  <span class="n">assert_respond_to</span> <span class="s2">&quot;blah&quot;</span><span class="p">,</span> <span class="ss">:humanize</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Assert_match</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_zombify_brains</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;I love your arms&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#assert_match &lt;regex&gt;, &lt;string&gt;</span>
+</span><span class='line'>    <span class="n">assert_match</span> <span class="sr">/brains/</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">zombify</span><span class="o">.</span><span class="n">humanize</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_zombify_upcase</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Hello world&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">zombify</span>
+</span><span class='line'>    <span class="c1">#assert_equal &quot;&lt;expected string&gt;&quot;, &quot;&lt;actual string&gt;&quot;</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;HELLO WORLD BRAINS&quot;</span><span class="p">,</span> <span class="n">z</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>assert_raise</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1">#assert_raise(RuntimeError) { &quot;zombie&quot;.humanize }</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_brains_in_zombify_raises_error</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;BRAINS&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">assert_raise</span><span class="p">(</span><span class="no">RuntimeError</span><span class="p">)</span> <span class="p">{</span> <span class="n">z</span><span class="o">.</span><span class="n">zombify</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_zombify_returns_a_string</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;I like knees&#39;</span><span class="p">)</span>
+</span><span class='line'>   <span class="c1">#assert_kind_of(&lt;Class&gt;, &lt;object&gt;)</span>
+</span><span class='line'>    <span class="n">assert_kind_of</span><span class="p">(</span><span class="nb">String</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">zombify</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/lessons-from-97-things-every-programmer-should-know/">Lessons From 97 Things Every Programmer Should Know</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-24T09:29:00-04:00" pubdate data-updated="true">Sep 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>The boy scout rule (p.16)</h3>
+
+<ul>
+<li>&#8220;Always leave a campground cleaner than you found it.&#8221;
+
+<ul>
+<li>&#8220;Always check in a module a little cleaner than when you checked it out.&#8221;</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Don&#8217;t repeat yourself (p.60)</h3>
+
+<ul>
+<li><p>Duplication is waste</p></li>
+<li><p>Repetition in process calls for automation</p></li>
+<li><p>Repetition in logic calls for abstraction</p></li>
+<li><p>A matter of principle: once and only once principle</p></li>
+</ul>
+
+
+<h3>Know your next commit (p.94)</h3>
+
+<ul>
+<li><p>Understanding your commit in the greater user story scope is valuable, but stay focused on your specific goal.</p></li>
+<li><p>Define a task that would constitute a productive step.</p></li>
+</ul>
+
+
+<h3>Learn to estimate (p.100)</h3>
+
+<ul>
+<li><p>An estimate is an approximate calculation or judgment of the value, number, quantity, or extent of something.</p></li>
+<li><p>A target is a statement of a desirable business objective.</p></li>
+<li><p>A commitment is a promise to deliver specified functionality as a certain level of quality by a certain date or event.</p></li>
+</ul>
+
+
+<h3>Make interfaces easy to use correctly and hard to use incorrectly (p.110)</h3>
+
+<ul>
+<li><p>A.K.A. defensive design</p></li>
+<li><p>Making interfaces hard to use incorrectly requires two things: first, you must anticipate errors users might make and find ways to prevent them. Second, you must observe how an interface is misused during early release and modify it to prevent such errors.</p></li>
+</ul>
+
+
+<h3>Missing opportunities for polymorphism (p.118)</h3>
+
+<ul>
+<li>Polymorphism, taken from Greek, means many (poly) forms (morph). In the context of programming, polymorphism refers to many forms of a particular class of objects or method.</li>
+</ul>
+
+
+<h3>The professional programmer (p.134)</h3>
+
+<ul>
+<li><p>pros are responsible for their own career</p></li>
+<li><p>pros take responsibility for the code they write</p></li>
+<li><p>pros are team players</p></li>
+<li><p>pros do not tolerate big bug lists</p></li>
+<li><p>pros do not make a mess.</p></li>
+</ul>
+
+
+<h3>Put down the mouse and step away from the keyboard (p.138)</h3>
+
+<ul>
+<li><p>Focus is good, but to get through a problem we often have to walk away from the problem.</p></li>
+<li><p>While you are coding, the logical part of the brain is active and the creative side is shut out. It can&#8217;t present anything to you until the logical side takes a break.</p></li>
+</ul>
+
+
+<h3>Read code (p.140)</h3>
+
+<ul>
+<li>Write code so that it is readable for others. Read other people&#8217;s code.</li>
+</ul>
+
+
+<h3>Read the humanities (p.142)</h3>
+
+<ul>
+<li>Coding is about communicating with others through experience. Understand metaphors and how to express your thoughts to others in terms they can understand.</li>
+</ul>
+
+
+<h3>Resist the temptation of the singleton pattern (p.146)</h3>
+
+<ul>
+<li>the singleton pattern is a design pattern that restricts the instantiation of a class to one object.</li>
+</ul>
+
+
+<h3>The single responsibility principle (p.152)</h3>
+
+<ul>
+<li><p>Gather together things that change for the same reason, and separate those things that change for different reasons.</p></li>
+<li><p>Good system design means that we separate the system into components that can be independently deployed. Independent deployment means that if we change one component, we do not have to redeploy any of the others.</p></li>
+</ul>
+
+
+<h3>Two heads are better than one (p.170)</h3>
+
+<ul>
+<li>Pair programming is more productive for learning and long term enjoyment of the profession.</li>
+</ul>
+
+
+<h3>Ubuntu coding for your friends (p.174)</h3>
+
+<ul>
+<li><p>&#8220;A person is a person through (other) persons.&#8221;</p></li>
+<li><p>So it follows, &#8220;a developer is a developer through other developers.&#8221;</p></li>
+<li><p>&#8220;Code is code through other code.&#8221;</p></li>
+<li><p>The quality of the code I write affects the quality of the code you write.</p></li>
+<li><p>Zen is about the individual. Ubuntu is about the Zen a group of people. Very, very rarely do we create code for ourselves alone.</p></li>
+</ul>
+
+
+<h3>Unix tools > IDEs (p.176)</h3>
+
+<h3>WET dilutes performance bottlenecks (p.182)</h3>
+
+<ul>
+<li>WET (write every time) the antithesis of DRY</li>
+</ul>
+
+
+<h3>Write code as if you had to support it for the rest of your life (p.186)</h3>
+
+<ul>
+<li>The code your wrote many years ago still influences your career. People form opinions of you based on the code they see.</li>
+</ul>
+
+
+<h3>Write tests for people (p.190)</h3>
+
+<ul>
+<li>Good tests act as documentation for the code they are testing.</li>
+</ul>
+
+
+<h3>You gotta care about the code (p.192)</h3>
+
+<ul>
+<li><p>The difference between good and bad programmers is attitude.</p></li>
+<li><p>The code to hell is paved with good intentions. To be an excellent programmer, you need to rise above good intentions, and actually care about the code.</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/less-the-path-to-better-design/">The Path to Better Code Design</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-21T11:29:00-04:00" pubdate data-updated="true">Sep 21<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://vimeo.com/26330100">Video with Sandi Metz</a></p>
+
+<p>Design is the art of arranging code</p>
+
+<p>Code needs to work today just once and be easy to change forever.</p>
+
+<p>The purpose is to reduce the cost of change.</p>
+
+<p>Patterns solve a lot of problems:
+- SOLID, Demeter
+- principles are broad but blind</p>
+
+<p>Diagnostics:
+Simple ways to judge the goodness of code.
+TRUE&#8230;</p>
+
+<p>Transparent
+The consequences of chancge are visible and predictable.</p>
+
+<p>Reasonable
+The cost of adding a new feature is proportional to its value</p>
+
+<p>Usable
+If you wrote the code, you can resuse it.</p>
+
+<p>Exemplary
+More code like this would be good for your app.</p>
+
+<p>8 MIN</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/testing/">Mini-Test</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-18T15:29:00-04:00" pubdate data-updated="true">Sep 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Treehouse</h3>
+
+<figure class='code'><figcaption><span>Some examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;minitest/autorun&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyTest</span> <span class="o">&lt;</span> <span class="ss">MiniTest</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'><span class="c1">#all tests are prefixed with &quot;test_&quot;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_that_addition_works</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_that_my_arry_has_a_value</span>
+</span><span class='line'>      <span class="n">my_array</span> <span class="o">=</span> <span class="sx">%w(dog cat frog)</span>
+</span><span class='line'>      <span class="n">assert</span> <span class="n">my_array</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="s1">&#39;frog&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#asser_delta: checks to see that floating point numbers are within a given range</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_assert_delta</span>
+</span><span class='line'>      <span class="n">assert_in_delta</span> <span class="mi">3</span><span class="o">.</span><span class="mi">14159</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="o">.</span><span class="mi">2</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#assert_match: checks to see if the reg expressions evaluates against a string</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_assert_match</span>
+</span><span class='line'>      <span class="n">assert_match</span> <span class="sr">/world/</span><span class="p">,</span> <span class="s1">&#39;Hello world&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#assert_nil: all variables passed in are nil</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_nil</span>
+</span><span class='line'>      <span class="n">some_variables</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>      <span class="n">assert_nil</span> <span class="n">some_variable</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#assert_output</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_output</span>
+</span><span class='line'>      <span class="n">assert_output</span> <span class="s2">&quot;hello world&quot;</span><span class="p">,</span> <span class="kp">nil</span> <span class="k">do</span>
+</span><span class='line'>          <span class="nb">print</span> <span class="s1">&#39;hello world&#39;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#assert_raises</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_raise</span>
+</span><span class='line'>      <span class="n">assert_raises</span> <span class="no">NameError</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">this_variable_doesnt_exist</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#assert_respond_to: testing if something responds to a certain method</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_respond</span>
+</span><span class='line'>      <span class="n">assert_respond_to</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="s1">&#39;include?&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All tests are prefixed with &#8220;test_&#8221;</p>
+
+<h3>Mini Test Spec</h3>
+
+<p>The functionality of the Mini-test and Mini-test Spec are pretty similar. The keywords and strucutre are different as shown below&#8230;</p>
+
+<figure class='code'><figcaption><span>Mini Test Spec Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;minitest/autorun&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;minitest/spec&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span> <span class="s1">&#39;MyTests&#39;</span> <span class="k">do</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#can add before and after blocks</span>
+</span><span class='line'>  <span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Tests are beginning.&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;adds 2 + 2&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">must_equal</span> <span class="mi">4</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;includes a frog&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="sx">%w(dog cat frog)</span><span class="o">.</span><span class="n">must_include</span><span class="p">(</span><span class="s1">&#39;frog&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;must be Fixnum&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">must_be_instance_of</span> <span class="no">Fixnum</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should raise an error&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">array</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>      <span class="nb">lambda</span> <span class="p">{</span> <span class="n">arrary</span><span class="o">.</span><span class="n">hello</span> <span class="p">}</span><span class="o">.</span><span class="n">must_raise</span> <span class="no">NoMethodError</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Test Driven Development</h3>
+
+<p>Write just enough code to make the test pass</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1114,802 +2575,6 @@ use include to expose class methods as instance methods</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/css/">CSS</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-06T14:38:00-04:00" pubdate data-updated="true">Sep 6<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Sprites</h3>
-
-<p>loading two images as one and then changing the position like for a hover or focus.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.logo</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="sx">url(logo3.png)</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">75px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">text-indent</span><span class="o">:</span> <span class="m">-9999px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">250px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nc">.logo</span><span class="nd">:hover</span><span class="o">,</span> <span class="nc">.logo</span><span class="nd">:focus</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-75px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nc">.logo</span><span class="nd">:active</span> <span class="p">{</span>
-</span><span class='line'>   <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-150px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Selectors</h3>
-
-<p>Pseudo Classes:
-:hover / :focus / :active / :visited
-:first-child / :last-child / :only-child
-:nth-child() / :nth-of-type()</p>
-
-<p>Pseudo Elements:
-:before / :after
-:first-line / :first-letter</p>
-
-<figure class='code'><figcaption><span>Intervals</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.hours</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">4n</span><span class="o">+</span><span class="nt">1</span><span class="o">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="m">#c5c9cf</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>li:nth-child(an+b){}
-a = the intervals
-b = the position (zero if it isn&#8217;t set)</p>
-
-<figure class='code'><figcaption><span>Targeting the 1st line of the 1st para</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">p</span><span class="nd">:first-child:first-line</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>:before pseudo element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">p</span><span class="nd">:before</span> <span class="p">{</span>
-</span><span class='line'> <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;-&gt;&#39;</span><span class="p">;</span>
-</span><span class='line'> <span class="k">margin-right</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Adjacent sibling selectors:
-:  have the following syntax: E1 + E2, where E2 is the subject of the selector. The selector matches if E1 and E2 share the same parent in the document tree and E1 immediately precedes E2, ignoring non-element nodes (such as text nodes and comments).</p>
-
-<p>Thus, the following rule states that when a P element immediately follows a MATH element, it should not be indented:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">math</span> <span class="o">+</span> <span class="nt">p</span> <span class="p">{</span> <span class="k">text-indent</span><span class="o">:</span> <span class="m">0</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">h1</span> <span class="o">+</span> <span class="nt">h2</span> <span class="p">{</span> <span class="k">margin-top</span><span class="o">:</span> <span class="m">-5mm</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">h1</span><span class="nc">.opener</span> <span class="o">+</span> <span class="nt">h2</span> <span class="p">{</span> <span class="k">margin-top</span><span class="o">:</span> <span class="m">-5mm</span> <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Relative lengths
-em unit
-:  Equal to the computed value of the ‘font-size’ property of the element on which it is used.
-ex unit
-:  Equal to the font&#8217;s x-height.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">p</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="k">line-height</span><span class="o">:</span><span class="m">40px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">letter-spacing</span><span class="o">:</span><span class="m">30px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">word-spacing</span><span class="o">:</span><span class="m">10px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">text-align</span><span class="o">:</span><span class="k">right</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">white-space</span><span class="o">:</span><span class="k">nowrap</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>links:
-- <a href="http://css-tricks.com/pseudo-class-selectors/">CSS Tricks- Pseudo Class Selectors</a>
-- <a href="http://css-tricks.com/pseudo-element-roundup/">Amazing stuff pseudo-elements can do</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/code-school-rails-2/">Code School Rails 2</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-05T15:00:00-04:00" pubdate data-updated="true">Sep 5<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span>Scopes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Tweet</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:recent</span><span class="p">,</span> <span class="n">order</span><span class="p">(</span><span class="s1">&#39;created_at desc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:graveyard</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="n">show_location</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">location</span><span class="p">:</span> <span class="s2">&quot;graveyard&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>be careful of return values with callbacks. Once it hits a false, everything will halt.</p>
-
-<figure class='code'><figcaption><span>Foreign Key Options</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Tweet</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">has_one</span> <span class="ss">:location</span><span class="p">,</span> <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span><span class="p">,</span> <span class="n">foreign_key</span><span class="p">:</span> <span class="ss">:tweeter_id</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>n+1 query</p>
-
-<figure class='code'><figcaption><span>Migration syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">change</span>
-</span><span class='line'>  <span class="n">create_table</span><span class="p">(</span><span class="ss">:categorizations</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">integer</span> <span class="ss">:tweet_id</span>
-</span><span class='line'>    <span class="c1"># there is no comma seperation here...</span>
-</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">integer</span> <span class="ss">:category_id</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>belongs_to :singular
-has_many :plaural</p>
-
-<p>put and delete are hidden in the html 5 data-method
-This is all done with unobtrusive javascript.</p>
-
-<figure class='code'><figcaption><span>link_to</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">link_to</span> <span class="s1">&#39;All Zombies&#39;</span><span class="p">,</span> <span class="n">zombies_path</span>
-</span><span class='line'><span class="n">link_to</span> <span class="s1">&#39;All Zombies&#39;</span><span class="p">,</span> <span class="n">new_zombies_path</span>
-</span><span class='line'><span class="n">link_to</span> <span class="s1">&#39;Edit Zombies&#39;</span><span class="p">,</span> <span class="n">edit_zombies_path</span><span class="p">(</span><span class="vi">@zombie</span><span class="p">)</span>
-</span><span class='line'><span class="n">link_to</span> <span class="s1">&#39;Show Zombies&#39;</span><span class="p">,</span> <span class="n">zombie_path</span><span class="p">(</span><span class="vi">@zombie</span><span class="p">)</span>
-</span><span class='line'><span class="n">link_to</span> <span class="s1">&#39;Show Zombies&#39;</span><span class="p">,</span> <span class="vi">@zombie</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">h2</span><span class="o">&gt;&lt;</span><span class="sx">%= @zombie.name %&gt;&#39;s weapons&lt;/h2&gt;</span>
-</span><span class='line'><span class="sx">&lt;ul&gt;</span>
-</span><span class='line'><span class="sx">  &lt;% @weapons.each do |w| %&gt;</span>
-</span><span class='line'><span class="sx">    &lt;li&gt;&lt;%=</span> <span class="n">link_to</span> <span class="n">w</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">[</span><span class="vi">@zombie</span><span class="p">,</span> <span class="n">w</span><span class="o">]</span> <span class="sx">%&gt;&lt;/li&gt;</span>
-</span><span class='line'>    <span class="c1">#the relative path shorthand is equal to &#39;link_to w.name, zombie_weapon_path(@zombie, w)&#39;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
-</span><span class='line'><span class="sx">&lt;/ul&gt;</span>
-</span><span class='line'><span class="c1">#note that weapon is singular here...</span>
-</span><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s2">&quot;New Weapon&quot;</span><span class="p">,</span> <span class="n">new_zombie_weapon_path</span><span class="p">(</span><span class="vi">@zombie</span><span class="p">)</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>??I&#8217;m not really sure about the logic of passing in variables here. How do we know the order and what is appropriate?</p>
-
-<p>same with form_for</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">form_for</span><span class="p">(</span><span class="o">[</span><span class="vi">@zombie</span><span class="p">,</span> <span class="vi">@weapon</span><span class="o">]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mad Mimi- gem integration for subscription lists</p>
-
-<h3>Asset Pipeline</h3>
-
-<p>app dir - app specific code
-lib dir - shared code
-vendor dir - 3rd party code</p>
-
-<figure class='code'><figcaption><span>Call with assets&#8211; it will check all the directories</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">assets</span><span class="o">/</span><span class="n">custom</span><span class="o">.</span><span class="n">js</span>
-</span><span class='line'><span class="n">assets</span><span class="o">/</span><span class="n">rails</span><span class="o">.</span><span class="n">png</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">low_ammo</span><span class="p">(</span><span class="n">weapon</span><span class="p">,</span> <span class="n">zombie</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">attachments</span><span class="o">[</span><span class="s2">&quot;weapon.jpg&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="n">weapon</span><span class="o">.</span><span class="n">picture_file</span>
-</span><span class='line'>  <span class="n">mail</span> <span class="ss">to</span><span class="p">:</span> <span class="n">zombie</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">subject</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">weapon</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has low ammo&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://guides.rubyonrails.org/action_mailer_basics.html#sending-emails-with-attachments">See</a></p>
-
-<p>Asset Tags:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">auto_discovery_link_tag</span>
-</span><span class='line'><span class="n">javascript_include_tag</span>
-</span><span class='line'><span class="n">stylesheet_link_tag</span>
-</span><span class='line'><span class="n">image_tag</span>
-</span><span class='line'><span class="n">video_tag</span>
-</span><span class='line'><span class="n">audio_tag</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>e.g.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">image_tag</span><span class="p">(</span><span class="s2">&quot;weapon.jpg&quot;</span><span class="p">)</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>StyleSheet- referencing an image</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h2</span><span class="c1">#newUser {</span>
-</span><span class='line'>  <span class="n">text</span><span class="o">-</span><span class="ss">indent</span><span class="p">:</span> <span class="o">-</span><span class="mi">9999</span><span class="n">px</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">a</span> <span class="p">{</span>
-</span><span class='line'>  <span class="ss">height</span><span class="p">:</span> <span class="mi">64</span><span class="n">px</span><span class="p">;</span>
-</span><span class='line'>  <span class="ss">width</span><span class="p">:</span> <span class="mi">50</span><span class="n">px</span><span class="p">;</span>
-</span><span class='line'>  <span class="nb">display</span><span class="p">:</span> <span class="n">block</span><span class="p">;</span>
-</span><span class='line'>  <span class="ss">background</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="o">&lt;%=</span> <span class="n">asset_path</span><span class="p">(</span><span class="s2">&quot;rails.png&quot;</span><span class="p">)</span> <span class="o">%&gt;</span><span class="p">)</span> <span class="n">no</span><span class="o">-</span><span class="n">repeat</span><span class="p">;</span>
-</span><span class='line'>  <span class="c1">#created an asset path link because this file is erb....</span>
-</span><span class='line'><span class="p">}}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Syntax</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span> <span class="nf">-&gt;</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#displayWeaponForm&#39;</span><span class="p">).</span><span class="nx">click</span> <span class="nf">(event) -&gt;</span>
-</span><span class='line'>    <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#newWeapon&#39;</span><span class="p">).</span><span class="nx">show</span><span class="p">()</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">hide</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>in the controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">WeaponsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">fire_weapon</span>
-</span><span class='line'>    <span class="vi">@weapon</span> <span class="o">=</span> <span class="no">Weapon</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@weapon</span><span class="o">.</span><span class="n">fire!</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@weapon</span><span class="o">.</span><span class="n">low_ammo?</span>
-</span><span class='line'>      <span class="n">render</span> <span class="ss">:fire_and_reload</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If the &#8216;if&#8217; conditionally is not met, it will fire the default show page which corresponds to the name of the definition</p>
-
-<figure class='code'><figcaption><span>Custom Resource Routes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">RailsForZombies</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">resources</span> <span class="ss">:zombies</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">resources</span> <span class="ss">:weapons</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">put</span> <span class="ss">:toggle_condition</span><span class="p">,</span> <span class="ss">on</span><span class="p">:</span> <span class="ss">:member</span>
-</span><span class='line'>      <span class="n">put</span> <span class="ss">:reload</span><span class="p">,</span> <span class="ss">on</span><span class="p">:</span> <span class="ss">:member</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here we are sending the entire @weapon object</p>
-
-<figure class='code'><figcaption><span>Rendering JSON and options</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">WeaponsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>    <span class="vi">@weapon</span> <span class="o">=</span> <span class="no">Weapon</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:weapon</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@weapon</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>      <span class="c1">#location option-- an API best practice on where to find the URL of the resource</span>
-</span><span class='line'>      <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@weapon</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:created</span><span class="p">,</span> <span class="ss">location</span><span class="p">:</span> <span class="vi">@weapon</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@weapon</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:unprocessable_entity</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here we are only interested in the ammo attribute of the weapon JSON object. This limits the amount of data we are sending. We don&#8217;t want to send more than we need. <em>Data isn&#8217;t free.</em></p>
-
-<figure class='code'><figcaption><span>Json with Options</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">WeaponsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">reload</span>
-</span><span class='line'>    <span class="vi">@weapon</span> <span class="o">=</span> <span class="no">Weapon</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@weapon</span><span class="o">.</span><span class="n">ammo</span> <span class="o">&lt;</span> <span class="mi">30</span>
-</span><span class='line'>      <span class="vi">@weapon</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:ammo_to_reload</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@weapon</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="ss">only</span><span class="p">:</span> <span class="ss">:ammo</span><span class="p">),</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:ok</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@weapon</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="ss">only</span><span class="p">:</span> <span class="ss">:ammo</span><span class="p">),</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:unprocessable_entity</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>More JSON options in the controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@weapon</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="ss">except</span><span class="p">:</span> <span class="o">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:created_at</span><span class="p">,</span> <span class="ss">:updated_at</span><span class="o">]</span><span class="p">,</span> <span class="kp">include</span><span class="p">:</span> <span class="ss">:zombie</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>Important</em>
-The JSON object you send back doesn&#8217;t need to correspond to a real world object. The slow part is always opening up the connection. So you would rather send as much as you can per connection rather than send two requests.</p>
-
-<h3>Routes</h3>
-
-<p>there is a :member route
-:  which acts on a single resource
-There is a :collection route
-:  which acts on a group of resouces</p>
-
-<p><a href="http://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html#method-i-as_json">as_json</a></p>
-
-<figure class='code'><figcaption><span>Nested Options in the Model</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Zombie</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:weapons</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">super</span><span class="p">(</span><span class="n">options</span> <span class="o">||</span>
-</span><span class='line'>    <span class="c1">#this is obviously nested. a little counter intuitive on how this is set up</span>
-</span><span class='line'>      <span class="p">{</span><span class="ss">only</span><span class="p">:</span> <span class="ss">:name</span><span class="p">,</span> <span class="kp">include</span><span class="p">:</span> <span class="p">{</span><span class="ss">weapons</span><span class="p">:</span> <span class="p">{</span><span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:ammo</span><span class="p">,</span> <span class="ss">:name</span><span class="o">]</span><span class="p">}}})</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#condition&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;&lt;%= @weapon.condition %&gt;&quot;</span><span class="p">).</span><span class="nx">effect</span><span class="p">(</span><span class="s2">&quot;highlight&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I have a bad habit of putting > in my equations which seem to break things&#8230;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#ammo&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s1">&#39;&lt;%= @weapon.ammo %&gt;&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;%</span> <span class="k">if</span> <span class="err">@</span><span class="nx">weapon</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">&gt;=</span> <span class="mi">30</span> <span class="o">%&gt;</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#reload_form&#39;</span><span class="p">).</span><span class="nx">fadeOut</span><span class="p">();</span>
-</span><span class='line'><span class="o">&lt;%</span> <span class="nx">end</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Coffee Script</h3>
-
-<p><a href="http://jashkenas.github.com/coffee-script/">Documentation</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span> <span class="nf">-&gt;</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s">&#39;div#reload_form form&#39;</span><span class="p">).</span><span class="nx">submit</span> <span class="nf">(event) -&gt;</span>
-</span><span class='line'>    <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-</span><span class='line'>    <span class="nv">form = </span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
-</span><span class='line'>    <span class="nv">url = </span><span class="nx">form</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="nv">ammo = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#ammo_to_reload&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span>
-</span><span class='line'>      <span class="nv">type: </span><span class="s">&#39;put&#39;</span>
-</span><span class='line'>      <span class="nv">url: </span><span class="nx">url</span>
-</span><span class='line'>      <span class="nv">data: </span><span class="p">{</span><span class="nv">ammo_to_reload: </span><span class="nx">ammo</span><span class="p">}</span>
-</span><span class='line'>      <span class="nv">dataType: </span><span class="s">&#39;json&#39;</span>
-</span><span class='line'>      <span class="nv">success: </span><span class="nf">(json) -&gt;</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#ammo&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">ammo</span><span class="p">).</span><span class="nx">effect</span><span class="p">(</span><span class="s">&quot;highlight&quot;</span><span class="p">)</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#reload_form&#39;</span><span class="p">).</span><span class="nx">fadeOut</span><span class="p">()</span> <span class="k">if</span> <span class="nx">json</span><span class="p">.</span><span class="nx">ammo</span> <span class="o">&gt;=</span> <span class="mi">30</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/mysql-db-design/">MySQL DB Design</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-05T11:51:00-04:00" pubdate data-updated="true">Sep 5<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://code.google.com/edu/tools101/mysql.html">MySQL Google</a></p>
-
-<p><em>Data normalization</em>
-:  This is the process we go through to develop a design that is free of redundant data and that can be consistently and correctly modified</p>
-
-<p><em>primary keys</em> uniquely identify a record in a table, and <em>foreign keys</em> are used to relate tables
-- Every record must have a unique primary key which should not be reused once deleted</p>
-
-<p><em>Referential integrity</em>
-:  The data in a foreign key needs to match the primary key in some record of the original table. Referential integrity assures there are no broken links between tables. Note that if you delete a record in the original table, for example, you delete one of the customers from the customer table, referential integrity requires that you delete all references to that customer in the order table.</p>
-
-<h3>MySQL Exercises</h3>
-
-<ol>
-<li>Start up MySQL with</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mysql -uroot -ppassword</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Creating a table&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>create table customer (cust_no int not null auto_increment, name varchar(40),
-</span><span class='line'>address varchar(40), phone varchar(12), primary key(cust_no));</span></code></pre></td></tr></table></div></figure>
-
-
-<p>&#8220;varchar&#8221; which means variable-length strings. The numbers following &#8220;varchar&#8221; in the command above indicate maximum length for the data stored in the field. We also set up cust_no to be the primary key.</p>
-
-<p>The orders table&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>create table orders (order_no int not null auto_increment, FK_cust_no int not null, 
-</span><span class='line'>foreign key(FK_cust_no) references customer(cust_no), primary key(order_no));</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are only two fields in this table. The order_no field is a primary key, and is an integer, not null and it will auto increment. The cust_no field is a foreign key. We have named it FK_cust_no in the orders table to distinguish it from the cust_no field in the customer table.</p>
-
-<p><em>A foreign key is a field that references a primary key in another table.</em> In the command, we indicate that the FK_cust_no field is a foreign key referencing the cust_no field in customer, indicated by the &#8220;foreign key(FK_cust_no) references customer(cust_no)&#8221; part of the command. By setting the table up this way, MySQL will enforce constraints&#8211; any order that we enter into the orders table must reference a valid customer in the customer table. If we enter a cust_no in orders that does not exist in customers, an error will result.</p>
-
-<p>A <em>transaction</em> is a sequence of individual database operations that are grouped together. A transaction will never be complete unless each individual operation within the group is successful. If any operation within the transaction fails, the entire transaction will fail. Transactions are a relatively new addition to MySQL but not to relational database systems in general.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/omniauth/">Omniauth</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-04T12:17:00-04:00" pubdate data-updated="true">Sep 4<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><a href="http://sleekd.com/tutorials/setting-up-omniauth-authentication-with-facebook/">facebook</a></li>
-<li><a href="https://github.com/intridea/omniauth">The Gem</a></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>opening the connection</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@graph</span> <span class="o">=</span> <span class="ss">Koala</span><span class="p">:</span><span class="ss">:Facebook</span><span class="o">::</span><span class="no">API</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">oauth_access_token</span><span class="p">)</span>
-</span><span class='line'><span class="c1">#for an hour or so I wasn&#39;t loading the proper access_token. </span>
-</span><span class='line'><span class="c1">#the problem was I wasn&#39;t loading it as a string!!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="https://github.com/xfernandox/babl">Babl repo</a></li>
-<li><a href="https://speakerdeck.com/xfernandox/authenticate-with-omniauth">slides on omniauth</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/routes-of-the-app/">Routes of the App</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-23T12:35:00-04:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>The plan for the refactor</h3>
-
-<ol>
-<li>Multiple errors are being mass assigned a unique tag</li>
-<li><p>multiple tags are being assigned to an error</p></li>
-<li><p>individual tags are assigned to an individual error</p></li>
-<li>individual tags are being removed from an error</li>
-</ol>
-
-
-<p>Invidual Tag and Error
-  <code>DELETE /errors/id/tags/id</code> - Remove this tag from that error
-  <code>POST /errors/id/tags/id</code> - Adding this tag to that error</p>
-
-<p>Multiple Tags to an Error
-  <code>PUT /errors/id/tags</code> -</p>
-
-<p>Update an Error
-  # Sure, it could also accept tags tag_tokens=
-  <code>PUT /errors/id</code></p>
-
-<p>Multiple Errors are Assigned One Tag
-  <code>POST /tags/id/errors</code>
-  {
-  error_ids => [],
-  }</p>
-
-<p>  Supply a Tag ID in the URL along with an array of error_ids.</p>
-
-<p>  <code>DELETE /tags/id/errors</code></p>
-
-<h3>Creating the controllers</h3>
-
-<p><code>tags_controller</code> is responsible for updating <code>tags_controller</code></p>
-
-<p>the errors controller is responsible for updating errors</p>
-
-<ul>
-<li>the errors/tags controller is responsible for update tags on an error</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -1931,19 +2596,19 @@ There is a :collection route
       </li>
     
       <li class="post">
-        <a href="/blog/polymorphic-brain-hurt/">polymorphic brain hurt</a>
+        <a href="/blog/management-articles/">management articles</a>
       </li>
     
       <li class="post">
-        <a href="/blog/vim-shortcuts/">VIM shortcuts</a>
+        <a href="/blog/distributed-teams/">distributed teams</a>
       </li>
     
       <li class="post">
-        <a href="/blog/expect/">Expect</a>
+        <a href="/blog/kris-gale/">Kris Gale</a>
       </li>
     
       <li class="post">
-        <a href="/blog/strace/">strace</a>
+        <a href="/blog/oren-ellenbogen/">Oren Ellenbogen</a>
       </li>
     
   </ul>
