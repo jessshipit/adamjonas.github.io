@@ -33,28 +33,25 @@ git push [remote-name] [branch-name]
 
 ###Branches###
 You can delete a remote branch using the rather obtuse syntax '$ git push [remotename] :[branch]'. If you want to delete your serverfix branch from the server, you run the following:
-```
-$ git push origin <:branch name>
-```
 
-
-```
-$ git branch -d <branch name>
-```
+- `$ git push origin <:branch name>`
+- `$ git branch -d <branch name>`
 
 ###Rebasing###
 In Git, there are two main ways to integrate changes from one branch into another: the *merge* and the *rebase.*
 
-```
-$ git rebase master
-```
+ - `$ git rebase master`
+
 It works by going to the common ancestor of the two branches (the one you’re on and the one you’re rebasing onto), getting the diff introduced by each commit of the branch you’re on, saving those diffs to temporary files, resetting the current branch to the same commit as the branch you are rebasing onto, and finally applying each change in turn.
 
 **Important:**
 Do not rebase commits that you have pushed to a public repository.
 
+### Git rebase onto
+  - this allows you to pop off the commit at a specific SHA and throw that onto another branch. This was incredibily useful for a branch with a screwed up history that you'd like to put on master or something. Good write up [here](http://pivotallabs.com/git-rebase-onto/)
 
 ###Git real review###
+
 ```
 $ git commi­t --ame­nd -m 'addi­ng new' #ammend to last commit
 $ git reset­ --sof­t HEAD^­ #erase last commit and rewind to HEAD
