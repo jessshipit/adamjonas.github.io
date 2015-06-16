@@ -9,7 +9,17 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="What is diaspora? Now I need to decide what DB I&#8217;m going to use. I poked around and found MariaDB, but Avi suggested I go with Percona, MySQL &hellip;">
+  <meta name="description" content="I just spent more than an hour debugging an issue when trying to run 1
+rake generate The error I kept receiving was: 1
+2
+3
+4
+5
+6
+7
+8
+9
+## Generating &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +96,290 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/octopress-blues/">Octopress Blues</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-16T16:53:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I just spent more than an hour debugging an issue when trying to run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The error I kept receiving was:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>## Generating Site with Jekyll
+</span><span class='line'>unchanged sass/screen.scss
+</span><span class='line'>Configuration from /Users/Ajonas/octopress/_config.yml
+</span><span class='line'>Building site: source -&gt; public
+</span><span class='line'>/Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/rubypython-0.5.3/lib/rubypython/rubypyproxy.rb:198:in `method_missing': ClassNotFound: no lexer for alias 'Query' found (RubyPython::PythonError)
+</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:135:in `lexer_for'
+</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:91:in `highlight'
+</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:24:in `pygments'
+</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:14:in `highlight'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It goes on much longer from there. Anyways, I googled it and found <a href="http://samrange.com/blog/2012/06/17/octopress-code-highlighting-with-arch-linux/">this</a> which sent me on a wild goose chase to change out the path in the rubypython gem file.</p>
+
+<p>After trying to fix this, I decided to generate some other posts. What I discovered was other posts could be generated and pushed which meant it wasn&#8217;t the gem at all&#8230;</p>
+
+<p>In the end, I hadn&#8217;t named the language of the code snippet so the post couldn&#8217;t be generated.</p>
+
+<p>Ugh.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/lecture-3-july-15/">Lecture 3- July 15</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-16T16:06:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Rails Lecture 3- July 15</h3>
+
+<ul>
+<li>why use &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
+
+<ul>
+<li>bc want to use http verbs to be more specific</li>
+<li>match is more vague, you should generally use specific verbs</li>
+</ul>
+</li>
+</ul>
+
+
+<p><code>rake routes CONTROLLER=SESSIONS</code> will narrow output</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>render :action =&gt; 'under_construction' #=&gt; relative to the current controller
+</span><span class='line'>render :template =&gt; 'shared/under_construction' #=&gt; doesn't assume it is in the current views folder
+</span><span class='line'>#under the class name
+</span><span class='line'>render 'shared/under_construction' #=&gt; these 3 work the same now</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Private Methods###(2:40)</h3>
+
+<ul>
+<li>about what object the receiver is on the method called&#8211; private methods can only be called on implicit receivers</li>
+<li>a way to control scope</li>
+<li><p>anything that is not an action, that isn&#8217;t an endpoint of a route should be private</p></li>
+<li><p>routes: bridge between the browser, specifcially URLs, and the app</p></li>
+</ul>
+
+
+<h3>Polymorphic Interface(2:50)</h3>
+
+<p>The link_to method&#8211;> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
+-> if I send it an instance of active record, it&#8217;s behavior will change ==> it will become intelligent and it will understand that it is an instance of active record</p>
+
+<h3>Lecture### (2:55)</h3>
+
+<ul>
+<li><p>anything that starts with an underscore &#8216;_form.erb.html&#8217; for example is a snippet of code that is reused on multiple templates</p></li>
+<li><p>form_for(@song) &#8211;> knows whether the song is new or should be updated&#8230; obviously different verbs are required for those diff actions</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Form Helpers (3:09)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">form_for</span><span class="p">(</span><span class="vi">@song</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">textfield</span> <span class="ss">:artist_name</span> <span class="c1">#=&gt; this will break if there is not a artist_name method for the song class in the controller</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>  <span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># this line instantiates a New Song</span>
+</span><span class='line'>  <span class="c1"># collects the data</span>
+</span><span class='line'>  <span class="c1">#assigning the data to the correct attribute</span>
+</span><span class='line'> <span class="c1">#the params[:song] lines does the last two steps</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Params### (3:20)</h3>
+
+<p>params looks and behaves like a hash
+its a nested hash</p>
+
+<figure class='code'><figcaption><span>Assigning a name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@song</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:song</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span> <span class="c1">#but this happens during the following line of code:</span>
+</span><span class='line'>
+</span><span class='line'><span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span> <span class="c1"># this happens using mass assignment!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Manually Assigning the Name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">input</span> <span class="n">type</span> <span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;song[name]&quot;</span> <span class="c1">#this looks like the key of the params hash ==&gt; params[:song][:name]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>(3:50) Nested hash testing</h3>
+
+<figure class='code'><figcaption><span>Query string (3:57)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mldraft</span><span class="o">.</span><span class="n">com?person</span><span class="o">[</span><span class="nb">name</span><span class="o">]=</span><span class="n">adam</span><span class="o">&amp;</span><span class="n">person</span><span class="o">[</span><span class="n">email</span><span class="o">]=</span><span class="n">adam</span><span class="vi">@mldraft</span><span class="o">.</span><span class="n">com</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Can access the params hash in the same way as the form. So params[:person][:name] will equal adam</li>
+</ul>
+
+
+<h3>Mass Assignment Vulnability (4:05)</h3>
+
+<ul>
+<li>attr_accessible is a whitelist approach versus attr_protected which is a black list approach</li>
+<li><p>this has nothing to do with the attr_accessor, reader, or writer</p></li>
+<li><p>Virtual attributes don&#8217;t persist to the database</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/diaspora2/">Diaspora- Day 2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-11T10:06:00-04:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Postgresql Gem</strong> is killing me. It&#8217;s listed in the Gemfile. It&#8217;s listed in the Gemlock file. I&#8217;ve tried to&#8230;</p>
+
+<p>ok so after 2 hours of running around google I tried commenting out the mysql and sqlite gems:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># database
+</span><span class='line'>
+</span><span class='line'>gem "activerecord-import", "~&gt; 0.2.9"
+</span><span class='line'>gem 'foreigner', '~&gt; 1.1.0'
+</span><span class='line'>#gem 'mysql2', '0.3.11' if ENV['DB'].nil? || ENV['DB'] == 'all' || ENV['DB'] == 'mysql'
+</span><span class='line'>gem 'pg' #if ENV['DB'] == 'all' || ENV['DB'] == 'postgres'
+</span><span class='line'>#gem 'sqlite3' if ENV['DB'] == 'all' || ENV['DB'] == 'sqlite'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bingo.</p>
+
+<p>I finally got this running by downloading mysql and setting the db to mysql&#8230; victory.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1219,293 +1513,6 @@ rake preview</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/equals-equals-equals-case-equality-operator/">=== and the Case Equality Operator</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-03T10:53:00-04:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>In a case statement&#8230;</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">case</span> <span class="n">number</span>
-</span><span class='line'>  <span class="k">when</span> <span class="mi">5</span>
-</span><span class='line'>    <span class="c1">#some code</span>
-</span><span class='line'>  <span class="k">when</span> <span class="mi">3</span>
-</span><span class='line'>    <span class="c1">#more code</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="c1">#something else</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Behind the scenes 5 is being compared to number with the === operator, so 5 === number, 3 === number, etc</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">several</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="p">}</span>
-</span><span class='line'><span class="n">none</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">case</span> <span class="n">number</span>
-</span><span class='line'>  <span class="k">when</span> <span class="n">several</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;several&quot;</span>
-</span><span class='line'>  <span class="k">when</span> <span class="n">none</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;none&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In this case the several proc is being run and if it returns true it runs the puts &#8211;> this abstracts everything away</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/rails-1st-lecture/">Rails 1st Lecture</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-02T10:53:00-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Rails Lecture I - July 2</p>
-
-<h3>How the web works:</h3>
-
-<p>-the requests we send to other servers have headers with info about the request
--you get the response with a header and the body
--the body is just text and data with HTML
--the communication happens over TCP/IP, namely HTTP
-- the browser renders the HTML by making it pretty
--we use GET, POST, PUT, and DELETE -</p>
-
-<p>4 important HTTP Verbs&#8211;>
-GET- retrieve representation of content
-POST- Submits data
-PUT- Update
-Delete- Deletes a specific resource
-<strong>HTTP is all about applying verbs to nouns.</strong></p>
-
-<p>Convention over configuration
--we wants defaults</p>
-
-<p>There are naming schemes such as:
-all tables pl
-all models are singular
-controller songs_controller.rb
-views songs/</p>
-
-<h3>Gems:</h3>
-
-<p>pre-packaged piece of software that ruby uses</p>
-
-<p>Config Folder&#8211;> where the configuration of our app lives
--Database.yaml- this is how we communicate the database</p>
-
-<p>App Folder: spend most of our time in the app directory</p>
-
-<h3>MVC:### (7:42 pm)</h3>
-
-<p>Models: define how data is created, retrieved, updated and deleted&#8211;> the only code that defined these 4 actions are in the model</p>
-
-<p>Controllers: where to send the data to
-business logic</p>
-
-<p>Views: display logic</p>
-
-<p>Helpers: helper functions for your views
-db: stores your database and all the instructions for your database</p>
-
-<p>lib: code that you app needs but isn&#8217;t part of the request cycle
--tasks- background tasks</p>
-
-<p>public dir:
-any code that doesn&#8217;t require the rails stack to run</p>
-
-<p>vendor: any 3rd party library that you didn&#8217;t write
-&#8211; similar to the lib directory that you didn&#8217;t write</p>
-
-<h3>REST:</h3>
-
-<p>-Representational State Transfer
--URL: unified resources locators
-- there should be a unified way to expose resources to the world
--1st concept: the things we get online are resources&#8211; what the server is going to respond with is a representation of the real thing (since it can&#8217;t deliver the real thing)
--there should be consistency and predictability-</p>
-
-<p>rails generate resource song title:string duration:integer #always singular
-rails generate scaffold song title:string #in the beginning the first few resources are created by scaffolds</p>
-
-<h3>MIGRATIONS:### defines a db strcuture</h3>
-
-<p>every resource has it&#8217;s own table</p>
-
-<h3>SQL:### server query language or standard query language</h3>
-
-<h3>SCHEMA-### describes the structure of the DB</h3>
-
-<h3>RAKE:### a ruby library to run background tasks</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake stats-- gives me stats on the app
-</span><span class='line'>rake about--&gt; outputs info about the environment, etc
-</span><span class='line'>rake -T --&gt; outputs provides commands</span></code></pre></td></tr></table></div></figure>
-
-
-<p>VIDEO 2&#8230;</p>
-
-<p>migrations are iterative by nature
-every migration should one and only one thing</p>
-
-<p>rake db:migrate runs the migration
-rake db:rollback rolls back the migration</p>
-
-<h3>OBJECT ORIENTATION</h3>
-
-<ul>
-<li>what to create metaphors in our code to representations of the real world</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; finds the object of id 2</span>
-</span><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">all</span> <span class="c1">#=&gt; returns all the instances of the class</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>ORM: object relational mappers</h3>
-
-<ul>
-<li>a class is to a table : an instance of a class is to a row of a table
--every instance is going to wrap a row of a table
--one to one relationship between an instance and a row
--the library, the ORM, allows you to relate to the objects with knowing how the objects are related</li>
-</ul>
-
-
-<p>Programming is just codifying procedural knowledge</p>
-
-<h3>DOCUMENTATION:</h3>
-
-<p>Rails Guides: more like how-tos
-Rails API: the more technical version</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/the-tap-method/">The Tap Method</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-02T10:52:00-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I haven&#8217;t found great explanations for this yet but there is a video below&#8230; prety much the tap method allows you to initialize methods right off the bat.</p>
-
-<p>The tap method is available to all Ruby objects and serves as a way to have a block &#8220;act on&#8221; the method&#8217;s caller and return the object called. Per the Ruby docs, &#8220;the primary purpose of this method is to &#8216;tap into&#8217; a method chain, in order to perform operations on intermediate results within the chain&#8221;. For some examples on using tap see MenTaLguY&#8217;s post on Eavesdropping on Expressions. As he says in his post, &#8220;you can insert your code just about anywhere without disturbing the flow of data.&#8221;</p>
-
-<p>I&#8217;m having some trouble following all this&#8230; Matt Stopa has a video below that is more for a beginner.</p>
-
-<p><a href="http://www.youtube.com/watch?v=QAJMxBkYaUQ">The video is here</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/27/">&larr; Older</a>
@@ -1523,23 +1530,23 @@ Rails API: the more technical version</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/omniauth-tomfoolery/">omniauth tomfoolery</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/what-working-in-professional-baseball-taught-me-about-web-development/">What Working in Professional Baseball Taught Me about Web Development</a>
       </li>
     
       <li class="post">
         <a href="/blog/management-articles/">management articles</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/distributed-teams/">distributed teams</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/kris-gale/">Kris Gale</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/oren-ellenbogen/">Oren Ellenbogen</a>
       </li>
     
   </ul>
