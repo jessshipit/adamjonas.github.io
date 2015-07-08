@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ssl | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/ssl/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-07-08T12:29:42-04:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[how the web works]]></title>
+    <link href="http://www.adamjonas.com/blog/how-the-web-works/"/>
+    <updated>2015-07-08T12:20:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/how-the-web-works</id>
+    <content type="html"><![CDATA[<h2>learn co</h2>
+
+<p>  -> get IP address for server
+  -> assemble http request, sends an ack
+  -> open a tcp connection on 80 (or 443 for SSL)
+  -> tcp port established between user and host (over 1024)
+  -> ssl negotiation, user provides public key and the host provides its public key we validate based on a cert provider and then we are provided a symetric key that we use with that site going forward
+  -> nat - network address translation
+  -> GET HTTP request</p>
+
+<h2>On the server -></h2>
+
+<ul>
+<li>HA proxy (ssl negotiation, load balancing) (we could replace this with nginx)</li>
+<li>apache (speaks http, this is the web server)</li>
+<li>phusion passenger (the workers that enable concurrancy)</li>
+<li>hit the routes file</li>
+</ul>
+
+
+<h2>LB01</h2>
+
+<ul>
+<li>ubuntu 14.04 (LTS)</li>
+<li>HA proxyd (port 443 -d SSL only)</li>
+<li>sshd (port 22) -> run commands remotely (ssl encrypted)</li>
+</ul>
+
+
+<h2>IB03</h2>
+
+<ul>
+<li>apache, spawns passenger pushion</li>
+<li>passenger spawns 5 wokers
+
+<ul>
+<li>takes the request and turns it into a rack ruby object</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>NFS - Network file system</h2>
+]]></content>
+  </entry>
+  
+</feed>
