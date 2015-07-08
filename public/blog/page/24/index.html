@@ -9,8 +9,12 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Mongo Cheat Sheet NoSQL Non-relational, next-generation operational datastores and databases
--databases designed for the web and attacking the &hellip;">
+  <meta name="description" content="Pivotal:
+Move from icebox to current
+Click Start
+Each story is either a feature, a bug, or a chore Generate our app
+Some sort of layout
+beginning &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +91,384 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day0/">HAW- Day0</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-30T10:13:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Pivotal:
+Move from icebox to current
+Click Start
+Each story is either a feature, a bug, or a chore</p>
+
+<p>Generate our app
+Some sort of layout
+beginning data model
+- main model
+- tag model
+Import script to retreive that data off the API</p>
+
+<p>Views/Controllers
+- index view
+- tagging</p>
+
+<p>Keep commits small and never develop in the master branch</p>
+
+<p>Git:
+Git create the repo
+git clone the repo
+git merge mongoid-setup &#8211;no-ff #no FF- will show the branch even after the commmit</p>
+
+<p>Mongoid-
+rails new myapp -O (&#8211;skip-active-record)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'mongoid', "~&gt; 3.0.0"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Twitter Bootstrap
+gem twitter-bootstrap</p>
+
+<p>Airbrake Gem</p>
+
+<p>Powder Gem
+gem install powder
+makes app available at airbrake.dev</p>
+
+<p>Immediately want to start creating the &#8216;error model&#8217;, but error is a terrible title so call it airbrake model</p>
+
+<p>Routes:
+change index to errors#index</p>
+
+<p>Generate airbrake_errors model
+Generate errors_controller
+Generate bootstrap</p>
+
+<figure class='code'><figcaption><span>Fluid Layout</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">bootstrap</span> <span class="n">layout</span> <span class="n">application</span> <span class="n">fluid</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>In Console</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">AirbrakeError</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Test&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>in the test unit, want to check that AirbrakeError.delete_all
+test to make sure the airbrake API gem tried to connect</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">AirbrakeError</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create initializer to config the connection to airbrake</p>
+
+<h3>Next Steps</h3>
+
+<p>build out the bootstrap layout
+build the import script</p>
+
+<p>Ruby Debugger:
+gem debugger at the bottom of the gem file
+bundle</p>
+
+<p>inspect the hashiemashie to see how the objects are composed</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
+</span><span class='line'>  <span class="n">a</span> <span class="o">=</span> <span class="ss">AirbrakeAPI</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Airbrake Doc:
+Can make calls to get a list of errors in general and a call to get more info about an error.
+-The api in general isn&#8217;t all that detailed.</p>
+
+<p>There is a diff between .error(&#8216;id&#8217;) and .errors &#8211; the difference is in what is returned&#8211; i.e. the backtrace etc.</p>
+
+<p>check out what notices because we are probably interested more in the notice than the error itself.</p>
+
+<figure class='code'><figcaption><span>Maybe Something Like This?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">ignore</span>
+</span><span class='line'>  <span class="no">AirbrakeAPI</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:resolved</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">})</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Diff between error and notice: an error is a unique conceptual item and a notice is the occurance of the error</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">h</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="n">b</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">v</span>
+</span><span class='line'><span class="c1">#this is the same as the dynamic dispatching method</span>
+</span><span class='line'><span class="n">airbrake</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From there let&#8217;s go to the view and start formatting the output</p>
+
+<p>Ruby alias method&#8211; this is built into ruby not rails or mongoid</p>
+
+<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">alias</span> <span class="ss">:name</span> <span class="ss">:error_message</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>TIPS and Tricks section:
+Gem Server shows the documentation locally</p>
+
+<p><a href="http://www.codinghorror.com/">Jeff Atwood</a></p>
+
+<p>LOOK-UP &#8216;Client&#8217;, &#8216;tap&#8217;, &#8216;send&#8217;
+dynamic dispatch and the send method
+rails cycle
+Moped::BSON: &#8211; how it generates its unique IDs</p>
+
+<p>GIT STUFF:</p>
+
+<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">pull</span> <span class="o">--</span><span class="n">rebase</span> <span class="c1">#=&gt; if the remote has merges, rewind and then move back forward</span>
+</span><span class='line'><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="no">HEAD</span> <span class="c1">#=&gt; go to the last checkout (HEAD of the branch) without the warnings (hard)</span>
+</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="c1"># save changes</span>
+</span><span class='line'><span class="n">git</span> <span class="n">stash</span> <span class="n">pop</span> <span class="c1">#restore changes</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>airbrake_error.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">status</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">link</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">airbrake</span>
+</span><span class='line'><span class="n">M</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">airbrake_error</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'><span class="n">M</span>  <span class="n">app</span><span class="o">/</span><span class="n">views</span><span class="o">/</span><span class="n">errors</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">erb</span>
+</span><span class='line'><span class="no">Switched</span> <span class="n">to</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">branch</span> <span class="s1">&#39;link-to-airbrake&#39;</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">am</span> <span class="s2">&quot;added airbrake_url method and link_to in views&quot;</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">push</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">merge</span> <span class="n">link</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">airbrake</span>
+</span><span class='line'><span class="err">♕</span> <span class="n">git</span> <span class="n">push</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/lecture-7-rails/">Lecture 7 -Rails</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-29T14:20:00-04:00" pubdate data-updated="true">Jul 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Song class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">genre_name</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">g</span><span class="o">|</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">genre_name</span><span class="o">=</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">strip</span><span class="p">}</span><span class="o">.</span>
+</span><span class='line'>    <span class="no">SongGenre</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:genre</span> <span class="o">=&gt;</span> <span class="no">Genre</span><span class="o">.</span><span class="n">find_or_create_by_name</span><span class="p">(</span><span class="n">genre_name</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>an album has many songs&#8230; which means the accepts nested attributes for will be a good fit</p>
+
+<h3>Nested Resource</h3>
+
+<p>begins with the routes</p>
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-part-1">Nested Model Form Rails Cast</a></p>
+
+<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong><em>Dont&#8217; use nested attributes for a belongs_to association</em></strong></a></p>
+
+<p>mass assignment and the .build(params[:user_name])</p>
+
+<p>Form_for (2:40)</p>
+
+<h3>Layouts and Sub-layouts</h3>
+
+<figure class='code'><figcaption><span>On the Index Page</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% content_for </span><span class="ss">:sub_nav</span> <span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= link_to &quot;New Song&quot;, new_song_path %&gt;</span>
+</span><span class='line'> <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
+</span><span class='line'><span class="sx"> # this could also be on the show page so they would share this sub_nav</span>
+</span><span class='line'><span class="sx"> &lt;nav class=&quot;sub_nav&quot;&gt;</span>
+</span><span class='line'>  <span class="o">&lt;%=</span> <span class="k">yield</span> <span class="ss">:sub_nav</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx"> &lt;% end %&gt;</span>
+</span><span class='line'> <span class="c1"># this works because you create another yield in the app besides the body</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>you can open up a sublayout as many times as you want to add links&#8230;</p>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to_unless_current">link_to_unless_current</a>- it just creates the title, not the link to its own page&#8230; useful for nav bars</p>
+
+<p>polymorphic interfaces: depending on the argument that you send it, it has different behavior
+when you send @mixtape it looks up:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mixtape_path</span><span class="p">(</span><span class="vi">@mixtape</span><span class="p">)</span> <span class="c1">#=&gt; &#39;/mixtapes/1&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>real life e.g.s
+subway slot can accept a metrocard and a credit card&#8211; depending on what you send it, it has differnt behavior
+a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.</p>
+
+<p>render is another flexible polymorphic object-</p>
+
+<figure class='code'><figcaption><span>Rending Partials in a Collection- very important</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= render @mixtape.songs %&gt;</span>
+</span><span class='line'><span class="sx">#Down a level of abstraction since it reveals the collection and partial:</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">render</span> <span class="ss">:collection</span> <span class="o">=&gt;</span> <span class="vi">@mixtape</span><span class="o">.</span><span class="n">songs</span><span class="p">,</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="n">songs</span><span class="o">/</span><span class="n">song_li</span><span class="err">&#39;</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:song</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Cast Variables</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= render &#39;songs/fields&#39;, :f =</span><span class="o">&gt;</span> <span class="n">song_form</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If skip album name is true, then
+(3:40)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">include_album_name</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;div class=&quot;field&quot;&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="sx">% f.label </span><span class="ss">:album</span> <span class="sx">%&gt; &lt;br /&gt;</span><span class="c1">#more code....</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://guides.rubyonrails.org/layouts_and_rendering.html#asset-tag-helpers">Passing Local Variables into Partials</a>&#8230; need to scroll down a little</p>
+
+<p>write_attribute</p>
+
+<p><a href="http://www.davidverhasselt.com/2011/06/28/5-ways-to-set-attributes-in-activerecord/">5 ways to set attributes in ActiveRecord</a></p>
+
+<p>Could use callbacks and lifecycle hooks to normalize as well&#8230;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before_validate</span> <span class="ss">:normalize_name</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">normalize_name</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">strip</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1219,134 +1601,6 @@ e.g. text_field, label
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/git-initialization-for-a-new-repo/">Git Initialization for a New Repo</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-21T18:17:00-04:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I know this is basic. I keep getting the steps wrong though. So I&#8217;m putting it here&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  git init
-</span><span class='line'>  touch README
-</span><span class='line'>  git add README
-</span><span class='line'>  git commit -m 'first commit'
-</span><span class='line'>  git remote add origin https://github.com/ajonas04/REPO_NAME.git
-</span><span class='line'>  git push -u origin master</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I also ran into this during the process today:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git remote add origin https://github.com/ajonas04/REPO_NAME.git
-</span><span class='line'>fatal: remote origin already exists.
-</span><span class='line'>♕ git remote rm origin
-</span><span class='line'>♕ git remote add origin https://github.com/ajonas04/REPO_NAME.git</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># git remote add &lt;remote name&gt; &lt;link&gt;
-</span><span class='line'>♕ git remote add group git@github.com:ajonas04/fis.com.git</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I guess I needed to remove the remote origin. I can safely say, I don&#8217;t understand what&#8217;s going on here.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/cross-site-request-forgery/">Cross Site Request Forgery</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-21T13:08:00-04:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Cross Site Request Forgery</h3>
-
-<p>Description Summary
-:  The web application does not, or can not, sufficiently verify whether a well-formed, valid, consistent request was intentionally provided by the user who submitted the request.</p>
-
-<p>Extended Description
-:  When a web server is designed to receive a request from a client without any mechanism for verifying that it was intentionally sent, then it might be possible for an attacker to trick a client into making an unintentional request to the web server which will be treated as an authentic request. This can be done via a URL, image load, XMLHttpRequest, etc. and can result in exposure of data or unintended code execution.</p>
-
-<p>Ensures that information submitted through forms have a specific tag that identifies it as information submitted through the form I created. (Read more about csrf <a href="http://stackoverflow.com/questions/941594/understand-rails-authenticity-token">here</a> and <a href="http://stackoverflow.com/questions/9996665/rails-how-does-csrf-meta-tag-work">here.</a>)</p>
-
-<p>This is the out of context code I have from class&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>csrf metatabs</span></code></pre></td></tr></table></div></figure>
-
-
-<p>NOTE: We went over this in lecture 6 of ROR spring</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/25/">&larr; Older</a>
@@ -1364,6 +1618,14 @@ e.g. text_field, label
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator&#8217;s Dilemma</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
       </li>
     
@@ -1373,14 +1635,6 @@ e.g. text_field, label
     
       <li class="post">
         <a href="/blog/omniauth-tomfoolery/">omniauth tomfoolery</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/what-working-in-professional-baseball-taught-me-about-web-development/">What Working in Professional Baseball Taught Me about Web Development</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/management-articles/">management articles</a>
       </li>
     
   </ul>
