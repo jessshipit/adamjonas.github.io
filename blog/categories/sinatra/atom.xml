@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: sinatra | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/sinatra/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Back to Sinatra]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/back-to-sinatra/"/>
+    <updated>2013-01-17T19:19:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/back-to-sinatra</id>
+    <content type="html"><![CDATA[<ul>
+<li>Couldn't launch on heroku because I didn't have a gemfile.</li>
+<li><p>Then I could removed all the gem requirements from the top of the <code>main.rb</code> file. Not how it's done.</p></li>
+<li><p>Since I need two different keys to for FB authentication I configured them in the main <code>app.rb</code> file. I tried setting these in a <code>.env</code> file and start up the app locally with foreman, but I couldn't get it to work.</p></li>
+</ul>
+
+
+<p>```ruby
+class MyApp &lt; Sinatra::Base
+  configure :development do</p>
+
+<pre><code>ENV["FACEBOOK_APP_ID"]='numbers'
+ENV["FACEBOOK_SECRET"]='key'
+</code></pre>
+
+<p>  end</p>
+
+<p>  configure :production do</p>
+
+<pre><code>ENV["FACEBOOK_APP_ID"]='numbers'
+ENV["FACEBOOK_SECRET"]='key'
+</code></pre>
+
+<p>  end
+end
+```
+Found this solution on <a href="http://stackoverflow.com/questions/4486634/is-there-a-rack-or-sinatra-based-environment-configuration-utility">stackoverflow</a></p>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/658044/tick-symbol-in-html-xhtml">HTML Tick symbol</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[advanced sinatra]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/advanced-sinatra/"/>
+    <updated>2012-12-10T13:14:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/advanced-sinatra</id>
+    <content type="html"><![CDATA[<h3>Sinatra</h3>
+
+<ul>
+<li><p>Sinatra is a DSL for creating a web</p></li>
+<li><p>Sinatra is library, not a framework (rails is a framework)</p></li>
+<li><p><a href="http://stackoverflow.com/questions/148747/what-is-the-difference-between-a-framework-and-a-library">difference between lib and framework</a></p></li>
+<li><p><a href="http://martinfowler.com/bliki/InversionOfControl.html">inversion of control</a> by Martin Fowler</p>
+
+<ul>
+<li>Sinatra supports inline templates</li>
+<li>variables are passed in via @instance variables</li>
+<li>Filters</li>
+<li>Helpers: takes a block and then anything defined are available in the templates</li>
+<li>Configuration: looks at the rack env variable and executes code based on the env</li>
+<li><a href="http://www.mnot.net/cache_docs/">cache docs</a></li>
+<li>By default don't have sessions. Need to config sessions.</li>
+<li><p>Testing -> a lot of the tests that come with rails aren't in sinatra</p>
+
+<ul>
+<li>test with rack-test</li>
+</ul>
+</li>
+<li><p>classic app -></p>
+
+<ul>
+<li>all the routes are in one file, it is straight Ruby code</li>
+</ul>
+</li>
+<li><p>Modular app -></p>
+
+<ul>
+<li>don't want to pollute the Object namespace</li>
+<li>combinging multiple Sinatra apps in a single process</li>
+<li>use Sinatra app as middleware</li>
+</ul>
+</li>
+<li><p>Supports extensions</p>
+
+<ul>
+<li>could be helpers, routes, configurations pacakged into a Gem and used on other apps</li>
+</ul>
+</li>
+<li><p>Registered</p>
+
+<ul>
+<li>when the app is registered is has a method (<code>def self.registered(app)</code>) that allows config settings</li>
+</ul>
+</li>
+<li><p>extensions</p>
+
+<ul>
+<li><a href="http://www.sinatrarb.com/extensions.html">writing extensions</a></li>
+<li><a href="http://www.sinatrarb.com/extensions-wild.html">using extensions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Sinatra vs. Rails</h3>
+
+<ul>
+<li>when to use Sinatra...
+
+<ul>
+<li><p>Thick client web applications for performance or heavily visualizations</p>
+
+<ul>
+<li>majority of the logic is on the client, not on the server</li>
+<li>sinatra serves things really fast</li>
+</ul>
+</li>
+<li><p>API servers for iOS/Android/Javascript Apps</p></li>
+<li>HTML5 Mobile Apps (<a href="http://www.jqtouch.com/">jq touch</a> or jquery mobile)</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Rack</h3>
+
+<ul>
+<li><a href="http://m.onkey.org/ruby-on-rack-1-hello-rack">Hello Rack</a></li>
+</ul>
+
+
+<h3>Gems</h3>
+
+<ul>
+<li><a href="http://middlemanapp.com/getting-started/welcome/">Middleman Gem</a></li>
+<li>Sprockets- pretty much the asset pipeline</li>
+<li><a href="https://github.com/rtomayko/shotgun">shotgun</a> is a must.</li>
+</ul>
+
+
+<h3>Sinatra integrated into Rails</h3>
+
+<ul>
+<li>it is all Rack under the hood so you use <code>mount</code> in the route file and then all the urls defined in the sinatra app are available in the rails app</li>
+</ul>
+
+
+<h3>Sinatra on Heroku</h3>
+
+<ul>
+<li>heroku requires sinatra to have a <code>gem</code> file as well as a <code>config.ru</code> file</li>
+</ul>
+
+
+<p>```ruby config.ru example
+require './myapp'</p>
+
+<p>run Sinatra::Application
+```</p>
+
+<p><code>ruby gemfile example
+source "https://rubygems.org"
+gem 'sinatra', '1.1.0'
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rack and Sinatra]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/rack-and-sinatra/"/>
+    <updated>2012-10-15T13:11:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/rack-and-sinatra</id>
+    <content type="html"><![CDATA[<p><a href="https://twitter.com/blacktm">Tom Black</a></p>
+
+<h3>Programmer of the day</h3>
+
+<ul>
+<li>John Carmack- creator of quake, doom
+
+<ul>
+<li>Programming is not a zero-sum game. Teaching something to a fellow programmer doesn't take it away from you. I'm happy to share what I can, because I'm in it for the love of programming.</li>
+</ul>
+</li>
+</ul>
+
+
+<p><em>Think about solutions not syntax</em></p>
+
+<h3>Rack</h3>
+
+<blockquote><p>A modular web server interface</p></blockquote>
+
+<ul>
+<li>Rack App
+
+<ul>
+<li>a ruby object that responses to a call method, taking a single hash parameter and returning an array which contains the response status code, response headers</li>
+</ul>
+</li>
+</ul>
+
+
+<blockquote><p>Rack applications are objects that respond to call. They must return a "triplet". A triplet contains the status code, headers, and body. Here's an example class that shows "hello world."</p></blockquote>
+
+<pre><code>class HelloWorld
+  def response
+    [200, {}, 'Hello World']
+  end
+end
+</code></pre>
+
+<ul>
+<li><p><a href="http://broadcastingadam.com/2012/07/rack_from_the_beginning/">rack from the beginning</a></p></li>
+<li><p>Middleware</p>
+
+<ul>
+<li>stuff stuck in the middle of a process</li>
+</ul>
+</li>
+<li><p>rack sits in the middle of your app and webserver</p></li>
+<li><p>You have to instantiate the Rack application (oh duh)[http://stackoverflow.com/questions/15572392/why-does-rails-generate-a-config-ru-that-runs-a-class-not-an-object]</p>
+
+<p>root :to => SimpleRackApplication.new</p></li>
+</ul>
+
+
+<h3>Sinatra</h3>
+
+<ul>
+<li>is a dsl for quickly creating web applications in Ruby with minimal effort.</li>
+</ul>
+
+
+<p>Is just a facade
+webserver -> middleware -> sinatra -> your app</p>
+
+<p><em>Sinatra is closer to rack's older brother than rails is to sinatra.</em></p>
+
+<p>Rails is a full-stack web application framework.</p>
+
+<p><a href="http://www.blacktm.com/docs/talks/building_web_apps_with_rack_and_sinatra">Project page</a></p>
+
+<h2>#</h2>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sinatra]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/sinatra/"/>
+    <updated>2012-06-26T10:48:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/sinatra</id>
+    <content type="html"><![CDATA[<p><a href="http://sinatra-book.gittr.com/">Sinatra Book</a>, it's a quick read.</p>
+
+<p><a href="http://titusd.co.uk/2010/04/07/a-beginners-sinatra-tutorial/">Sinatra for beginners</a></p>
+
+<p>Seem like a really simple version of Rails-- A rack based application with lots of common features in terms of routing, filters, ERB...</p>
+
+<p>Here's a <a href="http://screencasts.org/episodes/introduction-to-sinatra">screencast on sinatra</a> (free)</p>
+
+<p>There is a <a href="https://peepcode.com/products/sinatra">peepcode on Sinatra</a> ($)</p>
+
+<p>Another paid one from <a href="http://pragprog.com/screencasts/v-aksinatra/classy-web-development-with-sinatra">prag</a> ($)</p>
+
+<p><a href="http://www.sinatrarb.com/intro">sinatra intro</a></p>
+]]></content>
+  </entry>
+  
+</feed>

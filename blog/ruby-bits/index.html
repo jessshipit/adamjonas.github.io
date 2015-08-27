@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ruby Bits - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="||= Assigns if there is not existing value. Otherwise, the previous assigment will override it.
+Good way to set defaults if you need them Refactoring &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://adamjonas.github.com/adamjonas/blog/ruby-bits/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adamjonas.github.com/adamjonas" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Ruby Bits</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-06T15:33:00-04:00" pubdate data-updated="true">Sep 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>||= Assigns if there is not existing value. Otherwise, the previous assigment will override it.
+Good way to set defaults if you need them</p>
+
+<figure class='code'><figcaption><span>Refactoring using ||=</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">options</span><span class="o">[</span><span class="ss">:country</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span> <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:country</span><span class="o">].</span><span class="n">nil?</span>
+</span><span class='line'><span class="c1">#can refactor as</span>
+</span><span class='line'><span class="n">options</span><span class="o">[</span><span class="ss">:country</span><span class="o">]</span> <span class="o">||=</span> <span class="s1">&#39;us&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Case statement e.g.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">games</span><span class="p">,</span> <span class="n">search_term</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">search_index</span> <span class="o">=</span> <span class="k">case</span> <span class="n">games</span><span class="o">.</span><span class="n">find_index</span><span class="p">(</span><span class="n">search_term</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">when</span> <span class="n">search_index</span>
+</span><span class='line'>       <span class="s2">&quot;Game </span><span class="si">#{</span><span class="n">search_term</span><span class="si">}</span><span class="s2"> found: </span><span class="si">#{</span><span class="n">games</span><span class="o">[</span><span class="n">search_index</span><span class="o">]</span><span class="si">}</span><span class="s2"> at index </span><span class="si">#{</span><span class="n">search_index</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span class='line'>     <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Game </span><span class="si">#{</span><span class="n">search_term</span><span class="si">}</span><span class="s2"> not found.&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">games</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Super Mario Bros.&quot;</span><span class="p">,</span> <span class="s2">&quot;Contra&quot;</span><span class="p">,</span> <span class="s2">&quot;Metroid&quot;</span><span class="p">,</span> <span class="s2">&quot;Mega Man 2&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">search</span><span class="p">(</span><span class="n">games</span><span class="p">,</span> <span class="s2">&quot;Contra&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Options</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">new_game</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">year</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:year</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>    <span class="nb">system</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:system</span><span class="o">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">game</span> <span class="o">=</span> <span class="n">new_game</span><span class="p">(</span><span class="s2">&quot;Street Figher II&quot;</span><span class="p">,</span>
+</span><span class='line'> <span class="ss">year</span><span class="p">:</span> <span class="mi">1992</span><span class="p">,</span>
+</span><span class='line'> <span class="nb">system</span><span class="p">:</span> <span class="s2">&quot;SNES&quot;</span>
+</span><span class='line'> <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>rindex- Returns the index of the last occurrence of the given substring or pattern (regexp) in str. Returns nil if not found. If the second parameter is present, it specifies the position in the string to end the search—characters beyond this point will not be considered.</p>
+
+<p>private methods: all private methods are not accessible for outside objects</p>
+
+<figure class='code'><figcaption><span>Raising Exceptions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">InvalidGameError</span> <span class="o">&lt;</span> <span class="no">StandardError</span><span class="p">;</span> <span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">new_game</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{})</span>
+</span><span class='line'>  <span class="k">raise</span> <span class="no">InvalidGameError</span> <span class="k">if</span> <span class="nb">name</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">year</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:year</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>    <span class="nb">system</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:system</span><span class="o">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">game</span> <span class="o">=</span> <span class="n">new_game</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'><span class="k">rescue</span> <span class="no">InvalidGameError</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;There was a problem creating your new game: </span><span class="si">#{</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>splat arguments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">describe_favorites</span><span class="p">(</span><span class="o">*</span><span class="n">games</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">game</span> <span class="k">in</span> <span class="n">games</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Favorite Game: </span><span class="si">#{</span><span class="n">game</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">describe_favorites</span><span class="p">(</span><span class="s1">&#39;Mario&#39;</span><span class="p">,</span> <span class="s1">&#39;Contra&#39;</span><span class="p">,</span> <span class="s1">&#39;Metroid&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Classes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Game</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{})</span>
+</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+</span><span class='line'>    <span class="vi">@system</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:system</span><span class="o">]</span>
+</span><span class='line'>    <span class="vi">@year</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:year</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Encapsulation</h3>
+
+<p>Passing around data and numbers breaks encapsulation
+If all you are passing around is data- then an options hash should suffice</p>
+
+<h3>Private / Protected Methods</h3>
+
+<p>Private methods in Ruby cannot be called with an explicit receiver.</p>
+
+<figure class='code'><figcaption><span>Private</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">up_vote</span><span class="p">(</span><span class="n">friend</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#in this case, bump karma is private</span>
+</span><span class='line'>  <span class="n">bump_karma</span>
+</span><span class='line'>  <span class="c1">#below will error out</span>
+</span><span class='line'>  <span class="n">friend</span><span class="o">.</span><span class="n">bump_karma</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Protected methods in Ruby CAN be called with an explicit receiver, but not outside the class.</p>
+
+<figure class='code'><figcaption><span>Protected</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">up_vote</span><span class="p">(</span><span class="n">friend</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#in this case, bump karma is private</span>
+</span><span class='line'>  <span class="n">bump_karma</span>
+</span><span class='line'>  <span class="c1">#below will error out</span>
+</span><span class='line'>  <span class="n">friend</span><span class="o">.</span><span class="n">bump_karma</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Inheritance / Super</h3>
+
+<p>A way to DRY up duplication is to use inheritance ot inherit behavior for two classes</p>
+
+<p>Super looks for definitions in the parent class and applies it in the child class</p>
+
+<h3>Active Support</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">anniversary</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">years</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">game</span><span class="o">[</span><span class="ss">:release</span><span class="o">].</span><span class="n">advance</span><span class="p">(</span><span class="ss">years</span><span class="p">:</span> <span class="n">years</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">game</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Contra&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">release</span><span class="p">:</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">anniversary</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>difference between hashes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#Using ActiveSupport, return the difference between Mario&#39;s favorite games and Luigis&#39;s favorite games by implementing the difference_between method.</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">difference_between</span><span class="p">(</span><span class="n">player1</span><span class="p">,</span> <span class="n">player2</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">player1</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">player2</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>when you include something. it is included in the ancestor&#8217;s class.</p>
+
+<h3>Namespacing</h3>
+
+<p>putting functions in a module will prevent namespacing conflicts
+a common pattern is to &#8216;include&#8217; the module inside of the class&#8230; this will expose the module methods as instances methods in the object &#8211; which means the methods will have access to the object&#8217;s internal properties.</p>
+
+<p>when use mixin versus classical class inheritance.
+A class can only have one super class
+inheritance suggests specialization</p>
+
+<p>the extends keyword included as the class methods</p>
+
+<p>use extend to expose class methods as class methods
+use include to expose class methods as instance methods</p>
+
+<p>if you call extend on an object, then it exposes the methods as instance methods on an object</p>
+
+<figure class='code'><figcaption><span>object extend</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">game</span> <span class="o">=</span> <span class="no">Game</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Contra&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#extend the Playable module for the specific game object</span>
+</span><span class='line'><span class="c1">#the module is not available to other objects in that class</span>
+</span><span class='line'><span class="n">game</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Playable</span><span class="p">)</span>
+</span><span class='line'><span class="n">game</span><span class="o">.</span><span class="n">play</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>method hooks allows you to both include and extend modules</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">LibraryUtils</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">add_game</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">remove_game</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this extends the ClassMethods so that it doesn&#39;t need to be called below</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">ClassMethods</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">search_by_game_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">AtariLibrary</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">LibraryUtils</span>
+</span><span class='line'>  <span class="c1">#see-- no extend but still includes the class methods module...</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Active Support Concern</h3>
+
+<p>this allows us to use the include and extend calls without making it so ugly.</p>
+
+<figure class='code'><figcaption><span>ActiveSupport Concern</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;active_support/concern&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">LibraryUtils</span>
+</span><span class='line'><span class="c1">#this ensures that the dependencies are properly resolved...</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">add_game</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">remove_game</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">search_by_game_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>ActiveSupport Concern</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">LibraryLoader</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">load_game_list</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">LibraryUtils</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#included block below is much cleaner</span>
+</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">load_game_list</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">AtariLibrary</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">LibraryUtils</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Some more in depth reading to understand this better&#8230;
+<a href="http://yehudakatz.com/2009/11/12/better-ruby-idioms/">here is an explanation from yehuda katz</a></p>
+
+<p><a href="http://www.fakingfantastic.com/2010/09/20/concerning-yourself-with-active-support-concern/">Concerning Yourself with ActiveSupport::Concern</a></p>
+
+<p>From 2010- <a href="http://www.strictlyuntyped.com/2010/05/tweaking-on-rails-30-2.html">Tweaking on Rails 3.0: #2 ActiveSupport::Concern</a></p>
+
+<h3>Blocks</h3>
+
+<figure class='code'><figcaption><span>Yields</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Library</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:games</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">games</span> <span class="o">=</span> <span class="o">[]</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">games</span> <span class="o">=</span> <span class="n">games</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">each_on_system</span><span class="p">(</span><span class="nb">system</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1">#&#39;yield game&#39;yields the game object</span>
+</span><span class='line'>      <span class="k">yield</span> <span class="n">game</span> <span class="k">if</span> <span class="n">game</span><span class="o">.</span><span class="n">system</span> <span class="o">==</span> <span class="nb">system</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Yields</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">list</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="k">yield</span> <span class="n">game</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Game</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:year</span><span class="p">,</span> <span class="ss">:system</span>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:created_at</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{})</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">name</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:year</span><span class="o">]</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:system</span><span class="o">]</span>
+</span><span class='line'>    <span class="vi">@created_at</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">play</span>
+</span><span class='line'>    <span class="n">emulate</span> <span class="k">do</span> <span class="o">|</span><span class="n">emulator</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">emulator</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">screenshot</span>
+</span><span class='line'>    <span class="n">emulate</span> <span class="k">do</span> <span class="o">|</span><span class="n">emulator</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">emulator</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">emulator</span><span class="o">.</span><span class="n">screenshot</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">emulate</span>
+</span><span class='line'>  <span class="k">begin</span>
+</span><span class='line'>  <span class="n">emulator</span> <span class="o">=</span> <span class="no">Emulator</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">system</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">yield</span> <span class="n">emulator</span>
+</span><span class='line'>    <span class="k">rescue</span> <span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Emulator failed: </span><span class="si">#{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-06T15:33:00-04:00" pubdate data-updated="true">Sep 6<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/codeschool/'>codeschool</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/css/" title="Previous Post: CSS">&laquo; CSS</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/struct/" title="Next Post: Struct">Struct &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/js-promises/">js promises</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://adamjonas.github.com/adamjonas/blog/ruby-bits/';
+        var disqus_url = 'http://adamjonas.github.com/adamjonas/blog/ruby-bits/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

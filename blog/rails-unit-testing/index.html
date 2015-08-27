@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rails Unit Testing - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Rails Testing Verification Testing
+Test First
+Test Driven Design Unit Testing Piecing of our applications in isolation from other parts
+Easy to debug &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://adamjonas.github.com/adamjonas/blog/rails-unit-testing/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adamjonas.github.com/adamjonas" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Rails Unit Testing</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-24T13:20:00-04:00" pubdate data-updated="true">Sep 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>Rails Testing</h3>
+
+<ul>
+<li>Verification Testing</li>
+<li>Test First</li>
+<li>Test Driven Design</li>
+</ul>
+
+
+<h3>Unit Testing</h3>
+
+<ul>
+<li>Piecing of our applications in isolation from other parts</li>
+<li>Easy to debug</li>
+<li>Leads to good documentation</li>
+</ul>
+
+
+<p>WHY TEST::UNIT rather than RSPEC
+- More basic testing library and what rails uses by default
+- similar to other testing libraries from other languages</p>
+
+<figure class='code'><figcaption><span>Assert List</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">assert</span> <span class="o">&lt;</span><span class="n">conditional</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_equal</span> <span class="o">&lt;</span><span class="n">expected</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">actual</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_not_equal</span>
+</span><span class='line'><span class="n">assert_respond_to</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">:</span><span class="o">&lt;</span><span class="nb">method</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_nil</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_not_nil</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_match</span> <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_no_match</span> <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">assert_raise</span><span class="p">(</span><span class="o">&lt;</span><span class="n">error</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span> <span class="o">&lt;</span><span class="n">code</span> <span class="n">to</span> <span class="k">raise</span> <span class="n">error</span><span class="o">&gt;</span> <span class="p">}</span>
+</span><span class='line'><span class="n">assert_kind_of</span><span class="p">(</span><span class="o">&lt;</span><span class="no">Class</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">object</span><span class="o">&gt;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">subject</span><span class="o">&gt;</span><span class="n">_test</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;test/unit&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="o">&lt;</span><span class="no">Subject</span><span class="o">&gt;</span><span class="no">Test</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_</span><span class="o">&lt;</span><span class="n">what_we_are_testing</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">assertion</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#E.g.</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;test/unit&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">BooleanTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_true_is_true</span>
+</span><span class='line'>  <span class="c1">#the 2nd parameter is puts on failure.</span>
+</span><span class='line'>      <span class="n">assert</span> <span class="kp">true</span><span class="p">,</span> <span class="s2">&quot;True should be truthy&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#another e.g.</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;test/unit&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">ConditionalTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_one_is_greater_than_one</span>
+</span><span class='line'>    <span class="n">assert</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;One is not greater than zero&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#e.g.</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MultipleTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_multiple_of</span>
+</span><span class='line'>    <span class="n">assert</span> <span class="no">Multiple</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="s2">&quot;10 should be a multiple of 5&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>The best tests have one assertion.</em></p>
+
+<h3>Red, Green, Refactor</h3>
+
+<ol>
+<li>Red: Write a failing test</li>
+<li>Green: Write enough code to make it pass</li>
+<li>Refactor: Refactor your code</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>assert_respond_to</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_humanize_function_added_to_string</span>
+</span><span class='line'><span class="c1"># assert_respond_to &lt;object&gt;, &lt;:method&gt;</span>
+</span><span class='line'>  <span class="n">assert_respond_to</span> <span class="s2">&quot;blah&quot;</span><span class="p">,</span> <span class="ss">:humanize</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Assert_match</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_zombify_brains</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;I love your arms&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#assert_match &lt;regex&gt;, &lt;string&gt;</span>
+</span><span class='line'>    <span class="n">assert_match</span> <span class="sr">/brains/</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">zombify</span><span class="o">.</span><span class="n">humanize</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_zombify_upcase</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Hello world&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">zombify</span>
+</span><span class='line'>    <span class="c1">#assert_equal &quot;&lt;expected string&gt;&quot;, &quot;&lt;actual string&gt;&quot;</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;HELLO WORLD BRAINS&quot;</span><span class="p">,</span> <span class="n">z</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>assert_raise</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1">#assert_raise(RuntimeError) { &quot;zombie&quot;.humanize }</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_brains_in_zombify_raises_error</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;BRAINS&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">assert_raise</span><span class="p">(</span><span class="no">RuntimeError</span><span class="p">)</span> <span class="p">{</span> <span class="n">z</span><span class="o">.</span><span class="n">zombify</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ZombifierTest</span> <span class="o">&lt;</span> <span class="ss">Test</span><span class="p">:</span><span class="ss">:Unit</span><span class="o">::</span><span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_zombify_returns_a_string</span>
+</span><span class='line'>    <span class="n">z</span> <span class="o">=</span> <span class="no">Zombifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;I like knees&#39;</span><span class="p">)</span>
+</span><span class='line'>   <span class="c1">#assert_kind_of(&lt;Class&gt;, &lt;object&gt;)</span>
+</span><span class='line'>    <span class="n">assert_kind_of</span><span class="p">(</span><span class="nb">String</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">zombify</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-24T13:20:00-04:00" pubdate data-updated="true">Sep 24<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/codeschool/'>codeschool</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/lessons-from-97-things-every-programmer-should-know/" title="Previous Post: Lessons from 97 things every programmer should know">&laquo; Lessons from 97 things every programmer should know</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/rspec/" title="Next Post: RSpec">RSpec &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/js-promises/">js promises</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://adamjonas.github.com/adamjonas/blog/rails-unit-testing/';
+        var disqus_url = 'http://adamjonas.github.com/adamjonas/blog/rails-unit-testing/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

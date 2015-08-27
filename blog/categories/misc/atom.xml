@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: misc | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/misc/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[feyonce]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/feyonce/"/>
+    <updated>2014-03-27T15:43:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/feyonce</id>
+    <content type="html"><![CDATA[<h2>cancan's bitmask</h2>
+
+<ul>
+<li><p><a href="https://github.com/ryanb/cancan/issues/145">bitmask</a></p></li>
+<li><p>by the way, it appears that cancan has been abandoned. We ended up rolling out our authorization.</p></li>
+</ul>
+
+
+<h2>devise</h2>
+
+<ul>
+<li>You can override the default behaviour by creating an after_sign_in_path_for <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-and-sign-out">via</a></li>
+</ul>
+
+
+<h3>Switch to omniauth</h3>
+
+<ul>
+<li>we made a major overhaul by switching to omniauth rather than using the devise email &amp; password.
+
+<ul>
+<li>As per the <a href="https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview#using-omniauth-without-other-authentications">omniauth wiki</a> I needed to rebuild many of the paths that devise had created for us via the <code>registerable</code> and <code>Database Authenticatable</code> modules and reconfigure the appropriate controllers as well.</li>
+<li>To its credit, the <code>Devise::TestHelpers, type: :controller</code> held up through the transition, which was a big help.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Bundle clean is the jam</h3>
+
+<ul>
+<li><code>bundle clean --force</code></li>
+<li><code>bundle update</code>
+Saved my @ss.</li>
+</ul>
+
+
+<h3>Before block versus let in rspec</h3>
+
+<ul>
+<li>use <code>let</code> to define all of the dependent objects, and to use <code>before do</code> to setup needed configuration or any mocks/stubs needed by the examples. <a href="http://stackoverflow.com/a/5359979/1496757">via the comments section</a></li>
+</ul>
+
+
+<h3>Transient Factory Girl Properties</h3>
+
+<p>I needed a way to pass in some parameters into my factory. Enter transient properties.</p>
+
+<ul>
+<li><a href="http://robots.thoughtbot.com/factory-girl-2-2-your-new-best-friend">This helped</a></li>
+<li><a href="http://stackoverflow.com/a/9693284/1496757">And</a></li>
+<li><a href="http://rubydoc.info/gems/factory_girl/2.3.2/file/GETTING_STARTED.md#Transient_Attributes">And the docs</a></li>
+</ul>
+
+
+<p>```ruby The Eventual Code
+factory :track_with_lessons do
+  ignore do</p>
+
+<pre><code>lesson_count 3
+topic_count 2
+</code></pre>
+
+<p>  end</p>
+
+<p>  after(:create) do |track, evaluator|</p>
+
+<pre><code>evaluator.topic_count.times { track.add_topic(create(:topic_with_lessons, lesson_count: evaluator.lesson_count))}
+track.save!
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>A gotcha: The <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#transient-attributes">getting started readme</a> was outdated so I was trying to use <code>transient do</code> which was not working. It appears that this will be fixed in the next release...</p>
+
+<h3>Capybara within block</h3>
+
+<p>When searching for an element with a div like <code>within('div#first.drawer') do</code> it truly means within, not like this can be the same element you are looking for, it has to be nested inside this element.</p>
+
+<h3>Testing with JSON</h3>
+
+<p><a href="http://kakubei.blogspot.com/2013/05/testing-controller-with-json-data-draft.html">Found this</a> to be a good place to start but I couldn't get his method to actually work.</p>
+
+<p><code>ruby What he did
+it "updates empty summary field" do
+  @incoming_params[:id] = @dvd.id
+  @incoming_params[:summary] =  'some summary'
+  post 'entry/update', @incoming_params.to_json
+  @entry.reload
+  expect(@entry.summary).to eq 'some summary'
+end
+</code></p>
+
+<p>```ruby This is what worked for me
+describe 'POST #topic_order' do
+  it 'saves a new topic order' do</p>
+
+<pre><code>sign_in_teacher
+track = create(:track_with_lessons)
+original_order = track.topic_order
+post :topic_order, "data"=&gt; {"topic_order"=&gt;"#{track.topic_order.last},#{track.topic_order.first}", "track_id"=&gt;"#{track.id}"}, format: :json
+track.reload
+expect(track.topic_order).to eq original_order.reverse
+</code></pre>
+
+<p>  end
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

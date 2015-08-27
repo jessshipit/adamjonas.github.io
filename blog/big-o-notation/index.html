@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Big O Notation - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="What is it? Let me say it a few different ways&#8230; Big-O measures how well an operation will “scale” when you increase the amount of “things” it &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://adamjonas.github.com/adamjonas/blog/big-o-notation/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adamjonas.github.com/adamjonas" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Big O Notation</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-29T22:59:00-05:00" pubdate data-updated="true">Dec 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>What is it? Let me say it a few different ways&#8230;</h3>
+
+<ul>
+<li>Big-O measures how well an operation will “scale” when you increase the amount of “things” it operates on.</li>
+<li>Big-O can be used to describe how fast an algorithm will run, or it can describe other behavior such as how much memory an algorithm will use.</li>
+</ul>
+
+
+<blockquote><p>Big O notation refers to the asymptotic upper bound (see below for fuller explanation), which means that it&#8217;s a cap on how much the time complexity will grow. If we say that a function is O(1), then there&#8217;s no growth and the function will always take a fixed amount of time to complete. If we say that a function is O(N) then if N doubles, the function&#8217;s time complexity at most will double. It may be less, but never more. That&#8217;s the upper bound of an algorithm, and it&#8217;s the most common notation. <a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">credit</a></p></blockquote>
+
+<h3>Asymptotic Bounds</h3>
+
+<ul>
+<li>By removing the constants from an equation, we can focus on the part of the measure that grows and derive a simplified asymptotic bound on the algorithm.</li>
+<li><strong>The reference to bounds is pretty much a reference to the best-case (lower bound, also known as Omega -> Ω) and worst-case (upper bound, also known as Big O) scenarios.</strong>
+
+<ul>
+<li><strong>If these end up being the same, we can call it theta -> Θ.</strong></li>
+</ul>
+</li>
+<li>For more on Asymptotic Bounds, read a <a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">good explanation</a>.</li>
+</ul>
+
+
+<h3>Time complexity</h3>
+
+<ul>
+<li><p>Time complexity is a measure of efficiency.</p>
+
+<ul>
+<li>In a list of N items, how many times do I need to go through this list to get the task done?
+
+<ul>
+<li>e.g. which number is the smallest. Only once I pass through the entire list can I figure out which is the smallest. <em>It must make N comparisons.</em></li>
+<li>Selection sort and bubble sort are N<sup>2</sup> algorithms.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><em>O(1)</em> -> Constant Time -> describes an algorithm that will always execute in the same time regardless of the size of the input data set.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>This will never change no matter the size</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">checking_nil</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">array</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another e.g. determining if a number is even or odd.</p>
+
+<ul>
+<li><em>O(log n)</em> -> logarithmic time -> Any algorithm which cuts the problem in half each time is O(log n). The operation will take longer as the input size increases, but once the input gets fairly large it won&#8217;t change enough to worry about. If you double n, you have to spend an extra amount of time t to complete the task. If n doubles again, the time it takes to complete the task won’t double, but will increase by a constant amount. (e.g. a binary search tree
+
+<ul>
+<li>A <em>Binary Search Tree</em> is a tree comprised of multiple nodes with one root node to start with.  Each node has a value, left node, and a right node.  The left node value has to be less than the current node value, while the right node value is greater than the current.  The biggest concern with a binary search tree is balancing.  If the tree becomes unbalanced, the O(log(n)) benefit can become O(n) if the tree unbalanced (a tree with only a right path).
+
+<ul>
+<li><a href="http://styliii.com/blog/2012/12/26/what-is-a-binary-search-tree/">further Binary Search Tree reading</a>)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><em>O(N)</em> -> Linear Time -> the larger the input, the longer it takes. AKA it will grow linearly and in direct proportion to the size of the input data set.</li>
+<li><em>O(n log n)</em> means that you’re performing an <em>O(log n)</em> operation for each item in your input. Most (efficient) sort algorithms are an example of this including quicksort (in the average and best case), heapsort and merge sort.</li>
+<li>*O(N<sup>2)*</sup> represents an algorithm whose performance is directly proportional to the square of the size of the input data set. Every time n doubles, the operation takes four times as long. (e.g.s are comparison algorithms like quicksort and bubble sort)</li>
+<li><em>O(2<sup>N)*</sup> -> exponential time -> denotes an algorithm whose growth will double with each additional element in the input data set. Totally impractical for any reasonably large input size </em>n*.</li>
+<li><em>O(n!)</em> -> factorial time -> for all possible permutations&#8230; that&#8217;s just crazy.</li>
+</ul>
+
+
+<p>Constant Time -> O(1) &lt; Linear Time -> O(n) &lt; Linearithmic Time -> O(nlogn) &lt; Quadratic -> O(n<sup>2)</sup></p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Big-O </th>
+<th> Operations for 10 “things” </th>
+<th> Operations for 100 “things” </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> O(1) </td>
+<td> 1 </td>
+<td> 1 </td>
+</tr>
+<tr>
+<td></td>
+<td> O(log n) </td>
+<td> 3 </td>
+<td> 7 </td>
+</tr>
+<tr>
+<td></td>
+<td> O(n) </td>
+<td> 10 </td>
+<td> 100 </td>
+</tr>
+<tr>
+<td></td>
+<td> O(n log n) </td>
+<td> 30 </td>
+<td> 700 </td>
+</tr>
+<tr>
+<td></td>
+<td> O(n<sup>2)</sup> </td>
+<td> 100 </td>
+<td> 10000 </td>
+</tr>
+<tr>
+<td></td>
+<td> O(2<sup>n)</sup> </td>
+<td> 1024 </td>
+<td> 2<sup>100</sup> – a lot! </td>
+</tr>
+<tr>
+<td></td>
+<td> O(n!) </td>
+<td> 3628800 </td>
+<td> 100! – also a lot! </td>
+</tr>
+</tbody>
+</table>
+
+
+<p><a href="http://therecyclebin.files.wordpress.com/2008/05/time-complexity.png"><img class="left" src="/images/time-complexity.png" title="Time Complexity" ></a></p>
+
+<h2>Further reading:</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/107165/big-o-for-eight-year-olds/107189#107189">stackoverflow</a></li>
+<li><a href="http://rob-bell.net/2009/06/a-beginners-guide-to-big-o-notation/">Rob Bell&#8217;s Beginner&#8217;s Guide</a></li>
+<li><a href="http://eternallyconfuzzled.com/arts/jsw_art_bigo.aspx">This nails asymptotic notation</a></li>
+<li><a href="http://recursive-design.com/blog/2010/12/07/comp-sci-101-big-o-notation/">Pulled a lot from here</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-29T22:59:00-05:00" pubdate data-updated="true">Dec 29<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/algorithm/'>algorithm</a>, <a class='category' href='/blog/categories/bigo/'>bigO</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/back-to-gitbo/" title="Previous Post: Back to Gitbo">&laquo; Back to Gitbo</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/parallelism/" title="Next Post: Parallelism">Parallelism &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/js-promises/">js promises</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://adamjonas.github.com/adamjonas/blog/big-o-notation/';
+        var disqus_url = 'http://adamjonas.github.com/adamjonas/blog/big-o-notation/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

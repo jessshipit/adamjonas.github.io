@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: heroku | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/heroku/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[heroku deployment]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/heroku-deployment/"/>
+    <updated>2012-10-18T11:26:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/heroku-deployment</id>
+    <content type="html"><![CDATA[<p>```</p>
+
+<h1>Initialize the repository</h1>
+
+<p>$ git init</p>
+
+<h1>Add new files to the repo</h1>
+
+<p>$ git add .</p>
+
+<h1>See the status</h1>
+
+<p>$ git status</p>
+
+<h1>Commit the changes with the commit message "testing"</h1>
+
+<p>$ git commit -m "testing"</p>
+
+<h1>Create a new Heroku app</h1>
+
+<p>$ heroku create</p>
+
+<h1>Rename the Heroku app</h1>
+
+<h1>Example: $ heroku rename tom-messages</h1>
+
+<p>$ heroku rename <name of url></p>
+
+<h1>Add a (free) PostgreSQL database to your app</h1>
+
+<p>$ heroku addons:add heroku-postgresql</p>
+
+<h1>See the details of your new database</h1>
+
+<p>$ heroku pg:info</p>
+
+<h1>Promote your new database to the "DATABASE_URL" global constant</h1>
+
+<h1>Example: $ heroku pg:promote HEROKU_POSTGRESQL_BRONZE_URL</h1>
+
+<p>$ heroku pg:promote <YOUR_HEROKU_URL></p>
+
+<h1>Push your repo to Heroku, start your app</h1>
+
+<p>$ git push heroku master</p>
+
+<h1>Open the app in your browser</h1>
+
+<p>$ heroku open</p>
+
+<h1>See your app's log, keep the stream open by using "--tail"</h1>
+
+<p>$ heroku logs --tail</p>
+
+<h1>Set up the database for first use, running "DataMapper.auto_migrate!"</h1>
+
+<h1>Example: $ http://ajonas.herokuapp.com/reset</h1>
+
+<p>$ http://<project-name>.herokuapp.com/reset</p>
+
+<h1>See your messages!</h1>
+
+<h1>Example: $ http://ajonas.herokuapp.com</h1>
+
+<p>$ http://<project-name>-messages.herokuapp.com
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[haw-day1]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/haw-day1/"/>
+    <updated>2012-07-31T15:15:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/haw-day1</id>
+    <content type="html"><![CDATA[<h3>Deploying to Heroku</h3>
+
+<p>Make sure to modify the <a href="https://devcenter.heroku.com/articles/mongohq#mongoid">mongoid.yml file</a> to config the production environment.</p>
+
+<p><strong><em>2 major issues with the mongoid deploy:</em></strong></p>
+
+<ol>
+<li>Issue with ruby version was the first error we encountered... need to keep in that <em>mongoid only supports 1.9.3</em> this ended up being a big issue.</li>
+</ol>
+
+
+<p>In --> heroku logs --tail:
+<code>
+ActionView::Template::Error (undefined method `[]' for nil:NilClass):
+ 11:   &lt;/thead&gt;
+ 10:     &lt;/tr&gt;
+ 12:
+ 13:   &lt;% @airbrake_errors.each_with_index do |a_e, index| %&gt;
+</code></p>
+
+<ol>
+<li>The other issue was to reconfigure the setting below from false to true as the</li>
+</ol>
+
+
+<p><code>ruby config/environments/production.rb
+ config.assets.compile = true
+</code></p>
+
+<p>```
+ ActionView::Template::Error (images/apple-touch-icon-144x144-precomposed.png isn't precompiled):</p>
+
+<p> &lt;%= favicon_link_tag 'images/apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %></p>
+
+<p> app/views/layouts/application.html.erb:19:in `<em>app_views_layouts_application_html_erb</em>__1957659516384225917_21931620'
+```</p>
+
+<h3>Rewriting the writer</h3>
+
+<p>```ruby Change the tag writer
+def tag_names=(string_of_names)</p>
+
+<pre><code>string_of_names.split(", ").each do |tag_name|
+  self.tags.find_or_create_by(name: tag_name)
+  #the find_or_create_by wasn't creating unique tag names
+  #the reason was because we were linking too many methods together
+  #mongoid is finicky
+end
+</code></pre>
+
+<p>  end</p>
+
+<h1>was changed to...</h1>
+
+<p>def tag_names=(string_of_names)</p>
+
+<pre><code>self.tags &lt;&lt; string_of_names.split(", ").collect do |tag_name|
+  tag = Tag.find_or_create_by(name: tag_name)
+end
+</code></pre>
+
+<p>  end</p>
+
+<h1>but we discoved that the tags were no disappearing if they were left off the form</h1>
+
+<p>def tag_names=(string_of_names)
+   #later we added this line because tags were persisting even if we tried to edit them.</p>
+
+<pre><code>self.tags.delete_all
+self.tags &lt;&lt; string_of_names.split(", ").collect do |tag_name|
+  tag = Tag.find_or_create_by(name: tag_name)
+end
+</code></pre>
+
+<p>  end
+<code>
+</code>ruby the last td was changed...
+ &lt;% @airbrake_errors.each_with_index do |a_e, index| %></p>
+
+<pre><code>&lt;tr&gt;
+  &lt;td&gt;
+    &lt;%= a_e.tags.collect{ |tag|
+        link_to(tag.name, tag_path(tag)) #=&gt; "&lt;a href="adasda"&gt;Tag&lt;/a&gt;"
+    }.join(", ").html_safe %&gt;
+    &lt;/td&gt;
+    # this needs to be better understood-- TODO
+</code></pre>
+
+<p>```</p>
+
+<h3>HTTP Authentication</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku">This did it</a>.</li>
+</ul>
+
+
+<h3>Pushing the seed file to heroku</h3>
+
+<p><code>
+♕ heroku run rake db:seed
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rake tasks]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/rake-tasks/"/>
+    <updated>2012-07-31T11:54:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/rake-tasks</id>
+    <content type="html"><![CDATA[<p><code>ruby This is a rake task file...
+task :load_errors =&gt; :environment do
+  AirbrakeError.import_from_airbrake
+end
+</code></p>
+
+<p>In heroku I would run this:
+```
+♕ heroku run rake load_errors</p>
+
+<h1>NOT</h1>
+
+<p>♕ heroku run rake task bandaid
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Heroku]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/heroku/"/>
+    <updated>2012-07-24T15:07:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/heroku</id>
+    <content type="html"><![CDATA[<h3>Before you start!</h3>
+
+<p>Keep in mind that heroku doesn't work with sqlite. This should be changed out if you are going to use heroku and before you push. If you forget, you need to change out the sqlite3 gem for the pg gem. Commit and re-push.</p>
+
+<p><code>
+git remote add heroku git@heroku.com:gearshare.git
+fatal: remote heroku already exists.
+</code>
+<a href="http://digitalsanctum.com/2010/05/05/heroku-no-app-specified/">See</a></p>
+
+<p>```</p>
+
+<h1>this initializes the heroku repo</h1>
+
+<p>♕ heroku create <appname> #adding the app name will allow you to name it off the bat otherwise heroku will assign it to you... like below
+Creating ancient-tor-4530... done, stack is cedar
+http://ancient-tor-4530.herokuapp.com/ | git@heroku.com:ancient-tor-4530.git
+Git remote heroku added</p>
+
+<h1>check to see what remotes I've set up</h1>
+
+<p>♕ git remote -v
+heroku  git@heroku.com:ancient-tor-4530.git (fetch)
+heroku  git@heroku.com:ancient-tor-4530.git (push)
+origin  https://github.com/ajonas04/<em>appname</em>.git (fetch)
+origin  https://github.com/ajonas04/<em>appname</em>.git (push)</p>
+
+<h1>need to remove heroku so that I can rename it</h1>
+
+<p>♕ git remote rm heroku</p>
+
+<h1>add new name</h1>
+
+<p>♕ git remote add heroku git@heroku.com:<em>appname</em>.git
+```</p>
+
+<p>I was missing this command:
+<code>
+heroku run rake db:migrate
+</code>
+as outlined in the rails3 basics <a href="https://devcenter.heroku.com/articles/rails3">here...</a></p>
+
+<p>See how to point domains to your heroku project <a href="https://devcenter.heroku.com/articles/custom-domains">here</a>.</p>
+
+<p><strong>Linking Local Branches to Remote Apps:</strong>*</p>
+
+<p>Heroku is designed only to accept pushes from master. In order to push from a feature branch you need to do something like this:
+<code>
+♕ git push heroku branch_name:master
+</code>
+This says push branch named 'branch_name' to heroku but call it master. <a href="https://devcenter.heroku.com/articles/multiple-environments#advanced-linking-local-branches-to-remote-apps">Explanation</a></p>
+
+<p>Also look at rake tasks for heroku... its on the rake task post...</p>
+
+<h3>Pushing the seed file to heroku</h3>
+
+<p><code>
+♕ heroku run rake db:seed
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

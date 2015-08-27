@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: airbrake | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/airbrake/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HAW- Day0]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/haw-day0/"/>
+    <updated>2012-07-30T10:13:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/haw-day0</id>
+    <content type="html"><![CDATA[<p>Pivotal:
+Move from icebox to current
+Click Start
+Each story is either a feature, a bug, or a chore</p>
+
+<p>Generate our app
+Some sort of layout
+beginning data model
+- main model
+- tag model
+Import script to retreive that data off the API</p>
+
+<p>Views/Controllers
+- index view
+- tagging</p>
+
+<p>Keep commits small and never develop in the master branch</p>
+
+<p>Git:
+Git create the repo
+git clone the repo
+git merge mongoid-setup --no-ff #no FF- will show the branch even after the commmit</p>
+
+<p>Mongoid-
+rails new myapp -O (--skip-active-record)
+<code>
+gem 'mongoid', "~&gt; 3.0.0"
+</code></p>
+
+<p>Twitter Bootstrap
+gem twitter-bootstrap</p>
+
+<p>Airbrake Gem</p>
+
+<p>Powder Gem
+gem install powder
+makes app available at airbrake.dev</p>
+
+<p>Immediately want to start creating the 'error model', but error is a terrible title so call it airbrake model</p>
+
+<p>Routes:
+change index to errors#index</p>
+
+<p>Generate airbrake_errors model
+Generate errors_controller
+Generate bootstrap
+<code>ruby Fluid Layout
+rails g bootstrap layout application fluid
+</code>
+<code>ruby In Console
+AirbrakeError.create(:name =&gt; "Test")
+</code></p>
+
+<p>in the test unit, want to check that AirbrakeError.delete_all
+test to make sure the airbrake API gem tried to connect</p>
+
+<p><code>ruby
+def AirbrakeError.import_from_airbrake
+</code></p>
+
+<p>Create initializer to config the connection to airbrake</p>
+
+<h3>Next Steps</h3>
+
+<p>build out the bootstrap layout
+build the import script</p>
+
+<p>Ruby Debugger:
+gem debugger at the bottom of the gem file
+bundle</p>
+
+<p>inspect the hashiemashie to see how the objects are composed</p>
+
+<p><code>ruby
+def self.import_from_airbrake
+  a = AirbrakeAPI::Client.new
+end
+</code></p>
+
+<p>Airbrake Doc:
+Can make calls to get a list of errors in general and a call to get more info about an error.
+-The api in general isn't all that detailed.</p>
+
+<p>There is a diff between .error('id') and .errors -- the difference is in what is returned-- i.e. the backtrace etc.</p>
+
+<p>check out what notices because we are probably interested more in the notice than the error itself.</p>
+
+<p><code>ruby Maybe Something Like This?
+def ignore
+  AirbrakeAPI.update(self.id, :group =&gt; { :resolved =&gt; true})
+end
+</code></p>
+
+<p>Diff between error and notice: an error is a unique conceptual item and a notice is the occurance of the error</p>
+
+<p>```ruby
+h = {:a => 1}
+  h.each do |k,v|
+  end
+b[k] = v</p>
+
+<h1>this is the same as the dynamic dispatching method</h1>
+
+<p>airbrake.send("#{key}=", value)
+```</p>
+
+<p>From there let's go to the view and start formatting the output</p>
+
+<p>Ruby alias method-- this is built into ruby not rails or mongoid
+<code>ruby airbrake_error.rb
+alias :name :error_message
+</code></p>
+
+<p>TIPS and Tricks section:
+Gem Server shows the documentation locally</p>
+
+<p><a href="http://www.codinghorror.com/">Jeff Atwood</a></p>
+
+<p>LOOK-UP 'Client', 'tap', 'send'
+dynamic dispatch and the send method
+rails cycle
+Moped::BSON: -- how it generates its unique IDs</p>
+
+<p>GIT STUFF:
+<code>
+git pull --rebase #=&gt; if the remote has merges, rewind and then move back forward
+git reset --hard HEAD #=&gt; go to the last checkout (HEAD of the branch) without the warnings (hard)
+git stash # save changes
+git stash pop #restore changes
+</code></p>
+
+<p><code>
+♕ git add .
+♕ git status
+♕ git checkout -b link-to-airbrake
+M   app/models/airbrake_error.rb
+M   app/views/errors/index.html.erb
+Switched to a new branch 'link-to-airbrake'
+♕ git add .
+♕ git commit -am "added airbrake_url method and link_to in views"
+♕ git push
+♕ git checkout master
+♕ git merge link-to-airbrake
+♕ git push
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Airbrake]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/airbrake/"/>
+    <updated>2012-07-27T12:23:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/airbrake</id>
+    <content type="html"><![CDATA[<p>Airbrake is basically wrapped around a begin rescue block...
+The app doesn't break AND the error is sent to the application.</p>
+
+<p>There are errors in apps that happen that you don't care about, then there are show-stoppers.
+- Solution: rebuild a dashboard to ignore the errors or use airbrake to config their own errors.</p>
+
+<p>?How do you decide what kinds of errors are important
+<code>
+AirbrakeAPI::Errors
+</code></p>
+
+<p>after you instantite the credientials, you need to create the connections
+- learned this via the spec/client_spec</p>
+
+<p>Keep running into the <a href="http://www.dzone.com/snippets/hashdeepmerge">deep_merge</a> undefined method. According to their specs, Airbreak assumes that the gems in the specs should be included in the library. They assume that people won't be using this outside of rails, which is a big assumption.</p>
+
+<p>HashieMashie- hashes behave as both as regular hash and as an object</p>
+
+<p>Once the proper gems are required it works properly.
+If this library had corrected all of the dependencies in it's stand along library, this would have been fine...</p>
+
+<p><code>
+♕ gem install airbrake-api
+♕ irb
+ :001 &gt; require 'active_support'
+ =&gt; true
+ :002 &gt; require 'active_support/core_ext'
+ =&gt; true
+ :003 &gt; require 'i18n'
+ =&gt; false
+ :004 &gt; require 'airbrake'
+ =&gt; true
+ :005 &gt; require 'airbrake-api'
+ =&gt; true
+ :006 &gt; AirbrakeAPI.configure(:account =&gt; 'gearshare', :auth_token =&gt; 'authcodehere', :secure =&gt; true)
+ =&gt; AirbrakeAPI
+ :007 &gt; AirbrakeAPI.new
+NoMethodError: undefined method `new' for AirbrakeAPI:Module
+ :008 &gt; AirbrakeAPI::Client.new
+ =&gt; #&lt;AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"&gt;
+ :009 &gt; a = _
+ =&gt; #&lt;AirbrakeAPI::Client:0x007fe102901880 @account="gearshare", @auth_token="authcode", @secure=true, @connection_options={}, @adapter=:net_http, @user_agent="AirbrakeAPI Ruby Gem 4.1.0"&gt;
+ :010 &gt; a.errors
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

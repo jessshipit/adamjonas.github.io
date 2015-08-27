@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>haw-day1 - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Deploying to Heroku Make sure to modify the mongoid.yml file to config the production environment. 2 major issues with the mongoid deploy: Issue with &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://adamjonas.github.com/adamjonas/blog/haw-day1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adamjonas.github.com/adamjonas" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Haw-day1</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-31T15:15:00-04:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>Deploying to Heroku</h3>
+
+<p>Make sure to modify the <a href="https://devcenter.heroku.com/articles/mongohq#mongoid">mongoid.yml file</a> to config the production environment.</p>
+
+<p><strong><em>2 major issues with the mongoid deploy:</em></strong></p>
+
+<ol>
+<li>Issue with ruby version was the first error we encountered&#8230; need to keep in that <em>mongoid only supports 1.9.3</em> this ended up being a big issue.</li>
+</ol>
+
+
+<p>In &#8211;> heroku logs &#8211;tail:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ActionView::Template::Error (undefined method `[]' for nil:NilClass):
+</span><span class='line'> 11:   &lt;/thead&gt;
+</span><span class='line'> 10:     &lt;/tr&gt;
+</span><span class='line'> 12: 
+</span><span class='line'> 13:   &lt;% @airbrake_errors.each_with_index do |a_e, index| %&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>The other issue was to reconfigure the setting below from false to true as the</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">compile</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="ss">ActionView</span><span class="p">:</span><span class="ss">:Template</span><span class="o">::</span><span class="no">Error</span> <span class="p">(</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span> <span class="n">isn</span><span class="s1">&#39;t precompiled):</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> &lt;%= favicon_link_tag &#39;</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span><span class="s1">&#39;, :rel =&gt; &#39;</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="n">precomposed</span><span class="s1">&#39;, :type =&gt; &#39;</span><span class="n">image</span><span class="o">/</span><span class="n">png</span><span class="s1">&#39;, :sizes =&gt; &#39;</span><span class="mi">144</span><span class="n">x144</span><span class="s1">&#39; %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> app/views/layouts/application.html.erb:19:in `_app_views_layouts_application_html_erb___1957659516384225917_21931620&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Rewriting the writer</h3>
+
+<figure class='code'><figcaption><span>Change the tag writer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1">#the find_or_create_by wasn&#39;t creating unique tag names</span>
+</span><span class='line'>      <span class="c1">#the reason was because we were linking too many methods together</span>
+</span><span class='line'>      <span class="c1">#mongoid is finicky</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># was changed to...</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># but we discoved that the tags were no disappearing if they were left off the form</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>   <span class="c1">#later we added this line because tags were persisting even if we tried to edit them.</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">delete_all</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="o">&lt;</span><span class="sx">% @airbrake_errors.each_with_index </span><span class="k">do</span> <span class="o">|</span><span class="n">a_e</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">    &lt;tr&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">td</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="sx">%= a_e.tags.collect{ |tag|</span>
+</span><span class='line'><span class="sx">         link_to(tag.name, tag_path(tag)) #=</span><span class="o">&gt;</span> <span class="s2">&quot;&lt;a href=&quot;</span><span class="n">adasda</span><span class="s2">&quot;&gt;Tag&lt;/a&gt;&quot;</span>
+</span><span class='line'>      <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">     &lt;/td&gt;</span>
+</span><span class='line'>      <span class="c1"># this needs to be better understood-- TODO</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>HTTP Authentication</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku">This did it</a>.</li>
+</ul>
+
+
+<h3>Pushing the seed file to heroku</h3>
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">seed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-31T15:15:00-04:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/heroku/'>heroku</a>, <a class='category' href='/blog/categories/mongoid/'>mongoid</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/rake-tasks/" title="Previous Post: Rake tasks">&laquo; Rake tasks</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/haw-day2/" title="Next Post: HAW-day2">HAW-day2 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/js-promises/">js promises</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://adamjonas.github.com/adamjonas/blog/haw-day1/';
+        var disqus_url = 'http://adamjonas.github.com/adamjonas/blog/haw-day1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

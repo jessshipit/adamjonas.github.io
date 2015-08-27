@@ -1,0 +1,2719 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Git Services Service Hooks
+github services repo Dan Integration Tests test an app end to end
+deal with your libs and your code
+hit external services &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://adamjonas.github.com/adamjonas/blog/page/13/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adamjonas.github.com/adamjonas" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day32/">FIS Day32</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T11:12:00-05:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Git Services</h3>
+
+<ul>
+<li><a href="https://help.github.com/articles/post-receive-hooks">Service Hooks</a></li>
+<li><a href="https://github.com/github/github-services">github services repo</a></li>
+</ul>
+
+
+<h2>Dan Integration Tests</h2>
+
+<ul>
+<li>test an app end to end</li>
+<li>deal with your libs and your code</li>
+<li><p>hit external services</p>
+
+<ul>
+<li>unit tests may not test bad arguments</li>
+<li>bad db queries or scope</li>
+<li>issues with external service</li>
+</ul>
+</li>
+<li><p>Unit tests are fast</p></li>
+<li><p>speed</p>
+
+<ul>
+<li>don&#8217;t use external services like the DB, that is what mocks and stubs are for</li>
+</ul>
+</li>
+<li><p>mocks, stubs and <a href="https://github.com/freerange/mocha">mocha</a></p></li>
+<li><p>controller specs -> unit tests for controllers</p>
+
+<ul>
+<li>we have 20:1 Unit:integration test ratio</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Factory Girl</h3>
+
+<ul>
+<li>reuseable test data</li>
+<li>defines attributes for a class</li>
+<li>can define relationships, like a user has an address</li>
+<li><code>FactoryGirl.create(:user)</code></li>
+<li><code>FactoryGirl.build(:user)</code></li>
+<li><code>FactoryGirl.build_stubbed(:user)</code></li>
+<li><code>FactoryGirl.attributes_for(:user)</code></li>
+</ul>
+
+
+<h3>Mocha-> stubs and mocks</h3>
+
+<ul>
+<li><a href="http://gofreerange.com/mocha/docs/">RDoc</a></li>
+<li>stubs -> sit in for this method, whenever you call this method, return this val
+
+<ul>
+<li>user.bank_balance => returns 100.
+
+<ul>
+<li><code>MyClass.stub(:x =&gt; "ABC")</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>mocks -> like stubs, but must be called the specified number of times</p>
+
+<ul>
+<li>a mock if it is called or not called will fail a test</li>
+<li>use when you need something that is a little more specific
+
+<ul>
+<li><code>MyClass.expects(:y).with("arg").returns("ABC")</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Mocha::Configuation.prevent(:stubbing_non_existent_method)</code></p></li>
+</ul>
+
+
+<h3>In Summary</h3>
+
+<ul>
+<li>Test basic behavior with intergration tests</li>
+<li>Test complex behavior with unit tests</li>
+</ul>
+
+
+<h2>Kevin</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">args</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">selector</span><span class="p">),</span> <span class="n">attrs</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">attrs</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="n">job_doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html">open struct object</a></p>
+
+<ul>
+<li><a href="http://www.rubyquiz.com/quiz81.html">ruby quiz on open struct</a></li>
+</ul>
+</li>
+<li><p><a href="http://amsul.github.com/pickadate.js/">Datepicker</a></p></li>
+</ul>
+
+
+<h3>Libraries to look at for Gitbo</h3>
+
+<ul>
+<li><a href="https://github.com/ender-js/Ender">Ender</a></li>
+<li><a href="https://github.com/twitter/bower">Bower</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/caching/">Caching</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T11:11:00-05:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="http://www.mnot.net/cache_docs/">Caching tutorial</a></li>
+<li><a href="http://tomayko.com/writings/things-caches-do">Things caches do</a></li>
+</ul>
+
+
+<h1>Fragment Caching- RailsCast 90</h1>
+
+<p><strong>Fragment caching is done at the the view level</strong></p>
+
+<ul>
+<li>Change dev environment file to:
+
+<ul>
+<li><code>config.action_controller.perform_caching = true</code></li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Wrap the div with cache tag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="s2">&quot;recent_articles&quot;</span> <span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;div id=&quot;recent_articles&quot;&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="no">Recent</span> <span class="no">Articles</span><span class="o">&lt;</span><span class="sr">/h3&gt;</span>
+</span><span class='line'><span class="sr">  #more code</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>cache will change in every url</li>
+</ul>
+
+
+<h3>Expiring fragment cache</h3>
+
+<p>in the articles controller#show</p>
+
+<ul>
+<li>in the controller
+
+<ul>
+<li>expire_fragment(&#8220;recent_articles&#8221;)
+
+<ul>
+<li>move into a sweeper like in episode 89</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>auto-expiring fragment cache</p>
+
+<figure class='code'><figcaption><span>Wrap the div you want to cache with cache tags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="vi">@article</span> <span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">#behind the scenes this is going to call .cache_key on the model</span>
+</span><span class='line'><span class="sx">  #see below for cache_key explanation</span>
+</span><span class='line'><span class="sx">#powerful way to auto-expire by loading an object</span>
+</span><span class='line'><span class="sx">&lt;div id=&quot;article&quot;&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;&lt;</span><span class="sx">%= @article.name %&gt;&lt;/h1&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="vi">@article</span><span class="o">.</span><span class="n">content</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;p&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="sx">%= link_to &quot;Edit&quot;, edit_article_path %&gt; |</span>
+</span><span class='line'><span class="sx">    &lt;%=</span> <span class="n">link_to</span> <span class="s2">&quot;Browse Articles&quot;</span><span class="p">,</span> <span class="n">articles_path</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;/p&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">&lt;% end %&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Cache_key</h3>
+
+<figure class='code'><figcaption><span>Wrap the div you want to cache with cache tags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="no">Article</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">cache_key</span> <span class="c1">#=&gt; articles/1-2012083083433 </span>
+</span><span class='line'><span class="c1">#-&gt; name of the model, id of the model, and updated timestamp</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">touch</span> <span class="c1">#now it will have different cache key</span>
+</span><span class='line'><span class="c1">#because it is looking for a cache with a different name</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Don&#8217;t need to litter expire_cache all over the model</p>
+
+<figure class='code'><figcaption><span>The Touch Option expires the cache if it&#8217;s changed</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:article</span><span class="p">,</span> <span class="ss">touch</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This means it will update the article when a commment is changed.</p>
+
+<h3>Caching a fragment when you aren&#8217;t passing in an object</h3>
+
+<figure class='code'><figcaption><span>This is cached as recent_articles</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="s2">&quot;recent_articles&quot;</span> <span class="k">do</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;div id=&quot;recent_articles&quot;&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="no">Recent</span> <span class="no">Articles</span><span class="o">&lt;</span><span class="sr">/h3&gt;</span>
+</span><span class='line'><span class="sr">  &lt;ul&gt;</span>
+</span><span class='line'><span class="sr">  &lt;% @recent_articles.each do |article| %&gt;</span>
+</span><span class='line'><span class="sr">    &lt;% cache [&quot;recent&quot;, article] do %&gt;</span>
+</span><span class='line'><span class="sr">#can cache here as well!</span>
+</span><span class='line'><span class="sr">#namespaced with &quot;recent&quot;, but passing in the article object</span>
+</span><span class='line'><span class="sr">#creates a unique key based on the elements passed into the array</span>
+</span><span class='line'><span class="sr">      &lt;li&gt;&lt;%= link_to article.name, article %&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;% end %&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/ul&gt;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>When the &#8220;recent_articles&#8221; cache is generated, it will generate a cache for each object in the list in addition to the full &#8220;recent_articles&#8221; cache.
+
+<ul>
+<li>normal behavior will just read the recent articles cache</li>
+<li>but editing behavior of the objects will expire the cache.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>How frag caches are stored</h3>
+
+<ul>
+<li>Rails comes with a built in centralized caching mechnism called rails.cache
+
+<ul>
+<li>can read and write from
+
+<ul>
+<li>`Rails.cache.read(&#8216;views/recent_articles&#8217;)</li>
+<li>default is memory store, but want to use redis or memcahce
+
+<ul>
+<li>config is done in the env/production</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Memcached Dalli- RailsCast 380</h1>
+
+<ul>
+<li><a href="http://code.google.com/p/memcached/wiki/NewStart">Memcache wiki</a></li>
+<li>Use dalli, don&#8217;t use memcache_store</li>
+</ul>
+
+
+<p><code>brew install memcached</code></p>
+
+<p><code>gem dalli</code></p>
+
+<ul>
+<li><p>enable caching in the dev environment -></p>
+
+<ul>
+<li>change to: <code>perform_caching = true</code></li>
+<li>config.cache_store = :dalli_store
+
+<ul>
+<li>should do this in production as well.
+
+<ul>
+<li>Rails.cache will show that this is now a dalli store</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Rails.cache.fetch(:bar) { sleep 1; 2}</code></p>
+
+<ul>
+<li>fetch a cache or execute the block</li>
+</ul>
+</li>
+<li><code>Rails.cache.read_multi(:bar, :foo)</code> -> can fetch multiple requests once, instead of going individually.</li>
+<li><p><code>Rails.cache.stats</code> -> shows the amt of info store, number of times it reached it&#8217;s limit, etc.</p></li>
+<li><p><strong>Memcached is not a persistance store.</strong> If you stop the process you lose it.</p></li>
+<li><p><code>Rails.cache.write(:bar, 1, expires_in: 5.seconds)</code></p>
+
+<ul>
+<li>will expire in 5 seconds</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>product.category.name to product.category_name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">category_name</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="o">[</span><span class="ss">:category</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="ss">:name</span><span class="o">]</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">:</span> <span class="mi">5</span><span class="o">.</span><span class="n">minutes</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">category</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>If you want a cache to expire on update</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Category</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:products</span>
+</span><span class='line'>  <span class="n">after_update</span> <span class="ss">:flush_name_cache</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">flush_name_cache</span>
+</span><span class='line'>    <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">[</span><span class="ss">:category</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="ss">:name</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">name_changed?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Need to add memcached on the server side as well</li>
+</ul>
+
+
+<h1>HTTP Caching</h1>
+
+<h1>Etag</h1>
+
+<ul>
+<li>Etag: unique string based on the content in the response body
+
+<ul>
+<li>etag changes based on the csrf token</li>
+</ul>
+</li>
+<li>When the browser caches the response it will assign the etag to it
+
+<ul>
+<li>get a 304 not modified, not a 200 ok
+
+<ul>
+<li>request will be the same speed on the server side</li>
+</ul>
+</li>
+<li>Can speed up the server side by customizing how an etag is generated</li>
+</ul>
+</li>
+<li></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Customize how an etag is generated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">expires_in</span> <span class="mi">5</span><span class="o">.</span><span class="n">minutes</span>
+</span><span class='line'>  <span class="n">fresh_when</span> <span class="vi">@product</span><span class="p">,</span> <span class="kp">public</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>fresh_when
+
+<ul>
+<li>checks whether the etag passed into the request matches the etag for the product and of it does it gives a 304 not modified</li>
+<li>otherwise it will show the render template with the full action</li>
+</ul>
+</li>
+<li>this technique isn&#8217;t going to work well if there is a respond_to block</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Etag and a repond_to block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">stale?</span> <span class="ss">etag</span><span class="p">:</span> <span class="vi">@product</span>
+</span><span class='line'>    <span class="n">repond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1">#.....</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Etag can accept multiple objects</p>
+
+<figure class='code'><figcaption><span>Customize how an etag is generated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">fresh_when</span> <span class="o">[</span><span class="vi">@product</span><span class="p">,</span> <span class="n">current_user</span><span class="o">]</span>
+</span><span class='line'>  <span class="c1">#passing in multiple </span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Last_modified</h3>
+
+<figure class='code'><figcaption><span>Customize how an etag is generated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">fresh_when</span> <span class="vi">@product</span><span class="p">,</span> <span class="n">last_modified</span><span class="p">:</span> <span class="vi">@product</span><span class="o">.</span><span class="n">updated_at</span>
+</span><span class='line'>  <span class="c1">#this includes a timestamp in the header of last modified</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="c1">#from this</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>    <span class="vi">@products</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="c1">#this runs the db query before it is neccessary</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this waits until we are sure it is needed</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>    <span class="vi">@products</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">scoped</span>
+</span><span class='line'>  <span class="c1">#this waits until we are sure the all command is needed</span>
+</span><span class='line'>    <span class="n">fresh_when</span> <span class="n">last_modified</span><span class="p">:</span> <span class="vi">@products</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="ss">:updated_at</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">#only fetching one values to determine if the cache is up to date</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="c1">#which means that it doesn&#39;t have to render the whole view template</span>
+</span><span class='line'><span class="c1">#and doesn&#39;t have to end up fetching all the products from the DB</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>Should benchmark to see if you get a big performance boost</strong></li>
+</ul>
+
+
+<h3>Cache-Control</h3>
+
+<ul>
+<li>Set options on how caching should behave
+
+<ul>
+<li>validation</li>
+<li>max-age</li>
+<li>private
+
+<ul>
+<li>cache only stored for one user usually in the web browser and not a shared store like a proxy</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Max-age</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">expires_in</span> <span class="mi">5</span><span class="o">.</span><span class="n">minutes</span>
+</span><span class='line'><span class="c1">#this sets the max-age </span>
+</span><span class='line'>  <span class="n">fresh_when</span> <span class="vi">@product</span><span class="p">,</span> <span class="kp">public</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="c1">#this public: true makes it available to multiple users</span>
+</span><span class='line'><span class="c1">#through a proxy</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p><a href="https://github.com/rtomayko/rack-cache">rack-cache</a> -></p>
+
+<ul>
+<li>sits on your server between a user requests and a rails app backend</li>
+<li>rack cache has to be enabled in the dev environment and restart the server</li>
+</ul>
+</li>
+<li><p>warning public to true because this given request is stored for every user.</p>
+
+<ul>
+<li><code>&lt;%= csrf_meta_tag unless response.cache_control[:public] %&gt;</code></li>
+<li>should do for flash messages too</li>
+</ul>
+</li>
+<li><p>avoid premature optimization, figure out what you need to cache</p></li>
+<li>only set public to true only if you don&#8217;t have sensitive info on the page.</li>
+</ul>
+
+
+<h2>In the wild</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#sessions controller</span>
+</span><span class='line'><span class="n">client</span> <span class="o">=</span> <span class="ss">Octokit</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:oauth_token</span> <span class="o">=&gt;</span> <span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
+</span><span class='line'><span class="n">user</span><span class="o">.</span><span class="n">load_cache_info</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#user model</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#this is the cache writter. Fetch is like a find_or_create</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">load_cache_info</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="o">.</span><span class="n">to_sym</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">:</span> <span class="mi">24</span><span class="o">.</span><span class="n">hours</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="p">{</span> <span class="ss">:repos</span> <span class="o">=&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">repo</span><span class="o">|</span> <span class="n">repo</span><span class="o">.</span><span class="n">name</span> <span class="p">},</span>
+</span><span class='line'>      <span class="ss">:following</span> <span class="o">=&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">following</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">login</span> <span class="p">},</span>
+</span><span class='line'>      <span class="ss">:starred</span> <span class="o">=&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">starred</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">repo</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">repo</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">login</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">repo</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#this reads the cache which looks like a big hash</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">user_cache</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">nickname</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cached_starred</span>
+</span><span class='line'>  <span class="n">user_cache</span><span class="o">[</span><span class="ss">:starred</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cached_following</span>
+</span><span class='line'>  <span class="n">user_cache</span><span class="o">[</span><span class="ss">:following</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cached_repos</span>
+</span><span class='line'>  <span class="n">user_cache</span><span class="o">[</span><span class="ss">:repos</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/gemify-js/">Gemify-js</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T09:09:00-05:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>♕ gem list -r</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">build</span> <span class="n">gemify</span><span class="o">-</span><span class="n">jquery</span>
+</span><span class='line'><span class="n">gem</span> <span class="n">build</span> <span class="n">gemify</span><span class="o">-</span><span class="n">tablesorter</span><span class="o">.</span><span class="n">gemspec</span>
+</span><span class='line'><span class="n">gem</span> <span class="n">build</span> <span class="n">push</span> <span class="n">gemify</span><span class="o">-</span><span class="n">tablesorter</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="n">gem</span>
+</span><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">gemify</span><span class="o">-</span><span class="n">tablesorter</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From <a href="http://rubygems.org">http://rubygems.org</a>
+<curl https://rubygems.org/api/v1/gems/rails.json></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day31/">FIS Day31</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-19T11:51:00-05:00" pubdate data-updated="true">Nov 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>AJAX</h3>
+
+<p><code>&lt;div id="hidden" style="display:none"&gt;</code></p>
+
+<p><code>format.js</code> -> if there is a new js file it will send that back to the form</p>
+
+<p><code>$('#newlink).prepend('&lt;%= j render("form") %&gt;')</code></p>
+
+<h3>Partials</h3>
+
+<p><code>&lt;%= render @mixtape.songs %&gt;</code> this will render this collection of songs</p>
+
+<p><code>&lt;%= render :collection =&gt; @mixtape.songs :partial =&gt; 'songs/song_li' %&gt;</code></p>
+
+<h3>Action Mailer</h3>
+
+<p><code>gem postmark-rails</code></p>
+
+<p>https://github.com/wildbit/postmark-rails</p>
+
+<p><code>rails d mailer mixtapes</code>
+<code>rails g mailer mixtapes</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@mail</span> <span class="o">=</span> <span class="no">MixtapeMailer</span><span class="o">.</span><span class="n">new_song</span><span class="p">(</span><span class="vi">@mixtape</span><span class="o">.</span><span class="n">song</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
+</span><span class='line'><span class="vi">@mail</span><span class="o">.</span><span class="n">deliver</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/dynamic-method-definition/">Dynamic Method Definition</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-16T21:26:00-05:00" pubdate data-updated="true">Nov 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As a beginner, when I run into a problem my first instinct is to power through and simply find a way to get it done&#8211; the brute force method. This means that I am rarely going to write good code during the first attempt. Once it is working however, I of course have the opportunity to return later and make it better. As Kent Beck says,</p>
+
+<blockquote><p>make it work, make it right, make it fast.</p></blockquote>
+
+<p>Refactoring is about making it right by changing the internal structure without changing the external behavior.</p>
+
+<p><em><a href="http://www.amazon.com/Refactoring-Ruby-Jay-Fields/dp/0321603508">Refactoring: Ruby Edition</a></em> has lots of great examples and methods for refactoring code. Inspired by the book, I gave a <a href="https://speakerdeck.com/ajonas04/refactoring-with-examples">presentation on the subject</a> last week. My example of <strong>Dynamic Method Definition</strong> was the clear winner based on the feedback from the audience so I&#8217;ll outline it below&#8230;</p>
+
+<p>One of the most prominent clues that code needs refactoring is duplication&#8230;</p>
+
+<figure class='code'><figcaption><span>Can you spot any repetition?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">name</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">open_issues</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">open_issues</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">watchers</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">watchers</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Enter Metaprogramming&#8230;</h3>
+
+<p>Metaprogramming is:</p>
+
+<blockquote><p>A program which modifies or generates other programs.</p></blockquote>
+
+<p>Instead of writing out each individual method, why don&#8217;t we use the power of <em>Dynamic Method Definition</em> to write these three methods for us?</p>
+
+<figure class='code'><figcaption><span>Dynamic method definition in action</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">repo_params</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">define_method</span> <span class="n">arg</span><span class="o">.</span><span class="n">to_sym</span> <span class="k">do</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>  <span class="n">repo_params</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:open_issues</span><span class="p">,</span> <span class="ss">:watchers</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There is a lot going on here so let&#8217;s take a closer look.</p>
+
+<figure class='code'><figcaption><span>Line by line </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#this is a class method that accepts an </span>
+</span><span class='line'><span class="c1">#arbitrary number of arguments as a splat</span>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">repo_params</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">#the splat array is then iterated over and</span>
+</span><span class='line'>  <span class="c1">#each of the arguments is yielded as the variable &#39;arg&#39;</span>
+</span><span class='line'>  <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1">#the define method accepts a symbol and</span>
+</span><span class='line'>    <span class="c1">#names the argument after that symbol</span>
+</span><span class='line'>    <span class="n">define_method</span> <span class="n">arg</span><span class="o">.</span><span class="n">to_sym</span> <span class="k">do</span>
+</span><span class='line'>      <span class="c1">#that same argument is then called as a method on self.info</span>
+</span><span class='line'>      <span class="c1">#which mimics the patterns of every method in the original</span>
+</span><span class='line'>      <span class="c1">#using dynamic dispatching via the send method</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#repo_parms is then called with as many parameters</span>
+</span><span class='line'><span class="c1">#as you would like to add</span>
+</span><span class='line'>  <span class="n">repo_params</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:open_issues</span><span class="p">,</span> <span class="ss">:watchers</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pretty slick huh?</p>
+
+<p>This use of dynamic dispatching isn&#8217;t about semantics and code clarity (although it improves the code in both areas), use of this method is about maintainability. As we expand our list of attributes, we simply need to add the new parameter to repo_params. Easy peasy.</p>
+
+<p><em><a href="http://www.amazon.com/Refactoring-Ruby-Jay-Fields/dp/0321603508">Refactoring: Ruby Edition</a></em> should be required reading for anyone to graduate from the &#8216;beginner&#8217; stage. Dynamic method definition is one of about 203,234,984 things that the book will teach you. Go read it.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day30/">FIS Day30</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-16T15:51:00-05:00" pubdate data-updated="true">Nov 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p><a href="https://www.ruby-toolbox.com/categories/state_machines.html">state machine</a></p>
+
+<ul>
+<li>There&#8217;s a <a href="http://railscasts.com/episodes/392-a-tour-of-state-machines">railscast</a> for that</li>
+</ul>
+</li>
+<li><p>gifsockets</p>
+
+<ul>
+<li>real time communication
+
+<ul>
+<li>pushes text to client frame-by-frame</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">oldTime</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="s1">&#39;&lt;%= @issue.updated_at %&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;&lt;%= &quot;/#{@issue.repo.owner_name}/#{@issue.repo.name}/issues/#{@issue.git_number}.json&quot; %&gt;&#39;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">json</span><span class="p">){</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">newTime</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">updated_at</span><span class="p">));</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">newTime</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">oldTime</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">newTime</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()){</span>
+</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#seal.seal.pull-right&#39;</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#seal.seal.pull-right&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">},</span> <span class="mi">4000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://bootswatch.com/">bootswatch</a></li>
+<li><a href="http://subtlepatterns.com/">subtle patterns</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day29/">FIS Day29</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-15T09:44:00-05:00" pubdate data-updated="true">Nov 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="http://jsonlint.com/">JSON link</a> a JSON parser</li>
+</ul>
+
+
+<h3>CanCan</h3>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/192-authorization-with-cancan">Rails Cast</a></li>
+<li><a href="https://github.com/ryanb/cancan">CanCan Source Code</a></li>
+<li><a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">CanCan Wiki</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#If a user.git_nickname == repo.owner_name -&gt; the user is an owner.</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= if can? :put, @issue %&gt; #can only see the links if you authorized</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">#also need to add restrictions in the controller</span>
+</span><span class='line'><span class="sx">load_and_authorize_resource :nested =</span><span class="o">&gt;</span> <span class="ss">:repo</span>
+</span><span class='line'><span class="c1">#this is funky</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>ability.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Ability</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="ss">CanCan</span><span class="p">:</span><span class="ss">:Ability</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span> <span class="c1"># guest user that comes to the site and doesn&#39;t have an acct yet</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">role?</span> <span class="ss">:admin</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:manage</span><span class="p">,</span> <span class="ss">:all</span> <span class="c1">#manage emcompasses every action</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>    <span class="c1">#this is for every day users</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:read</span><span class="p">,</span> <span class="ss">:all</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:create</span><span class="p">,</span> <span class="no">Comment</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:update</span><span class="p">,</span> <span class="no">Comment</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">comment</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="o">==</span> <span class="n">user</span> <span class="o">||</span> <span class="n">user</span><span class="o">.</span><span class="n">role?</span><span class="p">(</span><span class="ss">:moderator</span><span class="p">)</span>
+</span><span class='line'>        <span class="c1">#eqivalent to comment &amp;&amp; comment.user == user</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">role?</span><span class="p">(</span><span class="ss">:author</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">can</span> <span class="ss">:create</span><span class="p">,</span> <span class="no">Article</span>
+</span><span class='line'>        <span class="n">can</span> <span class="ss">:update</span><span class="p">,</span> <span class="no">Article</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span>
+</span><span class='line'>          <span class="n">article</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="o">==</span> <span class="n">user</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rescue_from</span> <span class="ss">CanCan</span><span class="p">:</span><span class="ss">:AccessDenied</span> <span class="k">do</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;Access denied.&quot;</span>
+</span><span class='line'>  <span class="n">redirect_to</span> <span class="n">root_url</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Jquery lecture John</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//hide</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b1&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#p1&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//show</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b2&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#p1&quot;</span><span class="p">).</span><span class="nx">show</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span> <span class="c1">//this makes it look like it is writing it out</span>
+</span><span class='line'>    <span class="c1">//with a longer duration</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//toggle</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b3&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#p1&quot;</span><span class="p">).</span><span class="nx">toggle</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Fade Toggle, fade down, slide up, slide down, slide toggle</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//animate</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b19&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">height</span><span class="o">:</span><span class="s2">&quot;200px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="s2">&quot;200px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">height</span><span class="o">:</span><span class="s2">&quot;50px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="s2">&quot;50px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="s2">&quot;100px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">height</span><span class="o">:</span><span class="s2">&quot;100px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Fancy Box Example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* LETS USE FUNCTIONS TO MAKE AN INSTANCE OF INTERACTING WITH THE DOM REPEATABLE */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//first I want to fade out all the fruit pictures.</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery img&#39;</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span> <span class="c1">//fadeTo(delay in miliseconds, opacity)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//next I want to create a function that will only run when someone hovers over a fruit image.</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">mouseOn</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//the keyword &#39;this&#39; refers to the element that is calling the function in our case it is the individual image that the user has their mouse over top of.</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//mouse off funtion</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">mouseOff</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//lastly I want to check if the user is hovering their mouse and call the apropriate function.</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery img&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span><span class="nx">mouseOn</span><span class="p">,</span><span class="nx">mouseOff</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//add rel attribute to gallery links to add arrow functionality to fancybox plugin</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery a&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;rel&#39;</span><span class="p">,</span><span class="s1">&#39;fruits&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//apply fancybox plugin</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery a&#39;</span><span class="p">).</span><span class="nx">fancybox</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>When installing a plugin</h3>
+
+<ul>
+<li>does it have css?</li>
+<li>load styleheet above my own, so that it won&#8217;t over-ride my styling</li>
+<li><p>put js sheet BELOW jquery plugin files</p></li>
+<li><p>js fiddle -> minifies</p></li>
+</ul>
+
+
+<h3>Semi Colons</h3>
+
+<ul>
+<li>if, else and function def don&#8217;t requiring a semi-colon</li>
+<li>would never put a semi-colon after a curly brace except for object instantiation
+
+<ul>
+<li>`var myObject = { };</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Jquery Misc</h3>
+
+<ul>
+<li><a href="http://oscarotero.com/jquery/">Jquery cheat sheet</a></li>
+</ul>
+
+
+<p>Content delivery network -> a CDN</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>Best practices from backend devs. What can we do to help you?
+
+<ul>
+<li>semantic use of naming things like IDs</li>
+</ul>
+</li>
+<li>some of your favorite plugins? source for finding really cool plugins
+
+<ul>
+<li><a href="http://fancybox.net/">fancybox.net</a></li>
+<li><a href="http://popcornjs.org/">popcorn.js</a></li>
+<li><a href="http://www.jquery4u.com/">Jquery4u</a></li>
+</ul>
+</li>
+<li>tests in javascript?
+
+<ul>
+<li>some mvc have tests built in like backbone.</li>
+</ul>
+</li>
+<li>debugging in JS?
+
+<ul>
+<li>write code in short snippets, comment out sections</li>
+<li>js lint -> shows errors and styles</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Color Stuff</h3>
+
+<ul>
+<li>Digital color meter
+
+<ul>
+<li>copy with cmd, shift c and you can paste is</li>
+</ul>
+</li>
+<li><a href="https://kuler.adobe.com">color matching</a>
+
+<ul>
+<li>automatically color coordinates</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">each</span>
+</span><span class='line'>  <span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">from_user_name</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">.</span><span class="nx">getJson</span> <span class="c1">//pretty important</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Get JSON from Twitter example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">keywordInput</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#keyword&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">searchButton</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#search&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">displayFeed</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#feed&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">keyword</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//CLEAR</span>
+</span><span class='line'>  <span class="nx">keywordInput</span><span class="p">.</span><span class="nx">focus</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">displayFeed</span><span class="p">.</span><span class="nx">empty</span><span class="p">();</span> <span class="c1">//clears results</span>
+</span><span class='line'>    <span class="nx">keywordInput</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span> <span class="c1">//clears input box when return to type new key words. </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">});</span><span class="c1">//end clear</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//SEARCH &amp; DISPLAY</span>
+</span><span class='line'>  <span class="nx">searchButton</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">keyword</span> <span class="o">=</span> <span class="nx">keywordInput</span><span class="p">.</span><span class="nx">val</span><span class="p">();</span> <span class="c1">//retrieves keyword(s) typed.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">&#39;http://search.twitter.com/search.json?callback=?&amp;q=&#39;</span><span class="o">+</span><span class="nx">keyword</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span> <span class="c1">//display JSON feed using keyword(s) typed</span>
+</span><span class='line'>    <span class="c1">//callback shifts to padded json, which is neccessary for this call</span>
+</span><span class='line'>    <span class="c1">//data is an arbitrary variable that store the info</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">//see if results came in...</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">from_user</span><span class="p">);</span> <span class="c1">//if only there were a way to go into the array results and loop over each element/value and report back the data I want... What about loops?</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">//loop -&gt; for each object result retrieve the data and display</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">value</span><span class="p">){</span>
+</span><span class='line'>      <span class="c1">// tell each what we want to iterate over</span>
+</span><span class='line'>        <span class="c1">//data.results -&gt; is an array within the json</span>
+</span><span class='line'>            <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;p&gt;&lt;a href=&quot;http://twitter.com/&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">from_user</span><span class="o">+</span><span class="s1">&#39;&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">profile_image_url</span><span class="o">+</span><span class="s1">&#39;&quot; alt=&quot;picture of &#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">from_user</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&lt;/a&gt; &amp;quot;&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">text</span><span class="o">+</span><span class="s1">&#39;&amp;quot; -&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">from_user</span><span class="o">+</span><span class="s1">&#39; &lt;span class=&quot;date&quot;&gt;[&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">created_at</span><span class="o">+</span><span class="s1">&#39;]&lt;/span&gt;&lt;/p&gt;&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nx">displayFeed</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span> <span class="c1">//displays each result inside feed area.</span>
+</span><span class='line'>            <span class="c1">//opposite is prepend</span>
+</span><span class='line'>            <span class="nx">displayFeed</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">highlight</span><span class="p">(</span><span class="nx">keyword</span><span class="p">);</span> <span class="c1">//highlight matching terms using highlight plugin.</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="p">});</span><span class="c1">//end each</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">});</span><span class="c1">//end getJSON</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">});</span><span class="c1">//end Search</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span><span class="c1">//end document ready</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>tutsplus-> learn jquery 30 days
+
+<ul>
+<li>30 min videos</li>
+<li>free</li>
+</ul>
+</li>
+<li><h2>backbone tutorial</h2></li>
+<li><a href="http://it-ebooks.info/">http://it-ebooks.info/</a>
+
+<ul>
+<li><a href="http://www.manning.com/bibeault/">jquery in action</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day28/">FIS Day28</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T10:10:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Authentication</h2>
+
+<ul>
+<li>http is stateless</li>
+<li><p>we pass along with the request is our cookie</p>
+
+<ul>
+<li>the cookie lives on the client, which means we can&#8217;t trust it</li>
+</ul>
+</li>
+<li><p>cookie has a lot of raw data</p>
+
+<ul>
+<li>you don&#8217;t really want to put data on the client</li>
+<li>except the token: which is just a primary key for their session on my server</li>
+</ul>
+</li>
+<li><p>session id in the cookie identifies the session</p></li>
+<li><p>cookies on the browser/sessions are on the server</p>
+
+<ul>
+<li>the cookie is used to access the session</li>
+</ul>
+</li>
+<li><p>Form_for requires an ActiveRecord instance -> it needs a model</p>
+
+<ul>
+<li>form_tag(sessions_path)</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Session Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">skip_before_filter</span> <span class="ss">:login_required</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span>
+</span><span class='line'><span class="c1">#this is needed you will need to login before you login. #Need to do this in the user controller as well.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="n">user</span>
+</span><span class='line'>    <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="s1">&#39;login failed&#39;</span>
+</span><span class='line'>    <span class="n">redirect</span> <span class="ss">:new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="n">reset_session</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Application Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Application</span> <span class="no">Controller</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">login_required</span>
+</span><span class='line'>    <span class="k">unless</span> <span class="n">current_user</span>
+</span><span class='line'>      <span class="n">redirect_url</span> <span class="n">login_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s2">&quot;please login&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">logged_in?</span>
+</span><span class='line'>    <span class="kp">true</span> <span class="k">if</span> <span class="n">current_user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:logged_in?</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>In user model: <code>has_secure_password</code></p>
+
+<ul>
+<li>bcrypt</li>
+<li>password confirmation is optional with has_secure_password</li>
+<li>if a hacker gains access to your logs and you don&#8217;t have the password field filtered, they can see all the passwords</li>
+</ul>
+</li>
+<li><p><a href="http://www.dshield.org/diary.html?storyid=11110">hashing passwords</a></p></li>
+</ul>
+
+
+<p><code>Order.update(12, :name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<ul>
+<li>is equivalent to</li>
+</ul>
+
+
+<p><code>Order.find(12).update_attributes(:name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<h3>MISC</h3>
+
+<ul>
+<li><a href="http://chrispederick.com/work/web-developer/features/">Web dev tool</a></li>
+<li><a href="https://makandracards.com/makandra/621-git-delete-a-branch-local-or-remote">delete local and remote branches</a></li>
+<li><a href="http://pusher.com/tutorials">pusher</a> better than socket.io
+
+<ul>
+<li><a href="https://github.com/tarnfeld/PusherChat-Rails">pusher chat</a></li>
+</ul>
+</li>
+<li><p><a href="http://socrates.io/">socrates.io</a></p></li>
+<li><p>Throw this at the top for a place for flash notices</p>
+
+<ul>
+<li><code>&lt;%= notice %&gt;</code></li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day27/">FIS Day27</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-13T09:21:00-05:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>POTD Jesse James Garrett</h3>
+
+<ul>
+<li>Author of <a href="http://www.jjg.net/elements/">elements of user experience</a>
+
+<ul>
+<li>elements of style</li>
+</ul>
+</li>
+<li><a href="http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications">Ajax essay</a>
+
+<ul>
+<li>asynchronous model</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Gitbo</h3>
+
+<ul>
+<li><a href="https://github.com/tute/merit">merit</a>/<a href="http://railscasts.com/episodes/364-active-record-reputation-system">reputation</a></li>
+<li><a href="https://github.com/javan/whenever">whenever</a></li>
+</ul>
+
+
+<h2>JS With Justin Moses</h2>
+
+<ul>
+<li><p>learn some Haskell, lisp -> functional programming</p></li>
+<li><p>JS fiddle</p></li>
+<li><p><a href="http://jsbin.com/welcome/1/edit">JS Bin</a></p></li>
+<li><p>span is an inline div</p></li>
+<li><p>when a document is loaded in the browser. it first calls a method on itself called ready.</p>
+
+<ul>
+<li>program events onto these objects</li>
+<li>find objects within the document and add more events to them</li>
+<li>if you try to load it linearly, then you need to wait until the document has full compiled.</li>
+</ul>
+</li>
+<li>think about buttons as button objects and you can bind methods and other objects to that button object</li>
+<li>src=&#8221;//code.jquery.com/&#8221;
+
+<h2>- put the script tags in the head is good form</h2></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;script&gt;
+</span><span class='line'>    function runthis() {
+</span><span class='line'>    alert(this);
+</span><span class='line'>  }
+</span><span class='line'>&lt;/script&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>$ -> jquery shortcut</p>
+
+<p>When the DOM is loaded get going&#8230;.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>  <span class="c1">//alert(this);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.btn&#39;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="s2">&quot;test123&quot;</span><span class="p">));</span>
+</span><span class='line'>  <span class="c1">//matching functions and matching it to all buttons</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>document.querySelectorAll(&#8216;.button&#8217;) -> is the javascript equivalent to $(&#8216;.button&#8217;)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.btn&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;button class=&quot;btn&quot;&gt;my button&lt;/button&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;button class=&quot;btn&quot;&gt;my button&lt;/button&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://api.jquery.com/on/">.on() event</a></li>
+<li>every move, every click these are all reported events
+
+<ul>
+<li>event bubbling -> fire event with that div, in the body, in the window
+
+<ul>
+<li>target -> event clicked on</li>
+<li>event delegation in js -> allows you quickly bind events that don&#8217;t exist yet</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>AJAX</h3>
+
+<p><code>XMLHttpRequest == $.ajax</code></p>
+
+<figure class='code'><figcaption><span>AJAX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">url</span><span class="o">:</span><span class="s2">&quot;http://jsbin.com/iyijag.js&quot;</span>
+</span><span class='line'>  <span class="p">}).</span>
+</span><span class='line'>  <span class="nx">promise</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">//show user data</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">//alert box with json data</span>
+</span><span class='line'>  <span class="p">}).</span>
+</span><span class='line'>  <span class="nx">promise</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">// on fail</span>
+</span><span class='line'>  <span class="p">}).</span>
+</span><span class='line'>  <span class="nx">promise</span><span class="p">.</span><span class="nx">always</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">//always called</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>AJAX by default is get, but
+jquery deferred -> chaining things together without certainty of the event</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>debugging in your app. single click on line with chrome will drop in a debugger object.
+
+<ul>
+<li>can then see the object in console</li>
+</ul>
+</li>
+<li>if you use it once -> you don&#8217;t need to name the function, if you want to reuse, you probably want to</li>
+</ul>
+
+
+<h3>Other stuff</h3>
+
+<ul>
+<li><a href="http://colorblendy.com/">colorblendy</a></li>
+<li><a href="http://mouapp.com/">markdown editor</a></li>
+<li><a href="http://www.khanacademy.org/cs">khan academy</a></li>
+<li>node inspector for server side</li>
+<li><a href="https://npmjs.org">NPM for node</a>- is like ruby gems - server side modules</li>
+<li>HTML5 and websockets and threads</li>
+</ul>
+
+
+<h2>Avi Rant</h2>
+
+<ul>
+<li>rails works nicely with ember</li>
+<li>javascript provides you</li>
+</ul>
+
+
+<h3>Avi Javascript Lecture</h3>
+
+<ul>
+<li>if you want to do anything to an object, you need to first grab it from the DOM</li>
+<li>document.baseURI</li>
+<li>document - returns the whole window</li>
+<li>{} in javascript is an object</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Building an Object in Javascript</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">o</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'><span class="c1">//instantiating an object</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">first_name</span> <span class="o">=</span> <span class="s2">&quot;avi&quot;</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">last_name</span> <span class="o">=</span> <span class="s2">&quot;flom&quot;</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">full_name</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="k">this</span><span class="p">.</span><span class="nx">first_name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">last_name</span><span class="p">}</span>
+</span><span class='line'><span class="c1">//like self.first_name + &quot; &quot; + self.last_name in ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//can see what this is in the log</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">full_name</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">)};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//could do this, but it isn&#39;t object oriented</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">full_name</span><span class="p">(</span><span class="nx">object</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">object</span><span class="p">.</span><span class="nx">first_name</span> <span class="o">+</span> <span class="nx">object</span><span class="p">.</span><span class="nx">last_name</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>$ sign == jQuery</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">onready</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form a&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">onready</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//This means that when the document is loaded, fire this.</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">alert</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="nx">x</span><span class="p">.</span><span class="nx">clientY</span><span class="s2">&quot;)</span>
+</span><span class='line'><span class="s2">    return false; //stop the normal event -&gt; like following a link</span>
+</span><span class='line'><span class="s2">    //this would work like x.preventDeafult();</span>
+</span><span class='line'><span class="s2">  })</span>
+</span><span class='line'><span class="s2">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">//x is the event in this case</span>
+</span><span class='line'><span class="s2">//$(&quot;</span><span class="nx">form</span> <span class="nx">a</span><span class="err">&quot;</span><span class="p">)</span> <span class="nx">is</span> <span class="nx">almost</span> <span class="nx">like</span> <span class="nx">a</span> <span class="nx">yield</span> <span class="nx">from</span> <span class="nx">a</span> <span class="nx">block</span><span class="p">,</span> <span class="nx">that</span> <span class="nx">you</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">able</span> <span class="nx">to</span> <span class="nx">access</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="c1">// a full blown object that knows about its parent</span>
+</span><span class='line'><span class="k">this</span> <span class="c1">// is just a return of DOM. This doesn&#39;t have much info</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//.attr(&quot;href&quot;) is like accessing an attribute or key of the object</span>
+</span><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="o">+</span><span class="s2">&quot;?source=flatironschool&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>You are hooking into events. You are dependent on the browser and when events are loaded. It&#8217;s not about linear execution. It&#8217;s about the browser API.</li>
+<li>applying a bind to an element will always happen in a ready box</li>
+<li>current target, the thing that was actually clicked</li>
+<li>handleObj - the actual event, event type -> both might be a click event</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//select the object</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//$select = $(&#39;#mixtape_mixtape_songs_attributes_0_song&#39;);</span>
+</span><span class='line'>  <span class="nx">$select</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;form select:last&#39;</span><span class="p">);</span> <span class="c1">//grab the last element with a pseudo selector</span>
+</span><span class='line'>  <span class="c1">//duplicate code</span>
+</span><span class='line'>  <span class="nx">$new_select</span> <span class="o">=</span> <span class="nx">$select</span><span class="p">.</span><span class="nx">clone</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">$new_select</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//edit&#39;s name</span>
+</span><span class='line'>  <span class="nx">$next_name</span> <span class="o">=</span> <span class="nx">$select</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">$next_name</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">next_int</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">next_name</span><span class="p">.</span>
+</span><span class='line'>  <span class="nx">replace</span><span class="p">(</span><span class="s2">&quot;mixtape[mixtape_songs_attribute][&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">).</span>
+</span><span class='line'>  <span class="nx">replace</span><span class="p">(</span><span class="s2">&quot;]song_id&quot;</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">new_select</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nx">next_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">//insert it back into the DOM</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;div.actions&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//can have a document object that hasn&#39;t been inserted into the view yet</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//equal to</span>
+</span><span class='line'><span class="nx">t</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)};</span> <span class="o">-&gt;</span> <span class="k">this</span> <span class="nx">loaded</span> <span class="nx">into</span> <span class="nx">memory</span> <span class="nx">and</span> <span class="nx">run</span> <span class="nx">when</span> <span class="nx">ready</span><span class="p">.</span>
+</span><span class='line'><span class="c1">// t = alert(&quot;test&quot;) -&gt; this is literal and will be called immediately.</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Methods</h3>
+
+<ul>
+<li>key press event</li>
+<li>blur(), change(), click()</li>
+<li>handler() -> the function you want to run when this change occurs</li>
+<li>hover is the combo of focus and blur</li>
+<li>every keypress comes with two events key down and key up</li>
+<li>live -> attaching the event to the body</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>MouseMove</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form&quot;</span><span class="p">).</span><span class="nx">mousemove</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>spyjax</li>
+</ul>
+
+
+<h3>Odemeter</h3>
+
+<p><a href="http://uvumitools.com/odometer.html">http://uvumitools.com/odometer.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day26/">FIS Day26</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-12T10:13:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>POTD</h3>
+
+<ul>
+<li>Jeffery Zeldman</li>
+<li>Dan Benjamin</li>
+<li>Jason Santa Maria</li>
+<li>Simplebits.com</li>
+</ul>
+
+
+<h3>Gitbo</h3>
+
+<ul>
+<li>Popularity index</li>
+<li><a href="http://railscasts.com/episodes/366-sidekiq">sidekiq</a></li>
+<li>nested issues in repos</li>
+<li>slugs wiht friendly_id</li>
+</ul>
+
+
+<h3>Rails Lecture</h3>
+
+<ul>
+<li>sub-yields or sub-layouts</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#in layouts/application.html.erb</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% content_for </span><span class="ss">:page</span><span class="o">-</span><span class="n">navigation</span> <span class="sx">%&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">#at the top of the pages that need it</span>
+</span><span class='line'><span class="sx">&lt;%= yield :page-navigation %&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Applicaiton level layout</li>
+<li>controller level layout</li>
+<li>action level layout</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Action Level Layout</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span><span class="n">render</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="s1">&#39;application&#39;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>content for will allow you to append to the outter layer</li>
+</ul>
+
+
+<h3>Application.css</h3>
+
+<ul>
+<li>The manifest file
+
+<ul>
+<li>require tree . -> require all files at the same level of this file (dot means current dir, .. means dir above)</li>
+<li><a href="https://github.com/sstephenson/sprockets/blob/master/lib/sprockets/directive_processor.rb">sprocket directives</a> tells the app what to include and maintain</li>
+<li>files are loaded in order</li>
+<li>in production, all the assets will be packed</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Compiling</h3>
+
+<ul>
+<li><p>rake assets:precompile</p></li>
+<li><p>rails s &#8211;environment=production</p>
+
+<ul>
+<li>shortcut
+
+<ul>
+<li>rails s -e production</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Pre-processors</h3>
+
+<ul>
+<li>css: doesn&#8217;t allow css variables
+
+<ul>
+<li><a href="http://sass-lang.com/">scss and sass</a>
+
+<ul>
+<li>scss is backwards compatible with css</li>
+</ul>
+</li>
+<li>sass adds lots of css like variables</li>
+</ul>
+</li>
+<li>coffeescript
+
+<ul>
+<li>makes the syntax nicer than javascript</li>
+<li>not backwards compatible with javascript</li>
+</ul>
+</li>
+<li>less
+
+<ul>
+<li>dynamic stylesheet</li>
+</ul>
+</li>
+<li>HAML
+
+<ul>
+<li>HMTL preprocessor</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>locales/application.rb</h3>
+
+<ul>
+<li>want to be sure that all finger prints are new -> config.assets.version = &#8216;1.1&#8217;</li>
+<li>config.assets.compile = false /true -> will precompile assets on the first request</li>
+</ul>
+
+
+<h3>Pictures in asset pipeline</h3>
+
+<ul>
+<li>Need image-url to trigger the asset pipeline</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Action Level Layout</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span><span class="o">.</span><span class="n">logo</span><span class="p">{</span>
+</span><span class='line'>  <span class="ss">url</span><span class="p">:</span> <span class="n">image</span><span class="o">-</span><span class="n">url</span><span class="p">(</span><span class="s1">&#39;/whatever.png&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="c1">#NOT</span>
+</span><span class='line'><span class="n">h1</span><span class="o">.</span><span class="n">logo</span><span class="p">{</span>
+</span><span class='line'>  <span class="ss">url</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s1">&#39;/assets/whatever.png&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order to use image-url, it needs to be a scss file</p>
+
+<h3>Managing Version Asset files</h3>
+
+<ul>
+<li>can manage versions with bundler</li>
+<li>declare jquery rails engine means that the app&#8217;s asset path will be loaded autmatically
+
+<ul>
+<li>jquery-rails has a vendor dir, so that it adds it when I compile by vendor dir</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Bootstrap</h3>
+
+<ul>
+<li>rails generate bookstrap:install</li>
+<li>tell manifest file to actually include the js</li>
+<li>in app.css
+
+<ul>
+<li>require bootstrap_and_overides</li>
+</ul>
+</li>
+<li><p>rails g bootstrap:layouts</p></li>
+<li><p><a href="http://wrapbootstrap.com">http://wrapbootstrap.com</a></p></li>
+<li><a href="http://bootsnipp.com/">http://bootsnipp.com/</a></li>
+<li><a href="http://dresssed.com/">http://dresssed.com/</a></li>
+</ul>
+
+
+<h3>Friendly URLs</h3>
+
+<p>Sweet <a href="http://railscasts.com/episodes/314-pretty-urls-with-friendlyid?autoplay=true">rails cast</a> on beautiful slugs and slugifying ids</p>
+
+<h3>What&#8217;s left</h3>
+
+<ul>
+<li>AR Callbacks</li>
+<li>Controller Filters</li>
+<li>Application Controller Helpers</li>
+<li>Authentication</li>
+<li>Sessions / Cookies</li>
+<li>Authorization</li>
+<li>Rendering Collections</li>
+<li>AREL / Includes and Joins</li>
+<li>Scopes / Class Methods</li>
+<li>Formatted Responses</li>
+<li>ActionView Helpers -> cycle, truncate, except</li>
+<li>Asset Pipeline</li>
+<li>SASS</li>
+<li>CoffeeScript</li>
+<li>Javascript Events
+
+<ul>
+<li>jQuery</li>
+<li>AJAX</li>
+</ul>
+</li>
+<li>Route Options</li>
+<li>Securing Rails</li>
+<li>Optimization</li>
+<li>Caching / Memcached</li>
+<li>Observers</li>
+<li>Association Options -> dependent destroy, class</li>
+<li><p>Polymorphic Models</p></li>
+<li><p>Common Gems</p>
+
+<ul>
+<li>Pagination</li>
+<li>OmniAuth</li>
+<li>CanCan</li>
+<li>Uploads</li>
+<li>ActionMailer</li>
+<li>Subdomains</li>
+<li>Background Jobs</li>
+<li><a href="http://www.intridea.com/blog/2011/5/13/rails3-gems">http://www.intridea.com/blog/2011/5/13/rails3-gems</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/14/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/12/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/js-promises/">js promises</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator&#8217;s Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: fis | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/fis/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[wit]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/wit/"/>
+    <updated>2014-02-13T14:15:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/wit</id>
+    <content type="html"><![CDATA[<h2>.ruby-version &amp; rbenv</h2>
+
+<ul>
+<li>so rbenv now does support a ruby version file but doesn't support fuzzy matching. <a href="http://stackoverflow.com/questions/18634933/how-can-i-make-rbenv-recognise-1-9-3-p-ruby-versions">See</a>.</li>
+</ul>
+
+
+<h2>Multipart = true</h2>
+
+<ul>
+<li>HTML forms provide two methods of encoding. The default is application/x-www-form-urlencoded, which is more or less the same as a query string on the end of the URL. The other, multipart/form-data, is a more complicated encoding but one which allows entire files to be included in the data. <a href="http://stackoverflow.com/a/4526286/1496757">via</a></li>
+</ul>
+
+
+<h2>Devise</h2>
+
+<ul>
+<li>had trouble with validation requirements built into the <code>validatable</code> module and configuring it to allow a user to edit their profile without requiring a password, which involved destroying the session because the salted password had changed. I ended up ripping it out and going with a <code>validates_presence_of :password, :on =&gt; :create</code> instead.
+
+<ul>
+<li><a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password">I had attempted this</a>, but it seemed like a lot of work.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Factory Girl Associations</h2>
+
+<p><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">From the docs</a> it's possible to set up associations within factories. If the factory name is the same as the association name, the factory name can be left out.</p>
+
+<p><code>ruby
+factory :post do
+  # ...
+  author
+end
+</code></p>
+
+<p>To not save the associated object, specify strategy: <code>:build</code> in the factory:</p>
+
+<p><code>ruby
+factory :post do
+  # ...
+  association :author, factory: :user, strategy: :build
+end
+</code></p>
+
+<p>This does <em>not</em> work; causes author_id to be nil</p>
+
+<p><code>
+factory :post do
+  # ...
+  author strategy: :build
+</code></p>
+
+<h2>Staging assets broken</h2>
+
+<p>Racked my brain (and everyone elses) over this one... It ended up I hadn't added the <code>rails_12factor</code> gem to staging though I had added that environment.</p>
+
+<h2>Capybara cheatsheet</h2>
+
+<p><a href="https://gist.github.com/zhengjia/428105">Cheatsheet</a></p>
+
+<h2>Server TimeZone</h2>
+
+<ul>
+<li>had a feature that pulls events once they have passed. Heroku's time zone is by default set to <code>UTC</code>. So I did two things:
+
+<ol>
+<li>heroku config:add TZ="America/New_York" as described <a href="http://blog.pardner.com/2012/08/setting-the-default-time-zone-for-a-heroku-app/">here</a>.</li>
+<li>Set <code>config.time_zone = 'Eastern Time (US &amp; Canada)'</code> in <code>application.rb</code> as described in the <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html">rails docs</a>.</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Fragment Caching</h3>
+
+<ul>
+<li><p>Had an issue expiring the fragment cache. The issue was that when you cache the fragment in your view, a cache digest is being added to the cache key (views/all_available_releases/41cb0a928326986f35f41c52bb3d8352), but <code>expire_fragment</code> is not using the digest (views/all_available_releases).</p></li>
+<li><p>By adding <code>skip_digest: true</code> to the cache call in the view it should prevent the digest from being used.</p></li>
+</ul>
+
+
+<p><code>
+&lt;% cache "all_available_releases", skip_digest: true do %&gt;
+ &lt;% @releases.each do |release| %&gt;
+  &lt;% cache(release) do %&gt;
+   &lt;html code with&gt;
+   &lt;%ruby code @release.name blah blah blah%&gt;
+  &lt;%end%&gt;
+ &lt;%end%&gt;
+&lt;%end%&gt;
+</code></p>
+
+<ul>
+<li>Cache digests are only intended to be used with automatic cache expiration. If you need to manually expire cache keys then you can't use cache digests.</li>
+<li>Saved by <a href="http://stackoverflow.com/a/17619414/1496757">stackoverflow</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

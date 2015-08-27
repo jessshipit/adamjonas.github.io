@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jquery | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/jquery/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[jquery promises]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/jquery-promises/"/>
+    <updated>2013-11-15T15:41:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/jquery-promises</id>
+    <content type="html"><![CDATA[<p>A <strong>Promise</strong> is an object that represents a one-time event, typically the outcome of an async task like an AJAX call.</p>
+
+<ul>
+<li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/wrangle-async-tasks-with-jquery-promises/">started here</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day29]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/fis-day29/"/>
+    <updated>2012-11-15T09:44:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/fis-day29</id>
+    <content type="html"><![CDATA[<ul>
+<li><a href="http://jsonlint.com/">JSON link</a> a JSON parser</li>
+</ul>
+
+
+<h3>CanCan</h3>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/192-authorization-with-cancan">Rails Cast</a></li>
+<li><a href="https://github.com/ryanb/cancan">CanCan Source Code</a></li>
+<li><a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">CanCan Wiki</a></li>
+</ul>
+
+
+<p>```ruby</p>
+
+<h1>If a user.git_nickname == repo.owner_name -> the user is an owner.</h1>
+
+<p>&lt;%= if can? :put, @issue %> #can only see the links if you authorized</p>
+
+<h1>also need to add restrictions in the controller</h1>
+
+<p>load_and_authorize_resource :nested => :repo</p>
+
+<h1>this is funky</h1>
+
+<p>```</p>
+
+<p>```ruby ability.rb
+class Ability
+  include CanCan::Ability</p>
+
+<p>  def initialize(user)
+  user ||= User.new # guest user that comes to the site and doesn't have an acct yet</p>
+
+<p>  if user.role? :admin</p>
+
+<pre><code>  can :manage, :all #manage emcompasses every action
+else 
+#this is for every day users
+  can :read, :all 
+  can :create, Comment
+  can :update, Comment do |comment|
+    comment.try(:user) == user || user.role?(:moderator)
+    #eqivalent to comment &amp;&amp; comment.user == user
+  end
+  if user.role?(:author)
+    can :create, Article
+    can :update, Article do |article|
+      article.try(:user) == user
+    end
+  end
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p><code>ruby application_controller.rb
+rescue_from CanCan::AccessDenied do |exception|
+  flash[:error] = "Access denied."
+  redirect_to root_url
+end
+</code></p>
+
+<h3>Jquery lecture John</h3>
+
+<p>```javascript
+//hide
+  $("#b1").click(function(){</p>
+
+<pre><code>$("#p1").hide(1000);
+</code></pre>
+
+<p>  });</p>
+
+<p>  //show
+  $("#b2").click(function(){</p>
+
+<pre><code>$("#p1").show(2000); //this makes it look like it is writing it out
+//with a longer duration
+</code></pre>
+
+<p>  });</p>
+
+<p>  //toggle
+  $("#b3").click(function(){</p>
+
+<pre><code>$("#p1").toggle(1000);
+</code></pre>
+
+<p>  });
+```</p>
+
+<ul>
+<li>Fade Toggle, fade down, slide up, slide down, slide toggle</li>
+</ul>
+
+
+<p>```javascript
+//animate
+  $("#b19").click(function(){</p>
+
+<pre><code>$(".box-animate").animate({height:"200px"},500);
+$(".box-animate").animate({width:"200px"},500);
+$(".box-animate").animate({height:"50px"},500);
+$(".box-animate").animate({width:"50px"},500);
+$(".box-animate").animate({width:"100px"},500);
+$(".box-animate").animate({height:"100px"},500);
+</code></pre>
+
+<p>  });
+```</p>
+
+<p>```javascript Fancy Box Example
+$(document).ready(function(){</p>
+
+<p>  /<em> LETS USE FUNCTIONS TO MAKE AN INSTANCE OF INTERACTING WITH THE DOM REPEATABLE </em>/</p>
+
+<p>  //first I want to fade out all the fruit pictures.
+  $('#gallery img').fadeTo(100,0.2); //fadeTo(delay in miliseconds, opacity)</p>
+
+<p>  //next I want to create a function that will only run when someone hovers over a fruit image.
+  function mouseOn(){</p>
+
+<pre><code>$(this).fadeTo(200,1); //the keyword 'this' refers to the element that is calling the function in our case it is the individual image that the user has their mouse over top of.
+</code></pre>
+
+<p>  }</p>
+
+<p>  //mouse off funtion
+  function mouseOff(){</p>
+
+<pre><code>$(this).fadeTo(500,0.2);
+</code></pre>
+
+<p>  }</p>
+
+<p>  //lastly I want to check if the user is hovering their mouse and call the apropriate function.
+  $('#gallery img').hover(mouseOn,mouseOff);</p>
+
+<p>  //add rel attribute to gallery links to add arrow functionality to fancybox plugin
+  $('#gallery a').attr('rel','fruits');</p>
+
+<p>  //apply fancybox plugin
+  $('#gallery a').fancybox();</p>
+
+<p>});
+```</p>
+
+<h3>When installing a plugin</h3>
+
+<ul>
+<li>does it have css?</li>
+<li>load styleheet above my own, so that it won't over-ride my styling</li>
+<li><p>put js sheet BELOW jquery plugin files</p></li>
+<li><p>js fiddle -> minifies</p></li>
+</ul>
+
+
+<h3>Semi Colons</h3>
+
+<ul>
+<li>if, else and function def don't requiring a semi-colon</li>
+<li>would never put a semi-colon after a curly brace except for object instantiation
+
+<ul>
+<li>`var myObject = { };</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Jquery Misc</h3>
+
+<ul>
+<li><a href="http://oscarotero.com/jquery/">Jquery cheat sheet</a></li>
+</ul>
+
+
+<p>Content delivery network -> a CDN</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>Best practices from backend devs. What can we do to help you?
+
+<ul>
+<li>semantic use of naming things like IDs</li>
+</ul>
+</li>
+<li>some of your favorite plugins? source for finding really cool plugins
+
+<ul>
+<li><a href="http://fancybox.net/">fancybox.net</a></li>
+<li><a href="http://popcornjs.org/">popcorn.js</a></li>
+<li><a href="http://www.jquery4u.com/">Jquery4u</a></li>
+</ul>
+</li>
+<li>tests in javascript?
+
+<ul>
+<li>some mvc have tests built in like backbone.</li>
+</ul>
+</li>
+<li>debugging in JS?
+
+<ul>
+<li>write code in short snippets, comment out sections</li>
+<li>js lint -> shows errors and styles</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Color Stuff</h3>
+
+<ul>
+<li>Digital color meter
+
+<ul>
+<li>copy with cmd, shift c and you can paste is</li>
+</ul>
+</li>
+<li><a href="https://kuler.adobe.com">color matching</a>
+
+<ul>
+<li>automatically color coordinates</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```javascript
+$.each
+  data.results[0].from_user_name</p>
+
+<p>.getJson //pretty important
+```</p>
+
+<p>```javascript Get JSON from Twitter example
+$(document).ready(function(){</p>
+
+<p>  var keywordInput = $('#keyword'),</p>
+
+<pre><code>searchButton = $('#search'),
+displayFeed = $('#feed'),
+keyword = '',
+content = '';
+</code></pre>
+
+<p>  //CLEAR
+  keywordInput.focus(function(){</p>
+
+<pre><code>displayFeed.empty(); //clears results
+keywordInput.val(''); //clears input box when return to type new key words. 
+</code></pre>
+
+<p>  });//end clear</p>
+
+<p>  //SEARCH &amp; DISPLAY
+  searchButton.click(function(){</p>
+
+<pre><code>keyword = keywordInput.val(); //retrieves keyword(s) typed.
+
+$.getJSON('http://search.twitter.com/search.json?callback=?&amp;q='+keyword,function(data){ //display JSON feed using keyword(s) typed
+//callback shifts to padded json, which is neccessary for this call
+//data is an arbitrary variable that store the info
+
+  console.log(data); //see if results came in...
+
+  console.log(data.results[0].from_user); //if only there were a way to go into the array results and loop over each element/value and report back the data I want... What about loops?
+
+  //loop -&gt; for each object result retrieve the data and display
+  $.each(data.results, function(index, value){
+  // tell each what we want to iterate over
+    //data.results -&gt; is an array within the json
+        var content = '&lt;p&gt;&lt;a href="http://twitter.com/'+value.from_user+'" target="_blank"&gt;&lt;img src="'+value.profile_image_url+'" alt="picture of '+value.from_user+'"&gt;&lt;/a&gt; &amp;quot;'+value.text+'&amp;quot; -'+value.from_user+' &lt;span class="date"&gt;['+value.created_at+']&lt;/span&gt;&lt;/p&gt;';
+
+        displayFeed.append(content); //displays each result inside feed area.
+        //opposite is prepend
+        displayFeed.find('p').highlight(keyword); //highlight matching terms using highlight plugin.
+
+  });//end each
+
+});//end getJSON
+</code></pre>
+
+<p>  });//end Search</p>
+
+<p>});//end document ready
+```</p>
+
+<ul>
+<li>tutsplus-> learn jquery 30 days
+
+<ul>
+<li>30 min videos</li>
+<li>free</li>
+</ul>
+</li>
+<li><h2>backbone tutorial</h2></li>
+<li><a href="http://it-ebooks.info/">http://it-ebooks.info/</a>
+
+<ul>
+<li><a href="http://www.manning.com/bibeault/">jquery in action</a></li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day27]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/fis-day27/"/>
+    <updated>2012-11-13T09:21:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/fis-day27</id>
+    <content type="html"><![CDATA[<h3>POTD Jesse James Garrett</h3>
+
+<ul>
+<li>Author of <a href="http://www.jjg.net/elements/">elements of user experience</a>
+
+<ul>
+<li>elements of style</li>
+</ul>
+</li>
+<li><a href="http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications">Ajax essay</a>
+
+<ul>
+<li>asynchronous model</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Gitbo</h3>
+
+<ul>
+<li><a href="https://github.com/tute/merit">merit</a>/<a href="http://railscasts.com/episodes/364-active-record-reputation-system">reputation</a></li>
+<li><a href="https://github.com/javan/whenever">whenever</a></li>
+</ul>
+
+
+<h2>JS With Justin Moses</h2>
+
+<ul>
+<li><p>learn some Haskell, lisp -> functional programming</p></li>
+<li><p>JS fiddle</p></li>
+<li><p><a href="http://jsbin.com/welcome/1/edit">JS Bin</a></p></li>
+<li><p>span is an inline div</p></li>
+<li><p>when a document is loaded in the browser. it first calls a method on itself called ready.</p>
+
+<ul>
+<li>program events onto these objects</li>
+<li>find objects within the document and add more events to them</li>
+<li>if you try to load it linearly, then you need to wait until the document has full compiled.</li>
+</ul>
+</li>
+<li>think about buttons as button objects and you can bind methods and other objects to that button object</li>
+<li>src="http://adamjonas.github.com/adamjonas//code.jquery.com/"
+
+<h2>- put the script tags in the head is good form</h2></li>
+</ul>
+
+
+<p>```</p>
+
+<script>
+    function runthis() {
+    alert(this);
+  }
+</script>
+
+
+<p>```
+$ -> jquery shortcut</p>
+
+<p>When the DOM is loaded get going....
+```javascript
+$(function)(){</p>
+
+<p>}
+```</p>
+
+<p>```javascript
+$(function)(){
+  //alert(this);</p>
+
+<p>  alert($('.btn').html("test123"));
+  //matching functions and matching it to all buttons</p>
+
+<p>});
+```
+document.querySelectorAll('.button') -> is the javascript equivalent to $('.button')</p>
+
+<p>```javascript
+$(function)(){</p>
+
+<p>  $('.btn').click(function() {</p>
+
+<pre><code>$('body').append('&lt;button class="btn"&gt;my button&lt;/button&gt;');
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>```javascript
+$(function)(){</p>
+
+<p>  $('body').on('click', function()
+  {</p>
+
+<pre><code>  $('body').append('&lt;button class="btn"&gt;my button&lt;/button&gt;');
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<ul>
+<li><a href="http://api.jquery.com/on/">.on() event</a></li>
+<li>every move, every click these are all reported events
+
+<ul>
+<li>event bubbling -> fire event with that div, in the body, in the window
+
+<ul>
+<li>target -> event clicked on</li>
+<li>event delegation in js -> allows you quickly bind events that don't exist yet</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>AJAX</h3>
+
+<p><code>XMLHttpRequest == $.ajax</code></p>
+
+<p>```javascript AJAX
+$(function() {
+  var promise = $.ajax({</p>
+
+<pre><code>url:"http://jsbin.com/iyijag.js"
+</code></pre>
+
+<p>  }).
+  promise.done(function(data){
+  //show user data
+  alert(data); //alert box with json data
+  }).
+  promise.fail(function(err){
+  // on fail
+  }).
+  promise.always(function(data){
+  //always called
+  });
+});</p>
+
+<p>```
+AJAX by default is get, but
+jquery deferred -> chaining things together without certainty of the event</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>debugging in your app. single click on line with chrome will drop in a debugger object.
+
+<ul>
+<li>can then see the object in console</li>
+</ul>
+</li>
+<li>if you use it once -> you don't need to name the function, if you want to reuse, you probably want to</li>
+</ul>
+
+
+<h3>Other stuff</h3>
+
+<ul>
+<li><a href="http://colorblendy.com/">colorblendy</a></li>
+<li><a href="http://mouapp.com/">markdown editor</a></li>
+<li><a href="http://www.khanacademy.org/cs">khan academy</a></li>
+<li>node inspector for server side</li>
+<li><a href="https://npmjs.org">NPM for node</a>- is like ruby gems - server side modules</li>
+<li>HTML5 and websockets and threads</li>
+</ul>
+
+
+<h2>Avi Rant</h2>
+
+<ul>
+<li>rails works nicely with ember</li>
+<li>javascript provides you</li>
+</ul>
+
+
+<h3>Avi Javascript Lecture</h3>
+
+<ul>
+<li>if you want to do anything to an object, you need to first grab it from the DOM</li>
+<li>document.baseURI</li>
+<li>document - returns the whole window</li>
+<li>{} in javascript is an object</li>
+</ul>
+
+
+<p>```javascript Building an Object in Javascript
+o = {}
+//instantiating an object
+o.first_name = "avi"
+o.last_name = "flom"
+o.full_name = function(){this.first_name + " " + this.last_name}
+//like self.first_name + " " + self.last_name in ruby</p>
+
+<p>//can see what this is in the log
+o.full_name = function(){console.log(this)};</p>
+
+<p>//could do this, but it isn't object oriented
+function full_name(object){
+  return object.first_name + object.last_name
+}
+<code>
+`$ sign == jQuery`
+</code>javascript
+document.onready = function(){
+  $("form a")
+}</p>
+
+<p>document.onready();</p>
+
+<p>//This means that when the document is loaded, fire this.
+$(function(){
+  $("form a").click(function(x){</p>
+
+<pre><code>alert(x.clientX + "," x.clientY")
+return false; //stop the normal event -&gt; like following a link
+//this would work like x.preventDeafult();
+</code></pre>
+
+<p>  })
+});</p>
+
+<p>//x is the event in this case
+//$("form a") is almost like a yield from a block, that you will be able to access
+<code>
+</code>javascript
+$(this) // a full blown object that knows about its parent
+this // is just a return of DOM. This doesn't have much info</p>
+
+<p>//.attr("href") is like accessing an attribute or key of the object
+window.location = $(this).attr("href") +"?source=flatironschool"
+```</p>
+
+<ul>
+<li>You are hooking into events. You are dependent on the browser and when events are loaded. It's not about linear execution. It's about the browser API.</li>
+<li>applying a bind to an element will always happen in a ready box</li>
+<li>current target, the thing that was actually clicked</li>
+<li>handleObj - the actual event, event type -> both might be a click event</li>
+</ul>
+
+
+<p>```javascript
+$(function)(){
+  $("form a").click(function(e){</p>
+
+<p>  e.preventDefault;</p>
+
+<p>  //select the object</p>
+
+<p>  //$select = $('#mixtape_mixtape_songs_attributes_0_song');
+  $select = $('form select:last'); //grab the last element with a pseudo selector
+  //duplicate code
+  $new_select = $select.clone();</p>
+
+<p>  console.log($new_select);</p>
+
+<p>  //edit's name
+  $next_name = $select.attr("name")
+  console.log($next_name)</p>
+
+<p>  next_int = parseInt(next_name.
+  replace("mixtape[mixtape_songs_attribute][", "").
+  replace("]song_id"))+1;</p>
+
+<p>  new_select.attr("name", next_name)
+  //insert it back into the DOM</p>
+
+<p>  $("div.actions")
+  return false;
+  })
+});</p>
+
+<p>//can have a document object that hasn't been inserted into the view yet
+```</p>
+
+<p>```javascript
+$("a").click(function(){alert("test")});</p>
+
+<p>//equal to
+t = function(){alert("test")}; -> this loaded into memory and run when ready.
+// t = alert("test") -> this is literal and will be called immediately.
+$("a").click(t);
+```</p>
+
+<h3>Methods</h3>
+
+<ul>
+<li>key press event</li>
+<li>blur(), change(), click()</li>
+<li>handler() -> the function you want to run when this change occurs</li>
+<li>hover is the combo of focus and blur</li>
+<li>every keypress comes with two events key down and key up</li>
+<li>live -> attaching the event to the body</li>
+</ul>
+
+
+<p>```javascript MouseMove
+$(function)(){
+  $("form").mousemove(function(e){</p>
+
+<pre><code>console.log(e)
+</code></pre>
+
+<p>})
+```</p>
+
+<ul>
+<li>spyjax</li>
+</ul>
+
+
+<h3>Odemeter</h3>
+
+<p><a href="http://uvumitools.com/odometer.html">http://uvumitools.com/odometer.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day14]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/haw-day14/"/>
+    <updated>2012-08-20T12:10:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/haw-day14</id>
+    <content type="html"><![CDATA[<p>```javascript Debug Method
+console.log(allVals);</p>
+
+<p>// location.reload()
+```</p>
+
+<p>Look up dataTypes -- text, json, script (js), xml, html
+This the request type format that we want it in.</p>
+
+<h3>JQuery Token Input</h3>
+
+<p>http://railscasts.com/episodes/258-token-fields
+need to make sure the controller responds to .json
+-the default has it nested in an @tags key. To remove that we need to map it to its attributes like so--
+<code>format.json { render :json =&gt; @tags.collect{|t| t.attributes}  }</code></p>
+
+<ul>
+<li>prePoulation was an issue as well</li>
+</ul>
+
+
+<p><code>ruby Symobol to Proc
+[1,2].collect{|i| i.to_s} #=&gt; ["1", "2"]
+</code></p>
+
+<ul>
+<li>To Jquery plugin to gem
+
+<ul>
+<li>query isn't searching properly in the tags controller</li>
+<li>remove the submit button for tag tokens</li>
+</ul>
+</li>
+</ul>
+
+
+<p>'f.text_field options' for onAdd or on Remove</p>
+
+<ul>
+<li><p>put the ':controller => :error, :action => :resolve_on_airbrake' on the fix button
+or gather all the errors tagged with fixed and move this task to a background job...</p></li>
+<li><p>sidekiq runs on redis</p>
+
+<ul>
+<li>create a worker folder</li>
+<li>??needs to be serialized into redis?</li>
+<li>sidekiq will run if there is an error: can disable the retry option with an option</li>
+<li>pool thread limits the number of jobs that can be run</li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HAW-day12]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/haw-day12/"/>
+    <updated>2012-08-16T10:19:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/haw-day12</id>
+    <content type="html"><![CDATA[<ul>
+<li>js buttons on tag show pages</li>
+<li>fix checkboxes/mass assigning tags</li>
+</ul>
+
+
+<h3>respond_to</h3>
+
+<p>This is basically a glorified case statement...</p>
+
+<p>if no action is specified the default is the action of the namespace
+```ruby
+def tag</p>
+
+<pre><code>#some code
+respond_to do |f|
+  f.html {redirect_to :back}
+  f.js
+end
+</code></pre>
+
+<p>  end
+```
+So it looks for tag.js as the default...</p>
+
+<ul>
+<li><p>BUG:</p>
+
+<ul>
+<li>tell firefox not to autocomplete</li>
+</ul>
+</li>
+<li><p>checkboxes</p></li>
+<li>get all the values</li>
+<li><p>submit to server</p></li>
+<li><p>loop through the elements</p></li>
+<li>gather all the values (which are the ids)</li>
+<li>find errors by ids</li>
+<li>push in tag name signal</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

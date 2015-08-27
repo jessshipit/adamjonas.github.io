@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails_forms | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/rails-forms/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day25]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/fis-day25/"/>
+    <updated>2012-11-11T14:16:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/fis-day25</id>
+    <content type="html"><![CDATA[<h2>Nested Forms</h2>
+
+<ul>
+<li>need writers to handle the</li>
+</ul>
+
+
+<p>```
+<select name='mixtape[mixtape_song_attributes][][song_id]'>
+&lt;% Song.all.each do |song| %>
+  <option value='<%= song.id %>'> &lt;%= song.name %></option>
+&lt;% end %>
+</select></p>
+
+<p>&lt;%= select_tag('mixtape[mixtape_songs_attributes][][song_id]',
+options_for_select(Song.all.collect{|s| [s.name, s.id]})) %></p>
+
+<h1>need a song in memory</h1>
+
+<p>@mixtape.mixtape_songs.build</p>
+
+<p>&lt;%= f.fields_for :mixtape_songs do |mixtape_song_builder| %>
+  &lt;%= mixtape_song_builder.select :song_id, songs_for_select %>
+&lt;% end %></p>
+
+<h1>songs_for_select logic in a helper</h1>
+
+<p>```</p>
+
+<ul>
+<li>add a scope to your form with fields for</li>
+</ul>
+
+
+<h3>Pass in local variables and change that local variable's name in the context of the new partial</h3>
+
+<p><code>ruby when rendering a partial -&gt; how do I pass in the f. variable.
+&lt;%= render 'songs/fields', :f =&gt; :song_form %&gt;
+</code></p>
+
+<ul>
+<li><p><strong>f.object_name</strong> -> gives you the path of what f is</p>
+
+<ul>
+<li>This was valuable with specifying a :name => ["#{f.object_name}"][genre_name][]</li>
+</ul>
+</li>
+<li><p>settings represents the edit form for a user</p></li>
+<li><p>instead of throwing it away-> label depreciated and put into a folder, since you might need that code later</p></li>
+<li><p>HAML is whitespace sensitive, it's very strict</p>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/39-customize-field-error">customizing field error</a></li>
+<li><p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#class-attributes">field_error_proc</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/263-client-side-validations">client side validation</a></p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Adding search to our application</h3>
+
+<p>```ruby Implementing Search</p>
+
+<h1>in routes</h1>
+
+<p>resources :songs do
+  collection do</p>
+
+<pre><code>get :search
+</code></pre>
+
+<p>  end
+end</p>
+
+<h3>Search Songs</h3>
+
+
+<p>&lt;%= form_tag(search_songs_path, :method => :get) do %>
+  &lt;%= text_field_tag :query %>
+&lt;%= submit_tag :search %>
+&lt;% end %></p>
+
+<h1>in songs controller -> fuzzy search</h1>
+
+<p>def search
+  #@songs = Song.find_all_by_name(params[:query])</p>
+
+<p>  #should put this in the model
+  @songs = Song.where("name LIKE ?", "%#{query}%")
+  render :action => 'index'
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day24]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/fis-day24/"/>
+    <updated>2012-11-09T11:26:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/fis-day24</id>
+    <content type="html"><![CDATA[<h3>Nested Attributes</h3>
+
+<p>accepts_nested_attributes_for -> creates a writer</p>
+
+<p>```ruby What Nested Attributes Must do
+def mixtape_songs_attributes=(attributes)
+  #attributes is an array of hashes where each individual hash
+  #represents the atributes of a mixtape_song for this mixtape
+  #=> [{:song_id => 1}, {:song_id => 2}]
+  attributes.each do |mixtape_song_attr|</p>
+
+<pre><code>self.mixtape_song_attr.build(mixtape_song_attributes)
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby Nested Attributes
+name= "mixtape[mixtape_songs_attr][][song_id]" #we want many mixtape_song values
+name= "mixtape_songs_attr][][position]" #yield the position</p>
+
+<h1>NOT -> name= "mixtape[mixtape_songs_attr][song_id][]"</h1>
+
+<h1>=> this is a bunch of song_ids, not mixtape_songs_attr parameters</h1>
+
+<h1>THIS WORKS!! It understands the order</h1>
+
+<p>name= "mixtape[mixtape_songs_attr][0][song_id]"
+name= "mixtape[mixtape_songs_attr][1][song_id]"</p>
+
+<p>name= "mixtape_songs_attr][1][position]"
+name= "mixtape_songs_attr][0][position]"
+```</p>
+
+<p>```ruby The fields_for level of abstraction
+&lt;%= f.fields_for :mixtape_songs do |mixtape_song_form| %>
+  &lt;%= mixtape_song_form.text_field :song_id %>
+&lt;% end %></p>
+
+<h1>names it perfectly => mixtape[mixtape_songs_attr][0][song_id]</h1>
+
+<h1>in the controller you need to build the association.</h1>
+
+<p>@mixtape.mixtape_songs.build</p>
+
+<h1>or this can be done directly in the form</h1>
+
+<p>&lt;%= f.fields_for :mixtape_songs, @mixtape.mixtape_songs.build do |mixtape_song_form| %></p>
+
+<h1>in a compartmentalized div</h1>
+
+<p>&lt;%= fields_for 'mixtape_songs[]', MixtapeSong.new, :index => 0 do |mixtape_song_form| %>
+  &lt;%= mixtape_song_form.text_field :song_id %>
+&lt;% end %></p>
+
+<h1>the 'mixtape_songs[]' communicates that this the first of many</h1>
+
+<p>&lt;% 1.upto(10).each do %>
+  <input type="text" name="mixtape_songs[][song_id]" >
+&lt;% end %>
+```</p>
+
+<p>```
+raw(fields_for</p>
+
+<h1>a bunch of html)</h1>
+
+<p>fields_for(
+).html_safe
+```</p>
+
+<p>Don't access the params hash into the model--> you will have broken MVC. This is the right way to do it:
+```ruby Mass Assignment Logic in the Model
+mass assignment will call a method
+def songs_to_add=(song_ids)
+  songs_ids.each do |song_id|</p>
+
+<pre><code>self.mixtape_songs.build(song_id =&gt; song_id)
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>mixtape.new :songs_to_add => {a bunch of songs}</h1>
+
+<h1>params will attempt to call_this_method=</h1>
+
+<h1>and you can put this logic in the model</h1>
+
+<p>```</p>
+
+<p>git rebase master -> from a checked out branch will checkout master for that branch</p>
+
+<p>```ruby Nested Resources</p>
+
+<h1>routes</h1>
+
+<p>resources :mixtape do
+  resources :songs, :controller => 'mixtape/songs' , :only => [:new, :create]
+end</p>
+
+<h1>Make a nested controller for a nested</h1>
+
+<p>&lt;%= form_for(@song, :url => mixtape_songs_path(@mixtape)) do |f| %>
+```</p>
+
+<h3>When Heroku Crashed</h3>
+
+<p>```
+heroku logs --tail
+heroku run rake db:migrate</p>
+
+<h1>caught this</h1>
+
+<p>ActiveRecord::StatementInvalid (PG::Error: ERROR:  value too long for type character varying(255)</p>
+
+<h1>solution- change repo description attr and issue body attr to text from strings</h1>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day22]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/fis-day22/"/>
+    <updated>2012-11-07T10:10:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/fis-day22</id>
+    <content type="html"><![CDATA[<h3>HTTParty</h3>
+
+<ul>
+<li><a href="https://github.com/jnunemaker/httparty">On github</a></li>
+<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">Treehouse blog post</a></li>
+</ul>
+
+
+<h3>Rant</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Conway%27s_law">Conway's law</a>
+
+<ul>
+<li>organizational communication will be reflected in the product</li>
+</ul>
+</li>
+</ul>
+
+
+<p>seagull architect -</p>
+
+<blockquote><p>comes in, shits all over your code and then leaves</p></blockquote>
+
+<p><a href="https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design">Insufficiency of good design</a></p>
+
+<p>Open source: def up and down in migration.rb in rails can be refactored</p>
+
+<h3>POTD</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph Weizenbaum</a></p>
+
+<h2>Rails Lecture</h2>
+
+<p>```ruby Controller Test Continued from Day21...
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+
+  assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}
+
+  assigns(:song).artist_name.should == "Michael Jackson"
+end
+
+it "should create a song with a genre string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+
+it "should create a song with a genres from a CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop, Techno"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+it "should create a song with a genre array containing CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; ["Pop, Techno", "Rap"]}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  let(:song){Song.new(:name => "Thriller")}</p>
+
+<p>  context 'with genres' do</p>
+
+<pre><code>let(:genre){Genre.create(:name =&gt; "Pop")}
+
+context '.genre_names' do
+  it "should return an array of genre names" do
+    song.genres &lt;&lt; genre
+    song.save
+
+
+    song.genre_names.should be_an_instance_of(Array)
+    song.genre_names.should include("Pop")
+  end
+
+  it "should accept a genre name and add that genre" do
+    song.genre_names = "Techno"
+    song.save
+
+    song.genre_names.should include("Techno")
+  end
+
+  it "should accept a comma delimited list of genre names" do
+    song.genre_names = "Techno, Pop"
+    song.save
+
+    song.genre_names.should include("Techno", "Pop")
+  end
+
+  it "should accept an array containing comma delimited list of genre names" do
+    song.genre_names = ["Techno, Pop", "Rap"]
+    song.save
+
+    song.genre_names.should include("Techno", "Pop", "Rap")
+  end
+
+  it "should only add unique genres" do
+    song.genre_names = ["Pop", "Pop"]
+    song.save
+
+    song.genre_names.count.should == 1
+  end
+
+end
+</code></pre>
+
+<p>```
+rake spec:models</p>
+
+<p><code>ruby gem file
+group [:development, :test] do
+  gem 'debugger'
+end
+</code></p>
+
+<ul>
+<li>detect returns nil if there is not match</li>
+<li>select returns an empty array when no match</li>
+</ul>
+
+
+<p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions"><strong>to_sentence method in rails</strong></a></p>
+
+<h3>HTML &lt; form_tag lower &lt; form_for</h3>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag">form_tag</a></p>
+
+<p>```
+<form action="/songs" id="new_song" class="new_song"> <form></p>
+
+<p>&lt;%= form_tag(songs_path, :id => "new song") do %>
+  &lt;%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
+  &lt;%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
+  &lt;%= submit_tag "Create Song", :id => "create_song" %>
+&lt;% end %></p>
+
+<p>&lt;%= form_for(@song) do |f| %>
+  &lt;%= f.text_field :name %>
+  &lt;%= f.text_field :artist_name %>
+  &lt;%= f.submit %>
+&lt;% end %>
+```
+<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag">text_field_tag docs</a></p>
+
+<h3>Integration test / Acceptance Test</h3>
+
+<ul>
+<li><p><a href="http://railscasts.com/episodes/187-testing-exceptions">Railscast 187</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/257-request-specs-and-capybara">Railscast 257</a></p></li>
+<li><a href="https://github.com/copiousfreetime/launchy">launchy gem</a> to see that page that capybara filled out - useful for creating fixtures</li>
+<li><p>post_via_redirect</p>
+
+<ul>
+<li>get => response</li>
+<li>visit => page</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Continuous Integration / Testing</h3>
+
+<ul>
+<li>autotest</li>
+<li>guard
+
+<ul>
+<li><a href="https://github.com/guard/guard">gem guard-rspec</a></li>
+</ul>
+</li>
+<li>rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved</li>
+<li>growl extension or terminal notifier on the <a href="https://github.com/guard/guard#terminal-notifier">guard gem page</a></li>
+<li><a href="https://github.com/jnicklas/capybara">capybara</a></li>
+</ul>
+
+
+<p><strong>receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will</strong></p>
+
+<h3>Pull down the other app</h3>
+
+<p>git merge upstream/master</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: lambda | Hack hack hack...]]></title>
+  <link href="http://adamjonas.github.com/adamjonas/blog/categories/lambda/atom.xml" rel="self"/>
+  <link href="http://adamjonas.github.com/adamjonas/"/>
+  <updated>2015-08-26T16:53:08-04:00</updated>
+  <id>http://adamjonas.github.com/adamjonas/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Procs and lambdas]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/procs-and-lambdas/"/>
+    <updated>2012-07-06T10:53:00-04:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/procs-and-lambdas</id>
+    <content type="html"><![CDATA[<p>In Ruby we create an anonymous chunk of code call <code>Proc.new</code>. We call this using the <code>.call</code> method.</p>
+
+<p>Proc:</p>
+
+<blockquote><p>Think of proc as a "saved" block: just like you can give a bit of code a name and turn it into a method, you can name a block and turn it into a proc.</p></blockquote>
+
+<p>Lambdas appear to be the same, but lambdas are pickier about arguments. Can't pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.</p>
+
+<p>Lambda return statement just exited execution of the statement itself. The proc ended execution of containing method.</p>
+
+<p>There is an extra short form for lambdas called stabby lambdas.</p>
+
+<p>As a rule, stick with lambdas until you find a specific reason not to.</p>
+
+<p>Convenient to write methods that accepts a single proc as arugments. Callers can pass in whatever code they want to be executed once of each name. This method that is so common that has a single argument that is expected to be a proc is got it's own name -- a block. Every ruby method can implicity receive a proc arg with the yield keyword.</p>
+
+<p>Blocks:</p>
+
+<blockquote><p>A method with a singe proc as as arguments.</p></blockquote>
+
+<p>```ruby A block
+def block_test
+  puts "We're in the method!"
+  puts "Yielding to the block..."
+  yield
+  puts "We're back in the method!"
+end</p>
+
+<p>block_test { puts ">>> We're in the block!" }</p>
+
+<h1>Can also pass parameters to yield</h1>
+
+<p>def yield_name(name)
+  puts "In the method! Let's yield."
+  yield name
+  puts "Block complete! Back in the method."
+end</p>
+
+<p>yield_name("Eric") { |name| puts "My name is #{name}." }</p>
+
+<h1>another example</h1>
+
+<p>def double(num)
+  yield(num)
+end</p>
+
+<p>double(4) {|num| num*2}</p>
+
+<p>```</p>
+
+<p>You know how everything in Ruby is an object, well, as it turns out that's not quite true. Ruby blocks are not objects! So, blocks are not objects, but you can turn them into objects without too much trouble. We do this by wrapping our block in an instance of the Proc class...</p>
+
+<p>Procs and lambdas are basically blocks that have been assigned to variables.</p>
+
+<h3>Procs</h3>
+
+<ul>
+<li><strong>Advantages of procs over blocks</strong>:
+
+<ol>
+<li>Procs are full-fledged objects, so they have all the powers and abilities of objects. (Blocks do not.)</li>
+<li>Unlike blocks, procs can be called over and over without rewriting them. This prevents you from having to retype the contents of your block every time you need to execute a particular bit of code.</li>
+</ol>
+</li>
+</ul>
+
+
+<p>(<em>Treehouse notes</em>)</p>
+
+<ul>
+<li>Need to pass a block in as a parameter when creating a block (even if it is an empty block)</li>
+</ul>
+
+
+<p>```ruby Procs
+my_proc = Proc.new {}</p>
+
+<h1>OR</h1>
+
+<p>my_proc = proc {}</p>
+
+<h1>call with</h1>
+
+<p>my_proc.call
+```
+- you call a proc with the method .call -> my_proc.call</p>
+
+<p>```ruby passing in parameters
+my_proc = proc { |name| puts "Hello, #{name}" }</p>
+
+<h1>call with no parameters</h1>
+
+<p>my_proc.call #=> "Hello, "
+my_proc.call("Adam") #=> "Hello, Adam"
+```</p>
+
+<p>It is standard to pass along a code block to the each method</p>
+
+<p>block_given? --> method to check whether a block was given to a method or not</p>
+
+<p><em>A proc</em> is a nameless or anonymous block of code that can be represented as an object, can be passed around and called at will</p>
+
+<p>```ruby E.G.
+class Array
+def random_each(&amp;b)  # => with the ampersand, b essentially becomes a reference to the code block below.
+  shuffle.each do |el|</p>
+
+<pre><code>b.call el  #=&gt; b is a proc
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>[1,2,3,4,5].random_each do |el|
+puts |el|</p>
+
+<p>end
+```
+You can only pass a single block to a method at one time, but you can pass multiple procs around because they are regular object like arrays or strings.</p>
+
+<p>```ruby E.G.
+Def run_two_procs (a, b)
+  a.call
+  b.call
+end</p>
+
+<p>proc1 = Proc.new do
+  puts "This is proc1"
+end</p>
+
+<p>proc2 = Proc.new do
+  puts "This is proc2"
+end</p>
+
+<p>run_two_procs proc1, proc2
+```
+If you have a code block, you can call it with yield, you can use the ampersand argument to convert it into a proc,</p>
+
+<p>**if you use Proc.new without giving it a code block to assign to that Proc, Proc.new will look to see if the current scope has been passed a code block and then it will use that --> it will do it all implicitly, you don't need to specify anything here. If it can't find a block (e.g. if you commented the block below) it raises an error. Proc.new wants a block passed directly or it implicitly picks it up from the current scope/environment.</p>
+
+<p>```ruby
+Def run_block
+  p = Proc.new # see above
+  p.call
+end</p>
+
+<p>run_block do
+  puts "Hello World'
+end
+```</p>
+
+<p>In Ruby 1.9 there are 4 main ways to run or call a block:
+```ruby Proc e.g.
+my_proc = Proc.new do |a|
+  puts "This is a proc and #{a} was passed along to me"
+end</p>
+
+<p>my_proc.call(10) #call method that passes in 10
+my_proc.(20) #this isn't a typo, gets converted to a call
+my_proc[30] #
+my_proc === 40 # triple equal is called the case equality operator, it's primary function is used in case statements</p>
+
+<p>several = Proc.new { |number| number > 3 &amp;&amp; number &lt; 8 }
+none = Proc.new { |number| number == 0 }</p>
+
+<p>case number
+when several
+  puts "several"
+when none
+  puts "none"
+end
+```
+-->In this case the several proc is being run and if it returns true it runs the puts --> this abstracts everything away</p>
+
+<h3>Symbol to proc</h3>
+
+<ul>
+<li>Instructions:
+
+<ul>
+<li>Create a method, greeter, that takes no arguments and yields to a block.</li>
+<li>Create a proc, phrase, that puts "Hello there!". Pass this to greeter instead of a block. (Don't forget to pass &amp;phrase instead of just phrase!)</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```ruby An example with yield and a symbol to proc
+def greeter
+  yield
+end</p>
+
+<p>phrase = Proc.new do
+  puts "Hello there!"
+end</p>
+
+<p>greeter(&amp;phrase)
+<code>
+Can also use this to cast or convert types
+</code>ruby
+strings = ["1", "2", "3"]
+nums = strings.map(&amp;:to_i)</p>
+
+<h1>==> [1, 2, 3]</h1>
+
+<p>```</p>
+
+<h3>Lambdas</h3>
+
+<p>Treehouse notes:
+```ruby
+my_lambda = lambda {}</p>
+
+<h1>OR</h1>
+
+<p>my_lambda = -> {}
+```
+Can't assign variables to keywords</p>
+
+<p>Lambdas are much more sensitive than Procs to parameters. Much like methods, they need to receive the exact number of arguments as defined. Procs will just grab nil if nothing has been passed in.</p>
+
+<p>```ruby Passing in Parameters
+my_lambda = lambda { |name| puts "Hello, #{name}" }</p>
+
+<h1>call with no parameters</h1>
+
+<p>my_lambda.call #=> breaks!- wrong number of arguments</p>
+
+<h1>when you create a lambda the arguments are required....</h1>
+
+<p>my_lambda.call("Adam") #=> "Hello, Adam"
+```</p>
+
+<h3>Closures</h3>
+
+<p>In ruby a closure is like an anonymous code block, but that maintains references to local variables and were being used at the time of the definition of that code.
+```ruby
+def run_proc(p)
+  p.call
+end</p>
+
+<p>name = "Fred"</p>
+
+<p>print_a_name = proc { puts name } # this name doesn't exist in the definition above.</p>
+
+<h1>This magic is called a closure. (23 Min)</h1>
+
+<p>run_proc print_a_name
+```</p>
+
+<p>ALSO:
+```ruby
+def run_proc(p)
+  p.call
+end</p>
+
+<p>name = "Fred"
+print_a_name = proc { puts name }
+name = "John"</p>
+
+<p>run_proc print_a_name # => now this will output John because it kept a reference to the local variable.
+```</p>
+
+<p>Returns:
+- The lambda returns the last line of the method just like a regular method
+- A proc returns only what is executed INSIDE the proc.</p>
+
+<h3>SOME MORE READING:</h3>
+
+<ul>
+<li><a href="http://www.dev.gd/20130107-know-your-closures-blocks-procs-and-lambdas.html?utm_source=rubyweekly&amp;utm_medium=email">Know your closures</a></li>
+<li><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">Skorks- best explanation out there</a></li>
+<li><a href="http://pine.fm/LearnToProgram/?Chapter=10">Learn to program- chapter 10</a></li>
+<li><a href="http://strugglingwithruby.blogspot.com/2009/02/ruby-proc.html">Also</a></li>
+<li><a href="http://pragdave.blogs.pragprog.com/pragdave/2008/09/fun-with-procs.html">Pragmatic Programmer Dave's explanation</a></li>
+</ul>
+
+
+<h3>Other Resources</h3>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Video</a></li>
+<li><a href="http://www.ruby-doc.org/core-1.9.3/Proc.html">DOCUMENTATION</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Multiple Lambdas1
+2
+3
+4
+5
+6
+7
+8
+def exec_game(name, action, error_handler) game = games.detect { |game| game.name = name } begin action.call(game) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://adamjonas.github.com/adamjonas/blog/page/11/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adamjonas.github.com/adamjonas" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/ruby-bits-2/">Ruby Bits 2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T12:39:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Multiple Lambdas</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">exec_game</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">error_handler</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">game</span> <span class="o">=</span> <span class="n">games</span><span class="o">.</span><span class="n">detect</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="n">game</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">name</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="n">action</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="n">error_handler</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Lambda or Proc to Block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">library</span> <span class="o">=</span> <span class="no">Library</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">GAMES</span><span class="p">)</span>
+</span><span class='line'><span class="n">printer</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">) - </span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="n">library</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">printer</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Calling a method with &amp; in front of a parameter</em>
+<code>tweets.each(&amp;printer)</code></p>
+
+<p><em>Defining a method with &amp; in front of a parameter</em>
+<code>def each(&amp;block)</code></p>
+
+<figure class='code'><figcaption><span>Passing blocks around&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">each</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">yield</span> <span class="n">game</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#refactored as</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/javascript-hoisting/">Javascript Hoisting</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-19T12:34:00-05:00" pubdate data-updated="true">Dec 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-javascript-hoisting-explained/">Hoisting Explained Video</a></h3>
+
+<ul>
+<li><p>Some variables and functions get hoisted to the top of the scope. Just the declaration, not the inialization.</p>
+
+<ul>
+<li>Recommend to put all your variable declarations at the top of the function.</li>
+</ul>
+</li>
+<li><p>Functions are hoisted to the top too, but not function expressions.</p></li>
+</ul>
+
+
+<h3>Further reading</h3>
+
+<ul>
+<li><a href="http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting">JS Scopting and Hoisting</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/cache-layer/">Cache Layer</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-18T17:02:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our cache layer lives between the Github API and our Octokit Wrapper. We pull in the data on an authenticated user from the API and serialize the data in the user model (which allows us to access the data in multiple views). In a future refactor, we should probably be doing this in the wrapper model or even a memcache manager model.</p>
+
+<p>Given the fact that I didn&#8217;t fully grasp the cache system that I had a heavy hand in designing, I did a little more research on the subject&#8230; The cache storage system in Rails is very modular. It uses the file system to store the cache by default, but can be customized as we did. We used <a href="https://github.com/mperham/dalli">Dalli</a> instead of <code>mem_cache_store</code> because it has support for memcached&#8217;s binary protocol. (I believe Dalli will be the default in Rails 4.)</p>
+
+<h3>Methods</h3>
+
+<p>From the <a href="http://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store">documentation</a>, the main methods to call are <code>read</code>, <code>write</code>, <code>delete</code>, <code>exist?</code>, and <code>fetch</code>. The <code>fetch</code> method accepts a block and will either return an existing value from the cache or write the result to the cache if none exists.</p>
+
+<h3>Page Caching:</h3>
+
+<p>This allows the request for a page to be served by the webserver (nginx in our case), without ever having to hit the Rails stack. Obviously, this is highly performant, but cannot be used across all situations (e.g. where authentication is required or any actions that have before filters).</p>
+
+<h3>Action Caching:</h3>
+
+<p>This is similar to page caching except the incoming web request hits the Rails stack to allow the before-filters to run before the cache is served. This is the best option for when authentication and other restrictions need to be run while still serving the result of the output from a cached copy.</p>
+
+<h3>Fragment Caching:</h3>
+
+<p>This allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in. We tried running this for our indexed table views, but we need to work on bettering our server-side processing before this can be fully implemented.</p>
+
+<h3>SQL Caching:</h3>
+
+<p>This caches the results returned by each query so that if Rails encounters the same query again for that request, it will use the cached result rather than running the query against the database again.</p>
+
+<h3>Need to the look into&#8230;</h3>
+
+<p>In the future, I&#8217;d like to look how we might be better able to use <code>Rack::Cache</code> to better take advantage of HTTP caching regarding freshness (expires, cache-control) and/or validation (last-modified, ETags).</p>
+
+<h3>Further Reading:</h3>
+
+<ul>
+<li><a href="http://code.google.com/p/memcached/wiki/TutorialCachingStory">Memcache Wiki</a></li>
+<li><a href="http://guides.rubyonrails.org/caching_with_rails.html">Rails Guide on Caching</a></li>
+<li><a href="https://github.com/rtomayko/rack-cache">Rack cache</a></li>
+<li><a href="http://nubyonrails.com/articles/memcached-basics-for-rails">Memcached basics for Rails</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/code-climate-and-quality/">Code Climate and Quality</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-13T11:10:00-05:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Bryan Helmkamp, founder of Code Climate</h2>
+
+<h3>Static Analysis</h3>
+
+<ul>
+<li>object design issues</li>
+<li>code style</li>
+<li>potential bugs</li>
+<li>security vulnerabilities</li>
+<li>conformance with conventions</li>
+</ul>
+
+
+<p>Churn:</p>
+
+<ul>
+<li><p><a href="http://ablogaboutcode.com/2012/02/27/understanding-the-law-of-demeter/">Understanding the law of demeter</a></p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/Remote_procedure_call">remote procedure call</a></p></li>
+<li><p>Could get read-only access to the repo so that we wouldn&#8217;t need to pull down issues via the api? Would use fetches to stay up to date.</p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/Composite_pattern">Composite pattern</a></p></li>
+<li><p>be holistic about accomplishing 80% of a problem with 20% of the work. Understand why you are</p></li>
+<li><p>Game of four book. Domain driven design.</p></li>
+<li><a href="https://github.com/brynary/webrat">Webrat</a></li>
+<li><p>Conferences and meetups</p></li>
+<li><p>Feedback on Gitbo</p>
+
+<ul>
+<li>upvote bookmarklet. missing upvote button.</li>
+<li>&lt;moveable.ink></li>
+<li>before i take pledges, get the owner to approve.</li>
+<li>high activity&#8230; post comment to the issue if there is a pledge.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/marketing-your-app/">Marketing Your App</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-12T09:48:00-05:00" pubdate data-updated="true">Dec 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sr. Hacker @ Ordr.in</p>
+
+<ul>
+<li>FakeGirlfriend.co</li>
+<li><p>Co-creator of world of Fourcraft</p></li>
+<li><p><a href="http://blog.rickyrobinett.com/">Ricky&#8217;s Blog</a></p></li>
+<li><a href="http://www.helpareporter.com/">Help a reporter out</a></li>
+<li><a href="http://www.garysguide.com/jobs?region=newyork">Gary&#8217;s Guide</a></li>
+<li><a href="http://hackweekends.com/city-detail.html?city=New%20York">Hack Weekends</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/testing-gitbo/">Testing Gitbo</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T19:18:00-05:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">Factory Girl</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Defining Attributes in FactoryGirl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">provider</span> <span class="s2">&quot;github&quot;</span>
+</span><span class='line'>    <span class="n">uid</span>  <span class="s2">&quot;xxxx5826&quot;</span>
+</span><span class='line'>    <span class="nb">name</span> <span class="s2">&quot;Adam Jonas&quot;</span>
+</span><span class='line'>    <span class="n">nickname</span> <span class="s2">&quot;ajonas04&quot;</span>
+</span><span class='line'>    <span class="n">email</span> <span class="s2">&quot;francestown@gmail.com&quot;</span>
+</span><span class='line'>    <span class="n">image</span> <span class="s2">&quot;string&quot;</span>
+</span><span class='line'>    <span class="n">token</span> <span class="s2">&quot;xxxxx&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>config.include FactoryGirl::Syntax::Methods</code></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/advanced-sinatra/">Advanced Sinatra</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-10T13:14:00-05:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Sinatra</h3>
+
+<ul>
+<li><p>Sinatra is a DSL for creating a web</p></li>
+<li><p>Sinatra is library, not a framework (rails is a framework)</p></li>
+<li><p><a href="http://stackoverflow.com/questions/148747/what-is-the-difference-between-a-framework-and-a-library">difference between lib and framework</a></p></li>
+<li><p><a href="http://martinfowler.com/bliki/InversionOfControl.html">inversion of control</a> by Martin Fowler</p>
+
+<ul>
+<li>Sinatra supports inline templates</li>
+<li>variables are passed in via @instance variables</li>
+<li>Filters</li>
+<li>Helpers: takes a block and then anything defined are available in the templates</li>
+<li>Configuration: looks at the rack env variable and executes code based on the env</li>
+<li><a href="http://www.mnot.net/cache_docs/">cache docs</a></li>
+<li>By default don&#8217;t have sessions. Need to config sessions.</li>
+<li><p>Testing -> a lot of the tests that come with rails aren&#8217;t in sinatra</p>
+
+<ul>
+<li>test with rack-test</li>
+</ul>
+</li>
+<li><p>classic app -></p>
+
+<ul>
+<li>all the routes are in one file, it is straight Ruby code</li>
+</ul>
+</li>
+<li><p>Modular app -></p>
+
+<ul>
+<li>don&#8217;t want to pollute the Object namespace</li>
+<li>combinging multiple Sinatra apps in a single process</li>
+<li>use Sinatra app as middleware</li>
+</ul>
+</li>
+<li><p>Supports extensions</p>
+
+<ul>
+<li>could be helpers, routes, configurations pacakged into a Gem and used on other apps</li>
+</ul>
+</li>
+<li><p>Registered</p>
+
+<ul>
+<li>when the app is registered is has a method (<code>def self.registered(app)</code>) that allows config settings</li>
+</ul>
+</li>
+<li><p>extensions</p>
+
+<ul>
+<li><a href="http://www.sinatrarb.com/extensions.html">writing extensions</a></li>
+<li><a href="http://www.sinatrarb.com/extensions-wild.html">using extensions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Sinatra vs. Rails</h3>
+
+<ul>
+<li>when to use Sinatra&#8230;
+
+<ul>
+<li><p>Thick client web applications for performance or heavily visualizations</p>
+
+<ul>
+<li>majority of the logic is on the client, not on the server</li>
+<li>sinatra serves things really fast</li>
+</ul>
+</li>
+<li><p>API servers for iOS/Android/Javascript Apps</p></li>
+<li>HTML5 Mobile Apps (<a href="http://www.jqtouch.com/">jq touch</a> or jquery mobile)</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Rack</h3>
+
+<ul>
+<li><a href="http://m.onkey.org/ruby-on-rack-1-hello-rack">Hello Rack</a></li>
+</ul>
+
+
+<h3>Gems</h3>
+
+<ul>
+<li><a href="http://middlemanapp.com/getting-started/welcome/">Middleman Gem</a></li>
+<li>Sprockets- pretty much the asset pipeline</li>
+<li><a href="https://github.com/rtomayko/shotgun">shotgun</a> is a must.</li>
+</ul>
+
+
+<h3>Sinatra integrated into Rails</h3>
+
+<ul>
+<li>it is all Rack under the hood so you use <code>mount</code> in the route file and then all the urls defined in the sinatra app are available in the rails app</li>
+</ul>
+
+
+<h3>Sinatra on Heroku</h3>
+
+<ul>
+<li>heroku requires sinatra to have a <code>gem</code> file as well as a <code>config.ru</code> file</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>config.ru example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;./myapp&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">run</span> <span class="ss">Sinatra</span><span class="p">:</span><span class="ss">:Application</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>gemfile example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="s2">&quot;https://rubygems.org&quot;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sinatra&#39;</span><span class="p">,</span> <span class="s1">&#39;1.1.0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/script-bootstrap/">Script Bootstrap</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-10T11:16:00-05:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Zach Holman&#8217;s Slides on <a href="http://zachholman.com/talk/ruby-patterns">setting up a boostrap script</a></h3>
+
+<ul>
+<li>dependency check
+
+<ul>
+<li>is MySQL installed</li>
+<li>is redis running</li>
+</ul>
+</li>
+<li>bundler
+
+<ul>
+<li>bundle install \
+&#8211;binstubs \
+&#8211;local \
+&#8211;path=vendor/gems \
+&#8211;without=production</li>
+</ul>
+</li>
+<li>db creation
+
+<ul>
+<li>rake db:create</li>
+</ul>
+</li>
+<li>db migration
+
+<ul>
+<li>rake db:migrate</li>
+</ul>
+</li>
+<li>db seeding
+
+<ul>
+<li><a href="https://github.com/rtomayko/replicate">script/replicate-repo</a></li>
+</ul>
+</li>
+<li>static page compilation
+
+<ul>
+<li>404,500</li>
+</ul>
+</li>
+<li>language compilation
+
+<ul>
+<li>python, c, erlang</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Check to see if we need bundle install</h3>
+
+<figure class='code'><figcaption><span>Need to bundle install?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">md5</span>       <span class="o">&lt;&lt;</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Gemfile&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">checksum</span>  <span class="o">=</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span>
+</span><span class='line'><span class="n">installed</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;.bundle/checksum&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="https://github.com/holman/hopper/blob/master/script/bootstrap">Some examples</a></li>
+</ul>
+
+
+<h3>Using Foreman</h3>
+
+<ul>
+<li><a href="http://blog.daviddollar.org/2011/05/06/introducing-foreman.html">An Intro</a></li>
+</ul>
+
+
+<h3>Permission Issues</h3>
+
+<ul>
+<li><p>Once we changed the server script and we pushed, the permission issue went away. <a href="http://shalinjain.com/index.php/2009/05/27/scriptserver-permission-denied-ruby-on-rails-error">This is how we changed the permission</a> in the first place.</p></li>
+<li><p><a href="http://stubbisms.wordpress.com/2009/07/10/git-script-to-show-largest-pack-objects-and-trim-your-waist-line/">Git Script To Show Largest Pack Objects</a></p></li>
+</ul>
+
+
+<h3>script prompt</h3>
+
+<figure class='code'><figcaption><span>Slick Prompts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">echo</span> <span class="s2">&quot;the database will now be created, migrated and seeded&quot;</span>
+</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;the current default is sqlite, if you&#39;d like to customize your db settings&quot;</span>
+</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;update the config/database.yml file&quot;</span>
+</span><span class='line'><span class="n">echo</span> <span class="s2">&quot;when finished, you may continue...&quot;</span>
+</span><span class='line'><span class="n">read</span> <span class="o">-</span><span class="nb">p</span> <span class="s2">&quot;continue (y/n)?&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="vg">$REPLY</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="n">echo</span> <span class="s2">&quot;Exiting...&quot;</span>
+</span><span class='line'>    <span class="nb">exit</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="n">fi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/conways-game-of-life/">Conways Game of Life</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-08T11:23:00-05:00" pubdate data-updated="true">Dec 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://stackoverflow.com/questions/1720932/create-two-dimensional-arrays-and-access-sub-arrays-in-ruby">Initializing new arrays</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/backbone-dot-js-intro/">Backbone.js Intro</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-07T14:57:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Intro with <a href="http://www.youtube.com/watch?v=PqtYcHyyWJA">Nick Gauthier</a></h3>
+
+<ul>
+<li><p>7min 3seconds</p></li>
+<li><p>Backbone is a library, not a framework</p>
+
+<ul>
+<li>it is injectable, like Jquery</li>
+</ul>
+</li>
+<li><p>Ember is much larger and does more for you, but in backbone you call the shots</p></li>
+<li><p>Router</p>
+
+<ul>
+<li>Bind urls to actions with hashbang route or pushstate route</li>
+<li>if you have a route that it recognizes it triggers your code</li>
+<li>extend backbone default router</li>
+<li>looks at a route and triggers an action -> like Rails</li>
+</ul>
+</li>
+<li><p>Views</p>
+
+<ul>
+<li>When you instantiate a view, you create a new DOM element
+
+<ul>
+<li>The view&#8217;s job is to listen to events, like jQuery to trigger actions</li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Listens for a click&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="err">\\</span><span class="nx">code</span>
+</span><span class='line'>  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;click .pet&quot;</span><span class="o">:</span> <span class="s2">&quot;woof&quot;</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'><span class="err">\\</span><span class="nx">more</span> <span class="nx">code</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/12/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/10/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/js-promises/">js promises</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator&#8217;s Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
