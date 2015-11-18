@@ -9,11 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="This is a rake task file&#8230;1
-2
-3
-task :load_errors =&gt; :environment do AirbrakeError.import_from_airbrake
-end In heroku I would run this: This &hellip;">
+  <meta name="description" content="Deploying to Heroku Make sure to modify the mongoid.yml file to config the production environment. 2 major issues with the mongoid deploy: Issue with &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +86,178 @@ end In heroku I would run this: This &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day1/">Haw-day1</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-31T15:15:00-04:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Deploying to Heroku</h3>
+
+<p>Make sure to modify the <a href="https://devcenter.heroku.com/articles/mongohq#mongoid">mongoid.yml file</a> to config the production environment.</p>
+
+<p><strong><em>2 major issues with the mongoid deploy:</em></strong></p>
+
+<ol>
+<li>Issue with ruby version was the first error we encountered&#8230; need to keep in that <em>mongoid only supports 1.9.3</em> this ended up being a big issue.</li>
+</ol>
+
+
+<p>In &#8211;> heroku logs &#8211;tail:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ActionView::Template::Error (undefined method `[]' for nil:NilClass):
+</span><span class='line'> 11:   &lt;/thead&gt;
+</span><span class='line'> 10:     &lt;/tr&gt;
+</span><span class='line'> 12: 
+</span><span class='line'> 13:   &lt;% @airbrake_errors.each_with_index do |a_e, index| %&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>The other issue was to reconfigure the setting below from false to true as the</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">compile</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="ss">ActionView</span><span class="p">:</span><span class="ss">:Template</span><span class="o">::</span><span class="no">Error</span> <span class="p">(</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span> <span class="n">isn</span><span class="s1">&#39;t precompiled):</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> &lt;%= favicon_link_tag &#39;</span><span class="n">images</span><span class="o">/</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="mi">144</span><span class="n">x144</span><span class="o">-</span><span class="n">precomposed</span><span class="o">.</span><span class="n">png</span><span class="s1">&#39;, :rel =&gt; &#39;</span><span class="n">apple</span><span class="o">-</span><span class="n">touch</span><span class="o">-</span><span class="n">icon</span><span class="o">-</span><span class="n">precomposed</span><span class="s1">&#39;, :type =&gt; &#39;</span><span class="n">image</span><span class="o">/</span><span class="n">png</span><span class="s1">&#39;, :sizes =&gt; &#39;</span><span class="mi">144</span><span class="n">x144</span><span class="s1">&#39; %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1"> app/views/layouts/application.html.erb:19:in `_app_views_layouts_application_html_erb___1957659516384225917_21931620&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Rewriting the writer</h3>
+
+<figure class='code'><figcaption><span>Change the tag writer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1">#the find_or_create_by wasn&#39;t creating unique tag names</span>
+</span><span class='line'>      <span class="c1">#the reason was because we were linking too many methods together</span>
+</span><span class='line'>      <span class="c1">#mongoid is finicky</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># was changed to...</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># but we discoved that the tags were no disappearing if they were left off the form</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tag_names</span><span class="o">=</span><span class="p">(</span><span class="n">string_of_names</span><span class="p">)</span>
+</span><span class='line'>   <span class="c1">#later we added this line because tags were persisting even if we tried to edit them.</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">delete_all</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">&lt;&lt;</span> <span class="n">string_of_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span> <span class="o">=</span> <span class="no">Tag</span><span class="o">.</span><span class="n">find_or_create_by</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="n">tag_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="o">&lt;</span><span class="sx">% @airbrake_errors.each_with_index </span><span class="k">do</span> <span class="o">|</span><span class="n">a_e</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">    &lt;tr&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">td</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="sx">%= a_e.tags.collect{ |tag|</span>
+</span><span class='line'><span class="sx">         link_to(tag.name, tag_path(tag)) #=</span><span class="o">&gt;</span> <span class="s2">&quot;&lt;a href=&quot;</span><span class="n">adasda</span><span class="s2">&quot;&gt;Tag&lt;/a&gt;&quot;</span>
+</span><span class='line'>      <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">     &lt;/td&gt;</span>
+</span><span class='line'>      <span class="c1"># this needs to be better understood-- TODO</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>HTTP Authentication</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku">This did it</a>.</li>
+</ul>
+
+
+<h3>Pushing the seed file to heroku</h3>
+
+<figure class='code'><figcaption><span>the last td was changed&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">♕</span> <span class="n">heroku</span> <span class="n">run</span> <span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">seed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1268,47 +1436,6 @@ with a checkbox</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/building-a-profile-page/">Building a Profile Page</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-23T14:32:00-04:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://rails.francik.name/tutorial/chapter/6">login and security</a>
-<a href="http://rails.francik.name/tutorial/chapter/8">extending a profile in rails</a></p>
-
-<p><a href="https://github.com/plataformatec/devise/wiki/How-To:-Redirect-to-a-specific-page-on-successful-sign-in">How to redirect to a specific page on successful sign in</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/25/">&larr; Older</a>
@@ -1326,6 +1453,10 @@ with a checkbox</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rubyconf-2015/">RubyConf 2015</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/js-promises/">js promises</a>
       </li>
     
@@ -1339,10 +1470,6 @@ with a checkbox</p>
     
       <li class="post">
         <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
       </li>
     
   </ul>

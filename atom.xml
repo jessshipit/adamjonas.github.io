@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://adamjonas.github.com/adamjonas/atom.xml" rel="self"/>
   <link href="http://adamjonas.github.com/adamjonas/"/>
-  <updated>2015-08-27T10:07:56-04:00</updated>
+  <updated>2015-11-18T15:15:20-05:00</updated>
   <id>http://adamjonas.github.com/adamjonas/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,75 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RubyConf 2015]]></title>
+    <link href="http://adamjonas.github.com/adamjonas/blog/rubyconf-2015/"/>
+    <updated>2015-11-16T10:27:00-05:00</updated>
+    <id>http://adamjonas.github.com/adamjonas/blog/rubyconf-2015</id>
+    <content type="html"><![CDATA[<p><strong>Code, Culture and the Pursuit of Happiness</strong>
+@KinseyAnnDurham
+kubmo - build and teach curriculum
+@shaft thoughts on diverity, part 2</p>
+
+<p><strong>Changing the Unchangeable: The Hows and Whys of Immutable Data Structures</strong>
+brad Urani
+@bradurani
+principles of functional programming - scala - coursara
+string.freeze for performance
+array.freeze is immutable but isn&#8217;t persistent
+persistnt data structures using the gem hamster
+when i edit hamster list, the original list stays the same
+git is a persistent data structure
+persisted lists are thread safe and lazy</p>
+
+<p><code>.lazy</code> keyword then you could do <code>.take</code></p>
+
+<p>Jean Nikals L&#8217;organge &#8211; understanding persistent vectors
+<code>hypirion.com</code></p>
+
+<p>hot reload</p>
+
+<p>rich hickey - invented closure, datomic, persistent vectors
+talk called &#8220;the value of values&#8221;
+place oriented programming</p>
+
+<p>elm - purely functional language
+compiles to JS
+out of the box time travelable</p>
+
+<p><strong>Manage your energy</strong>
+Joe Mastey
+25% of American salary works 60 hr weeks
+40% of Americans works 50 hr weeks
+13% of workers are engaged
+24% are actively disengaged
+READ Carol Dweck</p>
+
+<p>system call: a program can do two things:
+  - it can either run something in memory or a task
+  - OR&#8230;
+  strace is just going over all the entries in the path and jab onto the
+  end what the user typed until it finds one that&#8217;s an executable and
+  runs it.</p>
+
+<p>The 3 &#8216;path&#8217; vars:
+- <code>$PATH</code>
+- <code>$GEM_PATH</code>
+- <code>$RUBYLIB</code></p>
+
+<p>Recommend <code>chruby</code></p>
+
+<p><code>How to onboard junior devs</code>
+- 7 laws of teaching</p>
+
+<p><strong>How does bundler work by Andre Arko</strong>
+- dependency graph resolution
+- <code>bundle binstubs rspec-core</code> for no more bundle exec
+- <code>bin/rspec</code>
+- gem stash</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[js promises]]></title>
@@ -762,53 +831,6 @@
     <content type="html"><![CDATA[<h3>Looking for a hacky way to hard code your root path?</h3>
 
 <p>Look no further: <code>root to: 'controller#action', hello_id: 1, finder_id: 1, laser_id: 1, sharks_id: 4</code> <a href="http://stackoverflow.com/a/22923920/1496757">via</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Stubbing Out Faraday]]></title>
-    <link href="http://adamjonas.github.com/adamjonas/blog/stubbing-out-faraday/"/>
-    <updated>2014-07-15T11:49:00-04:00</updated>
-    <id>http://adamjonas.github.com/adamjonas/blog/stubbing-out-faraday</id>
-    <content type="html"><![CDATA[<h3>Webmock to disable net connections</h3>
-
-<ul>
-<li><a href="https://github.com/bblimke/webmock#real-requests-to-network-can-be-allowed-or-disabled">Just toss it in the <code>spec_helper</code></a>
-
-<ul>
-<li><strong><em>Note</em></strong> that I had to use <code>WebMock.disable_net_connect!(:allow_localhost =&gt; true)</code> in the cucumber <code>support/env.rb</code> because my local host wasn&#8217;t being allowed to run on the ci. <a href="https://github.com/bblimke/webmock/issues/284">picked this up from issue #284 on webmocks</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Rspec Mocks</h3>
-
-<ul>
-<li>Can use the <a href="https://github.com/rspec/rspec-mocks#method-stubs">new syntax</a> or mocha.</li>
-</ul>
-
-
-<h3>To stub it out I could either</h3>
-
-<figure class='code'><figcaption><span>These Both Work</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">allow</span><span class="p">(</span><span class="no">MyService</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:new</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">before</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">allow_any_instance_of</span><span class="p">(</span><span class="no">MyService</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:publish</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Really cool. The <code>allow_any_instance_of()</code> is pretty sweet to reference an unnamed instance of a class. Pretty sweet.</p>
 ]]></content>
   </entry>
   

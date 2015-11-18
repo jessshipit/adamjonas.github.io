@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Asset Trouble Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn&#8217;t compiling.
-This inspired us to roll back to 1.9. &hellip;">
+  <meta name="description" content="Turbolinks replaces the body of the page but doesn&#8217;t reload the header files. This limits the number of calls and makes the site appear faster &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +86,81 @@ This inspired us to roll back to 1.9. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/turbolinks/">Turbolinks</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-25T10:27:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Turbolinks replaces the body of the page but doesn&#8217;t reload the header files. This limits the number of calls and makes the site appear faster to the user by a noticeable margin.</p>
+
+<h3>To remove turbolinks for Rails 4</h3>
+
+<ul>
+<li>(3 steps from Steve Klabnik)[http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4]</li>
+</ul>
+
+
+<h3>Breaking my JS</h3>
+
+<ul>
+<li>Turbolink breaks my JS calls when the page loads up the Facebook SDK. So I started disabling turbolinks on certain pages in my HAML a tag with the &#8220;data-no-turbolink&#8221; option <code>= link_to 'add friends', next_wizard_path, "data-no-turbolink" =&gt; "true"</code></li>
+<li>There are also events that one can hook into. They are (listed here)[https://github.com/rails/turbolinks/#events].</li>
+<li>You can also put the click event on the doc rather than the element which will solve this issue. In this case ajax tasks would also have the click event applied to them as well.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Click Event on doc rather than element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span><span class="p">(</span><span class="s1">&#39;document&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">on</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;.edit_task input[type=checkbox]&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="err">$</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>The jquery turbolinks gem</h3>
+
+<ul>
+<li>Using (the gem)[https://github.com/kossnocorp/jquery.turbolinks] just straight fixes it. This likely means that the turbolinks is disabled for all jquery related calls.</li>
+</ul>
+
+
+<h3>Reading</h3>
+
+<ul>
+<li>a (basic summary by treehouse)[http://blog.teamtreehouse.com/rails-4-a-look-at-turbolinks]</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1177,138 +1251,6 @@ config.include FactoryGirl::Syntax::Methods
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/service-objects/">Service Objects</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-08T10:00:00-04:00" pubdate data-updated="true">May 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>rails cast #398</h2>
-
-<h3>Modules</h3>
-
-<ul>
-<li><p>models may have lots of behavior that isn&#8217;t related, so it probably doesn&#8217;t belong in the model layer -> usually a result of pushing behavior from the controller to the model</p>
-
-<ul>
-<li>create a concerns folder that lives in the models folder
-
-<ul>
-<li>possibly namespace the module in a class folder if only used for a specific model</li>
-</ul>
-</li>
-<li>change the autoload config path to include the concerns folder</li>
-<li>include module in the model</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#namespace in class if only going to use it in that class</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">User</span>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">Authentication</span>
-</span><span class='line'>    <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#this gets scoped to the context of the class when included</span>
-</span><span class='line'>    <span class="n">included</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">has_secure_password</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#this makes these class methods instead of instance methods</span>
-</span><span class='line'>    <span class="k">module</span> <span class="nn">ClassMethods</span>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-</span><span class='line'>       <span class="c1">#code</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Ryan Bates&#8217; <a href="https://gist.github.com/ryanb/4172391">issues with modules</a></li>
-<li><a href="http://stevenharman.net/bag-of-methods-module-and-grep-driven-development">BOMM and GDD</a></li>
-<li><p><a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/">7 ways to decompose fat models</a></p></li>
-<li><p><a href="http://37signals.com/svn/posts/3372-put-chubby-models-on-a-diet-with-concerns"><em>Chubby models</em>, a blog post by DHH</a></p>
-
-<ul>
-<li>in rails 4, the concerns folder will be created by default</li>
-<li>&#8220;This approach to breaking up domain logic into concerns is similar in some ways to the DCI notion of Roles&#8221;</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Service Objects</h3>
-
-<ul>
-<li>we are in the habit of pushing behavior from the controller to the model, but often the behavior in the controller is nicely isolated. Sometimes we need a new kind of object commonly referred to as a <em>service object</em>.</li>
-<li>the service object gets it&#8217;s own folder in the app folder and <a href="https://github.com/railscasts/398-service-objects/blob/master/auth-services/app/services/authentication.rb">looks like this</a></li>
-<li>this puts all the action related behavior in one place and keeps the model focused on validations, accessibility, etc.</li>
-<li><p>likely works best when we have a complex controller action that interacts with a complex model</p></li>
-<li><p><strong>testing</strong>:</p>
-
-<ul>
-<li>create a services level dir and and easily test the class directly similarly to how one would test the models</li>
-</ul>
-</li>
-<li><p><strong>Further Reading</strong></p>
-
-<ul>
-<li><a href="http://stevelorek.com/service-objects.html">Steve Lorek explains service objects</a></li>
-</ul>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -1326,6 +1268,10 @@ config.include FactoryGirl::Syntax::Methods
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rubyconf-2015/">RubyConf 2015</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/js-promises/">js promises</a>
       </li>
     
@@ -1339,10 +1285,6 @@ config.include FactoryGirl::Syntax::Methods
     
       <li class="post">
         <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
       </li>
     
   </ul>

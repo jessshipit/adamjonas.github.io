@@ -9,15 +9,11 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Lecture 2 BASH 1
-2
-3
-4
-cd .. # change to up a directory
-cd . # change to current directory
-ls # list
-cd ~ #home directory Resources
-- the thing you &hellip;">
+  <meta name="description" content="Cheat sheet
+%20to%20practice&#8221;>Practice site
+Git better explained
+Scott Chacon of github
+Git fetch versus git pull In the simplest terms, git &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +90,141 @@ cd ~ #home directory Resources
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/github/">GitHub</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T14:25:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="http://rogerdudler.github.com/git-guide/">Cheat sheet</a></li>
+<li><a href="http://try.github.com>%20to%20practice&#8221;>Practice site</a></li>
+<li><a href="http://betterexplained.com/articles/aha-moments-when-learning-git/">Git better explained</a></li>
+<li><p><a href="http://www.youtube.com/watch?v=ZDR433b0HJY">Scott Chacon of github</a></p></li>
+<li><p><em>Git fetch versus git pull</em></p>
+
+<ul>
+<li>In the simplest terms, git pull does a git fetch followed by a git merge.</li>
+<li>You can do a git fetch at any time to update your local copy of a remote branch. This operation never changes any of your own branches and is safe to do without changing your working copy. I have even heard of people running git fetch periodically in a cron job in the background (although I wouldn&#8217;t recommend doing this).</li>
+<li>A git pull is what you would do to bring your repository up to date with a remote repository.</li>
+</ul>
+</li>
+<li><p><a href="http://longair.net/blog/2009/04/16/git-fetch-and-merge/">Fetch and merge, don&#8217;t pull</a></p></li>
+<li><p><em>Misc</em></p>
+
+<ul>
+<li>I had not added my <strong><em>SSH key</em></strong> for the new Mac Air so that was preventing me from pushing. It gave me no issue with pulling or cloning, only pushing. The SSH was accessed by typing:</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat .ssh/id_rsa.pub</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After adding it to <a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a> I had no problems&#8230;</p>
+
+<p>Pushed a bunch of branches with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git push origin &lt;name of the branch&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I could check what was in the repo and what had been pushed to the remote using the command: git branch with the all flag&#8230;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git branch -a</span></code></pre></td></tr></table></div></figure>
+
+
+<p>First thing in the morning you do is:
+  - <code>git fetch</code></p>
+
+<p>This pulls the latest version without any merges.</p>
+
+<p>creating a branch and pushing it to master&#8230;.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git co -b authentication
+</span><span class='line'>♕ git add .
+</span><span class='line'>♕ git commit -m 'message'
+</span><span class='line'>♕ git push origin authentication
+</span><span class='line'>♕ git co master
+</span><span class='line'>♕ git merge authentication --no-ff
+</span><span class='line'>♕ git push</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git pull --rebase #=&gt; if the remote has merges, rewind and then move back forward
+</span><span class='line'>git reset --hard HEAD #=&gt; go to the last checkout (HEAD of the branch) without the warnings (hard)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://christoph.ruegg.name/blog/2010/5/5/git-howto-revert-a-commit-already-pushed-to-a-remote-reposit.html">Reverting back commits</a></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git co master
+</span><span class='line'>♕ git revert 3904d0354fcbcad023de4763a86ed0601e54cbe7
+</span><span class='line'>♕ git revert 3e872eed44eeab51fef966475661ab73ca851090</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Pruning</h3>
+
+<p>With <code>git remote prune origin</code> I can remove the remote branches that are not any more on the remote.</p>
+
+<h3>Cleaning up local branches</h3>
+
+<p>Use this gem <code>git branch --merged master | grep -v master | xargs git branch -d</code> <a href="http://stackoverflow.com/a/18571517/1496757">from</a>.</p>
+
+<h3>Removing a file with confidential info</h3>
+
+<p>Suppose you want to remove a file (containing confidential information or copyright violation) from all commits:</p>
+
+<p><code>git filter-branch --tree-filter 'rm filename' HEAD</code></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1288,182 +1419,6 @@ array.map.with_index</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/lecture-6-ruby-class-methods/">Lecture 6 Ruby- Class Methods</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-25T10:48:00-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Strategy&#8230;</p>
-
-<p>&#8211;>look for nouns to start
-url- unified resource locator
-map and collect &#8211;> returns the results of the operation&#8211;> so it uts it into a new array</p>
-
-<p>select when you are trying to match something, cannot collect things conditionally
-(#) => library.songs.select{|s| s.name ==song_name}</p>
-
-<p>is_a? &#8211;> is this an array, this is a validator</p>
-
-<p><strong><em>HOW TO BUILD CLASS METHODS</em></strong>
-methods that don&#8217;t apply to the instance of the class but the class itself
-you can tell if it&#8217;s a class method if self is the receiver</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
-</span><span class='line'><span class="nb">puts</span> <span class="nb">self</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="o">.</span><span class="n">rank</span><span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#Another way...</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
-</span><span class='line'><span class="vc">@@all</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'><span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:artists</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">initialize</span>
-</span><span class='line'>  <span class="vc">@@all</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-</span><span class='line'>  <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>  <span class="vi">@artists</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1">#important pattern of observing intialization and making classes intelligent</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">songs</span>
-</span><span class='line'>  <span class="n">artists</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">song</span><span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
-</span><span class='line'>  <span class="vc">@@all</span> <span class="c1">#return all the artists ever created</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>3:30 PM
-<strong><em>MODULES</em></strong> - for creating all sort of shared behavior
-- modules don&#8217;t have instances&#8211;> the difference between modules and classes</p>
-
-<p>two keywords to include behavior&#8211;> include and extend
-diff between include and extend &#8211;> trying to describe the scope of the module behavior</p>
-
-<p>extending- makes it a class methods
-include &#8211;> methods in that module are instance methods
-?? how does require fit into this??</p>
-
-<p>3:38
-?? order of attr_accessor and @@all? does it matter?</p>
-
-<p><strong><em>INHERITANCE</em></strong> &#8211; a pattern that we don&#8217;t like as much as modules
-we&#8217;d rather think of things in the builder pattern using include and extend</p>
-
-<p>2nd HALF</p>
-
-<p><strong><em>File Systems:</em></strong>
-Dir documentation (4:10)
-foreach and Dir.entries</p>
-
-<p><strong><em>ERB templates</em></strong> (4:23):
-we care about the result method for templating</p>
-
-<p><strong><em>PRIVATE AND PUBLIC METHODS</em></strong> (4:41)
-->a private method cannot be called with an explicit receiever, only implicit receivers&#8211; means they can only be called in the class</p>
-
-<p><strong><em>GEMS:</em></strong>
--a pre-built package or functionality
-<a href="http://ruby-toolbox.com">See the Ruby Toolbox</a></p>
-
-<p><strong><em>SINATRA</em></strong> (4:44):
--based on rack (the first )
-RACK - create a class that responds to a method called &#8216;call&#8217;
-- the response must return 3 three things- a status code, the header, the body of the response</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">rubygems</span> <span class="n">sinatra</span><span class="o">.</span><span class="n">rb</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong><em>SCRAPERS:</em></strong>
-nokogiri gem will
-xpath&#8211; path to an element or you can use an CSS adjustment
-nokogiri comes with a method called content
-rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
-
-<p>httparty-
-<a href="http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/">some reading on httparty</a>
-<a href="http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">there is more reading here</a></p>
-
-<p>open data:
-<a href="freebase.com">freebase</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/28/">&larr; Older</a>
@@ -1481,6 +1436,10 @@ rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rubyconf-2015/">RubyConf 2015</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/js-promises/">js promises</a>
       </li>
     
@@ -1494,10 +1453,6 @@ rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-
     
       <li class="post">
         <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
       </li>
     
   </ul>

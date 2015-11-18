@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Rails Cast on Authentication Rails 3.1
-also want to check out Rails cast on Authentication from Scratch The user model rails allows you to call &hellip;">
+  <meta name="description" content="Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion Dependency inversion principle one should “ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +86,70 @@ also want to check out Rails cast on Authentication from Scratch The user model 
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/solid-principles/">SOLID Principles</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:05:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">Single responsibility, Open-closed, Liskov substitution, Interface segregation and Dependency inversion</a></h3>
+
+<p>Dependency inversion principle</p>
+
+<blockquote><p>one should “Depend upon Abstractions. Do not depend upon concretions.&#8221; (EDIT: Concretions, I can only assume mean the opposite of abstraction&#8211; as far as I can tell things isn&#8217;t a CS concept.)</p></blockquote>
+
+<p>This means that in the controller, it is better to define</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>  <span class="vi">@current_user</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>than using the instance variable because right now the instance var is concrete but you might want to add logic and redefine it:</p>
+
+<figure class='code'><figcaption><span>E.G.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">sessions</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -940,141 +1003,6 @@ Alright, now let&#8217;s get down to diaspora.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/github/">GitHub</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-09T14:25:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><a href="http://rogerdudler.github.com/git-guide/">Cheat sheet</a></li>
-<li><a href="http://try.github.com>%20to%20practice&#8221;>Practice site</a></li>
-<li><a href="http://betterexplained.com/articles/aha-moments-when-learning-git/">Git better explained</a></li>
-<li><p><a href="http://www.youtube.com/watch?v=ZDR433b0HJY">Scott Chacon of github</a></p></li>
-<li><p><em>Git fetch versus git pull</em></p>
-
-<ul>
-<li>In the simplest terms, git pull does a git fetch followed by a git merge.</li>
-<li>You can do a git fetch at any time to update your local copy of a remote branch. This operation never changes any of your own branches and is safe to do without changing your working copy. I have even heard of people running git fetch periodically in a cron job in the background (although I wouldn&#8217;t recommend doing this).</li>
-<li>A git pull is what you would do to bring your repository up to date with a remote repository.</li>
-</ul>
-</li>
-<li><p><a href="http://longair.net/blog/2009/04/16/git-fetch-and-merge/">Fetch and merge, don&#8217;t pull</a></p></li>
-<li><p><em>Misc</em></p>
-
-<ul>
-<li>I had not added my <strong><em>SSH key</em></strong> for the new Mac Air so that was preventing me from pushing. It gave me no issue with pulling or cloning, only pushing. The SSH was accessed by typing:</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cat .ssh/id_rsa.pub</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After adding it to <a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a> I had no problems&#8230;</p>
-
-<p>Pushed a bunch of branches with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git push origin &lt;name of the branch&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I could check what was in the repo and what had been pushed to the remote using the command: git branch with the all flag&#8230;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git branch -a</span></code></pre></td></tr></table></div></figure>
-
-
-<p>First thing in the morning you do is:
-  - <code>git fetch</code></p>
-
-<p>This pulls the latest version without any merges.</p>
-
-<p>creating a branch and pushing it to master&#8230;.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git co -b authentication
-</span><span class='line'>♕ git add .
-</span><span class='line'>♕ git commit -m 'message'
-</span><span class='line'>♕ git push origin authentication
-</span><span class='line'>♕ git co master
-</span><span class='line'>♕ git merge authentication --no-ff
-</span><span class='line'>♕ git push</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git pull --rebase #=&gt; if the remote has merges, rewind and then move back forward
-</span><span class='line'>git reset --hard HEAD #=&gt; go to the last checkout (HEAD of the branch) without the warnings (hard)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://christoph.ruegg.name/blog/2010/5/5/git-howto-revert-a-commit-already-pushed-to-a-remote-reposit.html">Reverting back commits</a></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git co master
-</span><span class='line'>♕ git revert 3904d0354fcbcad023de4763a86ed0601e54cbe7
-</span><span class='line'>♕ git revert 3e872eed44eeab51fef966475661ab73ca851090</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Pruning</h3>
-
-<p>With <code>git remote prune origin</code> I can remove the remote branches that are not any more on the remote.</p>
-
-<h3>Cleaning up local branches</h3>
-
-<p>Use this gem <code>git branch --merged master | grep -v master | xargs git branch -d</code> <a href="http://stackoverflow.com/a/18571517/1496757">from</a>.</p>
-
-<h3>Removing a file with confidential info</h3>
-
-<p>Suppose you want to remove a file (containing confidential information or copyright violation) from all commits:</p>
-
-<p><code>git filter-branch --tree-filter 'rm filename' HEAD</code></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/27/">&larr; Older</a>
@@ -1092,6 +1020,10 @@ Alright, now let&#8217;s get down to diaspora.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rubyconf-2015/">RubyConf 2015</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/js-promises/">js promises</a>
       </li>
     
@@ -1105,10 +1037,6 @@ Alright, now let&#8217;s get down to diaspora.</p>
     
       <li class="post">
         <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
       </li>
     
   </ul>
