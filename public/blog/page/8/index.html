@@ -9,9 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="My postgres paths were screwed up. This helped
-need to install bundler for every ruby install
-Pow path was screwed up. Need to create and set paths &hellip;">
+  <meta name="description" content="Heroku git push staging develop:master FB target &#8216;_top&#8217; will put the new window on top
+http://app.facebook.com/name-space
+make sure to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +88,316 @@ Pow path was screwed up. Need to create and set paths &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/kca-2/">KCA 2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-06T13:40:00-05:00" pubdate data-updated="true">Feb 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Heroku</h3>
+
+<ul>
+<li><code>git push staging develop:master</code></li>
+</ul>
+
+
+<h3>FB</h3>
+
+<ul>
+<li>target &#8216;_top&#8217; will put the new window on top</li>
+<li><code>http://app.facebook.com/name-space</code></li>
+<li>make sure to disable secure browsing in FB</li>
+<li><p>change fields from address <code>state</code> to <code>state_loc</code> to avoid collisions with state machine gems like transitions</p></li>
+<li><p>can simulate mobile with overrides in the inspector</p></li>
+<li><p><code>heroku run rake db:migrate --remote staging</code></p></li>
+<li><code>heroku config:add &lt;env variable&gt; &lt;env variable&gt;</code></li>
+<li><p><code>heroku log --remote staging</code></p></li>
+<li><p><code>.shuffle</code> method</p></li>
+<li><code>.floor</code> returns an integer</li>
+<li><p>if diving two integers you need to th make sure one of them is a float</p></li>
+<li><p>In routes, <code>member do</code> block adds a resource on a specific record, while collect do</p></li>
+<li><p>in config/application.rb in order to load libs automatically need to change config to <code>config.autoload_paths += %W(#{config.root}/lib)</code></p></li>
+<li><p><code>has_mobile_fu false</code> in appcontroller, need false</p></li>
+<li><p><a href="https://github.com/voxdolo/decent_exposure">decent exposure</a></p>
+
+<ul>
+<li><ul>
+<li><code>expose(:articles) { current_user.articles }</code> scopes articles belonging to that user</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>output the boards on board show page, new board page, and how to play</p></li>
+<li><p><a href="http://apidock.com/rails/ActionView/Helpers/TagHelper/content_tag">content tag</a></p>
+
+<ul>
+<li>need to use .html_safe</li>
+</ul>
+</li>
+<li><p>to start memcache <code>/usr/local/opt/memcached/bin/memcached</code></p></li>
+<li><p>deploy to heroku staging with <code>git push staging develop:master</code></p></li>
+<li><p>creating a table with content tags in a helper</p></li>
+<li><code>.update_attribute!</code> versus <code>.update_attribute</code> -> raise an exception rahter than false.</li>
+</ul>
+
+
+<h3>Tests</h3>
+
+<ul>
+<li>Make sure to migrate the Test DB -> <code>rake db:migrate RAILS_ENV=test</code></li>
+<li><code>watchr .watchr</code></li>
+<li>using <a href="http://robots.thoughtbot.com/post/23673635798/remove-duplication-with-factorygirls-traits">traits with Factory Girl</a></li>
+<li><a href="http://myronmars.to/n/dev-blog/2012/06/rspecs-new-expectation-syntax">expect syntax</a></li>
+<li>rake start to start spork</li>
+<li>{:id => board.id}.merge(opts)</li>
+</ul>
+
+
+<h3>HAML</h3>
+
+<ul>
+<li><code>= f.hidden_field :customer_id, value: @customer.id</code> <a href="http://stackoverflow.com/questions/10387077/rails3-hidden-field-in-haml">from</a></li>
+<li><a href="http://html2haml.heroku.com/">html to haml</a></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>.shuffle.hidden
+</span><span class='line'>.delete.hidden</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Makes divs with classes above</p>
+
+<ul>
+<li><a href="http://9elements.github.com/haml-coffee/classes/Haml.html">HAML id and class declaration</a></li>
+<li>passing in partials with locals on <a href="http://stackoverflow.com/questions/5255874/rendering-partial-with-locals-in-haml">stackoverflow</a></li>
+</ul>
+
+
+<h3>Ajax with coffeescript</h3>
+
+<p>Used the call below to make a friend request.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>getFriends: (callback) -&gt;
+</span><span class='line'>    FB.api '/me/friends', (response) =&gt; 
+</span><span class='line'>      $.each response.data, (k, v) =&gt;
+</span><span class='line'>        @friends.push({ label: v.name, value: v.id })
+</span><span class='line'>      callback()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The callback is to ensure that other function do not proceed before the friends are loaded asynchronously.</p>
+
+<h3>Auto-complete with JQuery UI</h3>
+
+<ul>
+<li>Got it from <a href="http://jqueryui.com/autocomplete/#custom-data">here</a></li>
+<li>also loaded the js and css minified versions in the lib directory.</li>
+<li>there was a small change to be made, <a href="http://stackoverflow.com/questions/9513251/cannot-set-property-renderitem-of-undefined-jquery-ui-autocomplete-with-html">documented here</a></li>
+</ul>
+
+
+<h3>Javascript to coffee</h3>
+
+<ul>
+<li><p><a href="http://js2coffee.org/">really cool site</a></p></li>
+<li><p>Posting to a wall, note the method and the <code>:to</code> method, taken mostly from <a href="http://developers.facebook.com/docs/reference/dialogs/feed/">here</a></p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  sendMessage: (fb_uid, details = {}) -&gt;
+</span><span class='line'>    obj =
+</span><span class='line'>      to: fb_uid
+</span><span class='line'>      method: "feed"
+</span><span class='line'>      redirect_uri: "http://kca.dev"
+</span><span class='line'>      link: "http://google.com"
+</span><span class='line'>      picture: "http://fbrell.com/f8.jpg"
+</span><span class='line'>      name: "Facebook Dialogs"
+</span><span class='line'>      caption: "Reference Documentation"
+</span><span class='line'>      description: "Using Dialogs to interact with users."
+</span><span class='line'>
+</span><span class='line'>    obj = $.extend obj, details
+</span><span class='line'>
+</span><span class='line'>    FB.ui obj, -&gt;
+</span><span class='line'>      alert 'posted'</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p><code>= link_to "Something", some_path, :method =&gt; :post</code></p></li>
+<li><p><strong>Need to remember to add () after a method call</strong></p></li>
+<li>defaults to auth user if no <code>to:</code> method</li>
+<li><a href="https://github.com/raganwald/homoiconic/blob/master/2012/09/lexical-scope-in-coffeescript.md">discussion on lexical scope</a></li>
+</ul>
+
+
+<h3>Counter_cache</h3>
+
+<ul>
+<li>In the model -> <code>belongs_to :project, :counter_cache =&gt; true</code></li>
+<li><a href="http://railscasts.com/episodes/23-counter-cache-column">railscast #23</a></li>
+</ul>
+
+
+<h3>Jquery</h3>
+
+<ul>
+<li><code>$("div,p,span")</code> this works as a multiple selector</li>
+<li><a href="http://stackoverflow.com/questions/1992114/how-do-you-create-a-hidden-div-that-doesnt-create-a-line-break-or-horizontal-sp">hidden divs</a></li>
+</ul>
+
+
+<h3>Selecting a winner</h3>
+
+<ul>
+<li>use the <a href="https://github.com/spilliton/randumb">randumb gem</a></li>
+</ul>
+
+
+<h3>Migrate test db</h3>
+
+<ul>
+<li><code>ake db:migrate RAILS_ENV=test</code></li>
+</ul>
+
+
+<h3>No merge message for a no-ff flag</h3>
+
+<ul>
+<li><code>--no-edit</code></li>
+</ul>
+
+
+<h3>FB app auto-grow</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/9197411/facebook-iframe-fb-canvas-setautogrow-does-not-auto-grow-after-initial-load">auto-grow canvas in fb app</a></li>
+</ul>
+
+
+<h3>Gem from a git url</h3>
+
+<ul>
+<li><code>gem 'redcarpet', :git =&gt; 'git://github.com/tanoku/redcarpet.git'</code></li>
+</ul>
+
+
+<h3>With an options hash</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">facepile</span><span class="p">(</span><span class="o">*</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:href</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;FACEBOOK_APP_URL&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:max_rows</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">300</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:show_count</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="p">}</span>
+</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">merge!</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="k">unless</span> <span class="n">options</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">raise</span> <span class="s2">&quot;Must provide a :url option parameter or ENV[&#39;FACEBOOK_APP_URL&#39;]&quot;</span> <span class="k">unless</span> <span class="n">opts</span><span class="o">[</span><span class="ss">:href</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">%Q{</span>
+</span><span class='line'><span class="sx">&lt;div class=&quot;fb-facepile&quot; </span>
+</span><span class='line'><span class="sx">data-href=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:href</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot; </span>
+</span><span class='line'><span class="sx">data-max-rows=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:max_rows</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot;</span>
+</span><span class='line'><span class="sx">data-show-count=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:show_count</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot;</span>
+</span><span class='line'><span class="sx">data-width=&quot;</span><span class="si">#{</span><span class="n">opts</span><span class="o">[</span><span class="ss">:width</span><span class="o">]</span><span class="si">}</span><span class="sx">&quot;&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span><span class='line'><span class="sx">}</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>FB invite friends</h3>
+
+<figure class='code'><figcaption><span>in coffeescript</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">inviteFriend</span><span class="p">:</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="n">obj</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nb">method</span><span class="p">:</span> <span class="s1">&#39;apprequests&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Come check this out&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">FB</span><span class="o">.</span><span class="n">ui</span> <span class="n">obj</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="n">alert</span> <span class="s1">&#39;invited&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Delpoy</h3>
+
+<ul>
+<li><code>rake deploy:staging</code> and <code>rake deploy:production</code></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1099,58 +1409,6 @@ Pow path was screwed up. Need to create and set paths &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ember-dot-js-meetup/">Ember.js Meetup</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-25T09:48:00-05:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Watch router v2 video. Seattle.
-  - <a href="http://www.youtube.com/watch?v=_6yMxU-_ARs">Tom Dale on Ember Data</a>
-  - <a href="http://www.youtube.com/watch?v=4Ed_o3_59ME">Yahuda Katz on the router</a>
-  - <a href="https://gist.github.com/3981133">Guide to the router is here</a></p>
-
-<p>Log _transitions = true. Lets you see the log with the new router.</p>
-
-<p>Emblem.js. compiles down to handlebars but has lots of syntactic sugar. Its just a parser.</p>
-
-<p>Dependency injection is giving instance variables to an object.</p>
-
-<ul>
-<li><a href="https://github.com/emberjs-addons/ember-bootstrap">Ember Bootstrap</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -1168,6 +1426,10 @@ Pow path was screwed up. Need to create and set paths &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/how-the-web-works/">how the web works</a>
       </li>
     
@@ -1181,10 +1443,6 @@ Pow path was screwed up. Need to create and set paths &hellip;">
     
       <li class="post">
         <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/omniauth-tomfoolery/">omniauth tomfoolery</a>
       </li>
     
   </ul>

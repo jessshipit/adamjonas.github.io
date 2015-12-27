@@ -9,7 +9,15 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Hoisting Explained Video Some variables and functions get hoisted to the top of the scope. Just the declaration, not the inialization. Recommend to &hellip;">
+  <meta name="description" content="Multiple Lambdas1
+2
+3
+4
+5
+6
+7
+8
+def exec_game(name, action, error_handler) game = games.detect { |game| game.name = name } begin action.call(game) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +94,103 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/ruby-bits-2/">Ruby Bits 2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-20T12:39:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Multiple Lambdas</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">exec_game</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">error_handler</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">game</span> <span class="o">=</span> <span class="n">games</span><span class="o">.</span><span class="n">detect</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="n">game</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">name</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="n">action</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="n">error_handler</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Lambda or Proc to Block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">library</span> <span class="o">=</span> <span class="no">Library</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">GAMES</span><span class="p">)</span>
+</span><span class='line'><span class="n">printer</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">) - </span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="n">library</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">printer</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Calling a method with &amp; in front of a parameter</em>
+<code>tweets.each(&amp;printer)</code></p>
+
+<p><em>Defining a method with &amp; in front of a parameter</em>
+<code>def each(&amp;block)</code></p>
+
+<figure class='code'><figcaption><span>Passing blocks around&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">each</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">yield</span> <span class="n">game</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#refactored as</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -836,62 +941,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/dynamic-gif-on-github/">Dynamic GIF on Github</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-07T13:06:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ol>
-<li><p>How is the GIF embedded in the markdown?</p></li>
-<li><p>Where can I see it?</p></li>
-<li>TravisCI</li>
-<li>The only .png match points to Repositories#show</li>
-<li><p><code>repo = service(:find_repo, params).run</code> -> line 31 in the repo controller, this must be how it is done.</p></li>
-<li><p>How do we dynamically generate a png in ruby</p></li>
-</ol>
-
-
-<h3><a href="https://github.com/citrus/magick_title#readme">Magick_title</a></h3>
-
-<ul>
-<li><code>MagickTitle.say("Hello")</code> builds a PNG that predictably says &#8220;Hello&#8221;</li>
-<li><p>the gifs on github are 13 pixels tall</p></li>
-<li><p>svg image url</p></li>
-<li>Moveable ink</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -909,6 +958,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/how-the-web-works/">how the web works</a>
       </li>
     
@@ -922,10 +975,6 @@
     
       <li class="post">
         <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/omniauth-tomfoolery/">omniauth tomfoolery</a>
       </li>
     
   </ul>

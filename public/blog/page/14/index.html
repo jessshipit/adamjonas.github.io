@@ -9,8 +9,25 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Replacing the Conditional Logic on Price Code with Polymorphism [p.32] Replacing the Conditional Logic on Price Code with Polymorphism
-The first part &hellip;">
+  <meta name="description" content="Nested Forms need writers to handle the 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+&lt;select name='mixtape[mixtape_song_attributes][][song_id]'&gt &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +104,166 @@ The first part &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day25/">FIS Day25</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-11T14:16:00-05:00" pubdate data-updated="true">Nov 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Nested Forms</h2>
+
+<ul>
+<li>need writers to handle the</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;select name='mixtape[mixtape_song_attributes][][song_id]'&gt;
+</span><span class='line'>&lt;% Song.all.each do |song| %&gt;
+</span><span class='line'>  &lt;option value='&lt;%= song.id %&gt;'&gt; &lt;%= song.name %&gt;&lt;/option&gt;
+</span><span class='line'>&lt;% end %&gt; 
+</span><span class='line'>&lt;/select&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;%= select_tag('mixtape[mixtape_songs_attributes][][song_id]',
+</span><span class='line'>options_for_select(Song.all.collect{|s| [s.name, s.id]})) %&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>#need a song in memory 
+</span><span class='line'>@mixtape.mixtape_songs.build
+</span><span class='line'>
+</span><span class='line'>&lt;%= f.fields_for :mixtape_songs do |mixtape_song_builder| %&gt;
+</span><span class='line'>  &lt;%= mixtape_song_builder.select :song_id, songs_for_select %&gt;
+</span><span class='line'>&lt;% end %&gt;
+</span><span class='line'>
+</span><span class='line'>#songs_for_select logic in a helper</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>add a scope to your form with fields for</li>
+</ul>
+
+
+<h3>Pass in local variables and change that local variable&#8217;s name in the context of the new partial</h3>
+
+<figure class='code'><figcaption><span>when rendering a partial -> how do I pass in the f. variable.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= render &#39;songs/fields&#39;, :f =</span><span class="o">&gt;</span> <span class="ss">:song_form</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p><strong>f.object_name</strong> -> gives you the path of what f is</p>
+
+<ul>
+<li>This was valuable with specifying a :name => [&#8220;#{f.object_name}&#8221;][genre_name][]</li>
+</ul>
+</li>
+<li><p>settings represents the edit form for a user</p></li>
+<li><p>instead of throwing it away-> label depreciated and put into a folder, since you might need that code later</p></li>
+<li><p>HAML is whitespace sensitive, it&#8217;s very strict</p>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/39-customize-field-error">customizing field error</a></li>
+<li><p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#class-attributes">field_error_proc</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/263-client-side-validations">client side validation</a></p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Adding search to our application</h3>
+
+<figure class='code'><figcaption><span>Implementing Search</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#in routes</span>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:songs</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">get</span> <span class="ss">:search</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="no">Search</span> <span class="no">Songs</span><span class="o">&lt;</span><span class="sr">/h3&gt;</span>
+</span><span class='line'><span class="sr">&lt;%= form_tag(search_songs_path, :method =&gt; :get) do %&gt;</span>
+</span><span class='line'><span class="sr">  &lt;%= text_field_tag :query %&gt;</span>
+</span><span class='line'><span class="sr">&lt;%= submit_tag :search %&gt;</span>
+</span><span class='line'><span class="sr">&lt;% end %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">#in songs controller -&gt; fuzzy search</span>
+</span><span class='line'><span class="sr">def search</span>
+</span><span class='line'><span class="sr">  </span><span class="si">#@songs</span><span class="sr"> = Song.find_all_by_name(params[:query])</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">  #should put this in the model</span>
+</span><span class='line'><span class="sr">  @songs = Song.where(&quot;name LIKE ?&quot;, &quot;%</span><span class="si">#{</span><span class="n">query</span><span class="si">}</span><span class="sr">%&quot;) </span>
+</span><span class='line'><span class="sr">  render :action =&gt; &#39;index&#39;</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2124,255 +2301,6 @@ nmap #map the network</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day19/">FIS Day19</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-02T11:57:00-04:00" pubdate data-updated="true">Nov 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Virtual Attributes:</h3>
-
-<p>There are two rails casts on this&#8230; <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">#16</a> and <a href="http://railscasts.com/episodes/167-more-on-virtual-attributes">#167</a>.</p>
-
-<h3>Rails Lecture</h3>
-
-<p>the name attribute of the HTML determines how it is processed by the server</p>
-
-<p>form_vars pass in the query string since it isn&#8217;t in the</p>
-
-<figure class='code'><figcaption><span>[Rack Does the Parsing](http://guides.rubyonrails.org/form_helpers.html#understanding-parameter-naming-conventions)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">Rack</span><span class="p">:</span><span class="ss">:Utils</span><span class="o">.</span><span class="n">parse_query</span> <span class="s2">&quot;name=fred&amp;phone=0123456789&quot;</span>
-</span><span class='line'><span class="c1"># =&gt; {&quot;name&quot;=&gt;&quot;fred&quot;, &quot;phone&quot;=&gt;&quot;0123456789&quot;}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>This is NOT mass assignment</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>  <span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:song</span><span class="o">].</span><span class="n">except</span><span class="p">(</span><span class="ss">:artist_name</span><span class="p">))</span>
-</span><span class='line'>  <span class="vi">@song</span><span class="o">.</span><span class="n">artist_name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:song</span><span class="o">][</span><span class="ss">:artist_name</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Attribute Accessbile</h3>
-
-<ul>
-<li>attr_protected is the opposite of attr_accessbile</li>
-<li>attr_protected whitelists everything except the attributes that are explicitly whitelisted</li>
-</ul>
-
-
-<h3>Associations</h3>
-
-<p>If it has a belongs_to -> you know it has a foreign_key that points to the table it belongs_to
-If it has_many -> you know that that thing has a foreign_key that points to the parent table</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">artist_name</span><span class="p">}</span><span class="o">.</span><span class="n">uniq</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="p">)</span>
-</span><span class='line'>  <span class="no">Song</span><span class="o">.</span><span class="n">find_all_by_artist_name</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">s</span><span class="o">.</span><span class="n">artist_id</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">id</span>
-</span><span class='line'>    <span class="n">s</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="c1">#TODO: Refactor to use Song.update_all</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>expected Artist, but got String</p>
-
-<figure class='code'><figcaption><span>Assigning the artist to a song</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">m</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Mike Jackson&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">artist</span> <span class="o">=</span> <span class="n">m</span>
-</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">save</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Use Build Not New</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">queen</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">build</span>
-</span><span class='line'><span class="n">queen</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;song name&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="c1">#to persist you can save queen OR you can save the song.</span>
-</span><span class='line'><span class="n">mmm_bop</span><span class="o">.</span><span class="n">build_artist</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Hanson&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>has_many(name, options = {}, &amp;extension)
-In the documentation the model names are replaced by the word collection. In the docs it shows all the methods that can be called on it. <a href="http://apidock.com/rails/ActiveRecord/Associations/ClassMethods/has_many">For example</a></p>
-
-<ul>
-<li>Note: collection is replaced with the symbol passed as the first argument, so has_many :clients would add among others clients.empty?.)</li>
-</ul>
-
-
-<blockquote><p>Build is to new, as create is to create</p></blockquote>
-
-<ul>
-<li>There is no Artist.build, but there is an Artist.create</li>
-</ul>
-
-
-<p>?? could you add a macro that ran a migration to add the id for the belongs_to table</p>
-
-<h2>Seed Task</h2>
-
-<p>The push method returns an array of all the objects in the array while the build method just returns that one song that you are building&#8230;</p>
-
-<p>From the many it is songs.build and from the belongs it is song.build_artist</p>
-
-<p>You can skip the save on the one to many save&#8230;</p>
-
-<p>build is alias to new.</p>
-
-<p>delete is for nullifying associations
-destroy is for destroying objects</p>
-
-<p>Look at end of file for clearing artists and songs.</p>
-
-<figure class='code'><figcaption><span>Seed Task</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">desc</span> <span class="s2">&quot;Create a bunch of seed data for artists and songs&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">task</span> <span class="ss">:seed_artists_and_songs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:environment</span><span class="p">,</span> <span class="ss">:clear_artists_and_songs</span><span class="o">]</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1"># Build Song Off Artist</span>
-</span><span class='line'>  <span class="c1"># Given a Song called R.E.S.P.E.C.T</span>
-</span><span class='line'>  <span class="c1"># build the Aretha Franklin Artist</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">s</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;R.E.S.P.E.C.T&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">build_artist</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Aretha Franklin&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">#Create an Artist</span>
-</span><span class='line'>  <span class="c1">#Build a Song for that Artist</span>
-</span><span class='line'>  <span class="c1">#Save the Artist</span>
-</span><span class='line'>  <span class="n">a</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>  <span class="n">a</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Natural Woman&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">a</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>  <span class="c1">#from the many it is songs.build and from the belongs it is song.build_artist</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Build a Song for that Artist</span>
-</span><span class='line'>  <span class="c1"># build song Natural Woman</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Manually Create Artist Kanye West</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Push a Song Onto an Artist</span>
-</span><span class='line'>  <span class="c1"># push a song onto Kanye West</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Create Michael Jackson Artist</span>
-</span><span class='line'>  <span class="c1"># Make 3 Michael Jackson Songs</span>
-</span><span class='line'>  <span class="c1"># push all songs by Michael Jackson</span>
-</span><span class='line'>  <span class="n">mike</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;MJ&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">mike</span><span class="o">.</span><span class="n">songs</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Delete one michael song off of michael</span>
-</span><span class='line'>  <span class="c1"># Remove a Song from Artist</span>
-</span><span class='line'>  <span class="n">mike</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">mike</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="c1"># this won&#39;t destroy the object, it will delete the association</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">task</span> <span class="ss">:clear_artists_and_songs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:environment</span><span class="o">]</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Deleting all Artists and Songs....&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="no">Artist</span><span class="o">.</span><span class="n">delete_all</span>
-</span><span class='line'>  <span class="no">Song</span><span class="o">.</span><span class="n">delete_all</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -2390,6 +2318,10 @@ destroy is for destroying objects</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/how-the-web-works/">how the web works</a>
       </li>
     
@@ -2403,10 +2335,6 @@ destroy is for destroying objects</p>
     
       <li class="post">
         <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/omniauth-tomfoolery/">omniauth tomfoolery</a>
       </li>
     
   </ul>
