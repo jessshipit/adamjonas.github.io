@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="The Decision Nginx Push State https://gist.github.com/loganhasson/c8bfff2767ea74187cf0 Enter Heroku Clearly keeping a threaded server open with the &hellip;">
+  <meta name="description" content="Webmock to disable net connections Just toss it in the spec_helper Note that I had to use WebMock.disable_net_connect!(:allow_localhost =&gt; true) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,82 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/stubbing-out-faraday/">Stubbing Out Faraday</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-15T11:49:00-04:00" pubdate data-updated="true">Jul 15<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Webmock to disable net connections</h3>
+
+<ul>
+<li><a href="https://github.com/bblimke/webmock#real-requests-to-network-can-be-allowed-or-disabled">Just toss it in the <code>spec_helper</code></a>
+
+<ul>
+<li><strong><em>Note</em></strong> that I had to use <code>WebMock.disable_net_connect!(:allow_localhost =&gt; true)</code> in the cucumber <code>support/env.rb</code> because my local host wasn&#8217;t being allowed to run on the ci. <a href="https://github.com/bblimke/webmock/issues/284">picked this up from issue #284 on webmocks</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Rspec Mocks</h3>
+
+<ul>
+<li>Can use the <a href="https://github.com/rspec/rspec-mocks#method-stubs">new syntax</a> or mocha.</li>
+</ul>
+
+
+<h3>To stub it out I could either</h3>
+
+<figure class='code'><figcaption><span>These Both Work</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">allow</span><span class="p">(</span><span class="no">MyService</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:new</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">allow_any_instance_of</span><span class="p">(</span><span class="no">MyService</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:publish</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Really cool. The <code>allow_any_instance_of()</code> is pretty sweet to reference an unnamed instance of a class. Pretty sweet.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -780,58 +856,6 @@ Saved my @ss.</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/pow-config/">Pow Config</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-19T16:01:00-05:00" pubdate data-updated="true">Feb 19<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I had a bunch of issues getting pow up and running after I upgraded to Mavricks. I ended up not installing via the <code>curl</code> method that the <a href="http://pow.cx/">37signals suggests</a> as it wasn&#8217;t recognizing my rbenv and was running on my system ruby. So I uninstalled and tried it with <code>homebrew</code>, which required a different path in my <code>.powconfig</code> file. Just like the <a href="https://github.com/basecamp/pow/wiki/Troubleshooting#rbenv">troubleshooter</a> said it would via the <a href="https://github.com/basecamp/pow/issues/202#issuecomment-2640707">github issue</a>, this worked.</p>
-
-<p>Final code: <code>export PATH="/usr/local/opt/rbenv/shims:/usr/local/opt/rbenv/bin:$PATH"</code></p>
-
-<p>Boom! Smack! Pow!</p>
-
-<h2>UPDATE (Summer &#8216;14):</h2>
-
-<p>The new hotness is <a href="https://ngrok.com/">ngrok</a>. An easier way to expose a local web server to the internet. It&#8217;s the jam.</p>
-
-<ul>
-<li>Works with <code>ngrok localhost:3000</code> for a rails app for example.</li>
-<li>Then open it up on the provided url and you&#8217;ve got yourself a stew.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -849,6 +873,10 @@ Saved my @ss.</li>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
       </li>
     
@@ -862,10 +890,6 @@ Saved my @ss.</li>
     
       <li class="post">
         <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
       </li>
     
   </ul>

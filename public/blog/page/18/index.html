@@ -9,7 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="tl;dr In DCI, Objects are viewed as whole objects rather than a composition of parts. e.g. fido is not seen as part class Animal and class &hellip;">
+  <meta name="description" content="Domain Models
+TDD Evolution of the web String Concatenation the Right Way; the Fast and Furious Way .upto method1
+1.upto(100){|i| puts fizzbuzz(i)} &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +88,165 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day8/">FIS Day8</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-15T09:26:00-04:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Domain Models
+TDD</p>
+
+<p><a href="http://www.evolutionoftheweb.com/">Evolution of the web</a></p>
+
+<p><a href="http://frozen-citadel-3574.herokuapp.com/blog/2012/10/09/string-concatenation-the-right-way-the-fastest-way/">String Concatenation the Right Way; the Fast and Furious Way</a></p>
+
+<figure class='code'><figcaption><span>.upto method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">100</span><span class="p">){</span><span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">fizzbuzz</span><span class="p">(</span><span class="n">i</span><span class="p">)}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Building a prime method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">assert</span><span class="p">(</span><span class="n">expectation</span><span class="p">)</span>
+</span><span class='line'>  <span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">expectation</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Integer</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">prime?</span>
+</span><span class='line'>      <span class="p">(</span><span class="mi">2</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">self</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>          <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="nb">self</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="c1">#=&gt; number is not prime</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="mi">1</span><span class="o">.</span><span class="n">prime?</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="mi">2</span><span class="o">.</span><span class="n">prime?</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="mi">3</span><span class="o">.</span><span class="n">prime?</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">assert</span> <span class="o">!</span><span class="p">(</span><span class="mi">4</span><span class="o">.</span><span class="n">prime?</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>SELF is always the receiver the method called on</strong></p>
+
+<figure class='code'><figcaption><span>Dot Notation &#8211; calling on the right receiver</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">4</span><span class="o">.</span><span class="n">inspect</span> <span class="c1">#will break because &#39;inspect&#39; is being called on 4, not the range.</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span> <span class="n">is</span> <span class="n">the</span> <span class="n">proper</span> <span class="n">syntax</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>each just returns the original array</p>
+
+<figure class='code'><figcaption><span>inject</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span> <span class="c1">#=&gt; {:1=&gt;1, :2=&gt;4, :3=&gt;9}</span>
+</span><span class='line'><span class="n">arr</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'><span class="n">squares</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">squares</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">squares</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">inject</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="nb">hash</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">i</span><span class="o">*</span><span class="n">i</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">squares</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Collect / Map</h3>
+
+<p>each just returns the <strong>original array</strong>
+We want to be expression oriented.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">squares</span> <span class="o">=</span> <span class="o">[]</span> <span class="c1"># this is NOT expression oriented</span>
+</span><span class='line'><span class="n">squares</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">s</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">].</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="p">;</span> <span class="n">i</span><span class="p">}</span> <span class="c1">#i is a newline character #=&gt; [1,2,3]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>If you are chaining onto the return value, even if it is on one line.</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">detect</span> <span class="p">(</span><span class="n">will</span> <span class="k">return</span> <span class="n">the</span> <span class="n">first</span> <span class="n">value</span> <span class="k">for</span> <span class="n">which</span> <span class="n">the</span> <span class="n">block</span> <span class="n">is</span> <span class="kp">true</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>.select will return all, .detect will return the first.
+.reject returns all the values for which the block is false (the opposite of select)</p>
+
+<p>.select will return an empty array if no values are found, but .detect will return nil since it will only return one value&#8230;</p>
+
+<p>.all? is sort of like a case statement except you get to use your own comparison</p>
+
+<p><a href="http://foragoodstrftime.com/">string for time</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1377,147 +1538,6 @@ all the work we do is on the feature branch</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day4/">FIS Day4</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-09T11:07:00-04:00" pubdate data-updated="true">Oct 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Programmer of the day:</h3>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Grace_Hopper">Grace Hopper:</a>
-Helped develop COBOL - first human readable code advocate.
-Popularized the word debugging
-Nickname - &#8220;amazing grace&#8221;</li>
-</ul>
-
-
-<h3>Blogging</h3>
-
-<p>Titles names:</p>
-
-<ul>
-<li>how to</li>
-<li>3 tips for</li>
-<li>pros and cons of</li>
-</ul>
-
-
-<p>&lt;compfight.com> to search high-res pictures</p>
-
-<p>end the article with a question</p>
-
-<p>3-5 paragraphs
-400-700 wds</p>
-
-<p>skitch- screenshots</p>
-
-<p>Evan Williams- creator of blogger
-web log -> weblog -> blog</p>
-
-<p>Matt Mullenwig- creator of wordpress
-powers 15% of the internet</p>
-
-<p><a href="http://errtheblog.com/">err the blog</a>
-PJ Hyett and Chris Wanstrath</p>
-
-<p><a href="https://speakerdeck.com/">speaker deck</a></p>
-
-<p><a href="http://design-seeds.com/">design helper</a></p>
-
-<p><a href="http://en.wikipedia.org/wiki/Linus_Torvalds">Linus Torvalds</a> is the creator of git</p>
-
-<p><a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a></p>
-
-<p><a href="http://demosthenes.info/blog/532/Convert-Images-To-Black-And-White-With-CSS">CSS3 Grey-scale mask</a>
-<a href="http://webdesignerwall.com/tutorials/css3-image-styles">CSS3 circle mask image</a>
-This also worked really well&#8230;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">-circle</span> <span class="p">{</span>
-</span><span class='line'>        <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">61px</span><span class="p">;</span>
-</span><span class='line'>        <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">61px</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">61px</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">border</span><span class="o">:</span><span class="m">1px</span> <span class="k">solid</span> <span class="m">#aaaaaa</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">width</span><span class="o">:</span><span class="m">122px</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">height</span><span class="o">:</span><span class="m">122px</span><span class="p">;</span>
-</span><span class='line'>   <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://itde.vccs.edu/rss2js/build.php"><em>JavaScript Feed Creator</em></a></p>
-
-<p>Git workflow:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="err">♕</span> <span class="nt">git</span> <span class="nt">reset</span> <span class="nt">--hard</span> <span class="nt">HEAD</span>
-</span><span class='line'><span class="nt">HEAD</span> <span class="nt">is</span> <span class="nt">now</span> <span class="nt">at</span> <span class="nt">ab33e5d</span> <span class="nt">fixed</span> <span class="nt">inline</span> <span class="nt">styles</span> <span class="nt">and</span> <span class="nt">added</span> <span class="nt">footer</span>
-</span><span class='line'><span class="err">♕</span> <span class="nt">git</span> <span class="nt">status</span>
-</span><span class='line'><span class="err">#</span> <span class="nt">On</span> <span class="nt">branch</span> <span class="nt">master</span> <span class="err">#</span> <span class="nt">Untracked</span> <span class="nt">files</span><span class="o">:</span>
-</span><span class='line'><span class="err">#</span>   <span class="o">(</span><span class="nt">use</span> <span class="s2">&quot;git add &lt;file&gt;...&quot;</span> <span class="nt">to</span> <span class="nt">include</span> <span class="nt">in</span> <span class="nt">what</span> <span class="nt">will</span> <span class="nt">be</span> <span class="nt">committed</span><span class="o">)</span>
-</span><span class='line'><span class="err">#</span>    <span class="nt">css</span><span class="o">/</span><span class="nt">leanJaw-student</span><span class="nc">.css</span>
-</span><span class='line'><span class="err">#</span>    <span class="nt">leanJaw-matz</span><span class="nc">.html</span>
-</span><span class='line'><span class="err">♕</span> <span class="nt">git</span> <span class="nt">clean</span> <span class="nt">-f</span>
-</span><span class='line'><span class="nt">Removing</span> <span class="nt">css</span><span class="o">/</span><span class="nt">leanJaw-student</span><span class="nc">.css</span>
-</span><span class='line'><span class="nt">Removing</span> <span class="nt">leanJaw-matz</span><span class="nc">.html</span>
-</span><span class='line'><span class="err">♕</span> <span class="nt">git</span> <span class="nt">st</span>
-</span><span class='line'><span class="err">#</span> <span class="nt">On</span> <span class="nt">branch</span> <span class="nt">master</span>
-</span><span class='line'><span class="nt">nothing</span> <span class="nt">to</span> <span class="nt">commit</span> <span class="o">(</span><span class="nt">working</span> <span class="nt">directory</span> <span class="nt">clean</span><span class="o">)</span>
-</span><span class='line'><span class="err">♕</span> <span class="nt">git</span> <span class="nt">pull</span> <span class="nt">--rebase</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/19/">&larr; Older</a>
@@ -1535,6 +1555,10 @@ This also worked really well&#8230;</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
       </li>
     
@@ -1548,10 +1572,6 @@ This also worked really well&#8230;</p>
     
       <li class="post">
         <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/warren-buffet-bio/">Warren Buffet Bio</a>
       </li>
     
   </ul>
