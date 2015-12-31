@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 4 CSRF handling]]></title>
+    <link href="http://www.adamjonas.com/blog/rails-4-csrf-handling/"/>
+    <updated>2014-05-01T11:19:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rails-4-csrf-handling</id>
+    <content type="html"><![CDATA[<h2>Setup</h2>
+
+<p>Right now we are building "Ironboard" (title is WIP) -- an application that makes makes consuming prework a breeze for students and creating and organizing prework a breeze for teachers. This application is going to fit into a workflow that kicks off when a student pays their deposit. The short version is that another internal app is going to ping an endpoint on Ironboard, which internally will generate an email invitation and enroll that student in course so that the instructor can track their progress.</p>
+
+<h2>CSRF</h2>
+
+<p>I've read the <a href="http://guides.rubyonrails.org/security.html">rails security guide</a>. I searched <a href="http://stackoverflow.com/questions/16258911/rails-4-authenticity-token">stackoverflow</a> and quite frankly the documentation for handling CSRF in rails 4 is sucky. <a href="http://alexcoco.com/forgery-protection-strategy/">Alex Coco</a> seems to have done the most documentation here. Buried in all of this is the <a href="http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/">proper way to handle cross-domain requests</a> in 2011:</p>
+
+<blockquote><p>Users can override this behaviour by overriding <code>handle_unverified_request</code> in their own controllers.</p></blockquote>
+
+<p>Most answers that are out there have to do with disabling the <code>protect_from_forgery</code> method in a specfic controller for a specific action. This hides csrf vulnerability, but I'm not sure that disabling token authenticity makes things any better. Why use <code>protect_from_forgery except: :ping_from_registrar</code> when we could use the <code>handle_unverified_request</code></p>
+
+<p>We ended up using:</p>
+
+<p>```ruby
+class Api::FooController &lt; ApplicationController
+  skip_before_action :authenticate_user!</p>
+
+<p>  private
+  def handle_unverified_request</p>
+
+<pre><code>authenticate_token || render_unauthorized
+</code></pre>
+
+<p>  end</p>
+
+<p>  def authenticate_token</p>
+
+<pre><code>authenticate_with_http_token do |token, options|
+  token.eql?(ENV['API_TOKEN'])
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def render_unauthorized</p>
+
+<pre><code>self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+render json: 'Bad credentials', status: 401
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>I think this is pretty awesome.</p>
+
+<p><a href="http://stackoverflow.com/questions/12761544/rspec-request-how-to-set-http-authorization-header-for-all-requests">This was helpful</a> as was <a href="http://blog.envylabs.com/post/75521798481/token-based-authentication-in-rails">this</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[wit]]></title>
+    <link href="http://www.adamjonas.com/blog/wit/"/>
+    <updated>2014-02-13T14:15:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/wit</id>
+    <content type="html"><![CDATA[<h2>.ruby-version &amp; rbenv</h2>
+
+<ul>
+<li>so rbenv now does support a ruby version file but doesn't support fuzzy matching. <a href="http://stackoverflow.com/questions/18634933/how-can-i-make-rbenv-recognise-1-9-3-p-ruby-versions">See</a>.</li>
+</ul>
+
+
+<h2>Multipart = true</h2>
+
+<ul>
+<li>HTML forms provide two methods of encoding. The default is application/x-www-form-urlencoded, which is more or less the same as a query string on the end of the URL. The other, multipart/form-data, is a more complicated encoding but one which allows entire files to be included in the data. <a href="http://stackoverflow.com/a/4526286/1496757">via</a></li>
+</ul>
+
+
+<h2>Devise</h2>
+
+<ul>
+<li>had trouble with validation requirements built into the <code>validatable</code> module and configuring it to allow a user to edit their profile without requiring a password, which involved destroying the session because the salted password had changed. I ended up ripping it out and going with a <code>validates_presence_of :password, :on =&gt; :create</code> instead.
+
+<ul>
+<li><a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password">I had attempted this</a>, but it seemed like a lot of work.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Factory Girl Associations</h2>
+
+<p><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">From the docs</a> it's possible to set up associations within factories. If the factory name is the same as the association name, the factory name can be left out.</p>
+
+<p><code>ruby
+factory :post do
+  # ...
+  author
+end
+</code></p>
+
+<p>To not save the associated object, specify strategy: <code>:build</code> in the factory:</p>
+
+<p><code>ruby
+factory :post do
+  # ...
+  association :author, factory: :user, strategy: :build
+end
+</code></p>
+
+<p>This does <em>not</em> work; causes author_id to be nil</p>
+
+<p><code>
+factory :post do
+  # ...
+  author strategy: :build
+</code></p>
+
+<h2>Staging assets broken</h2>
+
+<p>Racked my brain (and everyone elses) over this one... It ended up I hadn't added the <code>rails_12factor</code> gem to staging though I had added that environment.</p>
+
+<h2>Capybara cheatsheet</h2>
+
+<p><a href="https://gist.github.com/zhengjia/428105">Cheatsheet</a></p>
+
+<h2>Server TimeZone</h2>
+
+<ul>
+<li>had a feature that pulls events once they have passed. Heroku's time zone is by default set to <code>UTC</code>. So I did two things:
+
+<ol>
+<li>heroku config:add TZ="America/New_York" as described <a href="http://blog.pardner.com/2012/08/setting-the-default-time-zone-for-a-heroku-app/">here</a>.</li>
+<li>Set <code>config.time_zone = 'Eastern Time (US &amp; Canada)'</code> in <code>application.rb</code> as described in the <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html">rails docs</a>.</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Fragment Caching</h3>
+
+<ul>
+<li><p>Had an issue expiring the fragment cache. The issue was that when you cache the fragment in your view, a cache digest is being added to the cache key (views/all_available_releases/41cb0a928326986f35f41c52bb3d8352), but <code>expire_fragment</code> is not using the digest (views/all_available_releases).</p></li>
+<li><p>By adding <code>skip_digest: true</code> to the cache call in the view it should prevent the digest from being used.</p></li>
+</ul>
+
+
+<p><code>
+&lt;% cache "all_available_releases", skip_digest: true do %&gt;
+ &lt;% @releases.each do |release| %&gt;
+  &lt;% cache(release) do %&gt;
+   &lt;html code with&gt;
+   &lt;%ruby code @release.name blah blah blah%&gt;
+  &lt;%end%&gt;
+ &lt;%end%&gt;
+&lt;%end%&gt;
+</code></p>
+
+<ul>
+<li>Cache digests are only intended to be used with automatic cache expiration. If you need to manually expire cache keys then you can't use cache digests.</li>
+<li>Saved by <a href="http://stackoverflow.com/a/17619414/1496757">stackoverflow</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day26]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day26/"/>
+    <updated>2012-11-12T10:13:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day26</id>
+    <content type="html"><![CDATA[<h3>POTD</h3>
+
+<ul>
+<li>Jeffery Zeldman</li>
+<li>Dan Benjamin</li>
+<li>Jason Santa Maria</li>
+<li>Simplebits.com</li>
+</ul>
+
+
+<h3>Gitbo</h3>
+
+<ul>
+<li>Popularity index</li>
+<li><a href="http://railscasts.com/episodes/366-sidekiq">sidekiq</a></li>
+<li>nested issues in repos</li>
+<li>slugs wiht friendly_id</li>
+</ul>
+
+
+<h3>Rails Lecture</h3>
+
+<ul>
+<li>sub-yields or sub-layouts</li>
+</ul>
+
+
+<p>```ruby</p>
+
+<h1>in layouts/application.html.erb</h1>
+
+<p>&lt;% content_for :page-navigation %></p>
+
+<h1>at the top of the pages that need it</h1>
+
+<p>&lt;%= yield :page-navigation %>
+```</p>
+
+<ul>
+<li>Applicaiton level layout</li>
+<li>controller level layout</li>
+<li>action level layout</li>
+</ul>
+
+
+<p><code>ruby  Action Level Layout
+respond_to do |format|
+  format.html {render :layout =&gt; 'application'}
+</code></p>
+
+<ul>
+<li>content for will allow you to append to the outter layer</li>
+</ul>
+
+
+<h3>Application.css</h3>
+
+<ul>
+<li>The manifest file
+
+<ul>
+<li>require tree . -> require all files at the same level of this file (dot means current dir, .. means dir above)</li>
+<li><a href="https://github.com/sstephenson/sprockets/blob/master/lib/sprockets/directive_processor.rb">sprocket directives</a> tells the app what to include and maintain</li>
+<li>files are loaded in order</li>
+<li>in production, all the assets will be packed</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Compiling</h3>
+
+<ul>
+<li><p>rake assets:precompile</p></li>
+<li><p>rails s --environment=production</p>
+
+<ul>
+<li>shortcut
+
+<ul>
+<li>rails s -e production</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Pre-processors</h3>
+
+<ul>
+<li>css: doesn't allow css variables
+
+<ul>
+<li><a href="http://sass-lang.com/">scss and sass</a>
+
+<ul>
+<li>scss is backwards compatible with css</li>
+</ul>
+</li>
+<li>sass adds lots of css like variables</li>
+</ul>
+</li>
+<li>coffeescript
+
+<ul>
+<li>makes the syntax nicer than javascript</li>
+<li>not backwards compatible with javascript</li>
+</ul>
+</li>
+<li>less
+
+<ul>
+<li>dynamic stylesheet</li>
+</ul>
+</li>
+<li>HAML
+
+<ul>
+<li>HMTL preprocessor</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>locales/application.rb</h3>
+
+<ul>
+<li>want to be sure that all finger prints are new -> config.assets.version = '1.1'</li>
+<li>config.assets.compile = false /true -> will precompile assets on the first request</li>
+</ul>
+
+
+<h3>Pictures in asset pipeline</h3>
+
+<ul>
+<li>Need image-url to trigger the asset pipeline</li>
+</ul>
+
+
+<p>```
+h1.logo{
+  url: image-url('/whatever.png');
+}</p>
+
+<h1>NOT</h1>
+
+<p>h1.logo{
+  url: url('/assets/whatever.png');
+}
+```
+In order to use image-url, it needs to be a scss file</p>
+
+<h3>Managing Version Asset files</h3>
+
+<ul>
+<li>can manage versions with bundler</li>
+<li>declare jquery rails engine means that the app's asset path will be loaded autmatically
+
+<ul>
+<li>jquery-rails has a vendor dir, so that it adds it when I compile by vendor dir</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Bootstrap</h3>
+
+<ul>
+<li>rails generate bookstrap:install</li>
+<li>tell manifest file to actually include the js</li>
+<li>in app.css
+
+<ul>
+<li>require bootstrap_and_overides</li>
+</ul>
+</li>
+<li><p>rails g bootstrap:layouts</p></li>
+<li><p><a href="http://wrapbootstrap.com">http://wrapbootstrap.com</a></p></li>
+<li><a href="http://bootsnipp.com/">http://bootsnipp.com/</a></li>
+<li><a href="http://dresssed.com/">http://dresssed.com/</a></li>
+</ul>
+
+
+<h3>Friendly URLs</h3>
+
+<p>Sweet <a href="http://railscasts.com/episodes/314-pretty-urls-with-friendlyid?autoplay=true">rails cast</a> on beautiful slugs and slugifying ids</p>
+
+<h3>What's left</h3>
+
+<ul>
+<li>AR Callbacks</li>
+<li>Controller Filters</li>
+<li>Application Controller Helpers</li>
+<li>Authentication</li>
+<li>Sessions / Cookies</li>
+<li>Authorization</li>
+<li>Rendering Collections</li>
+<li>AREL / Includes and Joins</li>
+<li>Scopes / Class Methods</li>
+<li>Formatted Responses</li>
+<li>ActionView Helpers -> cycle, truncate, except</li>
+<li>Asset Pipeline</li>
+<li>SASS</li>
+<li>CoffeeScript</li>
+<li>Javascript Events
+
+<ul>
+<li>jQuery</li>
+<li>AJAX</li>
+</ul>
+</li>
+<li>Route Options</li>
+<li>Securing Rails</li>
+<li>Optimization</li>
+<li>Caching / Memcached</li>
+<li>Observers</li>
+<li>Association Options -> dependent destroy, class</li>
+<li><p>Polymorphic Models</p></li>
+<li><p>Common Gems</p>
+
+<ul>
+<li>Pagination</li>
+<li>OmniAuth</li>
+<li>CanCan</li>
+<li>Uploads</li>
+<li>ActionMailer</li>
+<li>Subdomains</li>
+<li>Background Jobs</li>
+<li><a href="http://www.intridea.com/blog/2011/5/13/rails3-gems">http://www.intridea.com/blog/2011/5/13/rails3-gems</a></li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day18]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day18/"/>
+    <updated>2012-11-01T13:42:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day18</id>
+    <content type="html"><![CDATA[<h3>POTD</h3>
+
+<ul>
+<li><p>Edsgar Dijkstra</p>
+
+<ul>
+<li>inventor of structured programming</li>
+<li>came up with "for, while, until, case"</li>
+<li>computer science is not about machines and equipment management</li>
+</ul>
+</li>
+<li><p>If you use more of a bad tool, it won't fix it.</p>
+
+<blockquote><p>About the use of language; it is impossible to sharpen a pencil with a blunt axe. It is equally vain to try to do it with ten blunt axes instead.</p></blockquote></li>
+<li><p>Programming is just about communicating clearly.</p></li>
+<li>Once it is teachable it is concrete.</li>
+</ul>
+
+
+<h3>Ruby Tidbit</h3>
+
+<p>```ruby Semi-Colon Deliminates a Line
+def create;end</p>
+
+<h1>the semi-colon deliminates the info on two lines</h1>
+
+<p>```</p>
+
+<h2>Rails Lecture</h2>
+
+<p><code>ruby link to unless current
+&lt;%= link_to_unless_current %&gt; #this is slick for nav!
+</code></p>
+
+<p><strong>Routes</strong>
+```ruby Routes File
+match '/name' => 'songs#name'</p>
+
+<h1>not as specific and therefore as good as</h1>
+
+<p>get '/name' => 'songs#name'</p>
+
+<p>get 'site/about' #rails will assume that site is the controller and about is the action
+```</p>
+
+<p>```ruby Generate a Controller
+rails generate controller CreditCard open debit credit close</p>
+
+<h1>this will create a credit_card_controller with 4 actions</h1>
+
+<p>```
+??have to delete rm-rf public/index.html</p>
+
+<p>```ruby Rendering Templates
+class Sessions Controller &lt; ApplicationController</p>
+
+<p>render :action
+render :template</p>
+
+<h1>in practice</h1>
+
+<p>render 'under_construction' #this is the action in the sessions controller
+render 'shared/under_construction' #this is a full relative path</p>
+
+<h1>and more instructional of where to find the template</h1>
+
+<p>```</p>
+
+<h3>Private and public methods</h3>
+
+<p>```ruby Private Method e.g.
+class Dog
+  def bark</p>
+
+<pre><code>case stomach_volume
+when :very
+  puts "woof woof!"
+when :not_at_all
+  puts "woof"
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>private #it would also break if this was protected.</p>
+
+<p>  def stomach_volume</p>
+
+<pre><code>:very
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>fido = Dog.new
+fido.stomach_volume #this is not going to work.
+```
+private, public, and protected all create keyword scope -> created limited, predicted interfaces</p>
+
+<p>if a method is private it can only be called on an implicit receiver- can't call call on an explicit receiver</p>
+
+<p><strong>protected</strong> -> can only be called on self.</p>
+
+<p>```ruby When Private Methods Become Useful in the Controller
+class SomeController</p>
+
+<p>def new
+  under_construction
+end</p>
+
+<p>def create
+  under_constructions
+end</p>
+
+<p>private</p>
+
+<p>def under_construction
+  render 'shared/under_construction'
+end</p>
+
+<p>end
+```</p>
+
+<h3>In the migration</h3>
+
+<ul>
+<li>def change for when the reverse can be assumed</li>
+<li><p>def up and down for things like renaming columns -> because rails wouldn't be able to infer what the reverse would be.</p></li>
+<li><p>t.timestamps - is a created at and updated at</p></li>
+</ul>
+
+
+<h3>Signups</h3>
+
+<p>when you login, you are creating a session between you and the website.
+when you signup you are creating a user on their system-- that lives in their DB
+<code>ruby Routes
+get '/signup' =&gt; 'users#new'
+post '/signup' =&gt; 'users#create'
+</code></p>
+
+<p><strong>Mass assignment => when you assign initialization properties during assingment.</strong></p>
+
+<ul>
+<li><p>Migrations</p>
+
+<ul>
+<li>define and edit schema</li>
+</ul>
+</li>
+<li><p>Models -ORM</p>
+
+<ul>
+<li>insert rows /update</li>
+<li>database</li>
+</ul>
+</li>
+<li><p>Routes
+maps URLs to actions in the controller</p></li>
+<li><p>controllers</p>
+
+<ul>
+<li>contains the business logic</li>
+</ul>
+</li>
+<li><p>views</p>
+
+<ul>
+<li>the actual interface</li>
+</ul>
+</li>
+</ul>
+
+
+<p>-> In sinatra the routes are built into controllers.</p>
+
+<p><code>ruby This must be how form_for works
+def form_for(obj, &amp;block)
+  f = FormBuilder.new(obj)
+  yield f
+end
+</code></p>
+
+<p><em>In your controller helper...</em>
+```ruby Rolling My Own Form Builder
+&lt;%= form_for(@song, :builder = > SongHelper::SongForm) %></p>
+
+<h1>in the controller helper</h1>
+
+<p>module SongsHelper
+  class SongForm &lt; ActionView::Helpers::FormBuilder</p>
+
+<pre><code>def full_name_field
+  label(:first_name) + 
+  text_field :first_name
+
+  label(:last_name) + 
+  text_field :last_name
+end
+</code></pre>
+
+<p>  end
+end
+```
+Customizing the forms and encapsulate in the controller helpers...</p>
+
+<h3>Test::Unit to RSpec</h3>
+
+<p>change out the libraries
+add rspec to the gem file
+rip out test folder</p>
+
+<p>rails g install rspec</p>
+
+<p><a href="http://stackoverflow.com/questions/9884033/ruby-on-rails-switch-from-test-unit-to-rspec">changing from minitest to rspec</a> <a href="http://stackoverflow.com/questions/5072662/how-to-remove-unit-test-and-replace-it-with-rspec">or</a></p>
+
+<p>"when i generated the scaffold, it generated the specs for me..."</p>
+
+<h3>Posting Info to an object</h3>
+
+<ol>
+<li>instantiate an instance</li>
+<li>collect the form data</li>
+<li>and you populate the instance attribute with the proper data</li>
+</ol>
+
+
+<p>If I want to use form_for I need an active record instance.</p>
+
+<h3>Read this...</h3>
+
+<p><a href="http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions">Understand parameter naming conventions</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Accepts Nested Attributes For]]></title>
+    <link href="http://www.adamjonas.com/blog/accepts-nested-attributes-for/"/>
+    <updated>2012-10-31T16:14:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/accepts-nested-attributes-for</id>
+    <content type="html"><![CDATA[<p>So accepts nested attributes is really about writing to an attribute of a class.</p>
+
+<p>In my case a location belongs_to a user. I was then trying to set the location.street1 through the user, but it wouldn't write. This is because it needs the accepts_nested_attributes method in the model.</p>
+
+<p><code>ruby If I want to manage questions through my surveys forms...
+class Survey &lt; ActiveRecord::Base
+  has_many :questions, :dependent =&gt; :destroy
+  accepts_nested_attributes_for :questions, allow_destroy: true
+end
+</code>
+<a href="http://railscasts.com/episodes/196-nested-model-form-revised">Railscast</a>
+  - min 6 javascript</p>
+
+<p>destroy -> allow_destroy: true</p>
+]]></content>
+  </entry>
+  
+</feed>

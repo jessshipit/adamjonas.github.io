@@ -1,0 +1,590 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Interview Prep - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="from https://github.com/afeld/rails_interview_questions Q: What is the difference between a lambda, a block and a proc? A: In Ruby we create an &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://www.adamjonas.com/blog/interview-prep/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Interview Prep</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-27T21:05:00-05:00" pubdate data-updated="true">Dec 27<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>from <a href="https://github.com/afeld/rails_interview_questions">https://github.com/afeld/rails_interview_questions</a></p>
+
+<h3>Q: What is the difference between a lambda, a block and a proc?</h3>
+
+<p>A:  In Ruby we create an anonymous chunk of code called a proc with the code <code>Proc.new</code>. We call this using the <code>.call</code> method.</p>
+
+<p>Lambdas appear to be the same as procs, but lambdas are pickier about arguments. You can&#8217;t pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.</p>
+
+<p>Lambda return statement just exit execution of the statement itself while the proc ended execution of containing method.</p>
+
+<p>As a rule, stick with lambdas until you find a specific reason not to.</p>
+
+<p>It is often convenient to write methods that accepts a single proc as arguments. Callers can pass in whatever code they want to be executed once for each name for example. It is so common to write a method that has a single argument that is expected to be a proc that it got it&#8217;s own name &#8211; a block. Every ruby method can implicitly receive a proc arg with the yield keyword.</p>
+
+<h3>Q: How do you sort an Array of objects by a particular attribute? What is a better way to do sorting with ActiveRecord?</h3>
+
+<p>A: Let SQL do its job. It will be more efficient than writing it in Ruby.</p>
+
+<figure class='code'><figcaption><span>For example&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">u</span><span class="o">|</span> <span class="n">u</span><span class="o">.</span><span class="n">first_name</span><span class="p">}</span> <span class="c1">#=&gt; O(log n)</span>
+</span><span class='line'><span class="c1">#versus</span>
+</span><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="err">“</span><span class="n">first_name</span> <span class="no">DESC</span><span class="err">”</span><span class="p">)</span> <span class="c1">#=&gt; O(1)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Q: What are some of your favorite gems? What are their alternatives?</h3>
+
+<ul>
+<li>Dalli over the standard Memcached library- Higher performance memcached client</li>
+<li>paperclip and carrierwave.</li>
+</ul>
+
+
+<h3>Q: In Ruby, which is generally the better option: a recursive function or an iterative one?</h3>
+
+<p>A: Loops may achieve a performance gain for your computer. Recursion may achieve a performance gain for your programmer. Choose which is more important in your situation!</p>
+
+<p>Comparing recursion to iteration is like comparing a phillips head screwdriver to a flat head screwdriver. For the most part you could remove any phillips head screw with a flat head, but it would just be easier if you used the screwdriver designed for that screw right?
+Some algorithms just lend themselves to recursion because of the way they are designed (Fibonacci sequences, traversing a tree like structure, etc.). Recursion makes the algorithm more succinct and easier to understand (therefore shareable and reusable).<a href="http://stackoverflow.com/questions/72209/recursion-or-iteration">Pulled from</a></p>
+
+<p>Recursion is, in general, the more natural approach in functional languages, and iteration is normally more intuitive in imperative languages.</p>
+
+<h3>Q: What are #method_missing and #send? Why are they useful?</h3>
+
+<ul>
+<li><a href="http://rubylearning.com/satishtalim/ruby_method_missing.html">Method Missing</a></li>
+</ul>
+
+
+<h3>Q: What is the general history of Rails?</h3>
+
+<ul>
+<li>Rails open sourced in 2004</li>
+<li> 2006 macs were shipped with rails</li>
+<li>Dec 2008 merb was merged with rails 3.0</li>
+<li>‘11-> rails 3.1 had reversible db migrations, jquery, asset pipeline</li>
+</ul>
+
+
+<h3>Q: Explain the different pieces of Rails.</h3>
+
+<ul>
+<li>ActiveRecord -> ORM</li>
+<li>ActiveResource -> the main class for mapping RESTful resources as models in a Rails application.</li>
+<li>ActionPack ->  the Controller and View layers are handled together by Action Pack.</li>
+<li>ActiveSupport-> Active Support is a grab bag of utility methods and extensions to the Ruby standard library that accelerate development by providing syntactic sugar and easy ways to write expressive and DRY code</li>
+<li>ActionMailer -> mailer</li>
+</ul>
+
+
+<h3>Q: Walk through the flow of a request through Rails.</h3>
+
+<p>A: The primary components of a Rails app relating to general request cycle are ActionPack (ActionController, ActionDispatch, ActionView), ActiveModel and ActiveRecord. Let’s take the example of a contact management app where each instance of a contact has many addresses, phone number and emails, and we click on a link to a specific contact and are expecting to see a “show” view of some sort.</p>
+
+<h3>Q: What are the different server options for running a Rails/Rack app?</h3>
+
+<ul>
+<li>Apache vs. Nginx (webservers)
+
+<ul>
+<li>Apache is more popular, nginx is smaller and faster</li>
+</ul>
+</li>
+</ul>
+
+
+<p><strong>Mongrel vs Webrick</strong>
+mongrel is a ruby application server. Which means it:</p>
+
+<ol>
+<li>Loads your rails app inside its own process space.</li>
+<li>sets up a TCP socket, allowing it to communicate with the outside world.</li>
+</ol>
+
+
+<p><strong>WEBrick does the same thing but:</strong></p>
+
+<ol>
+<li>it’s written entirely in C</li>
+<li>slower and less robust</li>
+<li>installed in rails by default</li>
+</ol>
+
+
+<p><strong>Phusion Passenger</strong></p>
+
+<ul>
+<li>Ruby app server, but works differently than mongrel</li>
+<li><p>integrates directly into apache or nginx.</p></li>
+<li><p>loads the ruby code and sends a request to my application</p></li>
+</ul>
+
+
+<p><strong>Capistrano</strong></p>
+
+<ul>
+<li>Allows you to upload the rails app’s code and files to the server machine</li>
+<li>set up/ migrate DB</li>
+<li>install libs that your app depends on</li>
+<li>Capistrano is not the application server&#8211; it is a tool for automating all the preparation work. Technically you could upload with FTP.</li>
+</ul>
+
+
+<p><a href="http://stackoverflow.com/questions/4113299/ruby-on-rails-server-options">http://stackoverflow.com/questions/4113299/ruby-on-rails-server-options</a></p>
+
+<h3>Q: Explain CSRF and how Rails combats it.</h3>
+
+<p>A: <a href="http://www.adamjonas.com/blog/cross-site-request-forgery/">http://www.adamjonas.com/blog/cross-site-request-forgery/</a>
+<a href="http://stackoverflow.com/questions/941594/understand-rails-authenticity-token">http://stackoverflow.com/questions/941594/understand-rails-authenticity-token</a></p>
+
+<p>protect from forgery in the application_controller to add authenticity token that is unique for each user session -> checked for all post/put/delete request.
+This token is not checked for GET requests, so make sure you don’t do anything damaging with a GET request.</p>
+
+<p>Rails 3 escapes all HTML content <code>&lt;%=h task.name %&gt;</code> to prevent cross-site scripting. Can also look into the sanitize methods.</p>
+
+<h3>Q: Explain mass-assignment vulnerability.</h3>
+
+<p>A: <a href="http://blog.mhartl.com/2008/09/21/mass-assignment-in-rails-applications/">http://blog.mhartl.com/2008/09/21/mass-assignment-in-rails-applications/</a>
+Mass assignment throws all the parameter from the form so the user can update any of the attributes or associations</p>
+
+<h3>Rails Security in general</h3>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/178-seven-security-tips">Railscasts 178</a></li>
+</ul>
+
+
+<p>SQL injection (railscasts episode 25)</p>
+
+<figure class='code'><figcaption><span>Eliminating SQL injection</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>  <span class="vi">@projects</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;name like ?&quot;</span><span class="p">,</span> <span class="s2">&quot;%</span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="ss">:search</span><span class="o">]</span><span class="si">}</span><span class="s2">%&quot;</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="sb">``</span>
+</span><span class='line'><span class="no">Can</span> <span class="n">just</span> <span class="n">enter</span> <span class="k">in</span> <span class="sb">`) or (&#39;`</span> <span class="ow">and</span> <span class="n">that</span> <span class="n">will</span> <span class="n">retrieve</span> <span class="n">all</span> <span class="n">the</span> <span class="n">projects</span><span class="o">.</span> <span class="no">Can</span> <span class="n">just</span> <span class="n">use</span> <span class="n">the</span> <span class="n">question</span> <span class="n">mark</span> <span class="n">syntax</span> <span class="n">to</span> <span class="n">avoid</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">###Q: Law of Demeter - </span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Refers</span> <span class="n">to</span> <span class="n">loose</span> <span class="n">coupling</span> <span class="n">of</span> <span class="n">objects</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Refers</span> <span class="n">to</span> <span class="n">sending</span> <span class="n">messages</span><span class="p">,</span> <span class="n">prohibits</span> <span class="n">sending</span> <span class="n">a</span> <span class="n">message</span> <span class="n">from</span> <span class="n">object</span> <span class="n">A</span> <span class="n">to</span> <span class="n">object</span> <span class="n">C</span> <span class="n">through</span> <span class="n">object</span> <span class="n">B</span><span class="p">,</span> <span class="k">if</span> <span class="n">object</span> <span class="n">B</span> <span class="n">is</span> <span class="n">of</span> <span class="n">a</span> <span class="n">different</span> <span class="n">type</span><span class="o">.</span>
+</span><span class='line'><span class="no">States</span> <span class="n">that</span> <span class="n">objects</span> <span class="n">should</span> <span class="ow">not</span> <span class="n">reach</span> <span class="n">through</span> <span class="n">other</span> <span class="n">objects</span> <span class="n">to</span> <span class="k">return</span> <span class="n">information</span> <span class="n">about</span> <span class="n">a</span> <span class="n">third</span> <span class="n">object</span><span class="o">.</span> <span class="no">Using</span> <span class="n">dot</span> <span class="n">notation</span> <span class="n">examples</span><span class="p">,</span> <span class="n">loosely</span> <span class="n">means</span> <span class="n">to</span> <span class="n">reduce</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">dot</span> <span class="nb">methods</span> <span class="n">strung</span> <span class="n">together</span><span class="p">,</span> <span class="n">so</span> <span class="n">that</span> <span class="n">you</span><span class="s1">&#39;re not performing actions on some intermediary returned object or data. </span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">LoD violations are more tolerable if reaching through objects to return ‘attributes’, as opposed to invoking ‘behavior’ - ex. customer.bicycle.wheel.tire ← many dots, but is only returning what may be a stable attribute </span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">More about the ‘type’ of object returned by each expression in a method chain than by the amount of dots, don’t want to be traversing different types, as this is more tightly coupling your code</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">###Q: SOLID design</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Coined by Michael Feathers, popularized by Uncle Bob Martin</span>
+</span><span class='line'><span class="s1">5 of the most well known design principles </span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Single Responsibility - separation of concerns, classes should have a single responsibility, methods should have a single responsibility, makes your code more modular and more adaptable</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Open/Closed - Related to inheritance hierarchies. By using classical inheritance and modules, you&#39;</span><span class="n">re</span> <span class="n">declaring</span> <span class="n">that</span> <span class="n">objects</span> <span class="p">(</span><span class="n">classes</span><span class="p">)</span> <span class="n">are</span> <span class="err">‘</span><span class="nb">open</span><span class="err">’</span> <span class="k">for</span> <span class="n">extension</span> <span class="n">but</span> <span class="err">‘</span><span class="n">closed</span><span class="err">’</span> <span class="n">to</span> <span class="n">modification</span><span class="o">.</span> <span class="no">In</span> <span class="n">this</span> <span class="n">way</span><span class="p">,</span> <span class="n">the</span> <span class="n">developer</span> <span class="n">is</span> <span class="n">encouraged</span> <span class="n">to</span> <span class="err">‘</span><span class="kp">extend</span><span class="err">’</span> <span class="n">an</span> <span class="n">objects</span> <span class="n">behavior</span> <span class="ow">or</span> <span class="n">capabilities</span> <span class="n">through</span> <span class="n">subclasses</span><span class="p">,</span> <span class="ow">and</span> <span class="n">discouraged</span> <span class="n">from</span> <span class="n">modifying</span> <span class="n">existing</span> <span class="n">objects</span><span class="o">.</span> <span class="no">Open</span> <span class="k">for</span> <span class="n">extension</span> <span class="n">creates</span> <span class="n">hierarchies</span> <span class="n">that</span> <span class="n">are</span> <span class="n">well</span> <span class="n">suited</span> <span class="n">to</span> <span class="n">change</span> <span class="ow">and</span> <span class="n">growth</span> <span class="k">in</span> <span class="n">an</span> <span class="n">application</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Liskov</span> <span class="no">Substitution</span> <span class="o">-</span> <span class="no">Subclasses</span> <span class="n">should</span> <span class="n">be</span> <span class="n">substitutable</span> <span class="k">for</span> <span class="n">the</span> <span class="no">Superclasses</span><span class="o">.</span> <span class="no">Subclasses</span> <span class="n">are</span> <span class="n">expected</span> <span class="n">to</span> <span class="n">conform</span> <span class="n">to</span> <span class="n">their</span> <span class="n">superclasses</span> <span class="n">interfaces</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">must</span> <span class="n">respond</span> <span class="n">to</span> <span class="n">every</span> <span class="n">message</span> <span class="k">in</span> <span class="n">that</span> <span class="n">interface</span><span class="o">.</span> <span class="no">Other</span> <span class="n">objects</span> <span class="n">should</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">to</span> <span class="n">check</span> <span class="n">the</span> <span class="n">type</span> <span class="n">of</span> <span class="n">a</span> <span class="n">subclass</span><span class="o">.</span> <span class="no">Subclasses</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">a</span> <span class="err">‘</span><span class="n">kind</span><span class="err">’</span> <span class="n">of</span> <span class="n">their</span> <span class="n">superclass</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Interface</span> <span class="no">Segregation</span> <span class="o">-</span> <span class="n">separation</span> <span class="n">between</span> <span class="kp">public</span> <span class="ow">and</span> <span class="kp">private</span> <span class="n">interfaces</span><span class="o">.</span> <span class="no">Public</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="k">for</span> <span class="n">messages</span> <span class="p">(</span><span class="nb">methods</span><span class="p">)</span> <span class="n">that</span> <span class="n">will</span> <span class="n">be</span> <span class="n">sent</span> <span class="n">to</span> <span class="n">other</span> <span class="n">objects</span><span class="o">.</span> <span class="no">Private</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="k">for</span> <span class="n">messages</span> <span class="n">that</span> <span class="n">will</span> <span class="n">only</span> <span class="n">ever</span> <span class="n">be</span> <span class="n">sent</span> <span class="n">to</span> <span class="nb">self</span><span class="o">.</span> <span class="no">Private</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="n">where</span> <span class="n">a</span> <span class="n">majority</span> <span class="n">of</span> <span class="n">the</span> <span class="n">how</span><span class="p">,</span> <span class="ow">or</span> <span class="n">the</span> <span class="n">logic</span> <span class="p">(</span><span class="n">manipulating</span> <span class="n">data</span> <span class="n">structures</span><span class="p">,</span> <span class="n">etc</span><span class="o">.</span><span class="p">)</span> <span class="n">should</span> <span class="n">occur</span><span class="p">,</span> <span class="k">while</span> <span class="no">Public</span> <span class="n">interfaces</span> <span class="n">should</span> <span class="n">just</span> <span class="n">declare</span> <span class="n">the</span> <span class="err">‘</span><span class="n">what</span><span class="err">’</span> <span class="p">(</span><span class="n">largely</span> <span class="n">by</span> <span class="n">calling</span> <span class="kp">private</span> <span class="n">interface</span> <span class="nb">methods</span><span class="p">)</span><span class="o">.</span> <span class="no">This</span> <span class="n">is</span> <span class="n">because</span> <span class="kp">public</span> <span class="n">interfaces</span> <span class="n">are</span> <span class="n">accessible</span> <span class="n">by</span> <span class="n">other</span> <span class="n">objects</span><span class="p">,</span> <span class="ow">and</span> <span class="n">by</span> <span class="n">exposing</span> <span class="n">too</span> <span class="n">much</span> <span class="n">of</span> <span class="n">the</span> <span class="n">how</span><span class="p">,</span> <span class="n">you</span><span class="err">’</span><span class="n">re</span> <span class="n">giving</span> <span class="n">too</span> <span class="n">much</span> <span class="n">information</span> <span class="n">to</span> <span class="n">other</span> <span class="n">objects</span><span class="p">,</span> <span class="n">which</span> <span class="n">results</span><span class="p">,</span> <span class="ow">or</span> <span class="n">is</span> <span class="n">a</span> <span class="n">symptom</span> <span class="n">of</span><span class="p">,</span> <span class="n">tight</span> <span class="n">coupling</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Dependency</span> <span class="no">Inversion</span> <span class="o">-</span> <span class="no">Less</span> <span class="no">Stable</span> <span class="n">objects</span> <span class="n">should</span> <span class="n">depend</span> <span class="n">on</span> <span class="n">more</span> <span class="n">stable</span> <span class="n">objects</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">more</span> <span class="n">concrete</span> <span class="n">objects</span> <span class="n">should</span> <span class="n">depend</span> <span class="n">on</span> <span class="n">more</span> <span class="n">abstract</span> <span class="n">objects</span><span class="p">,</span> <span class="n">making</span> <span class="n">your</span> <span class="n">code</span> <span class="n">less</span> <span class="n">brittle</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">###Q: Ruby Closures - </span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Blocks</span><span class="o">/</span><span class="no">Procs</span><span class="o">/</span><span class="no">Lambdas</span> <span class="o">-</span> <span class="n">essentially</span> <span class="n">anonymous</span> <span class="nb">methods</span><span class="o">/</span><span class="n">functions</span><span class="o">.</span> <span class="no">Procs</span> <span class="ow">and</span> <span class="no">Lambdas</span> <span class="n">are</span> <span class="no">Blocks</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">passed</span> <span class="n">around</span> <span class="n">as</span> <span class="n">variables</span><span class="o">.</span> <span class="no">By</span> <span class="n">defining</span> <span class="n">the</span> <span class="nb">proc</span> <span class="ow">or</span> <span class="nb">lambda</span> <span class="n">as</span> <span class="n">such</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ruby
+proc = Proc.new do |name|
+  puts “Hello #{name}”
+end</p>
+
+<p>can run proc.(“Matt”) -> “Hello Matt”</p>
+
+<figure class='code'><figcaption><span>Eliminating SQL injection</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">essentially</span> <span class="n">acts</span> <span class="n">as</span> <span class="n">a</span> <span class="nb">method</span> <span class="n">that</span> <span class="n">can</span> <span class="n">take</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">but</span> <span class="n">is</span> <span class="n">an</span> <span class="n">unnamed</span> <span class="nb">method</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">called</span> <span class="n">by</span> <span class="n">other</span> <span class="nb">methods</span> <span class="n">as</span> <span class="n">an</span> <span class="n">argument</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">can</span> <span class="n">use</span> <span class="k">yield</span> <span class="n">to</span> <span class="nb">send</span> <span class="n">to</span> <span class="n">the</span> <span class="nb">proc</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="nb">lambda</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ruby
+def named_method(&amp;block)
+  yield “Matt”
+end
+&#8220;`</p>
+
+<p><code>named_method{|name| proc.(name)} -&gt; “Hello Matt”</code></p>
+
+<p>procs and lambdas differ in how they deal with ‘return’ statements and arguments</p>
+
+<p>ORMs - ActiveRecord vs. DataMapper</p>
+
+<h3>Pros and cons of Datamapper</h3>
+
+<ul>
+<li>don’t have to write migrations (this can be a pro or con)</li>
+</ul>
+
+
+<p>Datamapper has ‘eager loading’ by default, while ActiveRecord, you need to stipulate using the ‘includes’ method. This basically can cut down the amount of database queries in a normalized database by an order of magnitude. Instead of first running a query on the parent table, then running the same numbers of queries on the association table to get associated data, it just collects foreign keys for all the associations and then loads all associated objects with one query. Pretty cool!</p>
+
+<p>Datamapper - model driven, whereas ActiveRecord is Database driven. Meaning, once the needs of the application dictate that the database become fairly complex, it can be a pain point when using AR.</p>
+
+<h3>Recursion</h3>
+
+<ul>
+<li><p><a href="http://ruby.bastardsbook.com/chapters/recursion/">Bastards Book on recursion (still a draft at this time )</a></p></li>
+<li><p>There are two principles of recursion</p>
+
+<ol>
+<li>An end goal, or base case</li>
+<li>A process in which the task at hand is reduced towards that end goal</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Pointer-based algorithms</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Pointer_(computer_programming">Pointers</a>)</li>
+</ul>
+
+
+<h3>P = NP?</h3>
+
+<ul>
+<li>Are there situations where brute-force search— that is, trying an exponential number of possibilities one-by-one, until we find a solution that satisfies all the stated constraints— is essentially the best algorithm possible? (<a href="http://www.scottaaronson.com/blog/?p=459">from p vs. np for dummies</a>)</li>
+<li><a href="http://en.wikipedia.org/wiki/P_versus_NP_problem">wikipedia</a>
+
+<ul>
+<li>P vs NP is basically talking about problems where you can checking each possibility in a reasonable amount of time, but the number of possibility&#8217;s keeps growing faster as the numbers get larger.</li>
+<li>some of these problems are such that there is no way to come up with an exact solution that is faster than being forced to do a brute force check of all or many of the possible solutions.</li>
+<li>The essence of P vs. NP. P is the class of problems where the cost of computing an exact solution doesn&#8217;t necessarily grow too fast relative to input sizes to be impractical with real-world computers. NP is the class of problems that are equivalent to P problems if you happen to have a magical computer which could evaluate and compare any number of possible solutions simultaneously. Naturally, NP will include all of the P problems, so NP-complete problems are taken to be the set of problem for which only the magical computer would be suitable. (from <a href="http://news.ycombinator.com/item?id=1605415">Hacker news discussion</a>)</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Practice</h3>
+
+<ul>
+<li><a href="http://www.reddit.com/r/dailyprogrammer/">Daily programmer</a></li>
+<li><a href="http://rubyquiz.com/">Ruby Quiz</a></li>
+<li><a href="https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions">5 essential phone screens</a></li>
+<li><a href="http://courses.csail.mit.edu/iap/interview/materials.php">Hacking a google interview</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-27T21:05:00-05:00" pubdate data-updated="true">Dec 27<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/todo/'>TODO</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/ruby-bits-2/" title="Previous Post: Ruby Bits 2">&laquo; Ruby Bits 2</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/back-to-gitbo/" title="Next Post: Back to Gitbo">Back to Gitbo &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.adamjonas.com/blog/interview-prep/';
+        var disqus_url = 'http://www.adamjonas.com/blog/interview-prep/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

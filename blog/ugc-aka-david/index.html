@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ugc aka David - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="It is common to create apps that heavily depend on user generated content. David is an attempt to build the prototypical user generated content app. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://www.adamjonas.com/blog/ugc-aka-david/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Ugc Aka David</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-06T12:07:00-04:00" pubdate data-updated="true">May 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>It is common to create apps that heavily depend on user generated content. David is an attempt to build the prototypical user generated content app. One that we will be able to reuse in the future.</p>
+
+<p>The structure on creating such an app was challenging for me to conceptualize. I would anticipate that we will use David most of the time for image submissions only, but juggling multiple MIME type submission is the real challenge and therefore would be the greatest benefit to solve. Given this, how should this application be structured? Should the individual types (images, videos, text, audio, etc) inherit from a centralized submission class? Should that centralized class be a module that is included in each of the individual classes? Where would one build out the features for a custom app?</p>
+
+<p>After discussing with Kyle for a while, he decided that it was probably safest to build an add-on to CarrierWave that would accomplish this for us. This would leave the uploaders available for customization, while keeping the classes more pristine.</p>
+
+<p>There are a whole mess of add-ons <a href="https://github.com/jnicklas/carrierwave/wiki">listed</a>.</p>
+
+<p>Next, deciding on where this add-on would live. Should this be a gem or live in the lib folder?</p>
+
+<h3>Mixed context processor uploading</h3>
+
+<ul>
+<li><a href="https://github.com/jnicklas/carrierwave/wiki/How-to%3A-Do-conditional-processing">how to do conditional processing</a></li>
+<li><a href="https://gist.github.com/ahamid/995663">a gist</a></li>
+</ul>
+
+
+<h3>Adding Versions</h3>
+
+<ul>
+<li><a href="https://github.com/jnicklas/carrierwave#adding-versions">Adding versions straight from the horses mouth</a></li>
+</ul>
+
+
+<h3>FB SDK</h3>
+
+<ul>
+<li>so I jumped right into trying to call SDK methods without understanding how the SDK was initialized.
+
+<ul>
+<li><a href="https://developers.facebook.com/docs/reference/javascript/#loading">the documentation</a> is pretty clear, but I had just been able to call on the SDK in previous projects, so I didn&#8217;t understand what was different. Carrot-facebook had taken care of this under the hood.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Javascript Event Listeners</h3>
+
+<ul>
+<li>excellent explanation of the difference between</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">someFunction</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">code</span>
+</span><span class='line'>    <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span> <span class="nx">someFunction</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>which is REALLY different from:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">someFunction</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;this doesn&#39;t work&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I don&#8217;t have a firm handle on event listeners, but this is a good lesson to get my feet wet.</p>
+
+<h3>Asset Path</h3>
+
+<ul>
+<li>stupid problem. I loaded a library to the vendor folder, but it wasn&#8217;t loading. I tried specifying the route even though I know that the asset pipeline picks up everything in the vendor folder.
+
+<ul>
+<li>ended up being the .min extension. Once I explicitly specified the extension (.min.js), it found it.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Instagram</h3>
+
+<ul>
+<li>there is a <a href="https://github.com/Instagram/instagram-ruby-gem">instagram ruby gem</a> that looks very similar the <a href="https://github.com/pengwynn/">Pengwynn</a> style ruby wrappers</li>
+<li>for David, I&#8217;ll be using <a href="http://mikefowler.me/instajam/">instajam</a> by Mike Fowler so that I can load the photo via javascript</li>
+</ul>
+
+
+<h3>Factory Girl</h3>
+
+<ul>
+<li><a href="http://robots.thoughtbot.com/post/9713995255/factorygirl-2-1-0-brings-the-heat">factory girl hooks</a></li>
+<li><a href="http://icelab.com.au/articles/factorygirl-and-has-many-associations/">factory girl associations</a></li>
+</ul>
+
+
+<h3>Rating system</h3>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/364-active-record-reputation-system">active record reputation system</a></li>
+</ul>
+
+
+<h3>Responds with</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/6118639/rails-respond-with-how-does-it-work">solid responds with explanation</a></li>
+</ul>
+
+
+<h3>Pagination</h3>
+
+<ul>
+<li><a href="https://github.com/amatsuda/kaminari">kaminari</a> -> uses several partials to render the different options, need to override partials to customize the behavior. Because of this technique, Kaminari might be a wee bit slower than will_paginate. ActiveAdmin uses Kaminari.</li>
+<li><a href="https://github.com/mislav/will_paginate">will_paginate</a> -> uses Ruby options to customize.</li>
+</ul>
+
+
+<h3>Integration Tests</h3>
+
+<ul>
+<li>with rspec
+
+<ul>
+<li>install rspec
+
+<ul>
+<li><code>rails g integration_test modelname</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Copy to clipboard</h3>
+
+<ul>
+<li>it appears that the most dependable implementation is with flash. See <a href="http://www.jquery4u.com/plugins/jquery-copy-clipboard-4-options/">4 different ways</a> and ZeroClipboard(https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md) which I eventually settled on. There is a nice step-by-step tutorial by <a href="http://davidwalsh.name/clipboard">David Walsh</a>.</li>
+<li>put the flash file in the public folder rather than the asset path since it will remain untouched rather than serve dynamic content.</li>
+</ul>
+
+
+<h3>completed</h3>
+
+<ul>
+<li>one central controller with meta programmed methods to redirect to the proper path using service</li>
+<li>models that inherit from a specific media type</li>
+<li>override file column on submissions model -> just made it optional for text, can I make that only the case for text?</li>
+<li>do for images and video what I did for text</li>
+<li><p>create a whitelist of acceptable uploads per type / identify the type by the extension?</p></li>
+<li><p>Facebook</p>
+
+<ul>
+<li>create credentials table with type, uid, access token, and user_id from Omniauth</li>
+<li>pull photos with javascript like in oakley</li>
+<li>authenticate with button and pull up a gallery of FB photos
+
+<ul>
+<li>select which one you want and store the URL</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>instagram gallery of photos</li>
+</ul>
+
+
+<p>  -testing
+  - once photos selected, they need to be saved to DB under UrlSubmission
+  - reassigning the token for FB auth</p>
+
+<h3>Goals</h3>
+
+<ul>
+<li><p>understand how version works</p></li>
+<li><p>testing js with jasmine</p></li>
+<li><p>gallery (what&#8217;s been submitted and saved to DB)</p>
+
+<ul>
+<li>highest rated (rating system)</li>
+<li>/most recent (reverse time)</li>
+<li>/pagination</li>
+<li><p>see friend&#8217;s photos (hold off)</p></li>
+<li><p>copy url from submission show page functionality</p>
+
+<ul>
+<li>https://github.com/jonrohan/ZeroClipboard</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>rating system</p>
+
+<ul>
+<li>limit frequency</li>
+<li>time gate</li>
+</ul>
+</li>
+<li><p>winner selection lib (maybe in the end, randomly, highest rated?)</p></li>
+</ul>
+
+
+<h3>Deficiencies</h3>
+
+<ul>
+<li>no photo resizing thus far</li>
+<li>lacks integration/JS/Ajax. limited unit tests.</li>
+<li>distinguish types by white labeling extensions per type, just one white labeling group right now for all types</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-06T12:07:00-04:00" pubdate data-updated="true">May 6<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/fancy-specs/" title="Previous Post: Fancy Specs">&laquo; Fancy Specs</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/service-objects/" title="Next Post: service objects">service objects &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.adamjonas.com/blog/ugc-aka-david/';
+        var disqus_url = 'http://www.adamjonas.com/blog/ugc-aka-david/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

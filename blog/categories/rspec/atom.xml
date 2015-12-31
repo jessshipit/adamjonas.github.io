@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rspec | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/rspec/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Testing With Logan]]></title>
+    <link href="http://www.adamjonas.com/blog/testing-with-logan/"/>
+    <updated>2014-07-25T12:37:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/testing-with-logan</id>
+    <content type="html"><![CDATA[<h3>Receive Message Chain</h3>
+
+<ul>
+<li>In lieu of the depreciated <code>stub_chain</code> there is now <a href="https://github.com/rspec/rspec-mocks/pull/467"><code>receive_message_chain</code></a>.</li>
+</ul>
+
+
+<p><code>ruby receive_message_chain
+allow(obj).to receive_message_chain(:foo, :bar).and_return(double)
+expect(obj.foo.bar).to receive(:bazz).with(/adfads/)
+</code></p>
+
+<h3>Yielding multiple variables</h3>
+
+<ul>
+<li><code>allow(fake_container).to receive(:attach).and_yield("stdout", "some message\n")</code></li>
+</ul>
+
+
+<h3><code>expect_any_instance_of</code></h3>
+
+<ul>
+<li>expect_any_instance_of(Object).to receive(:subscribe) <a href="http://stackoverflow.com/a/17577942/1496757">isn't very well documented</a>, but <a href="http://rubydoc.info/gems/rspec-mocks/RSpec/Mocks/ExampleMethods:expect_any_instance_of">it's in there</a>.</li>
+</ul>
+
+
+<h3>Testing Sidekiq</h3>
+
+<ul>
+<li><a href="https://github.com/mperham">Mike Perham</a> did a nice job documenting the <a href="https://github.com/mperham/sidekiq/wiki/Testing">testing options for workers</a>.
+
+<h3>Detecting pending migrations</h3></li>
+<li>A neat little trick to see if there are pending migrations <code>rake db:migrate:status</code>. This must have been built into rails because I see a message every time I haven't run a migration and I am running my test suite. It's cool nonetheless. <a href="http://stackoverflow.com/questions/1349047/show-pending-migrations-in-rails">Source</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stubbing Out Faraday]]></title>
+    <link href="http://www.adamjonas.com/blog/stubbing-out-faraday/"/>
+    <updated>2014-07-15T11:49:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/stubbing-out-faraday</id>
+    <content type="html"><![CDATA[<h3>Webmock to disable net connections</h3>
+
+<ul>
+<li><a href="https://github.com/bblimke/webmock#real-requests-to-network-can-be-allowed-or-disabled">Just toss it in the <code>spec_helper</code></a>
+
+<ul>
+<li><strong><em>Note</em></strong> that I had to use <code>WebMock.disable_net_connect!(:allow_localhost =&gt; true)</code> in the cucumber <code>support/env.rb</code> because my local host wasn't being allowed to run on the ci. <a href="https://github.com/bblimke/webmock/issues/284">picked this up from issue #284 on webmocks</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Rspec Mocks</h3>
+
+<ul>
+<li>Can use the <a href="https://github.com/rspec/rspec-mocks#method-stubs">new syntax</a> or mocha.</li>
+</ul>
+
+
+<h3>To stub it out I could either</h3>
+
+<p>```ruby These Both Work
+before do
+  allow(MyService).to receive(:new) { double }
+end</p>
+
+<p>before do
+  allow_any_instance_of(MyService).to receive(:publish)
+end
+```</p>
+
+<p>Really cool. The <code>allow_any_instance_of()</code> is pretty sweet to reference an unnamed instance of a class. Pretty sweet.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rspec keywords]]></title>
+    <link href="http://www.adamjonas.com/blog/rspec-keywords/"/>
+    <updated>2014-05-08T14:24:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rspec-keywords</id>
+    <content type="html"><![CDATA[<p>Feedback on my misuse of rspec keywords (and <code>context</code> in particular):</p>
+
+<ul>
+<li><code>Context</code> describes an execution context, or an arrangement of the system, not an action.</li>
+<li>It helps to always think of <code>context</code> blocks in terms of "when ..." and it is usual to begin <code>contexts</code> with a when.</li>
+</ul>
+
+
+<p>The layout is like this:</p>
+
+<ul>
+<li><code>describe</code> some system/class/function
+
+<ul>
+<li><code>context</code> "when condition A is true about the system"
+
+<ul>
+<li>it "behaves thusly"</li>
+</ul>
+</li>
+<li>context "when condition B is true about the system"
+
+<ul>
+<li>it "behaves thusly"</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>A classic example might be:</p>
+
+<p>```ruby
+describe SomeController do
+  describe "GET new" do</p>
+
+<pre><code>context "when logged in" do
+  it "renders this page"
+end
+context "when admin" do
+  it "renders this other page"
+end
+context "when visitor" do
+  it "redirects to login"
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day22]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day22/"/>
+    <updated>2012-11-07T10:10:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day22</id>
+    <content type="html"><![CDATA[<h3>HTTParty</h3>
+
+<ul>
+<li><a href="https://github.com/jnunemaker/httparty">On github</a></li>
+<li><a href="http://blog.teamtreehouse.com/its-time-to-httparty">Treehouse blog post</a></li>
+</ul>
+
+
+<h3>Rant</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Conway%27s_law">Conway's law</a>
+
+<ul>
+<li>organizational communication will be reflected in the product</li>
+</ul>
+</li>
+</ul>
+
+
+<p>seagull architect -</p>
+
+<blockquote><p>comes in, shits all over your code and then leaves</p></blockquote>
+
+<p><a href="https://speakerdeck.com/sarahmei/the-insufficiency-of-good-design">Insufficiency of good design</a></p>
+
+<p>Open source: def up and down in migration.rb in rails can be refactored</p>
+
+<h3>POTD</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Joseph_Weizenbaum">Joseph Weizenbaum</a></p>
+
+<h2>Rails Lecture</h2>
+
+<p>```ruby Controller Test Continued from Day21...
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+
+  assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name' do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}
+
+  assigns(:song).artist_name.should == "Michael Jackson"
+end
+
+it "should create a song with a genre string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+
+it "should create a song with a genres from a CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; "Pop, Techno"}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+
+it "should create a song with a genre array containing CSV string" do
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :genre_names =&gt; ["Pop, Techno", "Rap"]}}
+
+  assigns(:song).genre_names.should include("Pop")
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  let(:song){Song.new(:name => "Thriller")}</p>
+
+<p>  context 'with genres' do</p>
+
+<pre><code>let(:genre){Genre.create(:name =&gt; "Pop")}
+
+context '.genre_names' do
+  it "should return an array of genre names" do
+    song.genres &lt;&lt; genre
+    song.save
+
+
+    song.genre_names.should be_an_instance_of(Array)
+    song.genre_names.should include("Pop")
+  end
+
+  it "should accept a genre name and add that genre" do
+    song.genre_names = "Techno"
+    song.save
+
+    song.genre_names.should include("Techno")
+  end
+
+  it "should accept a comma delimited list of genre names" do
+    song.genre_names = "Techno, Pop"
+    song.save
+
+    song.genre_names.should include("Techno", "Pop")
+  end
+
+  it "should accept an array containing comma delimited list of genre names" do
+    song.genre_names = ["Techno, Pop", "Rap"]
+    song.save
+
+    song.genre_names.should include("Techno", "Pop", "Rap")
+  end
+
+  it "should only add unique genres" do
+    song.genre_names = ["Pop", "Pop"]
+    song.save
+
+    song.genre_names.count.should == 1
+  end
+
+end
+</code></pre>
+
+<p>```
+rake spec:models</p>
+
+<p><code>ruby gem file
+group [:development, :test] do
+  gem 'debugger'
+end
+</code></p>
+
+<ul>
+<li>detect returns nil if there is not match</li>
+<li>select returns an empty array when no match</li>
+</ul>
+
+
+<p><a href="http://guides.rubyonrails.org/active_support_core_extensions.html#array-conversions"><strong>to_sentence method in rails</strong></a></p>
+
+<h3>HTML &lt; form_tag lower &lt; form_for</h3>
+
+<p><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag">form_tag</a></p>
+
+<p>```
+<form action="/songs" id="new_song" class="new_song"> <form></p>
+
+<p>&lt;%= form_tag(songs_path, :id => "new song") do %>
+  &lt;%= text_field_tag "song[name]", @song.name, :id => "song_name"] %>
+  &lt;%= text_field_tag "song[artist_name]", @song.artist_name, :id => "song_artist_name"] %>
+  &lt;%= submit_tag "Create Song", :id => "create_song" %>
+&lt;% end %></p>
+
+<p>&lt;%= form_for(@song) do |f| %>
+  &lt;%= f.text_field :name %>
+  &lt;%= f.text_field :artist_name %>
+  &lt;%= f.submit %>
+&lt;% end %>
+```
+<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-text_field_tag">text_field_tag docs</a></p>
+
+<h3>Integration test / Acceptance Test</h3>
+
+<ul>
+<li><p><a href="http://railscasts.com/episodes/187-testing-exceptions">Railscast 187</a></p></li>
+<li><p><a href="http://railscasts.com/episodes/257-request-specs-and-capybara">Railscast 257</a></p></li>
+<li><a href="https://github.com/copiousfreetime/launchy">launchy gem</a> to see that page that capybara filled out - useful for creating fixtures</li>
+<li><p>post_via_redirect</p>
+
+<ul>
+<li>get => response</li>
+<li>visit => page</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Continuous Integration / Testing</h3>
+
+<ul>
+<li>autotest</li>
+<li>guard
+
+<ul>
+<li><a href="https://github.com/guard/guard">gem guard-rspec</a></li>
+</ul>
+</li>
+<li>rb-fsevent -> rb-FileSaveEvent -> gem that pings guard (or anything else) when a file is saved</li>
+<li>growl extension or terminal notifier on the <a href="https://github.com/guard/guard#terminal-notifier">guard gem page</a></li>
+<li><a href="https://github.com/jnicklas/capybara">capybara</a></li>
+</ul>
+
+
+<p><strong>receiver.try(:method) -> if the receiver is nil then try will not call the method, otherwise it will</strong></p>
+
+<h3>Pull down the other app</h3>
+
+<p>git merge upstream/master</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day21]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day21/"/>
+    <updated>2012-11-06T13:57:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day21</id>
+    <content type="html"><![CDATA[<p><strong><em>Generate a model that is singular-- ALWAYS</em></strong></p>
+
+<p>'self' means the receiver of this method call</p>
+
+<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong>never ever have a nested attributes for belongs_to ONLY has has_many</strong>
+</a></p>
+
+<p>```ruby song.rb Model
+Class Song</p>
+
+<p>  def add_genre(genre)</p>
+
+<pre><code>genre = Genre.find_or_create_by_name(genre) if genre.is_a?(String) 
+self.song_genres.create(:genre =&gt; genre).genre
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>```ruby song_spec.rb Unit Test
+require 'spec_helper'</p>
+
+<p>describe Song do
+  context '.add_genre' do</p>
+
+<pre><code>before(:each) do
+  let(:song){Song.create(:name =&gt; "Thriller")} 
+  let(:genre){Genre.create(:name =&gt; "Pop")} #this creates the genre method that executes the block that follows it.
+
+  it "should add the genre" do
+    song.add_genre(genre)
+
+    song.genres.should include(genre)
+  end
+
+  it "should return the newly added genre" do
+    song.add_genre(genre) should == genre #this means it won't return a full array like a push method return
+  end
+
+  it 'should accept an existing genre name do'
+    genre = Genre.create(:name =&gt; "Techno")
+    song.add_genre("Techno").should == genre
+  end
+
+  it 'should accept a genre name' do
+    song.add_genre("Pop").should == genre
+  end
+
+  it "should add only unique genres" do
+    #if I add the same genre twice, it should still 
+    song.add_genre(genre)
+    song.add_genre(genre)
+
+    song.genres.count.should == 1
+  end
+</code></pre>
+
+<p>  end
+end
+```
+Rspec runs its tests in isolation, by running each test in a transaction. After each test, it rollbacks all the writes.</p>
+
+<p>LOGS:
+<code>
+tail -f #open the end of the file and keep it open.
+</code></p>
+
+<p>If you are building associated data outside of your model, then you haven't encapsulated enough.</p>
+
+<ul>
+<li>Tests Hierarchy in ascending levels of abstraction
+
+<ul>
+<li>unit tests</li>
+<li>controller tests</li>
+<li>integration tests</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```ruby Controller Test
+require 'spec_helper'</p>
+
+<p>describe SongsController do
+  describe 'POST /songs' do</p>
+
+<pre><code>it 'should create a song with a name do'
+  post :create, {:song =&gt; {:name =&gt; "Thriller"}}
+  #create action in the song controller with post or request parameters that you 
+  #want to send along with it
+
+ # Song.find_by_name("Thriller").should be_true
+ assigns(:song).name.should == "Thriller"
+end
+
+it 'should create a song with an artist name'
+  post :create, {:song =&gt; {:name =&gt; "Thriller", :artist_name =&gt; "Michael Jackson"}}}
+  #this makes artist_name a first class citizen in the params hash.
+
+  #we killed this because we are assigning a string, not an artist object--&gt; post :create, {:song =&gt; {:name =&gt; "Thriller", :artist =&gt; {:name =&gt; "Michael Jackson"}}} 
+
+  #create action in the song controller with post or request parameters that you 
+  #want to send along with it
+
+  #Song.find_by_name("Thriller").should be_true
+  assigns(:song).artist.name.should == "Michael Jackson"
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby song_spec.rb
+context '.artist_name' do
+  it "should have an artist_name method" do</p>
+
+<pre><code>song.should respond_to(:artist_name)
+</code></pre>
+
+<p>  end</p>
+
+<p>  it 'should return a songs artist' do</p>
+
+<pre><code>song.artist = Artist.create(:name =&gt; "Michael Jackson")
+song.artst_name.should == "Michael Jackson"
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>  context '.artist_name=' do</p>
+
+<pre><code>it "should assign the artist via the name" do
+  song.artist_name = "Michael Jackson"
+  song.artist.should be_a(Artist)
+  song.artist_name.should == "Michael Jackson"
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>```ruby Song.rb Model
+  def artist_name</p>
+
+<pre><code>self.artist.name if self.artist
+</code></pre>
+
+<p>  end</p>
+
+<p>  def artist_name=(string)</p>
+
+<pre><code>self.artist = Artist.find_or_create_by_name(string)
+</code></pre>
+
+<p>  end
+```</p>
+
+<h3>SOLID</h3>
+
+<p>Procedural code- solutions for very specific problems</p>
+
+<p>dependencies will kill your code, but design will save it</p>
+]]></content>
+  </entry>
+  
+</feed>

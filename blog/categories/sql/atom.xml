@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SQL | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/sql/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SQL DB talk from CTO of Behance]]></title>
+    <link href="http://www.adamjonas.com/blog/sql-db-talk-from-cto-of-behance/"/>
+    <updated>2012-10-10T17:52:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/sql-db-talk-from-cto-of-behance</id>
+    <content type="html"><![CDATA[<p><strong>Thanks to Chris Henry for taking the time to come down</strong></p>
+
+<h3>Things examined</h3>
+
+<p>lock_time the time the server will wait</p>
+
+<p>rows examined</p>
+
+<p>tmp_tables - creating these temp tables are bad</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Cartesian_product">cartisan product</a></p>
+
+<p>indexes- once you created them run completed under the hood
+can only use one index per table</p>
+
+<p>Review: <a href="http://www.simple-talk.com/sql/performance/execution-plan-basics/">Query execution plan</a>
+<a href="http://www.codeproject.com/Articles/9990/SQL-Tuning-Tutorial-Understanding-a-Database-Execu">more reading</a></p>
+
+<ul>
+<li>only way to get around this is to change the structre-- i.e. denormalization</li>
+</ul>
+
+
+<h3>Indexes</h3>
+
+<ul>
+<li>cost per write -> re-indexing</li>
+<li>Can use indexes to set constraints on your data</li>
+</ul>
+
+
+<p>Cardinality
+: how chunky your data is</p>
+
+<p><code>
+SELECT COUNT(*) title FROM tags t INNER JOIN tags_entity_links tel ON t.id = tel.tag_id WHERE category = 1 AND title
+</code></p>
+
+<p>The tags are polymorphic:
+tag table
+id | tag_id | id_for_table | type</p>
+
+<p>performance to denormalization
+??performance or aggregate data</p>
+
+<p>composite index</p>
+
+<p>LEFT JOIN or RIGHT JOIN will show the nulls that wouldn't be included in INNER JOIN</p>
+
+<p>The NoSQL camp is a return to hierarchical data stores - a 40 year old</p>
+
+<p>count or cache</p>
+
+<p>three seperate databases = 3 apps</p>
+
+<p>Testing:</p>
+
+<pre><code>apache bench
+watch the slow logs
+cacti tool
+load on the server
+</code></pre>
+
+<h3>Questions</h3>
+
+<p>?? why mysql over postgres?</p>
+
+<ul>
+<li>right place right time</li>
+</ul>
+
+
+<p>MySQL:</p>
+
+<ul>
+<li>percona port makes the most sense for mysql-</li>
+</ul>
+
+
+<p>?? many proj has many tags - many to many - goes through what join table?</p>
+
+<p>Look up:</p>
+
+<ul>
+<li>jumping words in the terminal</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day5]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day5/"/>
+    <updated>2012-10-10T09:38:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day5</id>
+    <content type="html"><![CDATA[<p>"Classes are state plus behavior, if you just want the behavior then use a module!"</p>
+
+<p>```ruby This is no good: Singleton Object- class with one method on it
+class Random</p>
+
+<pre><code>def self.something
+end
+</code></pre>
+
+<p>end
+```
+Underuse of modules...</p>
+
+<h3>Programmer of the day</h3>
+
+<p>Dan Bricklin</p>
+
+<ul>
+<li>inventor of the spreadsheet</li>
+</ul>
+
+
+<h3>Homework Review</h3>
+
+<p>table names should be plaural (e.g.table USERS)</p>
+
+<p>id INTEGER PRIMARY KEY -> always be called ID, is an integer and auto increments</p>
+
+<p>'never use ruby for something SQL can do'</p>
+
+<p>you want to group by integer values rather than string values</p>
+
+<p>AS aliases the columns</p>
+
+<p>subqueries- as long as a query returns one and only one value you can use that for another query</p>
+
+<p><a href="http://www.codinghorror.com/blog/2007/10/a-visual-explanation-of-sql-joins.html">Visual explanation of sql</a></p>
+
+<h3>INDEXes</h3>
+
+<ul>
+<li>index a column when it is being used in columns or queries</li>
+<li>should index foreign keys (they are not automatically indexed)</li>
+<li>cost: everytime you add a record it has to reindex</li>
+<li>indexes compromise the write speed in favor of read speed</li>
+</ul>
+
+
+<p>Two optimization steps:</p>
+
+<ul>
+<li>denormalize (add more columns)</li>
+<li><p>index - optimize for write or read?</p>
+
+<ul>
+<li>the more indexes your keys are using the more efficient your DB will be</li>
+</ul>
+</li>
+<li><p>You optimize the joins by denormalizing (and thus removing the need for joins) and indexing</p></li>
+</ul>
+
+
+<p><code>
+cp -r &lt;old dir name&gt; &lt;new dir name&gt;
+</code></p>
+
+<p>update in SQL
+<code>
+UPDATE Persons
+SET Address='Nissestien 67', City='Sandnes'
+WHERE LastName='Tjessem' AND FirstName='Jakob'
+</code>
+<a href="http://stackoverflow.com/questions/2044467/how-to-update-two-tables-in-one-statement-in-sql-server-2005">Transaction</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Advanced SQL]]></title>
+    <link href="http://www.adamjonas.com/blog/advanced-sql/"/>
+    <updated>2012-10-09T20:58:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/advanced-sql</id>
+    <content type="html"><![CDATA[<p>INNER JOIN is the same as JOIN.</p>
+
+<p>```
+SELECT title, artist
+  FROM album JOIN track</p>
+
+<pre><code>     ON (album.asin=track.album)
+</code></pre>
+
+<p> WHERE song = 'Alison'
+```</p>
+
+<p>Index structures: if you create an index on the primary key and then search for a row of data based on one of the primary key values, SQL Server first finds that value in the index, and then uses the index to quickly locate the entire row of data. Without the index, a table scan would have to be performed in order to locate the row, which can have a significant effect on performance. <a href="http://www.simple-talk.com/sql/learn-sql-server/sql-server-index-basics/">source</a></p>
+
+<p>Many databases have one special index per table where all of the data from a row exists in the index. SQL Server calls this index a <em>clustered index</em>. Instead of an index at the back of a book, a clustered index is closer in similarity to a phone book because each index entry contains all the information you need, there are no references to follow to pick up additional data values.<a href="http://odetocode.com/code/237.aspx">Source</a></p>
+
+<p>The <em>EXPLAIN</em> statement can be used either as a way to obtain information about how MySQL executes a statement, or as a synonym for DESCRIBE. <a href="http://dev.mysql.com/doc/refman/5.0/en/explain.html">source</a> In other words, a SQL statement can be preceded by the keyword "EXPLAIN" or by the phrase "EXPLAIN QUERY PLAN". Either modification causes the SQL statement to behave as a query and to return information about how the SQL statement would have operated if the EXPLAIN keyword or phrase had been omitted. <a href="http://www.sqlite.org/lang_explain.html">source</a></p>
+
+<h3>Normalized DB</h3>
+
+<ul>
+<li>A normalized database is one where you minimize duplication of data by keeping groups of data in separate tables and linking (using indexes) between the tables.</li>
+<li>Another def: Database normalization is the process of organizing the fields and tables of a relational database to minimize redundancy and dependency. Normalization usually involves dividing large tables into smaller (and less redundant) tables and defining relationships between them. The objective is to isolate data so that additions, deletions, and modifications of a field can be made in just one table and then propagated through the rest of the database via the defined relationships.</li>
+</ul>
+
+
+<h3>Optimization</h3>
+
+<ul>
+<li>Write operations are always more expensive than reads.</li>
+<li>Use memCache</li>
+<li>use background tasks to do your database activity offline</li>
+<li>Denormalize: database normalization is a fatal mistake.
+
+<ul>
+<li>A de-noramlized database is one where you keeps redundant frequently-accessed data, duplicated across several tables, making it possible to fulfill a user request without having to look at more than a single table.</li>
+<li>The key to high performance database access is sticking to single-table SELECT queries with short indexes.</li>
+</ul>
+</li>
+<li>MySQL Triggers (starting from MySQL 5.0) allow us to define a rule to perform whenever a certain table is updated.
+<a href="http://www.softwareprojects.com/resources/programming/t-database-performance-optimization-denormalization-1410.html">source</a></li>
+</ul>
+
+
+<p>The SQL HAVING clause is "like a WHERE clause for aggregated data." It's used with conditional statements, just like WHERE, to filter results. One thing to note is that any column name appearing in the HAVING clause must also appear in the GROUP BY clause.</p>
+
+<p>```
+SELECT DISTINCT player
+  FROM game JOIN goal ON matchid = id</p>
+
+<pre><code>WHERE (game.team1='GER' OR game.team2='GER') AND goal.teamid &lt;&gt; 'GER'
+</code></pre>
+
+<p>SELECT teamname, COUNT(teamid)
+  FROM eteam JOIN goal ON eteam.id = goal.teamid
+GROUP BY teamname</p>
+
+<p>SELECT stadium, count(teamid)
+FROM game join goal on matchid=id
+group by stadium</p>
+
+<p>SELECT matchid,mdate, count(teamid)
+  FROM game JOIN goal ON matchid = id
+ WHERE (team1 = 'POL' OR team2 = 'POL')
+GROUP BY matchid</p>
+
+<p>SELECT day_of_order,
+  product,
+  SUM(quantity) as "Total"
+FROM orders
+GROUP BY day_of_order,product,quantity
+HAVING quantity > 7
+ORDER BY day_of_order;
+```</p>
+
+<p>Other functions min, max, sum, count, cast</p>
+
+<p><a href="http://www.w3schools.com/sql/sql_in.asp">IN operator</a>: The IN operator allows you to specify multiple values in a WHERE clause.</p>
+
+<p>IN Clause:
+<code>
+SELECT * FROM Persons
+WHERE LastName IN ('Hansen','Pettersen')
+</code></p>
+
+<p>casting in ruby (.to_i)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[learn sql the hard way]]></title>
+    <link href="http://www.adamjonas.com/blog/learn-sql-the-hard-way/"/>
+    <updated>2012-09-26T12:53:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/learn-sql-the-hard-way</id>
+    <content type="html"><![CDATA[<p>Schema:</p>
+
+<p>```
+♕ sqlite3 ex3.db .schema
+/<em> OR </em>/
+♕ sqlite3 ex3.db
+SQLite version 3.7.7 2011-06-25 16:35:1
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite> .schema
+CREATE TABLE person (</p>
+
+<pre><code>id INTEGER PRIMARY KEY,
+first_name TEXT,
+last_name TEXT,
+</code></pre>
+
+<p>```</p>
+
+<p>In the first line I just make ex3.db from the ex2.sql file. Then I add the -echo argument to sqlite3 so that it prints out what it is doing. After that the data is in the database and ready to query.</p>
+
+<p>```
+$ sqlite3 ex3.db &lt; ex2.sql
+$ sqlite3 -echo ex3.db &lt; ex3.sql
+INSERT INTO person (id, first_name, last_name, age)</p>
+
+<pre><code>VALUES (0, "Zed", "Shaw", 37);
+</code></pre>
+
+<p>INSERT INTO pet (id, name, breed, age, dead)</p>
+
+<pre><code>VALUES (0, "Fluffy", "Unicorn", 1000, 0); 
+</code></pre>
+
+<p>INSERT INTO pet VALUES (1, "Gigantor", "Robot", 1, 1);
+```</p>
+
+<p><strong>Important</strong>
+Always remember this: SQL ONLY KNOWS TABLES. In programming you deal in graphs and in SQL you deal in tables. They're related concepts, but the mental model is different.</p>
+
+<p>```
+/<em> I only want some columns from pet so I am explicit rather than using the '</em>' <em>/
+SELECT pet.id, pet.name, pet.age, pet.dead
+/</em> To connect person and pet I use the person_pet JOIN table */</p>
+
+<pre><code>FROM pet, person_pet, person
+WHERE
+    #connect person and pet by the related id columns
+    #now the DB can search for only the rows where the ID columns all match
+pet.id = person_pet.pet_id AND
+    #connect person and person_pet in the same way
+person_pet.person.id = person.id AND
+    #ask for only the pets that I own
+person.first_name = "Adam";
+</code></pre>
+
+<p>```</p>
+
+<p><strong>Delete</strong>
+DELETE is like SELECT but it removes rows from the table.</p>
+
+<p>```
+DELETE FROM pet WHERE id IN (</p>
+
+<pre><code>SELECT pet.id
+FROM pet, person_pet, person
+WHERE
+person.id = person_pet.person_id AND
+pet.id = person_pet.pet.id AND
+person.first_name = "Zed"
+</code></pre>
+
+<p>);</p>
+
+<p>  SELECT * FROM pet;
+  SELECT * FROM person_pet;</p>
+
+<p>  DELETE FROM person_pet</p>
+
+<pre><code>  WHERE pet_id NOT IN ( 
+      SELECT id FROM pet
+  );
+</code></pre>
+
+<p>  SELECT * FROM person_pet;
+```
+The WHERE clause uses an IN to match the id columns in pet to the table that's returned in the subquery. The subquery (also called a subselect) is then a normal SELECT.</p>
+
+<p>How SQL does this is with the following process:
+1. Runs the subquery in the parenthesis at the end and build a table with all the columns just like a normal SELECT.
+2. Treats this table as a kind of temporary table to match pet.id columns against.
+3. Goes through the pet table and deletes any row that has an id IN this temporary table.</p>
+
+<p><em>REPLACE</em>
+```
+/<em> We can force it by doing an INSERT OR REPLACE. </em>/
+INSERT OR REPLACE INTO person (id, first_name, last_name, age)</p>
+
+<pre><code>VALUES (0, 'Frank', 'Smith', 100);
+</code></pre>
+
+<p>SELECT * FROM person;</p>
+
+<p>/<em> And shorthand for that is just REPLACE. </em>/
+REPLACE INTO person (id, first_name, last_name, age)</p>
+
+<pre><code>VALUES (0, 'Zed', 'Shaw', 37);
+</code></pre>
+
+<p>```</p>
+
+<p><em>DROP TABLE</em>
+```
+  /<em> Only drop table if it exists. Use the IF EXISTS modifier and the table will be dropped only if it's already there. This suppresses the error you get when running you .sql script on a fresh database that has no tables. </em>/
+ DROP TABLE IF EXISTS person;</p>
+
+<p>  /<em> Create again to work with it. </em>/
+  CREATE TABLE person (</p>
+
+<pre><code>  id INTEGER PRIMARY KEY,
+  first_name TEXT,
+  last_name TEXT, 
+  age INTEGER
+</code></pre>
+
+<p>  );</p>
+
+<pre><code>/* Rename the table to peoples. */ 
+ALTER TABLE person RENAME TO peoples;
+
+/* Add a hatred column to peoples. */ 
+ALTER TABLE peoples ADD COLUMN hatred INTEGER;
+
+/* Rename peoples back to person. */
+ALTER TABLE peoples RENAME TO person; 
+</code></pre>
+
+<p>  .schema person</p>
+
+<p>  /<em> We don't need that. </em>/
+  DROP TABLE person;
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MySQL DB Design]]></title>
+    <link href="http://www.adamjonas.com/blog/mysql-db-design/"/>
+    <updated>2012-09-05T11:51:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/mysql-db-design</id>
+    <content type="html"><![CDATA[<p><a href="http://code.google.com/edu/tools101/mysql.html">MySQL Google</a></p>
+
+<p><em>Data normalization</em>
+:  This is the process we go through to develop a design that is free of redundant data and that can be consistently and correctly modified</p>
+
+<p><em>primary keys</em> uniquely identify a record in a table, and <em>foreign keys</em> are used to relate tables
+- Every record must have a unique primary key which should not be reused once deleted</p>
+
+<p><em>Referential integrity</em>
+:  The data in a foreign key needs to match the primary key in some record of the original table. Referential integrity assures there are no broken links between tables. Note that if you delete a record in the original table, for example, you delete one of the customers from the customer table, referential integrity requires that you delete all references to that customer in the order table.</p>
+
+<h3>MySQL Exercises</h3>
+
+<ol>
+<li>Start up MySQL with
+<code>
+mysql -uroot -ppassword
+</code>
+Creating a table...
+<code>
+create table customer (cust_no int not null auto_increment, name varchar(40),
+address varchar(40), phone varchar(12), primary key(cust_no));
+</code>
+"varchar" which means variable-length strings. The numbers following "varchar" in the command above indicate maximum length for the data stored in the field. We also set up cust_no to be the primary key.</li>
+</ol>
+
+
+<p>The orders table...
+<code>
+create table orders (order_no int not null auto_increment, FK_cust_no int not null,
+foreign key(FK_cust_no) references customer(cust_no), primary key(order_no));
+</code>
+There are only two fields in this table. The order_no field is a primary key, and is an integer, not null and it will auto increment. The cust_no field is a foreign key. We have named it FK_cust_no in the orders table to distinguish it from the cust_no field in the customer table.</p>
+
+<p><em>A foreign key is a field that references a primary key in another table.</em> In the command, we indicate that the FK_cust_no field is a foreign key referencing the cust_no field in customer, indicated by the "foreign key(FK_cust_no) references customer(cust_no)" part of the command. By setting the table up this way, MySQL will enforce constraints-- any order that we enter into the orders table must reference a valid customer in the customer table. If we enter a cust_no in orders that does not exist in customers, an error will result.</p>
+
+<p>A <em>transaction</em> is a sequence of individual database operations that are grouped together. A transaction will never be complete unless each individual operation within the group is successful. If any operation within the transaction fails, the entire transaction will fail. Transactions are a relatively new addition to MySQL but not to relational database systems in general.</p>
+]]></content>
+  </entry>
+  
+</feed>

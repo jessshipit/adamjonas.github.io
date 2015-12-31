@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: TODO | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/todo/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Interview Prep]]></title>
+    <link href="http://www.adamjonas.com/blog/interview-prep/"/>
+    <updated>2012-12-27T21:05:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/interview-prep</id>
+    <content type="html"><![CDATA[<p>from <a href="https://github.com/afeld/rails_interview_questions">https://github.com/afeld/rails_interview_questions</a></p>
+
+<h3>Q: What is the difference between a lambda, a block and a proc?</h3>
+
+<p>A:  In Ruby we create an anonymous chunk of code called a proc with the code <code>Proc.new</code>. We call this using the <code>.call</code> method.</p>
+
+<p>Lambdas appear to be the same as procs, but lambdas are pickier about arguments. You can't pass an extra arg to a lambda (it will blow up), while the proc will just throw away the extras.</p>
+
+<p>Lambda return statement just exit execution of the statement itself while the proc ended execution of containing method.</p>
+
+<p>As a rule, stick with lambdas until you find a specific reason not to.</p>
+
+<p>It is often convenient to write methods that accepts a single proc as arguments. Callers can pass in whatever code they want to be executed once for each name for example. It is so common to write a method that has a single argument that is expected to be a proc that it got it's own name -- a block. Every ruby method can implicitly receive a proc arg with the yield keyword.</p>
+
+<h3>Q: How do you sort an Array of objects by a particular attribute? What is a better way to do sorting with ActiveRecord?</h3>
+
+<p>A: Let SQL do its job. It will be more efficient than writing it in Ruby.</p>
+
+<p>```ruby For example...
+User.all.sort_by{|u| u.first_name} #=> O(log n)</p>
+
+<h1>versus</h1>
+
+<p>User.order(“first_name DESC”) #=> O(1)
+```</p>
+
+<h3>Q: What are some of your favorite gems? What are their alternatives?</h3>
+
+<ul>
+<li>Dalli over the standard Memcached library- Higher performance memcached client</li>
+<li>paperclip and carrierwave.</li>
+</ul>
+
+
+<h3>Q: In Ruby, which is generally the better option: a recursive function or an iterative one?</h3>
+
+<p>A: Loops may achieve a performance gain for your computer. Recursion may achieve a performance gain for your programmer. Choose which is more important in your situation!</p>
+
+<p>Comparing recursion to iteration is like comparing a phillips head screwdriver to a flat head screwdriver. For the most part you could remove any phillips head screw with a flat head, but it would just be easier if you used the screwdriver designed for that screw right?
+Some algorithms just lend themselves to recursion because of the way they are designed (Fibonacci sequences, traversing a tree like structure, etc.). Recursion makes the algorithm more succinct and easier to understand (therefore shareable and reusable).<a href="http://stackoverflow.com/questions/72209/recursion-or-iteration">Pulled from</a></p>
+
+<p>Recursion is, in general, the more natural approach in functional languages, and iteration is normally more intuitive in imperative languages.</p>
+
+<h3>Q: What are #method_missing and #send? Why are they useful?</h3>
+
+<ul>
+<li><a href="http://rubylearning.com/satishtalim/ruby_method_missing.html">Method Missing</a></li>
+</ul>
+
+
+<h3>Q: What is the general history of Rails?</h3>
+
+<ul>
+<li>Rails open sourced in 2004</li>
+<li> 2006 macs were shipped with rails</li>
+<li>Dec 2008 merb was merged with rails 3.0</li>
+<li>‘11-> rails 3.1 had reversible db migrations, jquery, asset pipeline</li>
+</ul>
+
+
+<h3>Q: Explain the different pieces of Rails.</h3>
+
+<ul>
+<li>ActiveRecord -> ORM</li>
+<li>ActiveResource -> the main class for mapping RESTful resources as models in a Rails application.</li>
+<li>ActionPack ->  the Controller and View layers are handled together by Action Pack.</li>
+<li>ActiveSupport-> Active Support is a grab bag of utility methods and extensions to the Ruby standard library that accelerate development by providing syntactic sugar and easy ways to write expressive and DRY code</li>
+<li>ActionMailer -> mailer</li>
+</ul>
+
+
+<h3>Q: Walk through the flow of a request through Rails.</h3>
+
+<p>A: The primary components of a Rails app relating to general request cycle are ActionPack (ActionController, ActionDispatch, ActionView), ActiveModel and ActiveRecord. Let’s take the example of a contact management app where each instance of a contact has many addresses, phone number and emails, and we click on a link to a specific contact and are expecting to see a “show” view of some sort.</p>
+
+<h3>Q: What are the different server options for running a Rails/Rack app?</h3>
+
+<ul>
+<li>Apache vs. Nginx (webservers)
+
+<ul>
+<li>Apache is more popular, nginx is smaller and faster</li>
+</ul>
+</li>
+</ul>
+
+
+<p><strong>Mongrel vs Webrick</strong>
+mongrel is a ruby application server. Which means it:</p>
+
+<ol>
+<li>Loads your rails app inside its own process space.</li>
+<li>sets up a TCP socket, allowing it to communicate with the outside world.</li>
+</ol>
+
+
+<p><strong>WEBrick does the same thing but:</strong></p>
+
+<ol>
+<li>it’s written entirely in C</li>
+<li>slower and less robust</li>
+<li>installed in rails by default</li>
+</ol>
+
+
+<p><strong>Phusion Passenger</strong></p>
+
+<ul>
+<li>Ruby app server, but works differently than mongrel</li>
+<li><p>integrates directly into apache or nginx.</p></li>
+<li><p>loads the ruby code and sends a request to my application</p></li>
+</ul>
+
+
+<p><strong>Capistrano</strong></p>
+
+<ul>
+<li>Allows you to upload the rails app’s code and files to the server machine</li>
+<li>set up/ migrate DB</li>
+<li>install libs that your app depends on</li>
+<li>Capistrano is not the application server-- it is a tool for automating all the preparation work. Technically you could upload with FTP.</li>
+</ul>
+
+
+<p><a href="http://stackoverflow.com/questions/4113299/ruby-on-rails-server-options">http://stackoverflow.com/questions/4113299/ruby-on-rails-server-options</a></p>
+
+<h3>Q: Explain CSRF and how Rails combats it.</h3>
+
+<p>A: <a href="http://www.adamjonas.com/blog/cross-site-request-forgery/">http://www.adamjonas.com/blog/cross-site-request-forgery/</a>
+<a href="http://stackoverflow.com/questions/941594/understand-rails-authenticity-token">http://stackoverflow.com/questions/941594/understand-rails-authenticity-token</a></p>
+
+<p>protect from forgery in the application_controller to add authenticity token that is unique for each user session -> checked for all post/put/delete request.
+This token is not checked for GET requests, so make sure you don’t do anything damaging with a GET request.</p>
+
+<p>Rails 3 escapes all HTML content <code>&lt;%=h task.name %&gt;</code> to prevent cross-site scripting. Can also look into the sanitize methods.</p>
+
+<h3>Q: Explain mass-assignment vulnerability.</h3>
+
+<p>A: <a href="http://blog.mhartl.com/2008/09/21/mass-assignment-in-rails-applications/">http://blog.mhartl.com/2008/09/21/mass-assignment-in-rails-applications/</a>
+Mass assignment throws all the parameter from the form so the user can update any of the attributes or associations</p>
+
+<h3>Rails Security in general</h3>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/178-seven-security-tips">Railscasts 178</a></li>
+</ul>
+
+
+<p>SQL injection (railscasts episode 25)
+<code>`ruby Eliminating SQL injection
+def index
+  @projects = current_user.projects.all(:conditions =&gt; ["name like ?", "%#{params[:search]}%"])
+end
+</code>
+Can just enter in <code>) or ('</code> and that will retrieve all the projects. Can just use the question mark syntax to avoid.</p>
+
+<h3>Q: Law of Demeter -</h3>
+
+<p>Refers to loose coupling of objects</p>
+
+<p>Refers to sending messages, prohibits sending a message from object A to object C through object B, if object B is of a different type.
+States that objects should not reach through other objects to return information about a third object. Using dot notation examples, loosely means to reduce the number of dot methods strung together, so that you're not performing actions on some intermediary returned object or data.</p>
+
+<p>LoD violations are more tolerable if reaching through objects to return ‘attributes’, as opposed to invoking ‘behavior’ - ex. customer.bicycle.wheel.tire ← many dots, but is only returning what may be a stable attribute</p>
+
+<p>More about the ‘type’ of object returned by each expression in a method chain than by the amount of dots, don’t want to be traversing different types, as this is more tightly coupling your code</p>
+
+<h3>Q: SOLID design</h3>
+
+<p>Coined by Michael Feathers, popularized by Uncle Bob Martin
+5 of the most well known design principles</p>
+
+<p>Single Responsibility - separation of concerns, classes should have a single responsibility, methods should have a single responsibility, makes your code more modular and more adaptable</p>
+
+<p>Open/Closed - Related to inheritance hierarchies. By using classical inheritance and modules, you're declaring that objects (classes) are ‘open’ for extension but ‘closed’ to modification. In this way, the developer is encouraged to ‘extend’ an objects behavior or capabilities through subclasses, and discouraged from modifying existing objects. Open for extension creates hierarchies that are well suited to change and growth in an application.</p>
+
+<p>Liskov Substitution - Subclasses should be substitutable for the Superclasses. Subclasses are expected to conform to their superclasses interfaces (i.e. must respond to every message in that interface. Other objects should not have to check the type of a subclass. Subclasses need to be a ‘kind’ of their superclass.</p>
+
+<p>Interface Segregation - separation between public and private interfaces. Public interfaces are for messages (methods) that will be sent to other objects. Private interfaces are for messages that will only ever be sent to self. Private interfaces are where a majority of the how, or the logic (manipulating data structures, etc.) should occur, while Public interfaces should just declare the ‘what’ (largely by calling private interface methods). This is because public interfaces are accessible by other objects, and by exposing too much of the how, you’re giving too much information to other objects, which results, or is a symptom of, tight coupling.</p>
+
+<p>Dependency Inversion - Less Stable objects should depend on more stable objects, i.e. more concrete objects should depend on more abstract objects, making your code less brittle.</p>
+
+<h3>Q: Ruby Closures -</h3>
+
+<p>Blocks/Procs/Lambdas - essentially anonymous methods/functions. Procs and Lambdas are Blocks that can be passed around as variables. By defining the proc or lambda as such</p>
+
+<p>```ruby
+proc = Proc.new do |name|
+  puts “Hello #{name}”
+end</p>
+
+<p>can run proc.(“Matt”) -> “Hello Matt”
+```</p>
+
+<p>essentially acts as a method that can take parameters, but is an unnamed method that can be called by other methods as an argument</p>
+
+<p>can use yield to send to the proc/block/lambda</p>
+
+<p><code>ruby
+def named_method(&amp;block)
+  yield “Matt”
+end
+</code></p>
+
+<p><code>named_method{|name| proc.(name)} -&gt; “Hello Matt”</code></p>
+
+<p>procs and lambdas differ in how they deal with ‘return’ statements and arguments</p>
+
+<p>ORMs - ActiveRecord vs. DataMapper</p>
+
+<h3>Pros and cons of Datamapper</h3>
+
+<ul>
+<li>don’t have to write migrations (this can be a pro or con)</li>
+</ul>
+
+
+<p>Datamapper has ‘eager loading’ by default, while ActiveRecord, you need to stipulate using the ‘includes’ method. This basically can cut down the amount of database queries in a normalized database by an order of magnitude. Instead of first running a query on the parent table, then running the same numbers of queries on the association table to get associated data, it just collects foreign keys for all the associations and then loads all associated objects with one query. Pretty cool!</p>
+
+<p>Datamapper - model driven, whereas ActiveRecord is Database driven. Meaning, once the needs of the application dictate that the database become fairly complex, it can be a pain point when using AR.</p>
+
+<h3>Recursion</h3>
+
+<ul>
+<li><p><a href="http://ruby.bastardsbook.com/chapters/recursion/">Bastards Book on recursion (still a draft at this time )</a></p></li>
+<li><p>There are two principles of recursion</p>
+
+<ol>
+<li>An end goal, or base case</li>
+<li>A process in which the task at hand is reduced towards that end goal</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Pointer-based algorithms</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Pointer_(computer_programming">Pointers</a>)</li>
+</ul>
+
+
+<h3>P = NP?</h3>
+
+<ul>
+<li>Are there situations where brute-force search— that is, trying an exponential number of possibilities one-by-one, until we find a solution that satisfies all the stated constraints— is essentially the best algorithm possible? (<a href="http://www.scottaaronson.com/blog/?p=459">from p vs. np for dummies</a>)</li>
+<li><a href="http://en.wikipedia.org/wiki/P_versus_NP_problem">wikipedia</a>
+
+<ul>
+<li>P vs NP is basically talking about problems where you can checking each possibility in a reasonable amount of time, but the number of possibility's keeps growing faster as the numbers get larger.</li>
+<li>some of these problems are such that there is no way to come up with an exact solution that is faster than being forced to do a brute force check of all or many of the possible solutions.</li>
+<li>The essence of P vs. NP. P is the class of problems where the cost of computing an exact solution doesn't necessarily grow too fast relative to input sizes to be impractical with real-world computers. NP is the class of problems that are equivalent to P problems if you happen to have a magical computer which could evaluate and compare any number of possible solutions simultaneously. Naturally, NP will include all of the P problems, so NP-complete problems are taken to be the set of problem for which only the magical computer would be suitable. (from <a href="http://news.ycombinator.com/item?id=1605415">Hacker news discussion</a>)</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Practice</h3>
+
+<ul>
+<li><a href="http://www.reddit.com/r/dailyprogrammer/">Daily programmer</a></li>
+<li><a href="http://rubyquiz.com/">Ruby Quiz</a></li>
+<li><a href="https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions">5 essential phone screens</a></li>
+<li><a href="http://courses.csail.mit.edu/iap/interview/materials.php">Hacking a google interview</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TODO]]></title>
+    <link href="http://www.adamjonas.com/blog/todo/"/>
+    <updated>2012-08-07T10:15:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/todo</id>
+    <content type="html"><![CDATA[<ul>
+<li>&lt;newestversionofrubyis.com></li>
+</ul>
+
+
+<p>```javascript Unbind
+Need to understand unbind event 6:30</p>
+
+<p>function selectSeat(e) {
+  e.preventDefault();
+  $('.selected').removeClass('selected');
+  $(this).addClass('selected').unbind("click", selectSeat);
+  $('#seatSelected').text($(this).data('seat'));
+  $('#confirm-seat').show();
+}</p>
+
+<p>$('div.seating-chart li a.available').click(selectSeat);
+```</p>
+
+<ul>
+<li><a href="http://web.mit.edu/newsoffice/2009/explainer-pnp.html">P = NP</a></li>
+<li>turbo links and push state in rails 4</li>
+<li><a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple made easy</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Design_pattern_(computer_science">Software Design patterns</a>Domain-specific_patterns)</li>
+<li><a href="http://en.wikipedia.org/wiki/Design_Patterns_(book">Design patterns book</a>)</li>
+<li><a href="http://vimeo.com/48106365">Designing tests with sandi metz</a></li>
+<li><a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Symbol to proc</a></li>
+<li><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">lambdas, procs</a></li>
+</ul>
+
+
+<h3>Javascript Lib</h3>
+
+<ul>
+<li><a href="http://harvesthq.github.com/chosen/">choosen</a></li>
+</ul>
+
+
+<h3>jruby</h3>
+
+<ul>
+<li>a java implementation of ruby</li>
+<li>you don't need to know java</li>
+<li>One powerful feature of JRuby is its ability to invoke the classes of the Java Platform.</li>
+<li><a href="https://github.com/jruby/jruby/wiki">jruby wiki</a></li>
+</ul>
+
+
+<h3>inject</h3>
+
+<ul>
+<li><a href="http://blog.jayfields.com/2008/03/ruby-inject.html">http://blog.jayfields.com/2008/03/ruby-inject.html</a></li>
+<li><a href="http://teachmetocode.com/screencasts/rubys-enumerable-module-the-inject-method/">http://teachmetocode.com/screencasts/rubys-enumerable-module-the-inject-method/</a></li>
+<li><a href="http://flavorite.tumblr.com/post/33774572841/ruby-inject">http://flavorite.tumblr.com/post/33774572841/ruby-inject</a></li>
+</ul>
+
+
+<h3>Associations:</h3>
+
+<ul>
+<li>make list of common many to many relationships, one to many relationships</li>
+</ul>
+
+
+<p>ActiveRecord and ORMS:
+  - active resource versus active record
+  - active record is an ORM- it wraps the database
+  - active resource wraps the restful web app with Ruby classes and work with them like Active Record models.</p>
+
+<p>mass assignment and the .build(params[:user_name])</p>
+
+<ul>
+<li><p>Coffee script</p></li>
+<li><p><a href="http://www.wibit.net/market/objective-c_programming">Objective-c tutorial</a></p></li>
+</ul>
+
+
+<p>rake db:setup
+I had never seen this...
+rake db:migrate:redo -> is the combo of rake db:rollback and rake db:migrate</p>
+
+<ul>
+<li>http perf - to test lots of traffic on a site</li>
+</ul>
+
+
+<p>Why should you always provide the second argument to parseInt?
+2nd argument in radix-- should specify
+<a href="http://stackoverflow.com/questions/7318385/problems-with-javascript-parseint">http://stackoverflow.com/questions/7318385/problems-with-javascript-parseint</a></p>
+
+<h3>Basic Vim tutorials</h3>
+
+<ul>
+<li><a href="http://www.openvim.com/tutorial.html">http://www.openvim.com/tutorial.html</a></li>
+<li><a href="http://net.tutsplus.com/articles/web-roundups/25-vim-tutorials-screencasts-and-resources/">http://net.tutsplus.com/articles/web-roundups/25-vim-tutorials-screencasts-and-resources/</a></li>
+<li><a href="http://vim.begin-site.org/">Beginner VIM</a></li>
+</ul>
+
+
+<h3>Screencast/Podcasts</h3>
+
+<ul>
+<li><a href="http://www.yuiblog.com/blog/2010/02/03/video-crockonjs-1/">Doug Crockford's epic series</a></li>
+<li><a href="http://screencasts.org/episodes/activerecord-with-sinatra">active record and sinatra</a></li>
+<li>sandi metz - <a href="http://vimeo.com/26330100">Less - the path to better design</a></li>
+<li><a href="https://www.destroyallsoftware.com/screencasts">Destroy all software</a></li>
+<li><a href="http://devblog.avdi.org/rubytapas/">Ruby tapas</a></li>
+<li><a href="http://ruby5.envylabs.com/episodes">Ruby5</a></li>
+<li><a href="http://www.metacasts.tv/">Another subscription screencast site</a></li>
+<li><a href="http://www.igvita.com/2013/01/15/faster-websites-crash-course-on-web-performance/">Life of a web request</a></li>
+<li><a href="http://opensoul.org/blog/archives/2012/05/16/the-plight-of-pinocchio/">Javascript's plight to become a real laguage</a></li>
+</ul>
+
+
+<h2>Reading</h2>
+
+<ul>
+<li><a href="http://eimers.blogspot.com/2008/02/reflection-vs-introspection.html">introspection and reflection</a></li>
+<li><a href="http://technosophos.com/content/git-cherry-picking-move-small-code-patches-across-branches">git cherry pick</a></li>
+<li><a href="https://github.com/blog/517-unicorn">unicorn</a></li>
+<li><a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a></li>
+<li><a href="http://www.slideshare.net/jnunemaker/dont-repeat-yourself-repeat-others">reinventing the wheel</a></li>
+<li><a href="http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions">Understand parameter naming conventions</a></li>
+<li><a href="http://www.oreillynet.com/pub/a/ruby/excerpts/ruby-best-practices/worst-practices.html">worst practices</a></li>
+<li><a href="http://kunststube.net/encoding/">encoding</a></li>
+<li><a href="http://www.slideshare.net/verekia/deep-dive-into-css-preprocessors">preprocessors</a></li>
+<li><a href="https://speakerdeck.com/andrew/em-vs-node">Event Machine vs. Node.js</a></li>
+<li><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html">open struct object</a></li>
+<li><a href="http://home.gna.org/xmpp4r/">xmpp/jabber</a> / <a href="http://prosody.im/">prosody</a></li>
+<li><a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html">eager loading</a></li>
+<li><a href="http://www.dev.gd/20130107-know-your-closures-blocks-procs-and-lambdas.html?utm_source=rubyweekly&amp;utm_medium=email">know your closures</a></li>
+</ul>
+
+
+<h3>Terms to understand</h3>
+
+<ul>
+<li>stubs mocks- not test data but test behavior- always want it to behave the same</li>
+<li>tmux through VIM</li>
+<li>raw_results-</li>
+<li>load-balancer- a server to direct traffic</li>
+<li>singleton objects</li>
+<li>SMTP vs. POP3</li>
+<li>service oriented architecture</li>
+<li><a href="http://stackoverflow.com/questions/3179396/what-does-monolithic-mean">Monolithic user classes</a></li>
+<li>merge method</li>
+<li><a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway's game of life</a></li>
+<li>klass in coffeescript</li>
+<li>eval -> eval "1+1" => 2</li>
+<li>hash merge</li>
+<li><a href="http://www.justskins.com/forums/star-in-case-statements-65943.html">star in case statement</a></li>
+<li>compass/codekit</li>
+<li>delegation</li>
+<li>SOAP</li>
+<li>Leaky abstraction</li>
+<li>Messaging architecture system</li>
+<li><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">hash tables</a></li>
+</ul>
+
+
+<h3>Blog Ideas</h3>
+
+<ul>
+<li>SQL injection</li>
+<li><a href="http://guides.rubyonrails.org/form_helpers.html#understanding-parameter-naming-conventions">mass assignment and parsing the form inputs</a></li>
+<li>debugger</li>
+<li>defensive programming</li>
+<li>inject</li>
+<li>raw_results</li>
+<li>benchmarking</li>
+<li><a href="http://chneukirchen.org/blog/archive/2007/02/introducing-rack.html">rack</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cross Site Request Forgery]]></title>
+    <link href="http://www.adamjonas.com/blog/cross-site-request-forgery/"/>
+    <updated>2012-07-21T13:08:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/cross-site-request-forgery</id>
+    <content type="html"><![CDATA[<h3>Cross Site Request Forgery</h3>
+
+<p>Description Summary
+:  The web application does not, or can not, sufficiently verify whether a well-formed, valid, consistent request was intentionally provided by the user who submitted the request.</p>
+
+<p>Extended Description
+:  When a web server is designed to receive a request from a client without any mechanism for verifying that it was intentionally sent, then it might be possible for an attacker to trick a client into making an unintentional request to the web server which will be treated as an authentic request. This can be done via a URL, image load, XMLHttpRequest, etc. and can result in exposure of data or unintended code execution.</p>
+
+<p>Ensures that information submitted through forms have a specific tag that identifies it as information submitted through the form I created. (Read more about csrf <a href="http://stackoverflow.com/questions/941594/understand-rails-authenticity-token">here</a> and <a href="http://stackoverflow.com/questions/9996665/rails-how-does-csrf-meta-tag-work">here.</a>)</p>
+
+<p>This is the out of context code I have from class...
+<code>
+csrf metatabs
+</code></p>
+
+<p>NOTE: We went over this in lecture 6 of ROR spring</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[scope]]></title>
+    <link href="http://www.adamjonas.com/blog/scope/"/>
+    <updated>2012-07-17T20:19:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/scope</id>
+    <content type="html"><![CDATA[<p>``` ruby Fancy Scope
+class Whatever
+  def add</p>
+
+<pre><code>add_junk(new_junk) #this just feeds into the next method
+</code></pre>
+
+<p>  end</p>
+
+<p>  def add_junk(new_junk)</p>
+
+<pre><code>@junk &lt;&lt; new_junk
+new_junk.owner = self
+</code></pre>
+
+<p>  end
+end
+```
+I need to understand that feeding into the 2nd method better</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The tap method]]></title>
+    <link href="http://www.adamjonas.com/blog/the-tap-method/"/>
+    <updated>2012-07-02T10:52:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/the-tap-method</id>
+    <content type="html"><![CDATA[<p>I haven't found great explanations for this yet but there is a video below... prety much the tap method allows you to initialize methods right off the bat.</p>
+
+<p>The tap method is available to all Ruby objects and serves as a way to have a block "act on" the method's caller and return the object called. Per the Ruby docs, "the primary purpose of this method is to 'tap into' a method chain, in order to perform operations on intermediate results within the chain". For some examples on using tap see MenTaLguY's post on Eavesdropping on Expressions. As he says in his post, "you can insert your code just about anywhere without disturbing the flow of data."</p>
+
+<p>I'm having some trouble following all this... Matt Stopa has a video below that is more for a beginner.</p>
+
+<p><a href="http://www.youtube.com/watch?v=QAJMxBkYaUQ">The video is here</a></p>
+]]></content>
+  </entry>
+  
+</feed>

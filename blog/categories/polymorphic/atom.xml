@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: polymorphic | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/polymorphic/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[polymorphic brain hurt]]></title>
+    <link href="http://www.adamjonas.com/blog/polymorphic-brain-hurt/"/>
+    <updated>2014-08-21T17:38:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/polymorphic-brain-hurt</id>
+    <content type="html"><![CDATA[<h2>Polymorphic association from parent to child</h2>
+
+<p>So <a href="http://blog.hasmanythrough.com/2006/4/3/polymorphic-through">this</a> succinctly summed up my issue.</p>
+
+<h2>Deprecated conditions in rails 4</h2>
+
+<p><code>Deprecation warning when using has_many :through :uniq in Rails 4</code></p>
+
+<p>Then once I did get it working with:</p>
+
+<p>```ruby Conditions Refactor</p>
+
+<h1>lesson model</h1>
+
+<p>  has_many :readmes, :through => :lesson_contents, :source => :readme,</p>
+
+<pre><code>:conditions =&gt; "lesson_contents.content_type = 'Readme'"
+</code></pre>
+
+<p>  has_many :labs, :through => :lesson_contents, :source => :lab,</p>
+
+<pre><code>:conditions =&gt; "lesson_contents.content_type = 'Lab'"
+</code></pre>
+
+<h1>stabby lambda</h1>
+
+<p>  has_many :readmes, -> { where("content_type = 'Readme'") },</p>
+
+<pre><code>:through =&gt; :lesson_contents, :source =&gt; :readme
+</code></pre>
+
+<p>  has_many :labs, -> { where("content_type = 'Lab'") }, :through =></p>
+
+<pre><code>:lesson_contents, :source =&gt; :lab
+</code></pre>
+
+<p>```</p>
+
+<p><a href="http://stackoverflow.com/a/16702101/1496757">Hat Tip</a></p>
+
+<h2>Polymorphic Migration</h2>
+
+<p>```ruby Creating a <a href="http://stackoverflow.com/a/5534614/1496757">polymorphic migration</a>
+class AddImageableToProducts &lt; ActiveRecord::Migration
+  def up</p>
+
+<pre><code>change_table :products do |t|
+  t.references :imageable, :polymorphic =&gt; true
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

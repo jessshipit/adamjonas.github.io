@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: projects | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/projects/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rum Fun]]></title>
+    <link href="http://www.adamjonas.com/blog/rum-fun/"/>
+    <updated>2013-09-16T16:02:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rum-fun</id>
+    <content type="html"><![CDATA[<h3>Asset Trouble</h3>
+
+<ul>
+<li>Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn't compiling.</li>
+<li><a href="http://stackoverflow.com/questions/15811889/my-rails-javascript-manifest-file-doesnt-compile-nor-include-any-required-files">This</a> inspired us to roll back to 1.9.3, which worked.</li>
+</ul>
+
+
+<h3>Coffeescript hashes</h3>
+
+<ul>
+<li><p>this one took me a hot second -> <code>delete obj[key]</code></p>
+
+<ul>
+<li>courtesy of <a href="http://coffeescript.org/documentation/docs/helpers.html">the docs</a></li>
+</ul>
+</li>
+<li><p>counting the keys in an object was pretty close to javascript <code>Object.keys(obj).length</code> <a href="http://stackoverflow.com/questions/15629799/count-number-of-keys-in-object-with-coffeescript">from</a>.</p></li>
+</ul>
+
+
+<h3>Thought process on adding a friend</h3>
+
+<ul>
+<li>page loads
+
+<ul>
+<li><p>checks to see if local storage has values</p>
+
+<ul>
+<li>if not it assigns empty array</li>
+<li>if so it assigns to local array which contains a hash of both the name, the uid, and its input position
+
+<ul>
+<li>names are loaded into the input field</li>
+<li>names and uid(pic) are loaded with the appropriate number of beach passes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>if when a name is removed from the input field, it is removed from the local array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>when a name is selected by the autocomplete, it assigns pushes the new record of name, uid and position into the array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>a validator prevents the user from continuing without having at least one friend OR checking the 'alone' checkbox</p></li>
+<li><p>upon hitting the continue btn, the local array is assigned to local storage</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Devise sign out</h3>
+
+<ul>
+<li>In the <code>devise.rb</code> initializer -> The default HTTP method used to sign out a resource. Default is :delete.
+
+<ul>
+<li><code>config.sign_out_via = :get</code> will allow me to use a regular link</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>PG setup</h3>
+
+<ul>
+<li>this is the <a href="https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups">process prelaunch</a></li>
+<li>otherwise you want to use a follower method</li>
+</ul>
+
+
+<h3>IP Spoof</h3>
+
+<ul>
+<li>had a client on a plane that triggered a <code>ActionDispatch::RemoteIp::IpSpoofAttackError: IP spoofing attack?!</code> error.</li>
+</ul>
+
+
+<p>```ruby To turn off ip spoof
+class IpSpoof
+  def initialize(app)</p>
+
+<pre><code>@app = app
+</code></pre>
+
+<p>  end</p>
+
+<p>  def call(env)</p>
+
+<pre><code>@app.call(_strip_ip_spoofable_headers(env))
+</code></pre>
+
+<p>  end</p>
+
+<p>  def _strip_ip_spoofable_headers(env)</p>
+
+<pre><code>env.reject { |key, value| key.upcase == 'HTTP_CLIENT_IP' }
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<ul>
+<li>this needed to be inserted before the rack middleware <code>ActionDispatch::RemoteIp</code> so used <code>config.middleware.insert_before ActionDispatch::RemoteIp, IpSpoof</code> as suggested in <a href="http://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack">rails guide</a>. Pretty cool.</li>
+</ul>
+
+
+<h3>Location Tracking</h3>
+
+<ul>
+<li>after many protests, I was forced to include a tracking script that pilled down users' lat and long coordinates. Not sure I believe it is right to pull down location info without providing the user with some benefit.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

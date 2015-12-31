@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: presenter_objects | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/presenter-objects/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Presenter Objects]]></title>
+    <link href="http://www.adamjonas.com/blog/presenter-objects/"/>
+    <updated>2014-06-17T18:49:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/presenter-objects</id>
+    <content type="html"><![CDATA[<h3>From our PR thread</h3>
+
+<ul>
+<li><p>A presenter object is a simply a PORO (plain ol' ruby object), constructed by the controller out of the data of one or more models, whose attributes serve the view
+layer. So in our case we give a view a <code>LessonPresenter</code> that has a <code>css_class</code> attribute and remove all decision making from the view layer (which is the ideal goal).</p></li>
+<li><p>It's not a "service" object, it's a presenter so it would go in the <code>presenters</code> folder. This is also sometimes called a "view model" or a "view object". The word "presenter" is overloaded a lot.</p></li>
+<li><p>This an interesting read on a few <a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/"><code>model refactoring patterns</code></a>:</p></li>
+<li><p>So instead of a collection of Lessons at the view level, you'd be dealing with a collection of LessonPresenters or similar. Alternatively, you can just put that method on the lesson object itself, which is simpler and more straightforward but not strictly Single Responsibility Principle/Seperation of Concerns/Model View Controller compliant. tradeoffs.</p></li>
+</ul>
+
+
+<blockquote><p>Is it a terrible idea to have LessonPresenter inherit from Lesson?</p></blockquote>
+
+<p>A: Strictly speaking in terms of OO, inheritance describes an "is-a" relationship, and you can't say that a lessonpresenter is a lesson, so introducing an inheritance chain is probably inappropriate. There is some duplication to this pattern. Typically a viewmodel exposes only the attributes needed to satisfy the needs of the view, and you'd fill them in from the corresponding model on construction.</p>
+
+<p>While this seems on the surface to violate DRY (and be duplicate work), i'd argue that it's no more repetition than creating factories with the same attributes as models. Separate objects for separate purposes.</p>
+
+<p>You could get away with hanging a lesson off of the presenter so that you could access it at the view level, but that's a law of demeter violation and breaks encapsulation.</p>
+
+<p>You could do the method_missing bit and delegate to the object. that's slick and rubyish. Where that falls apart though is implementing this pattern across more than one model. Because we're not really building a "presenter for a lesson", we're building a presentation object for a view that represents the model data behind it.</p>
+
+<p>Already this answer is complicated, but there's just always a lot of decisions that go into making architectural choices. It may be the case that for this one thing, creating a method on the Lesson itself is the "simplest thing that could possibly work" and satisfies one of our tenets of agile, and then we delay the big architectural choice until we need a second or third thing.</p>
+
+<p>I support whichever choice you make (probably) as long as you have unit tests to support later refactoring :smile_cat:</p>
+]]></content>
+  </entry>
+  
+</feed>

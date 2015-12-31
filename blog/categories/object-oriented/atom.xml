@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: object-oriented | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/object-oriented/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Object Oriented Design Sandi Metz]]></title>
+    <link href="http://www.adamjonas.com/blog/object-oriented-design-sandi-metz/"/>
+    <updated>2012-12-07T12:31:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/object-oriented-design-sandi-metz</id>
+    <content type="html"><![CDATA[<h3>Solid Object Oriented Design</h3>
+
+<p><a href="http://vimeo.com/12350535">Video of Sandi Metz</a></p>
+
+<h3>Less the path to better design</h3>
+
+<p><a href="http://vimeo.com/26330100">Video</a></p>
+
+<ul>
+<li><p>Code needs to work today just once, but needs to be easy to change forever</p>
+
+<ul>
+<li>purpose of design is reduce the cost of change</li>
+</ul>
+</li>
+<li><p>Patterns are prescriptions</p>
+
+<ul>
+<li>patterns work at the correct dosage</li>
+</ul>
+</li>
+<li><p>principles</p>
+
+<ul>
+<li>SOLID</li>
+<li>Demeter</li>
+</ul>
+</li>
+<li><p>Need diagnostics</p>
+
+<ul>
+<li>need simple ways to judge the goodness of code (the inverse of Bob Martin's list of ailments)</li>
+</ul>
+</li>
+<li><p>4 Diagnostics : True</p>
+
+<ol>
+<li>Code should be <em>transparent</em></li>
+<li><em>Reasonable</em>: cost of making any change should be to proportional to its value</li>
+<li>Code should be <em>useable</em> -> if you wrote the code, you should be able to reuse it</li>
+<li><em>Exemplary</em> -> more code like this would be good for your app</li>
+</ol>
+</li>
+<li><p>These principles tell you when to quit</p></li>
+<li><p>Don't be a know-it-all</p></li>
+<li><p>Code is more stable when the objects communicate less</p>
+
+<ul>
+<li>For example, all the work that goes into building and curating bounties belongs in the bounty class and not in the issue class, even though bounties belong to issues
+
+<blockquote><p>managing dependencies is at the center of design. Depend on things that are more stable than you are.</p></blockquote></li>
+<li>early on in an app, you actually don't know which is more stable
+
+<ul>
+<li>embrace uncertainty. If two objects must collaborate and you don't know who is more uncertain. Then you need to make them know as a little of each other as possible. <em>A directive to decouple.</em></li>
+</ul>
+</li>
+<li>Don't have to guess what changes will come. Loosen the coupling so that when a change came (and we didn't know what the change was) it would be ok.</li>
+</ul>
+</li>
+<li><p>It's Ducks all the way down</p></li>
+<li>identify the underlying abstractions, from trip's point of view it just wants to be prepared</li>
+<li>preparer is an agreement about the public interface of an idea -> it's a <em>duck type</em>
+```ruby
+def preparer(preparers)
+preparers.each {|preparer|
+preparer.prepare_trip(self)}
+end
+
+<h1>then each class has it's own prepare_trip(trip) method which sends back a prepared trip.</h1>
+
+<p>```</p></li>
+<li>Abstractions are more stable than concretions. It is the duck type.
+
+<ul>
+<li>You can trade the unpredictability for the constancy for what you want.</li>
+<li>We share no code, there are no modules</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Trip expects preparers and prepares trust that they can pass the object to that called them</h3>
+
+<ul>
+<li><p>Trustworthy objects</p>
+
+<ul>
+<li>Understand more about themselves and what they want and know less about what others do</li>
+<li>Depend less on concretions and more on abstractions</li>
+</ul>
+</li>
+<li><p>The space between objects</p></li>
+<li>When objects have space around them they have room to move</li>
+<li>Design allows you to put off design decision until you know more about the application</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DCI]]></title>
+    <link href="http://www.adamjonas.com/blog/dci/"/>
+    <updated>2012-10-13T17:35:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/dci</id>
+    <content type="html"><![CDATA[<h3>tl;dr</h3>
+
+<p><em>In DCI, Objects are viewed as whole objects rather than a composition of parts. e.g. fido is not seen as part class Animal and class MansBestFriend.</em></p>
+
+<h3>What is DCI?</h3>
+
+<ul>
+<li>Data</li>
+<li>Context</li>
+<li>Interaction</li>
+</ul>
+
+
+<h3>What are its goals?</h3>
+
+<ul>
+<li>To improve the readability of object-oriented code by giving system behavior first-class status;</li>
+<li>To cleanly separate code for rapidly changing system behavior (what the system does) from code for slowly changing domain knowledge (what the system is), instead of combining both in one class interface;</li>
+<li>To help software developers reason about system-level state and behavior instead of only object state and behavior;</li>
+<li>To support an object style of thinking that is close to peoples' mental models, rather than the class style of thinking that overshadowed object thinking early in the history of object-oriented programming languages.</li>
+</ul>
+
+
+<blockquote><p>The paradigm separates the domain model (data) from use cases (context) and roles that objects play (interaction). DCI is complementary to model–view–controller (MVC).</p></blockquote>
+
+<h3>Why?</h3>
+
+<p>Some objects do different things in different parts of your application. You cannot use inheritance to cover the varying behaviour as the behaviours should change back and forth. The object just behaves different depending on the context.</p>
+
+<blockquote><p>DCI is about much more than just extending objects at runtime. It's about capturing the end user's mental model and reconstructing that into maintainable code.</p></blockquote>
+
+<h3>What DCI is thought as, but isn't</h3>
+
+<p>#extend as the go-to means of adding methods to objects at runtime.</p>
+
+<p>The important thing to know about DCI is that it's about more than just code. It's about process and people. It starts with principles behind Agile and Lean and extends those into code. The real benefit of following DCI is that it plays nicely with Agile and Lean. It's about code maintainability, responding to change, and decoupling what the system does (its functionality) from what the system is (its data model).</p>
+
+<h3>Data</h3>
+
+<ul>
+<li>The system are the actors
+
+<ul>
+<li>Object thinking instead of class thinking</li>
+</ul>
+</li>
+<li>correspond closely to the model objects of MVC.</li>
+</ul>
+
+
+<blockquote><p>An example of a data object could be a bank account. Its interface would have basic operations for increasing and decreasing the balance and for inquiring about the current balance. The interface would likely not offer operations that involve transactions, or which in any way involve other objects or any user interaction. So, for example, while a bank account may offer a primitive for increasing the balance, it would have no method called deposit. Such operations belong instead in the interaction part of DCI.</p></blockquote>
+
+<h3>Context</h3>
+
+<p><em>the environment for which Data objects execute their Role. The goal of the Context is to connect Roles (what the system does) to Data objects (what the system is).</em></p>
+
+<ul>
+<li>How the system looks and starts -> the director</li>
+<li>There is always at least one Context for every one user story</li>
+<li>Identify objects and assign them roles at runtime</li>
+<li>Use case functionality = data object with assigned roles combined.</li>
+</ul>
+
+
+<h3>Interaction</h3>
+
+<ul>
+<li>"What a system does" -> its role</li>
+<li>Roles played by objects</li>
+<li>stateless</li>
+<li>Call methods on self (=playing object)</li>
+<li>Interactions are generic</li>
+</ul>
+
+
+<h3>DCI in rails</h3>
+
+<ul>
+<li>data => ActiveRecord model: The Data should really only consist of persistence-level methods, never how the persisted data is used.
+
+<ul>
+<li>DCI suggests that we keep our core model classes very thin. Zero logic, only data, if anything.
+
+<ul>
+<li>The logic/ behavior should be kept in roles. In Ruby we can nicely use mixins for that</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>context => Controller action or separate workflow case: we trigger our Context within the Controller.</li>
+<li>roles => Module to mix in</li>
+</ul>
+
+
+<p><img src="/images/MVC_DCI.jpeg" title="Rails: MVC and DCI" ></p>
+
+<p>DCI reduces the number of objects in your project, but increases the number
+of roles they play.</p>
+
+<h3>Characteristics of DCI</h3>
+
+<p><em>In DCI, Objects are viewed as whole objects rather than a compositon of parts. e.g. fido is not seen as part class Animal and class Friend.</em></p>
+
+<ul>
+<li>An object-oriented program is a complex and dynamic network of objects, in the same sense that relationships between real-world objects are complex and dynamic.</li>
+<li>The object has its own identity independent of the use case; this is the Data facet of DCI.</li>
+<li>Roles are aliased names for their objects but are never separate objects themselves; that would cause self schizophrenia.</li>
+</ul>
+
+
+<h3>In the Wild</h3>
+
+<ul>
+<li>DCI depends on a design process that separates use cases from the data model.</li>
+<li>DCI can be thought of as an event-driven paradigm, where some event (as a human gesture in an MVC architecture) triggers a use case. The use case can be short-lived or long-lived. The events are called triggers, and they are handled in the environment in which DCI has been embedded. This environment may be the Controller of a conventional MVC architecture or any other system-level code.</li>
+</ul>
+
+
+<p>```ruby An over-simplified example
+class Dog; end # Data
+module Labrador # Role
+  def bark</p>
+
+<pre><code>...
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>fido = Dog.new # Context
+fido.extend Labrador
+fido.bark
+```</p>
+
+<h3>Problems with DCI</h3>
+
+<ol>
+<li>It requires a large paradigm shift. It's designed to compliment MVC (Model-View-Controller) so it fits well into Rails, but it requires you to move all your code outside the controller and model. As we all know, the Rails community has a fetish for putting code in models and controllers. The paradigm shift is large, something that would require a large refactor for some apps. However, DCI could probably be refactored in on a case-by-case basis allowing apps to gradually shift from "fat models, skinny controllers" to DCI.</li>
+<li>It potentially carries performance degradations, due to the fact that objects are extended ad hoc.</li>
+</ol>
+
+
+<h3>History</h3>
+
+<p>DCI arose largely as an outgrowth of Trygve Reenskaug's work on role-based modeling. Trygve had long recognized that Roles played a central part in the way we think about objects, and that the class-based progression of programming language technology took away much of the motivation to think about the objects in a program. That in turn made it difficult to reason about the program at run time. Further, the fact that object-oriented programming languages offered only classes to express program logic left the programmer at the mercy of the structural layout of the data to delineate behavior, which is unnatural compared with a delineating behavior on Role boundaries.</p>
+
+<h3>Sources</h3>
+
+<ul>
+<li><a href="https://speakerdeck.com/u/mordaroso/p/dci-and-ruby">Primary source</a> a presentation without sound. It didn't help much.</li>
+<li><a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">wikipedia</a></li>
+<li><a href="http://mikepackdev.com/blog_posts/24-the-right-way-to-code-dci-in-ruby">The Right Way to Code DCI in Ruby</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

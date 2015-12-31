@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>FIS Day28 - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Authentication http is stateless
+we pass along with the request is our cookie the cookie lives on the client, which means we can&#8217;t trust it &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://www.adamjonas.com/blog/fis-day28/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">FIS Day28</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T10:10:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Authentication</h2>
+
+<ul>
+<li>http is stateless</li>
+<li><p>we pass along with the request is our cookie</p>
+
+<ul>
+<li>the cookie lives on the client, which means we can&#8217;t trust it</li>
+</ul>
+</li>
+<li><p>cookie has a lot of raw data</p>
+
+<ul>
+<li>you don&#8217;t really want to put data on the client</li>
+<li>except the token: which is just a primary key for their session on my server</li>
+</ul>
+</li>
+<li><p>session id in the cookie identifies the session</p></li>
+<li><p>cookies on the browser/sessions are on the server</p>
+
+<ul>
+<li>the cookie is used to access the session</li>
+</ul>
+</li>
+<li><p>Form_for requires an ActiveRecord instance -> it needs a model</p>
+
+<ul>
+<li>form_tag(sessions_path)</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Session Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">skip_before_filter</span> <span class="ss">:login_required</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span>
+</span><span class='line'><span class="c1">#this is needed you will need to login before you login. #Need to do this in the user controller as well.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="n">user</span>
+</span><span class='line'>    <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="s1">&#39;login failed&#39;</span>
+</span><span class='line'>    <span class="n">redirect</span> <span class="ss">:new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="n">reset_session</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Application Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Application</span> <span class="no">Controller</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">login_required</span>
+</span><span class='line'>    <span class="k">unless</span> <span class="n">current_user</span>
+</span><span class='line'>      <span class="n">redirect_url</span> <span class="n">login_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s2">&quot;please login&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">logged_in?</span>
+</span><span class='line'>    <span class="kp">true</span> <span class="k">if</span> <span class="n">current_user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:logged_in?</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>In user model: <code>has_secure_password</code></p>
+
+<ul>
+<li>bcrypt</li>
+<li>password confirmation is optional with has_secure_password</li>
+<li>if a hacker gains access to your logs and you don&#8217;t have the password field filtered, they can see all the passwords</li>
+</ul>
+</li>
+<li><p><a href="http://www.dshield.org/diary.html?storyid=11110">hashing passwords</a></p></li>
+</ul>
+
+
+<p><code>Order.update(12, :name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<ul>
+<li>is equivalent to</li>
+</ul>
+
+
+<p><code>Order.find(12).update_attributes(:name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<h3>MISC</h3>
+
+<ul>
+<li><a href="http://chrispederick.com/work/web-developer/features/">Web dev tool</a></li>
+<li><a href="https://makandracards.com/makandra/621-git-delete-a-branch-local-or-remote">delete local and remote branches</a></li>
+<li><a href="http://pusher.com/tutorials">pusher</a> better than socket.io
+
+<ul>
+<li><a href="https://github.com/tarnfeld/PusherChat-Rails">pusher chat</a></li>
+</ul>
+</li>
+<li><p><a href="http://socrates.io/">socrates.io</a></p></li>
+<li><p>Throw this at the top for a place for flash notices</p>
+
+<ul>
+<li><code>&lt;%= notice %&gt;</code></li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T10:10:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/fis/'>FIS</a>, <a class='category' href='/blog/categories/authentication/'>authentication</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/fis-day27/" title="Previous Post: FIS Day27">&laquo; FIS Day27</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/fis-day29/" title="Next Post: FIS Day29">FIS Day29 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.adamjonas.com/blog/fis-day28/';
+        var disqus_url = 'http://www.adamjonas.com/blog/fis-day28/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

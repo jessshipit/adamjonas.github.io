@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: errors | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/errors/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[the clues errors provide]]></title>
+    <link href="http://www.adamjonas.com/blog/the-clues-errors-provide/"/>
+    <updated>2012-07-18T16:35:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/the-clues-errors-provide</id>
+    <content type="html"><![CDATA[<p>When you get a stack trace and it's part of rails you can ignore it because you created the file NOT rails.</p>
+
+<p>```ruby Here's the code in the sessions controller
+def create</p>
+
+<pre><code>user = User.find_by_email_address(params[:email_address])
+if user &amp;&amp; user.authenticate(params[:password])
+ #blah blah blah
+</code></pre>
+
+<p>  end</p>
+
+<h1>ERROR</h1>
+
+<p>undefined method `authenticate' for nil:NilClass
+```
+This means that the method was called on a receiver that is nil. Meaning that <strong>the receiver not the right object or it's nil</strong></p>
+
+<p><strong>Undefined Method:</strong>
+```ruby Here's the code in the sessions controller
+def create</p>
+
+<pre><code>user = User.find_by_email_address(params[:email_address])
+if user &amp;&amp; user.magic(params[:password])
+#blah blah blah
+</code></pre>
+
+<p>end</p>
+
+<h1>The Error</h1>
+
+<p>undefined method `magic' for #&lt;User:0x007fa35e3e2fe8>
+```
+<strong>The method magic doesn't exist for that object.</strong></p>
+
+<p><strong>Expected an object but got an attribute in the form of a string, array, etc.</strong>
+<code>ruby AssociationTypeMismatch
+ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750)
+</code></p>
+
+<p><strong>This means that you have entered an infinite loop. e.g. you have called something on itself.</strong>
+<code>ruby
+SystemStackError: stack level too deep
+</code></p>
+
+<h3>DB Errors</h3>
+
+<p>When the browser can't locate a table that you know exists-- <strong><em>make sure you migrate the DB!!</em></strong></p>
+
+<h3>Can't save something to the DB</h3>
+
+<ul>
+<li>Open up console.</li>
+<li>When you can't save it, send it '.save!' and it will throw off the errors.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[octopress blues]]></title>
+    <link href="http://www.adamjonas.com/blog/octopress-blues/"/>
+    <updated>2012-07-16T16:53:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/octopress-blues</id>
+    <content type="html"><![CDATA[<p>I just spent more than an hour debugging an issue when trying to run
+<code>
+rake generate
+</code>
+The error I kept receiving was:
+```</p>
+
+<h2>Generating Site with Jekyll</h2>
+
+<p>unchanged sass/screen.scss
+Configuration from /Users/Ajonas/octopress/_config.yml
+Building site: source -> public
+/Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/rubypython-0.5.3/lib/rubypython/rubypyproxy.rb:198:in `method_missing': ClassNotFound: no lexer for alias 'Query' found (RubyPython::PythonError)</p>
+
+<pre><code>from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:135:in `lexer_for'
+from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:91:in `highlight'
+from /Users/Ajonas/octopress/plugins/pygments_code.rb:24:in `pygments'
+from /Users/Ajonas/octopress/plugins/pygments_code.rb:14:in `highlight'
+</code></pre>
+
+<p>```
+It goes on much longer from there. Anyways, I googled it and found <a href="http://samrange.com/blog/2012/06/17/octopress-code-highlighting-with-arch-linux/">this</a> which sent me on a wild goose chase to change out the path in the rubypython gem file.</p>
+
+<p>After trying to fix this, I decided to generate some other posts. What I discovered was other posts could be generated and pushed which meant it wasn't the gem at all...</p>
+
+<p>In the end, I hadn't named the language of the code snippet so the post couldn't be generated.</p>
+
+<p>Ugh.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stack Level Too Deep Error]]></title>
+    <link href="http://www.adamjonas.com/blog/stack-level-too-deep-error/"/>
+    <updated>2012-07-02T10:52:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/stack-level-too-deep-error</id>
+    <content type="html"><![CDATA[<p>This error generally happens when you accidentally recursively changing an attribute. If you have a username attribute in User model, and a virtual attribute named username, that is directly changing the username, you end up calling the virtual, the virtual calls the virtual again and so on.. Therefore, take a look on whether something like that happens somewhere in your code.</p>
+
+<p>SEE: <a href="http://stackoverflow.com/questions/5446055/stack-level-too-deep-error">http://stackoverflow.com/questions/5446055/stack-level-too-deep-error</a></p>
+]]></content>
+  </entry>
+  
+</feed>

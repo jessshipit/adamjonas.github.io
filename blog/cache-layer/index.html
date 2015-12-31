@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>cache layer - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://www.adamjonas.com/blog/cache-layer/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Cache Layer</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-18T17:02:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our cache layer lives between the Github API and our Octokit Wrapper. We pull in the data on an authenticated user from the API and serialize the data in the user model (which allows us to access the data in multiple views). In a future refactor, we should probably be doing this in the wrapper model or even a memcache manager model.</p>
+
+<p>Given the fact that I didn&#8217;t fully grasp the cache system that I had a heavy hand in designing, I did a little more research on the subject&#8230; The cache storage system in Rails is very modular. It uses the file system to store the cache by default, but can be customized as we did. We used <a href="https://github.com/mperham/dalli">Dalli</a> instead of <code>mem_cache_store</code> because it has support for memcached&#8217;s binary protocol. (I believe Dalli will be the default in Rails 4.)</p>
+
+<h3>Methods</h3>
+
+<p>From the <a href="http://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store">documentation</a>, the main methods to call are <code>read</code>, <code>write</code>, <code>delete</code>, <code>exist?</code>, and <code>fetch</code>. The <code>fetch</code> method accepts a block and will either return an existing value from the cache or write the result to the cache if none exists.</p>
+
+<h3>Page Caching:</h3>
+
+<p>This allows the request for a page to be served by the webserver (nginx in our case), without ever having to hit the Rails stack. Obviously, this is highly performant, but cannot be used across all situations (e.g. where authentication is required or any actions that have before filters).</p>
+
+<h3>Action Caching:</h3>
+
+<p>This is similar to page caching except the incoming web request hits the Rails stack to allow the before-filters to run before the cache is served. This is the best option for when authentication and other restrictions need to be run while still serving the result of the output from a cached copy.</p>
+
+<h3>Fragment Caching:</h3>
+
+<p>This allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in. We tried running this for our indexed table views, but we need to work on bettering our server-side processing before this can be fully implemented.</p>
+
+<h3>SQL Caching:</h3>
+
+<p>This caches the results returned by each query so that if Rails encounters the same query again for that request, it will use the cached result rather than running the query against the database again.</p>
+
+<h3>Need to the look into&#8230;</h3>
+
+<p>In the future, I&#8217;d like to look how we might be better able to use <code>Rack::Cache</code> to better take advantage of HTTP caching regarding freshness (expires, cache-control) and/or validation (last-modified, ETags).</p>
+
+<h3>Further Reading:</h3>
+
+<ul>
+<li><a href="http://code.google.com/p/memcached/wiki/TutorialCachingStory">Memcache Wiki</a></li>
+<li><a href="http://guides.rubyonrails.org/caching_with_rails.html">Rails Guide on Caching</a></li>
+<li><a href="https://github.com/rtomayko/rack-cache">Rack cache</a></li>
+<li><a href="http://nubyonrails.com/articles/memcached-basics-for-rails">Memcached basics for Rails</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-18T17:02:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/caching/'>caching</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/code-climate-and-quality/" title="Previous Post: Code Climate and Quality">&laquo; Code Climate and Quality</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/javascript-hoisting/" title="Next Post: javascript hoisting">javascript hoisting &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.adamjonas.com/blog/cache-layer/';
+        var disqus_url = 'http://www.adamjonas.com/blog/cache-layer/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

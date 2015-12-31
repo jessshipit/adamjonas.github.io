@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: diaspora | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/diaspora/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Diaspora- Day 2]]></title>
+    <link href="http://www.adamjonas.com/blog/diaspora2/"/>
+    <updated>2012-07-11T10:06:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/diaspora2</id>
+    <content type="html"><![CDATA[<p><strong>Postgresql Gem</strong> is killing me. It's listed in the Gemfile. It's listed in the Gemlock file. I've tried to...</p>
+
+<p>ok so after 2 hours of running around google I tried commenting out the mysql and sqlite gems:
+```</p>
+
+<h1>database</h1>
+
+<p>gem "activerecord-import", "~> 0.2.9"
+gem 'foreigner', '~> 1.1.0'</p>
+
+<h1>gem 'mysql2', '0.3.11' if ENV['DB'].nil? || ENV['DB'] == 'all' || ENV['DB'] == 'mysql'</h1>
+
+<p>gem 'pg' #if ENV['DB'] == 'all' || ENV['DB'] == 'postgres'</p>
+
+<h1>gem 'sqlite3' if ENV['DB'] == 'all' || ENV['DB'] == 'sqlite'</h1>
+
+<p>```
+bingo.</p>
+
+<p>I finally got this running by downloading mysql and setting the db to mysql... victory.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Diaspora- Day 1]]></title>
+    <link href="http://www.adamjonas.com/blog/diaspora/"/>
+    <updated>2012-07-10T12:51:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/diaspora</id>
+    <content type="html"><![CDATA[<p><a href="http://rubysource.com/build-your-own-social-network-with-diaspora-an-introduction/">What is diaspora?</a></p>
+
+<p>Now I need to decide what DB I'm going to use. I poked around and found <a href="http://mariadb.org/">MariaDB</a>, but Avi suggested I go with <a href="http://www.percona.com/">Percona</a>, MySQL or Postgres. Postgres seems to have the best intergration with Heroku so I'll go with that...</p>
+
+<p>I already have psql version 9.0.5. This isn't the newest version... TODO</p>
+
+<p><strong><em>Open SSL</em></strong>
+The <a href="http://www.openssl.org/about/"><strong>OpenSSL</strong></a> Project is a collaborative effort to develop a robust, commercial-grade, full-featured, and Open Source toolkit implementing the Secure Sockets Layer (SSL v2/v3) and Transport Layer Security (TLS v1) protocols as well as a full-strength general purpose cryptography library managed by a worldwide community of volunteers that use the Internet to communicate, plan, and develop the OpenSSL toolkit and its related documentation.
+- I'm not really sure what all that means... so I checked out
+Here is what I found:
+ - TLS and its predecessor SSL make significant use of certificate authorities.
+ - The browser then uses the public key to encrypt a randomly selected symmetric key. Public-key encryption takes a lot of computing, so most systems use a combination of public-key and symmetric key encryption. When two computers initiate a secure session, one computer creates a symmetric key and sends it to the other computer using public-key encryption. The two computers can then communicate using symmetric-key encryption. Once the session is finished, each computer discards the symmetric key used for that session. Any additional sessions require that a new symmetric key be created, and the process is repeated.
+ I can circle back to learn more <a href="http://www.techradar.com/news/software/how-ssl-and-tls-works-1047412">here.</a> TODO</p>
+
+<p>I also have openSSL installed, but I'll update through
+<code>
+brew install openssl
+</code>
+This downloaded the package, but didn't update the version that I currently have. It stil shows:
+<code>
+♕ openssl version
+OpenSSL 0.9.8r 8 Feb 2011
+</code>
+That's not great. Well I can't fix it now... another TODO</p>
+
+<p><strong><em>cURL</em></strong> groks URLs <a href="http://curl.haxx.se/">http://curl.haxx.se/</a>
+curl is a command line tool for transferring data with URL syntax, supporting DICT, FILE, FTP, FTPS, Gopher, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, Telnet and TFTP. curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP form based upload, proxies, cookies, user+password authentication (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer resume, proxy tunneling and a busload of other useful tricks.
+- To <strong>grok</strong> is to intimately and completely share the same reality or line of thinking with another physical or conceptual entity.
+- There is a tutorial <a href="http://curl.haxx.se/libcurl/c/libcurl-tutorial.html">http://curl.haxx.se/libcurl/c/libcurl-tutorial.html</a>. this however mostly focuses on C so I'm not even close to understanding it.
+- There is another intro <a href="http://blog.instabill.com/index.php/2011/12/21/a-brief-introduction-to-curl">here</a> that appears to be more my speed.
+- also there is a <a href="">video</a>
+ - don't know what any of this means... but I do have it installed. Another TODO</p>
+
+<p><strong><em>imagemagick</em></strong> is next:
+<code>
+brew install imagemagick
+</code>
+That was easy...</p>
+
+<p><strong><em>Redis</em></strong>
+need redis as well.
+<a href="http://en.wikipedia.org/wiki/Redis">Redis, known as a key value store or document store,</a> is pretty much just a hash.
+"In its outer layer, the Redis data model is a dictionary where keys are mapped to values."
+That sounds like a hash to me.
+Anyways...
+<code>
+brew install redis
+</code>
+There is a <a href="http://try.redis-db.com/">try redis</a> tutorial.
+Alright, now let's get down to diaspora.</p>
+
+<p>So I cloned the diaspora repo and then tried to cd into the folder
+```</p>
+
+<h1>♕ cd diaspora</h1>
+
+<h1>= NOTICE                                                                           =</h1>
+
+<p>= RVM has encountered a new or modified .rvmrc file in the current directory       =
+= This is a shell script and therefore may contain any shell commands.             =
+=                                                                                  =
+= Examine the contents of this file carefully to be sure the contents are          =</p>
+
+<h1>= safe before trusting it! ( Choose v[iew] below to view the contents )            =</h1>
+
+<p>Do you wish to trust this .rvmrc file? (/Users/Ajonas/diaspora/.rvmrc)
+y[es], n[o], v[iew], c[ancel]> y
+ruby-1.9.3-p125 is not installed.
+To install do: 'rvm install ruby-1.9.3-p125'
+ruby-1.9.3-p125 is not installed.
+Retrieving rubygems-1.8.17
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</p>
+
+<pre><code>                             Dload  Upload   Total   Spent    Left  Speed
+</code></pre>
+
+<p>100  246k  100  246k    0     0   453k      0 --:--:-- --:--:-- --:--:-- 1401k
+Extracting rubygems-1.8.17 ...
+Removing old Rubygems files...
+Installing rubygems-1.8.17 for ruby-1.9.3-p125 ...
+Error running 'GEM_PATH="/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194:/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194@global:/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194:/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194@global" GEM_HOME="/Users/Ajonas/.rvm/gems/ruby-1.9.3-p194" "/Users/Ajonas/.rvm/rubies/ruby-1.9.3-p125/bin/ruby" "/Users/Ajonas/.rvm/src/rubygems-1.8.17/setup.rb"', please read /Users/Ajonas/.rvm/log/ruby-1.9.3-p125/rubygems.install.log
+Installation of rubygems did not complete successfully.
+<code>
+OK well just follow the bouncing ball right?
+</code>
+[14:32:19] (master) diaspora
+♕ rvm install ruby-1.9.3-p125
+Already installed ruby-1.9.3-p125.
+To reinstall use:</p>
+
+<pre><code>rvm reinstall ruby-1.9.3-p125
+</code></pre>
+
+<p>```
+Not good. I looked at the install log but it didn't provide much help. So after a google search I found <a href="https://github.com/rubygems/rubygems/issues/311">this</a>, which suggests it is the .gemrc file. So now I'm in over my head...</p>
+
+<p>So Avi to the rescue. I reinstalled patch 125 with:
+<code>
+rvm reinstall ruby-1.9.3-p125
+</code>
+That sucks I was so hung up on this.</p>
+
+<p>So I bundled again after removing the mysql gem from the gem file since I'm using postgreSQL.</p>
+
+<p>It bundled properly but I can't get thin to boot...</p>
+
+<p>P.S.
+??Should I include a sym link?</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mongoid | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/mongoid/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[haw-day1]]></title>
+    <link href="http://www.adamjonas.com/blog/haw-day1/"/>
+    <updated>2012-07-31T15:15:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/haw-day1</id>
+    <content type="html"><![CDATA[<h3>Deploying to Heroku</h3>
+
+<p>Make sure to modify the <a href="https://devcenter.heroku.com/articles/mongohq#mongoid">mongoid.yml file</a> to config the production environment.</p>
+
+<p><strong><em>2 major issues with the mongoid deploy:</em></strong></p>
+
+<ol>
+<li>Issue with ruby version was the first error we encountered... need to keep in that <em>mongoid only supports 1.9.3</em> this ended up being a big issue.</li>
+</ol>
+
+
+<p>In --> heroku logs --tail:
+<code>
+ActionView::Template::Error (undefined method `[]' for nil:NilClass):
+ 11:   &lt;/thead&gt;
+ 10:     &lt;/tr&gt;
+ 12:
+ 13:   &lt;% @airbrake_errors.each_with_index do |a_e, index| %&gt;
+</code></p>
+
+<ol>
+<li>The other issue was to reconfigure the setting below from false to true as the</li>
+</ol>
+
+
+<p><code>ruby config/environments/production.rb
+ config.assets.compile = true
+</code></p>
+
+<p>```
+ ActionView::Template::Error (images/apple-touch-icon-144x144-precomposed.png isn't precompiled):</p>
+
+<p> &lt;%= favicon_link_tag 'images/apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %></p>
+
+<p> app/views/layouts/application.html.erb:19:in `<em>app_views_layouts_application_html_erb</em>__1957659516384225917_21931620'
+```</p>
+
+<h3>Rewriting the writer</h3>
+
+<p>```ruby Change the tag writer
+def tag_names=(string_of_names)</p>
+
+<pre><code>string_of_names.split(", ").each do |tag_name|
+  self.tags.find_or_create_by(name: tag_name)
+  #the find_or_create_by wasn't creating unique tag names
+  #the reason was because we were linking too many methods together
+  #mongoid is finicky
+end
+</code></pre>
+
+<p>  end</p>
+
+<h1>was changed to...</h1>
+
+<p>def tag_names=(string_of_names)</p>
+
+<pre><code>self.tags &lt;&lt; string_of_names.split(", ").collect do |tag_name|
+  tag = Tag.find_or_create_by(name: tag_name)
+end
+</code></pre>
+
+<p>  end</p>
+
+<h1>but we discoved that the tags were no disappearing if they were left off the form</h1>
+
+<p>def tag_names=(string_of_names)
+   #later we added this line because tags were persisting even if we tried to edit them.</p>
+
+<pre><code>self.tags.delete_all
+self.tags &lt;&lt; string_of_names.split(", ").collect do |tag_name|
+  tag = Tag.find_or_create_by(name: tag_name)
+end
+</code></pre>
+
+<p>  end
+<code>
+</code>ruby the last td was changed...
+ &lt;% @airbrake_errors.each_with_index do |a_e, index| %></p>
+
+<pre><code>&lt;tr&gt;
+  &lt;td&gt;
+    &lt;%= a_e.tags.collect{ |tag|
+        link_to(tag.name, tag_path(tag)) #=&gt; "&lt;a href="adasda"&gt;Tag&lt;/a&gt;"
+    }.join(", ").html_safe %&gt;
+    &lt;/td&gt;
+    # this needs to be better understood-- TODO
+</code></pre>
+
+<p>```</p>
+
+<h3>HTTP Authentication</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/3839167/is-there-a-way-to-set-up-simple-http-authentication-for-an-app-on-heroku">This did it</a>.</li>
+</ul>
+
+
+<h3>Pushing the seed file to heroku</h3>
+
+<p><code>
+♕ heroku run rake db:seed
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Lecture 6 Ruby- Class Methods - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="Strategy&#8230; &#8211;>look for nouns to start
+url- unified resource locator
+map and collect &#8211;> returns the results of the operation&#8211;> &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://www.adamjonas.com/blog/lecture-6-ruby-class-methods/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Lecture 6 Ruby- Class Methods</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-25T10:48:00-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Strategy&#8230;</p>
+
+<p>&#8211;>look for nouns to start
+url- unified resource locator
+map and collect &#8211;> returns the results of the operation&#8211;> so it uts it into a new array</p>
+
+<p>select when you are trying to match something, cannot collect things conditionally
+(#) => library.songs.select{|s| s.name ==song_name}</p>
+
+<p>is_a? &#8211;> is this an array, this is a validator</p>
+
+<p><strong><em>HOW TO BUILD CLASS METHODS</em></strong>
+methods that don&#8217;t apply to the instance of the class but the class itself
+you can tell if it&#8217;s a class method if self is the receiver</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">self</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="o">.</span><span class="n">rank</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Another way...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'><span class="vc">@@all</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:artists</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>  <span class="vc">@@all</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="vi">@artists</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#important pattern of observing intialization and making classes intelligent</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">songs</span>
+</span><span class='line'>  <span class="n">artists</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">song</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
+</span><span class='line'>  <span class="vc">@@all</span> <span class="c1">#return all the artists ever created</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3:30 PM
+<strong><em>MODULES</em></strong> - for creating all sort of shared behavior
+- modules don&#8217;t have instances&#8211;> the difference between modules and classes</p>
+
+<p>two keywords to include behavior&#8211;> include and extend
+diff between include and extend &#8211;> trying to describe the scope of the module behavior</p>
+
+<p>extending- makes it a class methods
+include &#8211;> methods in that module are instance methods
+?? how does require fit into this??</p>
+
+<p>3:38
+?? order of attr_accessor and @@all? does it matter?</p>
+
+<p><strong><em>INHERITANCE</em></strong> &#8211; a pattern that we don&#8217;t like as much as modules
+we&#8217;d rather think of things in the builder pattern using include and extend</p>
+
+<p>2nd HALF</p>
+
+<p><strong><em>File Systems:</em></strong>
+Dir documentation (4:10)
+foreach and Dir.entries</p>
+
+<p><strong><em>ERB templates</em></strong> (4:23):
+we care about the result method for templating</p>
+
+<p><strong><em>PRIVATE AND PUBLIC METHODS</em></strong> (4:41)
+->a private method cannot be called with an explicit receiever, only implicit receivers&#8211; means they can only be called in the class</p>
+
+<p><strong><em>GEMS:</em></strong>
+-a pre-built package or functionality
+<a href="http://ruby-toolbox.com">See the Ruby Toolbox</a></p>
+
+<p><strong><em>SINATRA</em></strong> (4:44):
+-based on rack (the first )
+RACK - create a class that responds to a method called &#8216;call&#8217;
+- the response must return 3 three things- a status code, the header, the body of the response</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">rubygems</span> <span class="n">sinatra</span><span class="o">.</span><span class="n">rb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>SCRAPERS:</em></strong>
+nokogiri gem will
+xpath&#8211; path to an element or you can use an CSS adjustment
+nokogiri comes with a method called content
+rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
+
+<p>httparty-
+<a href="http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/">some reading on httparty</a>
+<a href="http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">there is more reading here</a></p>
+
+<p>open data:
+<a href="freebase.com">freebase</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-25T10:48:00-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/lecture-notes/'>lecture_notes</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/loading-up-a-new-macbook-air/" title="Previous Post: Loading up a new Macbook Air">&laquo; Loading up a new Macbook Air</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/sinatra/" title="Next Post: Sinatra">Sinatra &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/how-the-web-works/">how the web works</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/innovators-dilemma/">Innovator's Dilemma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/adamjonas">@adamjonas</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'adamjonas',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.adamjonas.com/blog/lecture-6-ruby-class-methods/';
+        var disqus_url = 'http://www.adamjonas.com/blog/lecture-6-ruby-class-methods/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: testing | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/testing/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cucumber]]></title>
+    <link href="http://www.adamjonas.com/blog/cucumber/"/>
+    <updated>2014-02-17T11:34:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/cucumber</id>
+    <content type="html"><![CDATA[<h2>Cucumber</h2>
+
+<p>Cucumber is a BDD tool that supports Outside-in development by running plain text features or user stories as acceptance tests.</p>
+
+<ul>
+<li><a href="http://blog.codeship.io/2013/04/30/BDD-With-Cucumber.html">Intro screencast</a></li>
+<li><a href="http://35qk152ejao6mi5pan29erbr9.wpengine.netdna-cdn.com/wp-content/uploads/2011/08/Cucumber-Regular-Expressions-Cheat-Sheet.pdf">cucumber regex cheatsheet</a></li>
+<li><a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">An Introduction to Outside-in Development</a></li>
+</ul>
+
+
+<h3>Features</h3>
+
+<p>Let’s create our first feature. The anatomy of a feature is the following:</p>
+
+<p><code>
+Feature: [feature]
+  In order to [business value]
+  As a [role]
+  I want to [some action]
+</code></p>
+
+<p>Notice how a feature includes who, what and most importantly: <strong><em>why</em></strong>.</p>
+
+<p>For example:</p>
+
+<p><code>
+Feature: Manage Articles
+  In order to make a blog
+  As an author
+  I want to create and manage articles
+</code></p>
+
+<h3>Scenarios</h3>
+
+<p>There will be many scenarios accompanying a feature. Scenarios will follow the four stages of testing: setup, exercise, verify and teardown. A simple scenario looks like this:</p>
+
+<p><code>
+Given [context]
+When I do [action]
+Then I should see [outcome]
+</code></p>
+
+<ul>
+<li> The <code>Given</code> step is where you set up the context of your scenario. Every scenario starts with a blank slate, so it is important to create a state in your application for example by creating data in the database, or by navigating to a specific page.</li>
+<li> The <code>When</code> step is where you exercise the application in order to accomplish what needs testing. This is usually where you might fill in forms, press buttons, click links, or otherwise interact with the system in some way.</li>
+<li> The <code>Then</code> step is where you verify the result, and it’s where we check that the correct pages are rendered, that we see a success or error message, or anything that could help us verify that the prior action was successful.</li>
+<li> The teardown, is taken care of by cucumber automatically.</li>
+</ul>
+
+
+<p>For example:</p>
+
+<p><code>
+Scenario: Articles List
+  Given I have articles titled Pizza, Breadsticks
+  When I go to the list of articles
+  Then I should see "Pizza"
+  And I should see "Breadsticks"
+</code></p>
+
+<p><code>
+Scenario: User signs up with valid data
+  When I go to the sign up page
+  And I fill in "Email" with "email@person.com"
+  And I fill in "Username" with "user"
+  And I fill in "Password" with "password"
+  And I fill in "Confirm password" with "password"
+  And I press "Sign up"
+  Then I should see "instructions for confirming"
+  And a confirmation message should be sent to "email@person.com"
+</code></p>
+
+<p>We can also test a user attempting to sign up without filling in all the fields:</p>
+
+<p><code>
+Scenario: User tries to sign up without a twiddr name
+  When I go to the sign up page
+  And I fill in "Email" with "email@person.com"
+  And I fill in "Password" with "password"
+  And I fill in "Confirm password" with "password"
+  And I press "Sign up"
+  Then the "Username" field should have the "can't be blank" error
+</code></p>
+
+<h3>Tags</h3>
+
+<p>  <code>cucumber --tags @billing --tags @important</code> -> Runs the first scenario (Scenarios with @important AND @billing)
+  <code>cucumber --tags @billing,@important</code> -> Runs both scenarios (Scenarios with @important OR @billing)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FIS Day32]]></title>
+    <link href="http://www.adamjonas.com/blog/fis-day32/"/>
+    <updated>2012-11-20T11:12:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/fis-day32</id>
+    <content type="html"><![CDATA[<h3>Git Services</h3>
+
+<ul>
+<li><a href="https://help.github.com/articles/post-receive-hooks">Service Hooks</a></li>
+<li><a href="https://github.com/github/github-services">github services repo</a></li>
+</ul>
+
+
+<h2>Dan Integration Tests</h2>
+
+<ul>
+<li>test an app end to end</li>
+<li>deal with your libs and your code</li>
+<li><p>hit external services</p>
+
+<ul>
+<li>unit tests may not test bad arguments</li>
+<li>bad db queries or scope</li>
+<li>issues with external service</li>
+</ul>
+</li>
+<li><p>Unit tests are fast</p></li>
+<li><p>speed</p>
+
+<ul>
+<li>don't use external services like the DB, that is what mocks and stubs are for</li>
+</ul>
+</li>
+<li><p>mocks, stubs and <a href="https://github.com/freerange/mocha">mocha</a></p></li>
+<li><p>controller specs -> unit tests for controllers</p>
+
+<ul>
+<li>we have 20:1 Unit:integration test ratio</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Factory Girl</h3>
+
+<ul>
+<li>reuseable test data</li>
+<li>defines attributes for a class</li>
+<li>can define relationships, like a user has an address</li>
+<li><code>FactoryGirl.create(:user)</code></li>
+<li><code>FactoryGirl.build(:user)</code></li>
+<li><code>FactoryGirl.build_stubbed(:user)</code></li>
+<li><code>FactoryGirl.attributes_for(:user)</code></li>
+</ul>
+
+
+<h3>Mocha-> stubs and mocks</h3>
+
+<ul>
+<li><a href="http://gofreerange.com/mocha/docs/">RDoc</a></li>
+<li>stubs -> sit in for this method, whenever you call this method, return this val
+
+<ul>
+<li>user.bank_balance => returns 100.
+
+<ul>
+<li><code>MyClass.stub(:x =&gt; "ABC")</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>mocks -> like stubs, but must be called the specified number of times</p>
+
+<ul>
+<li>a mock if it is called or not called will fail a test</li>
+<li>use when you need something that is a little more specific
+
+<ul>
+<li><code>MyClass.expects(:y).with("arg").returns("ABC")</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Mocha::Configuation.prevent(:stubbing_non_existent_method)</code></p></li>
+</ul>
+
+
+<h3>In Summary</h3>
+
+<ul>
+<li>Test basic behavior with intergration tests</li>
+<li>Test complex behavior with unit tests</li>
+</ul>
+
+
+<h2>Kevin</h2>
+
+<p><code>ruby
+args.each_with_object({}) do |(key, selector), attrs|
+  attrs[key] = job_doc.css(selector).text
+end
+</code></p>
+
+<ul>
+<li><p><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html">open struct object</a></p>
+
+<ul>
+<li><a href="http://www.rubyquiz.com/quiz81.html">ruby quiz on open struct</a></li>
+</ul>
+</li>
+<li><p><a href="http://amsul.github.com/pickadate.js/">Datepicker</a></p></li>
+</ul>
+
+
+<h3>Libraries to look at for Gitbo</h3>
+
+<ul>
+<li><a href="https://github.com/ender-js/Ender">Ender</a></li>
+<li><a href="https://github.com/twitter/bower">Bower</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MiniTest::Spec]]></title>
+    <link href="http://www.adamjonas.com/blog/minitest-spec/"/>
+    <updated>2012-10-24T13:30:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/minitest-spec</id>
+    <content type="html"><![CDATA[<p><code>ruby MiniTest Spec Matchers
+obj.must_be(operator, expected) - for example, 10.must_be :&lt; , 11
+obj.must_be_close_to - the equivalent of assert_in_delta
+obj.must_be_empty - Fails unless obj.empty?
+obj.must_be_instance_of(klass) - Fails unless obj.class == klass
+obj.must_be_kind_of(klass) - Fails unless obj is of class klass or klass is one of its superclasses.
+obj.must_be_nil
+obj.must_be_same_as - tests for true object equality
+lambda {}.must_be_silent
+obj.must_be_within_delta
+obj.must_be_within_epsilon
+obj.must_equal(other) - Does a ==/eql? comparison between two objects.
+obj.must_include(other)
+obj.must_match(regex) - A regular expression match, e.g. "hello".must_match /w+/
+lambda {}.must_output(stdout, [stderr..]) - The block should have certain output on stdout or stderr. Set stdout to nil just to check stderr.
+lambda {}.must_raise(exception)
+obj.must_respond_to(message)
+obj.must_throw(sym)
+</code></p>
+
+<p><code>ruby Negative Matchers too
+wont_be
+wont_be_empty
+wont_be_instance_of
+wont_be_kind_of
+wont_be_nil
+wont_be_same_as
+wont_equal
+wont_include
+wont_match
+wont_respond_to
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test Driven Development]]></title>
+    <link href="http://www.adamjonas.com/blog/test-driven-development/"/>
+    <updated>2012-10-24T13:26:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/test-driven-development</id>
+    <content type="html"><![CDATA[<p>??browser testing? this falls under acceptance tests?</p>
+
+<p><em>Difference between mock, stub, and fixture?</em> They are all a mechanisms to decouple data from the database. If your DB is down, you couldn't run your test suite.</p>
+
+<p><em>Fixtures and factories</em> sort of relate to each other so that you don't have to instantiate a bunch of objects. <em>Fixtures-</em> are stable data to be used in the test environment. Fixtures are written in YAML.</p>
+
+<p><em>mocks and stubs</em>: connect to the FB api, but you don't need to, so you create something that responses with canned data like it is the facebook api.
+<a href="http://martinfowler.com/articles/mocksArentStubs.html">See mocks aren't stubs by Martin Fowler</a></p>
+
+<p>why does a spec folder hold the tests? This outlines the specifications?
+  - A specification is an explicit set of requirements to be satisfied by a material, product, or service.</p>
+
+<p>??ping ponging - if someone writes a test and the other passes it are you switching off every 5 minutes</p>
+
+<p><a href="http://railscasts.com/episodes/275-how-i-test">"How I test" with Ryan Bates</a></p>
+
+<p>only open the browser when you need to focus on UI. Otherwise use tests.</p>
+
+<ul>
+<li><a href="https://github.com/jnicklas/capybara">capybara</a> to simulate the user
+factory-girl instead of fixtures -> where you store your factories</li>
+<li><p>guard</p></li>
+<li><p>integeration_test</p></li>
+</ul>
+
+
+<p>```ruby Capybara DSL Methods
+visit login_path</p>
+
+<pre><code>click_link "password"
+fill_in "Email", :with =&gt; user.email
+click_button "Reset Password"
+</code></pre>
+
+<p>```</p>
+
+<p><a href="http://www.skorks.com/2010/01/thoughts-on-tdd-a-case-study-with-ruby-and-rspec/">Good article on the process of testing</a></p>
+
+<h2>Steven Nunez</h2>
+
+<p>@_StevenNunez
+conway's game of life</p>
+
+<p>Testing is: the act of isolating parts of your code with a known state to ensure it works as expected</p>
+
+<p>Acceptance testing, integration and tests: cucumber, capybara, webrat</p>
+
+<p>unit tests - take a class, take tests and make objects</p>
+
+<h3>Why test?</h3>
+
+<ul>
+<li>want to know when things break</li>
+<li>allows for courageous refactoring</li>
+<li>gives documentation on how your code is SUPPOSED to work. Learn to expect tests.</li>
+<li>It is your duty to deliver working code. Verification.</li>
+</ul>
+
+
+<h3>Testing sounds like an extra step...</h3>
+
+<ul>
+<li>Forces you to think small</li>
+<li>Less thoughts to juggle</li>
+<li>Leads to modular code</li>
+<li>write less code</li>
+<li>increase documentation: see what the intention was</li>
+<li>small victories: always chasing green</li>
+</ul>
+
+
+<h3>RSpec</h3>
+
+<ul>
+<li>RSpec provides something called subject
+
+<ul>
+<li>subject = Class.new</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Write the code you wish you had</h3>
+
+<ul>
+<li>test with none, test with 1, test with some</li>
+<li>can write a pending test by just writing it blocks</li>
+</ul>
+
+
+<p>BDD is more route => controller => model
+TDD is more model => controller => route</p>
+
+<p>practical object oriented design by <a href="http://www.poodr.info">sandi metz</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Unit Testing]]></title>
+    <link href="http://www.adamjonas.com/blog/rails-unit-testing/"/>
+    <updated>2012-09-24T13:20:00-04:00</updated>
+    <id>http://www.adamjonas.com/blog/rails-unit-testing</id>
+    <content type="html"><![CDATA[<h3>Rails Testing</h3>
+
+<ul>
+<li>Verification Testing</li>
+<li>Test First</li>
+<li>Test Driven Design</li>
+</ul>
+
+
+<h3>Unit Testing</h3>
+
+<ul>
+<li>Piecing of our applications in isolation from other parts</li>
+<li>Easy to debug</li>
+<li>Leads to good documentation</li>
+</ul>
+
+
+<p>WHY TEST::UNIT rather than RSPEC
+- More basic testing library and what rails uses by default
+- similar to other testing libraries from other languages</p>
+
+<p><code>ruby Assert List
+assert &lt;conditional&gt;
+assert_equal &lt;expected&gt;, &lt;actual&gt;
+assert_not_equal
+assert_respond_to &lt;object&gt;, :&lt;method&gt;
+assert_nil &lt;object&gt;
+assert_not_nil &lt;object&gt;
+assert_match &lt;pattern&gt;, &lt;string&gt;
+assert_no_match &lt;pattern&gt;, &lt;string&gt;
+assert_raise(&lt;error&gt;) { &lt;code to raise error&gt; }
+assert_kind_of(&lt;Class&gt;, &lt;object&gt;)
+</code></p>
+
+<p>```ruby
+<subject>_test.rb</p>
+
+<p>require "test/unit"</p>
+
+<p>class <Subject>Test &lt; Test::Unit::TestCase</p>
+
+<pre><code>def test_&lt;what_we_are_testing&gt;
+    &lt;assertion&gt;
+end
+</code></pre>
+
+<p>end</p>
+
+<h1>E.g.</h1>
+
+<p>require "test/unit"</p>
+
+<p>class BooleanTest &lt; Test::Unit::TestCase</p>
+
+<pre><code>def test_true_is_true
+#the 2nd parameter is puts on failure.
+    assert true, "True should be truthy"
+end
+</code></pre>
+
+<p>end</p>
+
+<h1>another e.g.</h1>
+
+<p>require 'test/unit'</p>
+
+<p>class ConditionalTest &lt; Test::Unit::TestCase
+  def test_one_is_greater_than_one</p>
+
+<pre><code>assert 1 &gt; 0, "One is not greater than zero"
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>e.g.</h1>
+
+<p>class MultipleTest &lt; Test::Unit::TestCase
+  def test_multiple_of</p>
+
+<pre><code>assert Multiple.multiple_of?(10, 5), "10 should be a multiple of 5"
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p><em>The best tests have one assertion.</em></p>
+
+<h3>Red, Green, Refactor</h3>
+
+<ol>
+<li>Red: Write a failing test</li>
+<li>Green: Write enough code to make it pass</li>
+<li>Refactor: Refactor your code</li>
+</ol>
+
+
+<p>```ruby assert_respond_to
+def test_humanize_function_added_to_string</p>
+
+<h1>assert_respond_to <object>, &lt;:method></h1>
+
+<p>  assert_respond_to "blah", :humanize
+end
+```</p>
+
+<p>```ruby Assert_match
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_zombify_brains</p>
+
+<pre><code>z = Zombifier.new('I love your arms')
+#assert_match &lt;regex&gt;, &lt;string&gt;
+assert_match /brains/, z.zombify.humanize
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_zombify_upcase</p>
+
+<pre><code>z = Zombifier.new("Hello world").zombify
+#assert_equal "&lt;expected string&gt;", "&lt;actual string&gt;"
+assert_equal "HELLO WORLD BRAINS", z
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby assert_raise
+  #assert_raise(RuntimeError) { "zombie".humanize }
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_brains_in_zombify_raises_error</p>
+
+<pre><code>z = Zombifier.new('BRAINS')
+assert_raise(RuntimeError) { z.zombify }
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>```ruby
+class ZombifierTest &lt; Test::Unit::TestCase
+  def test_zombify_returns_a_string</p>
+
+<pre><code>z = Zombifier.new('I like knees')
+</code></pre>
+
+<p>   #assert_kind_of(<Class>, <object>)</p>
+
+<pre><code>assert_kind_of(String, z.zombify)
+</code></pre>
+
+<p>  end
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

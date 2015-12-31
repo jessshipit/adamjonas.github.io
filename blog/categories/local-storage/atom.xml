@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: local_storage | Hack hack hack...]]></title>
+  <link href="http://www.adamjonas.com/blog/categories/local-storage/atom.xml" rel="self"/>
+  <link href="http://www.adamjonas.com/"/>
+  <updated>2015-12-29T17:29:18-05:00</updated>
+  <id>http://www.adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Local Storage]]></title>
+    <link href="http://www.adamjonas.com/blog/local-storage/"/>
+    <updated>2013-11-11T15:38:00-05:00</updated>
+    <id>http://www.adamjonas.com/blog/local-storage</id>
+    <content type="html"><![CDATA[<h3>From KCA</h3>
+
+<ul>
+<li>used <a href="https://github.com/marcuswestin/store.js">store.js</a></li>
+<li>nice <a href="http://javascriptplayground.com/blog/2012/06/javascript-local-storage-store-js-tutorial">little screencast</a></li>
+<li>here is an <a href="http://coding.smashingmagazine.com/2010/10/11/local-storage-and-how-to-use-it/">older article</a> from 2010</li>
+<li><em>NOTE:</em> We ended up using <a href="https://github.com/marcuswestin/store.js/blob/master/store%2Bjson2.min.js">store.js with json</a> because ie7 apparently doesn't come equiped with JSON. Tom and I broke our heads trying to figure out why <code>store.enabled</code> wasn't <code>true</code> for ie7. It came down to the fact that ie7 didn't have JSON.</li>
+</ul>
+
+
+<p>Thought this was a cool little way to store whether a td square had been clicked on...
+```
+addRedTiles: ->
+  selected = store.get("board_#{@board_id}")</p>
+
+<p>  for tile_number in selected</p>
+
+<pre><code>$("[data-title-num=#{tile_number}]").addClass('clicked_space')
+</code></pre>
+
+<p>duringBoardClick: ->
+  if store.enabled</p>
+
+<pre><code>$('td').click =&gt;
+  $(event.target).toggleClass('clicked_space')
+  clicked_tiles = []
+  all_clicked = $('td.clicked_space')
+
+  for tile in all_clicked
+    clicked_tiles.push $(tile).attr('data-title-num')
+
+  store.set("board_#{@board_id}", clicked_tiles)
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>console?.log? 'store is not enabled'
+</code></pre>
+
+<p>```</p>
+
+<p>```javascript This needed to be updated b/c of event.targer
+duringBoardClick: ->
+  if store.enabled</p>
+
+<pre><code>board_id = @board_id
+\\notice that I declared the above variable
+$('td').click -&gt; \\and changed this to a single -&gt;
+  $(@).toggleClass('clicked_space')
+  clicked_tiles = []
+  all_clicked = $('td.clicked_space')
+
+  for tile in all_clicked
+    clicked_tiles.push $(tile).attr('data-title-num')
+
+  store.set("board_#{board_id}", clicked_tiles)
+  \\board then becomes a local
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>console?.log? 'store is not enabled' 
+</code></pre>
+
+<p>```</p>
+
+<h3>local storage versus cookies</h3>
+
+<ul>
+<li><strong>client versus server</strong> -> Cookies and local storage really serve difference purposes. Cookies are primarily for reading server-side, local storage can only be read client-side. So the question is, in your app, who needs this data — the client or the server? If it's your client (your JavaScript), then by all means switch. You're wasting bandwidth by sending all the data in each HTTP header. If it's your server, local storage isn't so useful because you'd have to forward the data along somehow (with Ajax or hidden form fields or something). This might be okay if the server only needs a small subset of the total data for each request.</li>
+<li><strong>Size</strong> -> Apart from being an old way of saving data, Cookies give you a limit of 4096 bytes (4095, actually) - its per cookie. Local Storage is as big as 5MB per domain.</li>
+<li>you can test your local storage <a href="http://arty.name/localstorage.html">here</a>.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
