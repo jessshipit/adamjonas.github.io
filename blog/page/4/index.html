@@ -9,7 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="I had a bunch of issues getting pow up and running after I upgraded to Mavricks. I ended up not installing via the curl method that the 37signals &hellip;">
+  <meta name="description" content="Receive Message Chain In lieu of the depreciated stub_chain there is now receive_message_chain. receive_message_chain1
+2
+allow(obj).to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,7 +95,7 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/pow-config/">Pow Config</a></h1>
+        <h1 class="entry-title"><a href="/blog/testing-with-logan/">Testing With Logan</a></h1>
       
     
     
@@ -110,26 +112,48 @@
   
 
 
-<time datetime="2014-02-19T16:01:00-05:00" pubdate data-updated="true">Feb 19<span>th</span>, 2014</time>
+<time datetime="2014-07-25T12:37:00-04:00" pubdate data-updated="true">Jul 25<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>I had a bunch of issues getting pow up and running after I upgraded to Mavricks. I ended up not installing via the <code>curl</code> method that the <a href="http://pow.cx/">37signals suggests</a> as it wasn&#8217;t recognizing my rbenv and was running on my system ruby. So I uninstalled and tried it with <code>homebrew</code>, which required a different path in my <code>.powconfig</code> file. Just like the <a href="https://github.com/basecamp/pow/wiki/Troubleshooting#rbenv">troubleshooter</a> said it would via the <a href="https://github.com/basecamp/pow/issues/202#issuecomment-2640707">github issue</a>, this worked.</p>
-
-<p>Final code: <code>export PATH="/usr/local/opt/rbenv/shims:/usr/local/opt/rbenv/bin:$PATH"</code></p>
-
-<p>Boom! Smack! Pow!</p>
-
-<h2>UPDATE (Summer &#8216;14):</h2>
-
-<p>The new hotness is <a href="https://ngrok.com/">ngrok</a>. An easier way to expose a local web server to the internet. It&#8217;s the jam.</p>
+  <div class="entry-content"><h3>Receive Message Chain</h3>
 
 <ul>
-<li>Works with <code>ngrok localhost:3000</code> for a rails app for example.</li>
-<li>Then open it up on the provided url and you&#8217;ve got yourself a stew.</li>
+<li>In lieu of the depreciated <code>stub_chain</code> there is now <a href="https://github.com/rspec/rspec-mocks/pull/467"><code>receive_message_chain</code></a>.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>receive_message_chain</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">allow</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive_message_chain</span><span class="p">(</span><span class="ss">:foo</span><span class="p">,</span> <span class="ss">:bar</span><span class="p">)</span><span class="o">.</span><span class="n">and_return</span><span class="p">(</span><span class="n">double</span><span class="p">)</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:bazz</span><span class="p">)</span><span class="o">.</span><span class="n">with</span><span class="p">(</span><span class="sr">/adfads/</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Yielding multiple variables</h3>
+
+<ul>
+<li><code>allow(fake_container).to receive(:attach).and_yield("stdout", "some message\n")</code></li>
+</ul>
+
+
+<h3><code>expect_any_instance_of</code></h3>
+
+<ul>
+<li>expect_any_instance_of(Object).to receive(:subscribe) <a href="http://stackoverflow.com/a/17577942/1496757">isn&#8217;t very well documented</a>, but <a href="http://rubydoc.info/gems/rspec-mocks/RSpec/Mocks/ExampleMethods:expect_any_instance_of">it&#8217;s in there</a>.</li>
+</ul>
+
+
+<h3>Testing Sidekiq</h3>
+
+<ul>
+<li><a href="https://github.com/mperham">Mike Perham</a> did a nice job documenting the <a href="https://github.com/mperham/sidekiq/wiki/Testing">testing options for workers</a>.
+
+<h3>Detecting pending migrations</h3></li>
+<li>A neat little trick to see if there are pending migrations <code>rake db:migrate:status</code>. This must have been built into rails because I see a message every time I haven&#8217;t run a migration and I am running my test suite. It&#8217;s cool nonetheless. <a href="http://stackoverflow.com/questions/1349047/show-pending-migrations-in-rails">Source</a></li>
 </ul>
 
 </div>
@@ -145,7 +169,7 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/cucumber-with-scott/">Cucumber With Scott</a></h1>
+        <h1 class="entry-title"><a href="/blog/root-route-takes-parameters/">Root Route Takes Parameters</a></h1>
       
     
     
@@ -162,89 +186,16 @@
   
 
 
-<time datetime="2014-02-17T15:09:00-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
+<time datetime="2014-07-16T17:51:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>The point of BDD is to build a system form a perspective of a user, rather than just as a developer.</p>
+  <div class="entry-content"><h3>Looking for a hacky way to hard code your root path?</h3>
 
-<h2>Login</h2>
-
-<p>As a partner, I need to be able to login, so that I can update my upcoming events.</p>
-
-<p>Need to deliver a story and prove that it works.</p>
-
-<p>An integration test is any test that cross the boundries of a system</p>
-
-<h3>Why cucumber</h3>
-
-<ul>
-<li>Gherkin language for feature files</li>
-<li>rspec for tests</li>
-<li>capybara to drive the browser</li>
-</ul>
-
-
-<p>The tools are the same just when with gherkin thrown on top
-  - cucumber is platform and language agnostic</p>
-
-<p>So a problem I have is when to test built in features of the framework or gem.</p>
-
-<h2>Given, When, Then</h2>
-
-<ul>
-<li><p>same as Arrage, Act, Assert (which is what ALL tests do) in people talk</p></li>
-<li><p>Arrage</p>
-
-<p><code>let(:something) {do_something}</code></p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">arrange_things</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Act, and Assert</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;does something when I do this&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">do_a_thing</span> <span class="c1">#=&gt; act</span>
-</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">that_thing</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="c1">#=&gt; assert</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Misc</h3>
-
-<ul>
-<li>user regex in the step file if you are going to reuse it</li>
-<li>acceptance tests should be used to test large swatches rather than every permuation</li>
-</ul>
-
-
-<h3>tags</h3>
-
-<ul>
-<li><code>@pause</code> like a binding</li>
-<li><code>@wip</code> won&#8217;t run unless specified to run</li>
-<li>custom tags work too, so even then you&#8217;d run it with <code>cucumber -t @jonas</code></li>
-<li>or you can run multiple tags at one time, e.g. <code>cucumber --tags @billing,@important</code></li>
-</ul>
-
+<p>Look no further: <code>root to: 'controller#action', hello_id: 1, finder_id: 1, laser_id: 1, sharks_id: 4</code> <a href="http://stackoverflow.com/a/22923920/1496757">via</a></p>
 </div>
   
   
@@ -258,7 +209,7 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/cucumber/">Cucumber</a></h1>
+        <h1 class="entry-title"><a href="/blog/stubbing-out-faraday/">Stubbing Out Faraday</a></h1>
       
     
     
@@ -275,89 +226,348 @@
   
 
 
-<time datetime="2014-02-17T11:34:00-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
+<time datetime="2014-07-15T11:49:00-04:00" pubdate data-updated="true">Jul 15<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h2>Cucumber</h2>
-
-<p>Cucumber is a BDD tool that supports Outside-in development by running plain text features or user stories as acceptance tests.</p>
+  <div class="entry-content"><h3>Webmock to disable net connections</h3>
 
 <ul>
-<li><a href="http://blog.codeship.io/2013/04/30/BDD-With-Cucumber.html">Intro screencast</a></li>
-<li><a href="http://35qk152ejao6mi5pan29erbr9.wpengine.netdna-cdn.com/wp-content/uploads/2011/08/Cucumber-Regular-Expressions-Cheat-Sheet.pdf">cucumber regex cheatsheet</a></li>
-<li><a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">An Introduction to Outside-in Development</a></li>
+<li><a href="https://github.com/bblimke/webmock#real-requests-to-network-can-be-allowed-or-disabled">Just toss it in the <code>spec_helper</code></a>
+
+<ul>
+<li><strong><em>Note</em></strong> that I had to use <code>WebMock.disable_net_connect!(:allow_localhost =&gt; true)</code> in the cucumber <code>support/env.rb</code> because my local host wasn&#8217;t being allowed to run on the ci. <a href="https://github.com/bblimke/webmock/issues/284">picked this up from issue #284 on webmocks</a></li>
+</ul>
+</li>
 </ul>
 
 
-<h3>Features</h3>
-
-<p>Let’s create our first feature. The anatomy of a feature is the following:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Feature: [feature]
-</span><span class='line'>  In order to [business value]
-</span><span class='line'>  As a [role]
-</span><span class='line'>  I want to [some action]</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Notice how a feature includes who, what and most importantly: <strong><em>why</em></strong>.</p>
-
-<p>For example:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Feature: Manage Articles
-</span><span class='line'>  In order to make a blog
-</span><span class='line'>  As an author
-</span><span class='line'>  I want to create and manage articles</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Scenarios</h3>
-
-<p>There will be many scenarios accompanying a feature. Scenarios will follow the four stages of testing: setup, exercise, verify and teardown. A simple scenario looks like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Given [context]
-</span><span class='line'>When I do [action]
-</span><span class='line'>Then I should see [outcome]</span></code></pre></td></tr></table></div></figure>
-
+<h3>Rspec Mocks</h3>
 
 <ul>
-<li> The <code>Given</code> step is where you set up the context of your scenario. Every scenario starts with a blank slate, so it is important to create a state in your application for example by creating data in the database, or by navigating to a specific page.</li>
-<li> The <code>When</code> step is where you exercise the application in order to accomplish what needs testing. This is usually where you might fill in forms, press buttons, click links, or otherwise interact with the system in some way.</li>
-<li> The <code>Then</code> step is where you verify the result, and it’s where we check that the correct pages are rendered, that we see a success or error message, or anything that could help us verify that the prior action was successful.</li>
-<li> The teardown, is taken care of by cucumber automatically.</li>
+<li>Can use the <a href="https://github.com/rspec/rspec-mocks#method-stubs">new syntax</a> or mocha.</li>
 </ul>
 
 
-<p>For example:</p>
+<h3>To stub it out I could either</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>These Both Work</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: Articles List
-</span><span class='line'>  Given I have articles titled Pizza, Breadsticks
-</span><span class='line'>  When I go to the list of articles
-</span><span class='line'>  Then I should see "Pizza"
-</span><span class='line'>  And I should see "Breadsticks"</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">allow</span><span class="p">(</span><span class="no">MyService</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:new</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">allow_any_instance_of</span><span class="p">(</span><span class="no">MyService</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:publish</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Really cool. The <code>allow_any_instance_of()</code> is pretty sweet to reference an unnamed instance of a class. Pretty sweet.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/web-sockets-versus-nginx-push-state-versus-action-controller-live/">Web Sockets Versus Nginx Push State Versus Action_controller::live</a></h1>
+      
+    
+    
+      <p class="meta">
+        
 
 
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+
+
+
+
+  
+
+
+<time datetime="2014-07-02T17:52:00-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>The Decision</h2>
+
+<h2>Nginx Push State</h2>
+
+<p>https://gist.github.com/loganhasson/c8bfff2767ea74187cf0</p>
+
+<h2>Enter Heroku</h2>
+
+<p>Clearly keeping a threaded server open with the warning below is not ideal:</p>
+
+<blockquote><p>Long-polling and streaming responses</p></blockquote>
+
+<p>Cedar supports HTTP 1.1 features such as long-polling and streaming responses. An application has an initial 30 second window to respond with a single byte back to the client. However, each byte transmitted thereafter (either received from the client or sent by your application) resets a rolling 55 second window. If no data is sent during the 55 second window, the connection will be terminated.</p>
+
+<p>If you’re sending a streaming response, such as with server-sent events, you’ll need to detect when the client has hung up, and make sure your app server closes the connection promptly. If the server keeps the connection open for 55 seconds without sending any data, you’ll see a request timeout.</p>
+
+<ul>
+<li>There are some solutions out there:
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/17285961/http-streaming-connection-sse-client-disconnect-not-detected-with-sinatra-thin">Like</a></li>
+<li><a href="https://gist.github.com/Funfun/6867167">Or</a></li>
+</ol>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/presenter-objects/">Presenter Objects</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-17T18:49:00-04:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>From our PR thread</h3>
+
+<ul>
+<li><p>A presenter object is a simply a PORO (plain ol&#8217; ruby object), constructed by the controller out of the data of one or more models, whose attributes serve the view
+layer. So in our case we give a view a <code>LessonPresenter</code> that has a <code>css_class</code> attribute and remove all decision making from the view layer (which is the ideal goal).</p></li>
+<li><p>It&#8217;s not a &#8220;service&#8221; object, it&#8217;s a presenter so it would go in the <code>presenters</code> folder. This is also sometimes called a &#8220;view model&#8221; or a &#8220;view object&#8221;. The word &#8220;presenter&#8221; is overloaded a lot.</p></li>
+<li><p>This an interesting read on a few <a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/"><code>model refactoring patterns</code></a>:</p></li>
+<li><p>So instead of a collection of Lessons at the view level, you&#8217;d be dealing with a collection of LessonPresenters or similar. Alternatively, you can just put that method on the lesson object itself, which is simpler and more straightforward but not strictly Single Responsibility Principle/Seperation of Concerns/Model View Controller compliant. tradeoffs.</p></li>
+</ul>
+
+
+<blockquote><p>Is it a terrible idea to have LessonPresenter inherit from Lesson?</p></blockquote>
+
+<p>A: Strictly speaking in terms of OO, inheritance describes an &#8220;is-a&#8221; relationship, and you can&#8217;t say that a lessonpresenter is a lesson, so introducing an inheritance chain is probably inappropriate. There is some duplication to this pattern. Typically a viewmodel exposes only the attributes needed to satisfy the needs of the view, and you&#8217;d fill them in from the corresponding model on construction.</p>
+
+<p>While this seems on the surface to violate DRY (and be duplicate work), i&#8217;d argue that it&#8217;s no more repetition than creating factories with the same attributes as models. Separate objects for separate purposes.</p>
+
+<p>You could get away with hanging a lesson off of the presenter so that you could access it at the view level, but that&#8217;s a law of demeter violation and breaks encapsulation.</p>
+
+<p>You could do the method_missing bit and delegate to the object. that&#8217;s slick and rubyish. Where that falls apart though is implementing this pattern across more than one model. Because we&#8217;re not really building a &#8220;presenter for a lesson&#8221;, we&#8217;re building a presentation object for a view that represents the model data behind it.</p>
+
+<p>Already this answer is complicated, but there&#8217;s just always a lot of decisions that go into making architectural choices. It may be the case that for this one thing, creating a method on the Lesson itself is the &#8220;simplest thing that could possibly work&#8221; and satisfies one of our tenets of agile, and then we delay the big architectural choice until we need a second or third thing.</p>
+
+<p>I support whichever choice you make (probably) as long as you have unit tests to support later refactoring :smile_cat:</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/okrs-for-engineers/">Okrs for Engineers</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-17T18:05:00-04:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Notes</h3>
+
+<ul>
+<li>lead developer&#8217;s OKRs mostly product focused
+
+<ul>
+<li>and their product responsibilites become one piece of their bonus compensation (also would include overall company success (no bonus is the company didn&#8217;t make money)).</li>
+</ul>
+</li>
+<li>break to feature or objective into smaller product pieces for engineers if possible.</li>
+</ul>
+
+
+<p>OKRs for engineers below lead devs are difficult. Goals become more task oriented. E.g.</p>
+
+<ul>
+<li>2 ruby meetups a month</li>
+<li>satisfactory 360 feedback</li>
+<li>biweekly one on ones (address concerns of manager)</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/cucumber-trick-shots/">Cucumber Trick Shots</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-14T13:34:00-04:00" pubdate data-updated="true">May 14<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Remove unused step definitions</h3>
+
+<ul>
+<li><code>cucumber --dry-run -f stepdefs</code> will show a list of all unused step definitions <a href="http://stackoverflow.com/a/9164676/1496757">via</a>.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rspec-keywords/">Rspec Keywords</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-08T14:24:00-04:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Feedback on my misuse of rspec keywords (and <code>context</code> in particular):</p>
+
+<ul>
+<li><code>Context</code> describes an execution context, or an arrangement of the system, not an action.</li>
+<li>It helps to always think of <code>context</code> blocks in terms of &#8220;when &#8230;&#8221; and it is usual to begin <code>contexts</code> with a when.</li>
+</ul>
+
+
+<p>The layout is like this:</p>
+
+<ul>
+<li><code>describe</code> some system/class/function
+
+<ul>
+<li><code>context</code> &#8220;when condition A is true about the system&#8221;
+
+<ul>
+<li>it &#8220;behaves thusly&#8221;</li>
+</ul>
+</li>
+<li>context &#8220;when condition B is true about the system&#8221;
+
+<ul>
+<li>it &#8220;behaves thusly&#8221;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>A classic example might be:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -366,39 +576,25 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: User signs up with valid data
-</span><span class='line'>  When I go to the sign up page
-</span><span class='line'>  And I fill in "Email" with "email@person.com"
-</span><span class='line'>  And I fill in "Username" with "user"
-</span><span class='line'>  And I fill in "Password" with "password"
-</span><span class='line'>  And I fill in "Confirm password" with "password"
-</span><span class='line'>  And I press "Sign up"
-</span><span class='line'>  Then I should see "instructions for confirming"
-</span><span class='line'>  And a confirmation message should be sent to "email@person.com"</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="no">SomeController</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">describe</span> <span class="s2">&quot;GET new&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">context</span> <span class="s2">&quot;when logged in&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;renders this page&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">context</span> <span class="s2">&quot;when admin&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;renders this other page&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">context</span> <span class="s2">&quot;when visitor&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;redirects to login&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-
-<p>We can also test a user attempting to sign up without filling in all the fields:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: User tries to sign up without a twiddr name
-</span><span class='line'>  When I go to the sign up page
-</span><span class='line'>  And I fill in "Email" with "email@person.com"
-</span><span class='line'>  And I fill in "Password" with "password"
-</span><span class='line'>  And I fill in "Confirm password" with "password"
-</span><span class='line'>  And I press "Sign up"
-</span><span class='line'>  Then the "Username" field should have the "can't be blank" error</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Tags</h3>
-
-<p>  <code>cucumber --tags @billing --tags @important</code> -> Runs the first scenario (Scenarios with @important AND @billing)
-  <code>cucumber --tags @billing,@important</code> -> Runs both scenarios (Scenarios with @important OR @billing)</p>
 </div>
   
   
@@ -412,7 +608,7 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/wit/">Wit</a></h1>
+        <h1 class="entry-title"><a href="/blog/rails-4-csrf-handling/">Rails 4 CSRF Handling</a></h1>
       
     
     
@@ -429,108 +625,26 @@
   
 
 
-<time datetime="2014-02-13T14:15:00-05:00" pubdate data-updated="true">Feb 13<span>th</span>, 2014</time>
+<time datetime="2014-05-01T11:19:00-04:00" pubdate data-updated="true">May 1<span>st</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h2>.ruby-version &amp; rbenv</h2>
+  <div class="entry-content"><h2>Setup</h2>
 
-<ul>
-<li>so rbenv now does support a ruby version file but doesn&#8217;t support fuzzy matching. <a href="http://stackoverflow.com/questions/18634933/how-can-i-make-rbenv-recognise-1-9-3-p-ruby-versions">See</a>.</li>
-</ul>
+<p>Right now we are building &#8220;Ironboard&#8221; (title is WIP) &#8211; an application that makes makes consuming prework a breeze for students and creating and organizing prework a breeze for teachers. This application is going to fit into a workflow that kicks off when a student pays their deposit. The short version is that another internal app is going to ping an endpoint on Ironboard, which internally will generate an email invitation and enroll that student in course so that the instructor can track their progress.</p>
 
+<h2>CSRF</h2>
 
-<h2>Multipart = true</h2>
+<p>I&#8217;ve read the <a href="http://guides.rubyonrails.org/security.html">rails security guide</a>. I searched <a href="http://stackoverflow.com/questions/16258911/rails-4-authenticity-token">stackoverflow</a> and quite frankly the documentation for handling CSRF in rails 4 is sucky. <a href="http://alexcoco.com/forgery-protection-strategy/">Alex Coco</a> seems to have done the most documentation here. Buried in all of this is the <a href="http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/">proper way to handle cross-domain requests</a> in 2011:</p>
 
-<ul>
-<li>HTML forms provide two methods of encoding. The default is application/x-www-form-urlencoded, which is more or less the same as a query string on the end of the URL. The other, multipart/form-data, is a more complicated encoding but one which allows entire files to be included in the data. <a href="http://stackoverflow.com/a/4526286/1496757">via</a></li>
-</ul>
+<blockquote><p>Users can override this behaviour by overriding <code>handle_unverified_request</code> in their own controllers.</p></blockquote>
 
+<p>Most answers that are out there have to do with disabling the <code>protect_from_forgery</code> method in a specfic controller for a specific action. This hides csrf vulnerability, but I&#8217;m not sure that disabling token authenticity makes things any better. Why use <code>protect_from_forgery except: :ping_from_registrar</code> when we could use the <code>handle_unverified_request</code></p>
 
-<h2>Devise</h2>
-
-<ul>
-<li>had trouble with validation requirements built into the <code>validatable</code> module and configuring it to allow a user to edit their profile without requiring a password, which involved destroying the session because the salted password had changed. I ended up ripping it out and going with a <code>validates_presence_of :password, :on =&gt; :create</code> instead.
-
-<ul>
-<li><a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password">I had attempted this</a>, but it seemed like a lot of work.</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>Factory Girl Associations</h2>
-
-<p><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#associations">From the docs</a> it&#8217;s possible to set up associations within factories. If the factory name is the same as the association name, the factory name can be left out.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'>  <span class="n">author</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>To not save the associated object, specify strategy: <code>:build</code> in the factory:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'>  <span class="n">association</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">factory</span><span class="p">:</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">strategy</span><span class="p">:</span> <span class="ss">:build</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This does <em>not</em> work; causes author_id to be nil</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:post</span> <span class="k">do</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'>  <span class="n">author</span> <span class="ss">strategy</span><span class="p">:</span> <span class="ss">:build</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Staging assets broken</h2>
-
-<p>Racked my brain (and everyone elses) over this one&#8230; It ended up I hadn&#8217;t added the <code>rails_12factor</code> gem to staging though I had added that environment.</p>
-
-<h2>Capybara cheatsheet</h2>
-
-<p><a href="https://gist.github.com/zhengjia/428105">Cheatsheet</a></p>
-
-<h2>Server TimeZone</h2>
-
-<ul>
-<li>had a feature that pulls events once they have passed. Heroku&#8217;s time zone is by default set to <code>UTC</code>. So I did two things:
-
-<ol>
-<li>heroku config:add TZ=&#8221;America/New_York&#8221; as described <a href="http://blog.pardner.com/2012/08/setting-the-default-time-zone-for-a-heroku-app/">here</a>.</li>
-<li>Set <code>config.time_zone = 'Eastern Time (US &amp; Canada)'</code> in <code>application.rb</code> as described in the <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html">rails docs</a>.</li>
-</ol>
-</li>
-</ul>
-
-
-<h3>Fragment Caching</h3>
-
-<ul>
-<li><p>Had an issue expiring the fragment cache. The issue was that when you cache the fragment in your view, a cache digest is being added to the cache key (views/all_available_releases/41cb0a928326986f35f41c52bb3d8352), but <code>expire_fragment</code> is not using the digest (views/all_available_releases).</p></li>
-<li><p>By adding <code>skip_digest: true</code> to the cache call in the view it should prevent the digest from being used.</p></li>
-</ul>
-
+<p>We ended up using:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -540,22 +654,40 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="s2">&quot;all_available_releases&quot;</span><span class="p">,</span> <span class="n">skip_digest</span><span class="p">:</span> <span class="kp">true</span> <span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx"> &lt;% @releases.each do |release| %&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% cache(release) </span><span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">   &lt;html code with&gt;</span>
-</span><span class='line'>   <span class="o">&lt;%</span><span class="n">ruby</span> <span class="n">code</span> <span class="vi">@release</span><span class="o">.</span><span class="n">name</span> <span class="n">blah</span> <span class="n">blah</span> <span class="n">blah</span><span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;%end%&gt;</span>
-</span><span class='line'> <span class="o">&lt;%</span><span class="k">end</span><span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">&lt;%end%&gt;</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">FooController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">skip_before_action</span> <span class="ss">:authenticate_user!</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">handle_unverified_request</span>
+</span><span class='line'>    <span class="n">authenticate_token</span> <span class="o">||</span> <span class="n">render_unauthorized</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">authenticate_token</span>
+</span><span class='line'>    <span class="n">authenticate_with_http_token</span> <span class="k">do</span> <span class="o">|</span><span class="n">token</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">token</span><span class="o">.</span><span class="n">eql?</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;API_TOKEN&#39;</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">render_unauthorized</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">headers</span><span class="o">[</span><span class="s1">&#39;WWW-Authenticate&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Token realm=&quot;Application&quot;&#39;</span>
+</span><span class='line'>    <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="s1">&#39;Bad credentials&#39;</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="mi">401</span>
+</span><span class='line'>  <span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-<li>Cache digests are only intended to be used with automatic cache expiration. If you need to manually expire cache keys then you can&#8217;t use cache digests.</li>
-<li>Saved by <a href="http://stackoverflow.com/a/17619414/1496757">stackoverflow</a></li>
-</ul>
+<p>I think this is pretty awesome.</p>
 
+<p><a href="http://stackoverflow.com/questions/12761544/rspec-request-how-to-set-http-authorization-header-for-all-requests">This was helpful</a> as was <a href="http://blog.envylabs.com/post/75521798481/token-based-authentication-in-rails">this</a>.</p>
 </div>
   
   
@@ -569,7 +701,7 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/new-beginnings/">New Beginnings</a></h1>
+        <h1 class="entry-title"><a href="/blog/user-stories/">User Stories</a></h1>
       
     
     
@@ -586,302 +718,23 @@
   
 
 
-<time datetime="2014-02-03T20:31:00-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+<time datetime="2014-04-14T10:38:00-04:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>It has been a little more than a year from when I started at <a href="http://carrot.is">Carrot Creative</a>. It has been an <a href="http://www.nytimes.com/2013/12/11/business/media/vice-media-buys-a-tech-company-to-experiment-with-content-distribution.html?_r=0">exciting year in Carrot history</a> and year in which I had some personal milestones. Carrot was the perfect place for me over the past year and I&#8217;m eternally grateful for the opportunity to work on some large scale using a variety of technologies.</p>
-
-<p>I am excited to be returning to the <a href="http://flatironschool.com">Flatiron School</a>, this time as an instructor. Working with eager students who want to change the world through code is an exciting proposition and one I ultimately couldn&#8217;t resist.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/computer-chips-rd2/">Computer Chips Rd2</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-24T12:55:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Devise</h3>
-
-<ol>
-<li>ran into issues with rails 4 strong parameters. <a href="https://github.com/plataformatec/devise/#strong-parameters">See</a></li>
-<li>Then my user edit form was not writing to the DB because the <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb#L88">update_resource method</a> requires a current password parameter passed along
-
-<ul>
-<li>one <a href="https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-account-without-providing-a-password">can override this default behavior</a></li>
-</ul>
-</li>
-</ol>
-
-
-<h3>State Machine Transitions</h3>
-
-<ul>
-<li>ended up going with <a href="https://github.com/troessner/transitions">transitions</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/marionette-cms/">Marionette-cms</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-15T16:59:00-05:00" pubdate data-updated="true">Jan 15<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Jade template</h3>
-
-<p>  <code>&lt;%- %&gt;</code> insert into DOM
-  <code>&lt;%= %&gt;</code> html escapes?</p>
-
-<h3>Markdown</h3>
-
-<ul>
-<li>so apparently markdown doesn&#8217;t come standard? I installed <a href="https://github.com/chjj/marked">marked</a> as the markdown interpreter.
-
-<ul>
-<li>with an install with npm this gave immediate markdown functionality to the jade templates, but it was still required in the specific model in order to call markdown related functions on a string of markdown within the template helper.</li>
-</ul>
-</li>
-<li>I also need to translate the modifications made to the HTML on the page to be translated back into markdown to store them on the server. This required another plugin and I settled on <a href="https://github.com/neocotic/html.md">html.md</a>. The install was clean and worked smoothly from the start.</li>
-</ul>
-
-
-<h3><code>This</code> in the view</h3>
-
-<ul>
-<li>something that was not immediately apparent was the fact that <code>this</code> has different meanings in the template helper versus <code>onRender</code> for example.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/node-express-backbone-marionette-sorting-out-the-pieces/">Node, Express, Backbone and Marionette &#8211; Sorting Out the Pieces</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-10T17:47:00-05:00" pubdate data-updated="true">Jan 10<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Express with Node</h3>
-
-<ul>
-<li>Express is a framework that takes Node from a barebones application and turns it into something that behaves more like the web servers we&#8217;re all used to working with.</li>
-<li>Express feels like the <a href="http://www.sinatrarb.com/">sinatra</a> of node.</li>
-</ul>
-
-
-<h3>Bower vs. npm</h3>
-
-<ul>
-<li>It was advised that bower is the front end dependencies package manager, where the npm is for the backend. <a href="https://www.google.com/search?q=npm+of+backend+and+bower+for+the+front+end&amp;oq=npm+of+backend+and+bower+for+the+front+end&amp;aqs=chrome..69i57.8637j0j9&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8#es_sm=91&amp;espv=210&amp;q=npm+for+backend+and+bower+for+the+front+end">see</a></li>
-<li>You specify what dir your want to install the bower packages with a <code>.bowerrc</code> file which goes in the project root. Here are <a href="https://gist.github.com/facultymatt/5482781">some examples</a> of these types of files.
-
-<ul>
-<li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/a-requirejs-backbone-and-bower-starter-template/">This tutorial</a> was helpful to get up and running with require.js and bower</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Mean stack</h3>
-
-<ul>
-<li><a href="http://mean.io/">Mean.io</a></li>
-<li>Really like this <a href="http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/">tutorial here</a></li>
-</ul>
-
-
-<h3>Asynchronous Module Definition</h3>
-
-<ul>
-<li>The AMD format comes from wanting a module format that was better than today&#8217;s &#8220;write a bunch of script tags with implicit dependencies that you have to manually order&#8221; and something that was easy to use directly in the browser. <a href="http://requirejs.org/docs/whyamd.html">further reading</a></li>
-<li>The standard loader is <a href="http://requirejs.org/">RequireJS</a>, but in production you could use a replacement AMD loader called <a href="https://github.com/jrburke/almond">Almond</a>. It is a smaller &#8220;shim&#8221; loader, providing the minimal AMD API footprint that includes loader plugin support. Some developers like to use the AMD API to code modular JavaScript, but after doing an optimized build, they do not want to include a full AMD loader like RequireJS, since they do not need all that functionality. Some use cases, like mobile, are very sensitive to file sizes. By including almond in the built file, there is no need for RequireJS. almond is around 1 kilobyte when minified with Closure Compiler and gzipped.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/require-dot-js/">require.js</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-16T16:04:00-05:00" pubdate data-updated="true">Dec 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>In roots</h3>
-
-<ul>
-<li><code>require ['jquery', 'fitvid', 'modal'], ($) -&gt;</code> is how I might require a non underscored file</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/wearables/">Wearables</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-09T10:18:00-05:00" pubdate data-updated="true">Dec 9<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Dl rather than ul</h3>
-
-<ul>
-<li>for question/answer format <a href="http://www.cssnewbie.com/using-definition-lists-question-answer-formatting/#.UqYh6HJgZKk">this article argues</a> that dl, dt, dd is a more appropriate choice of ul, li.</li>
-<li><a href="http://html5doctor.com/the-dl-element/">More reading</a></li>
-<li><a href="http://css-tricks.com/utilizing-the-underused-but-semantically-awesome-definition-list/">and</a></li>
-<li><a href="http://www.dave-woods.co.uk/creating-faqs-using-a-definition-list/">also</a></li>
-</ul>
-
-
-<h3>IP detection with CloudFlare and nginx</h3>
-
-<ul>
-<li><a href="http://nginxlibrary.com/using-cloudflare-for-country-blocking/">ip detection using CloudFlare</a></li>
-</ul>
-
+  <div class="entry-content"><p>Each user story should INVEST</p>
+
+<p>I - <strong>Independent</strong> The user story should be self-contained, in a way that there is no inherent dependency on another user story.
+N - <strong>Negotiable</strong>  User stories, up until they are part of an iteration, can always be changed and rewritten.
+V - <strong>Valuable</strong>  A user story must deliver value to the end user.
+E - <strong>Estimable</strong> You must always be able to estimate the size of a user story.
+S - <strong>Sized</strong> appropriately or Small  User stories should not be so big as to become impossible to plan/task/prioritize with a certain level of certainty.
+T - <strong>Testable</strong>  The user story or its related description must provide the necessary information to make test development possible.</p>
+
+<blockquote><p>Iteration 0 -> is foundational work that is performed prior to development starting.</p></blockquote>
 </div>
   
   
@@ -906,23 +759,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/tcp-udp-http/">tcp, udp, http</a>
+        <a href="/blog/investing-without-the-anger/">Investing without the anger</a>
       </li>
     
       <li class="post">
-        <a href="/blog/moneyball-on-the-keyboard-scouting-talented-developers/">Moneyball on the Keyboard: Scouting Talented Developers</a>
+        <a href="/blog/java-basics/">java basics</a>
       </li>
     
       <li class="post">
-        <a href="/blog/how-the-web-works/">how the web works</a>
+        <a href="/blog/gang-of-four-observer-and-mediator-pattern/">Gang of Four - Observer and Mediator Pattern</a>
       </li>
     
       <li class="post">
-        <a href="/blog/innovators-dilemma/">Innovator&#8217;s Dilemma</a>
+        <a href="/blog/react/">react</a>
       </li>
     
       <li class="post">
-        <a href="/blog/stemming-and-faceted-search/">stemming and faceted search</a>
+        <a href="/blog/proxy-and-adapter-pattern/">Gang of Four: Proxy and adapter pattern</a>
       </li>
     
   </ul>
@@ -967,7 +820,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Adam Jonas -
+  Copyright &copy; 2016 - Adam Jonas -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
