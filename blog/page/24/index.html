@@ -9,8 +9,10 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Code Clean Up if they are submitting tag_names (a comma seperated list of tag values) pass that data to tag_names=
-but if they are submitting a &hellip;">
+  <meta name="description" content="Checkboxes return default goes at the end
+preventDefault() goes at the beginning
+return false goes at the end
+we can import the deploys with client. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +89,893 @@ but if they are submitting a &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day13/">HAW-day13</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-17T13:43:00-04:00" pubdate data-updated="true">Aug 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>Checkboxes</p>
+
+<ul>
+<li>return default goes at the end</li>
+<li><p>preventDefault() goes at the beginning</p></li>
+<li><p>return false goes at the end</p></li>
+<li><p>we can import the deploys with client.deploys(&#8216;project#&#8217;).first</p></li>
+<li><p>You can also pass local variables into partials, making them even more powerful and flexible. For example, you can use this technique to reduce duplication between new and edit pages, while still keeping a bit of distinct content:</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>new.html.erb</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;h1&gt;New zone&lt;/h1&gt;
+</span><span class='line'>&lt;%= error_messages_for :zone %&gt;
+</span><span class='line'>&lt;%= render :partial =&gt; "form", :locals =&gt; { :zone =&gt; @zone } %&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Specifying a class in a link_to</h3>
+
+<figure class='code'><figcaption><span>Using Twitter Bootstrap</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn-group pull-right&quot;</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%=link_to &quot; Refresh Errors&quot;, errors_import_path, :class =</span><span class="o">&gt;</span> <span class="s1">&#39;btn icon-refresh btn-success&#39;</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day12/">HAW-day12</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-16T10:19:00-04:00" pubdate data-updated="true">Aug 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>js buttons on tag show pages</li>
+<li>fix checkboxes/mass assigning tags</li>
+</ul>
+
+
+<h3>respond_to</h3>
+
+<p>This is basically a glorified case statement&#8230;</p>
+
+<p>if no action is specified the default is the action of the namespace</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">tag</span>
+</span><span class='line'>    <span class="c1">#some code</span>
+</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span><span class="n">redirect_to</span> <span class="ss">:back</span><span class="p">}</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">js</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So it looks for tag.js as the default&#8230;</p>
+
+<ul>
+<li><p>BUG:</p>
+
+<ul>
+<li>tell firefox not to autocomplete</li>
+</ul>
+</li>
+<li><p>checkboxes</p></li>
+<li>get all the values</li>
+<li><p>submit to server</p></li>
+<li><p>loop through the elements</p></li>
+<li>gather all the values (which are the ids)</li>
+<li>find errors by ids</li>
+<li>push in tag name signal</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/jquery-air-intermediate/">Jquery-air-intermediate</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-15T15:35:00-04:00" pubdate data-updated="true">Aug 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span>Retriving the href</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#tabs ul li:last a&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#tabs ul li:last a&#39;</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;flights&#39;</span><span class="p">)</span> <span class="c1">//this would be from an html5 data tag</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>event delegation-</li>
+<li>it can be method chained and performs faster than live</li>
+<li>&#8217;$(document).delegate&#8217;</li>
+</ul>
+
+
+<p><strong><em>Don&#8217;t forget the brackets on the selector!!</em></strong></p>
+
+<h3>eq selector</h3>
+
+<figure class='code'><figcaption><span>eq(element#) - a selector</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3)&#39;</span><span class="p">).</span><span class="nx">html</span><span class="err">­</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a&#39;</span><span class="p">).</span><span class="nx">a</span><span class="err">­</span><span class="nx">ttr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="err">­</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// to access the href you need to specify the a tag</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ol.econ­omy-class li.ro­w:eq(1) ol li:eq­(3) a&#39;</span><span class="p">).</span><span class="nx">d</span><span class="err">­</span><span class="nx">ata</span><span class="p">(</span><span class="s1">&#39;seat&#39;</span><span class="err">­</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div.seating-chart a.available&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a.available&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Bind Element</h3>
+
+<ul>
+<li>jQuery bind() function is used to attach an event handler to elements, while the unbind() is used to detached an existing event handler from elements.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div.seating-chart a.available&#39;</span><span class="p">).</span><span class="nx">bind</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">click</span><span class="o">:</span> <span class="nx">selectSeat</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>This allows you to list multiple events for each element. NOTE the different syntax, this becomes like a MAP now (very similar to a hash)</li>
+</ul>
+
+
+<h3>Unbind Element</h3>
+
+<ul>
+<li>Let’s imagine the following scenario&#8230;</li>
+<li>The user clicks on a “vote” button.</li>
+<li>Some AJAX calls are performed.</li>
+<li>After a successful AJAX call you setup a cookie to deny further votes from this machine.</li>
+<li><p>So one possible solution is to unbind the click event&#8230;</p></li>
+<li><p>Have something happen on a click event, but only once! Unbind the click handler after the element has been clicked once.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Once and only once&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#my-selector&#39;</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>       <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">);</span>
+</span><span class='line'>       <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Clicked and unbound!&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Jquery Air</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">selectSeat</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.selected&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectSeat</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#seatSelected&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;seat&#39;</span><span class="p">));</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#confirm-seat&#39;</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div.seating-chart li a.available&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="nx">selectSeat</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Live Event</h3>
+
+<p><code>$('a.confirm-upgrade').live("click", confirmUpgrade);</code></p>
+
+<ul>
+<li>Bind binds to the event one time</li>
+<li>Live will look for that event now or in the future and will catch it and call the right function</li>
+</ul>
+
+
+<h3>Delegate</h3>
+
+<figure class='code'><figcaption><span>Delegate > live</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#flights a&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectFlight</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// is the same as</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">delegate</span><span class="p">(</span><span class="s2">&quot;#flights a&quot;</span><span class="p">,</span> <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectFlight</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// this is too general. It would be better if you just checked inside a specific element</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="err">#</span><span class="nx">tabs</span> <span class="nx">div</span><span class="p">).</span><span class="nx">delegate</span><span class="p">(</span><span class="s2">&quot;#flights a&quot;</span><span class="p">,</span> <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectFlight</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// check inside the element rather than the entire page</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Delegate can be method chained and it is more performant</li>
+</ul>
+
+
+<h3>Ajax</h3>
+
+<ul>
+<li>Video2</li>
+<li>$.get and $.ajax are alternatives. $.ajax is slightly more</li>
+<li>cache: false option ensures that your browser won&#8217;t cache the html for every request</li>
+<li>Error handling</li>
+<li>Loading div - call beforeSend the AJAX invoked then hide it in the complete:</li>
+<li>If it returns successfully - success: and if not - error:</li>
+</ul>
+
+
+<h3>Mistake I keep making</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">fetchFirstClassConfirm</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">flight_id</span> <span class="o">=</span> <span class="mi">815</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;/flights/&#39;</span> <span class="o">+</span> <span class="nx">flight_id</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#confirm-first-class&#39;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
+</span><span class='line'>      <span class="c1">//I have a big problem missing the &#39;&#39; in the selector!</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/jquery-air-beginner/">Jquery-air-beginner</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-15T15:34:00-04:00" pubdate data-updated="true">Aug 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The DOM is a node structure or tree
+has HTML tag, head tag, title child, body tag, etc.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//find all h1s</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//find all ps</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;p#final&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//find the paragraph with ID final</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//these return arrays with the elements inside</span>
+</span><span class='line'><span class="c1">//if the search doesn&#39;t return anything, then it returns an empty array []</span>
+</span><span class='line'><span class="c1">// be careful- this empty array is considered truthy</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1, p.plan&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">//returns an array with both elements-- one string, seperated by commas</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">,</span> <span class="s2">&quot;p.plan&quot;</span><span class="p">)</span> <span class="c1">// THIS WON&#39;T WORK</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p:first&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//returns the first p it encounters</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p.first&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">//looks for the p.first node</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To select children elements use a space between the parent and child selector&#8230;
+For example, to select all the A tags that are children of a tag with id = foo, you&#8217;d do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo a&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//in the exercise</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul#first_class li&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//Select all the rows and seats in first class, everything with an &lt;LI&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>You can go as many levels deep as you want when selecting children</li>
+<li>For example, to select all A tags that have two <div> parents, you&#8217;d do this:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div div a&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//in the exercise:</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul li ul li&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Find all the window seats (a & d in first class, and a & f in economy)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li.a, ul#first_class li.d, ul#economy_class li.f&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>can pass in a map which is like a hash in ruby
+key are seperated from values by colons</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">belts</span> <span class="o">=</span> <span class="nx">confirm</span><span class="p">(</span><span class="s1">&#39;Turn on the fasten seatbelt sign?&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Seatbelts: &#39;</span> <span class="o">+</span> <span class="nx">belts</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//can string multiple calls together like above</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>having trouble with the syntax of closing the parentheses.</p>
+
+<h3>Why JS?</h3>
+
+<p>HTML is for structure
+CSS is for presentation
+Javascript is for interaction &#8211; it shouldn&#8217;t take over the duties of the other two</p>
+
+<pre><code>use .css() with reservation. better to manipulate the class and IDs 
+</code></pre>
+
+<p>.addClass()
+.removeClass() //if you do this with no parameters it will strip it of all css classes</p>
+
+<p>hasClass() #=> true /false</p>
+
+<p>do/undo toggle pattern
+(&#8216;p:first&#8217;).toggleClass(&#8220;bigger&#8221;):</p>
+
+<p>.show()
+.hide()
+.toggle()</p>
+
+<p>Document ready waits for the DOM to download then the DOM comes through. When it&#8217;s finished the ready event fires</p>
+
+<p><strong><em>JSON</em></strong> is just a javascript map that gets passed around</p>
+
+<p>DOM and CSS communicate through classes and IDs
+use .css() with reservation. better to manipulate the class and IDs thereby delegating the responsbility to the css</p>
+
+<h3>Common queries</h3>
+
+<p>.text() => query text
+.html() => queries html
+.prepend() => inserts inside the taget object before
+.append() => inserts inside the target object after
+.before() => add element before selection
+.after() => add element after selection
+.remove => pulls the target from the DOM
+to move an object remove it while storing it in a var and the insert it where you&#8217;d like (remember vars don&#8217;t require &#8217; &#8216;s )</p>
+
+<h3>event bubbling</h3>
+
+<p>JS is triggered by the environment or the user
+if someone clicks on a span, the JS engine asks if anyone is listening for that click, or a click on the paragraph or the whole body&#8211; <strong><em>it walked up the DOM tree looking for event handlers</em></strong></p>
+
+<h3>Functions</h3>
+
+<p>function optionalname (parameters) {instructions}</p>
+
+<figure class='code'><figcaption><span>For Instance</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">popWarning</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Warning: &quot;</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>    
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Anonymous Function
+:  Just a function that isn&#8217;t given a name
+so just function (parameters) {instructions}</p>
+
+<figure class='code'><figcaption><span>Anon e.g. of previous function</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Warning: &quot;</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>    
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Since it has no name this can&#8217;t be called by another function. Instead it is passed in to another function.</p>
+
+<figure class='code'><figcaption><span>Doc Ready</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;The DOM is ready!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Got it&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>This: using this in javascript</h3>
+
+<p>This refers to the current object (usually just a plain DOM element)
+Since it&#8217;s not a jquery element, we need to wrap it in $(this)</p>
+
+<figure class='code'><figcaption><span>Using this</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Document ready and Timing</h3>
+
+<p>If wrapped in a $(document).ready() the JS won&#8217;t start looking though the document until every thing has been downloaded.</p>
+
+<figure class='code'><figcaption><span>Named Functions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">increment_weight</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">display</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#gross_weight span#display&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">weight</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">display</span><span class="p">.</span><span class="nx">text</span><span class="p">());</span> <span class="c1">//notice parseInt doesn&#39;t need a $</span>
+</span><span class='line'>  <span class="nx">weight</span> <span class="o">=</span> <span class="nx">weight</span> <span class="o">+</span> <span class="mi">50</span> <span class="p">;</span>
+</span><span class='line'>  <span class="nx">display</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">weight</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span> <span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a#weight_down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">// this code is run when a#weight_down is clicked</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">current_weight</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span#display&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+</span><span class='line'>  <span class="c1">//make sure you pull out the number, see the parseInt below</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">current_lbs</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">current_weight</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#display&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">current_lbs</span> <span class="o">-</span> <span class="mi">50</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span> <span class="c1">// this prevents it from following the link</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Hover</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span> <span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#plane_features li&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+</span><span class='line'>  <span class="c1">//the hover accepts two functions- the on-hover and off-hover</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(){</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;feature_hover&#39;</span><span class="p">);},</span>
+</span><span class='line'>  <span class="c1">//note the &#39;,&#39; at the end of the line</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(){</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;feature_hover&#39;</span><span class="p">)}</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This can be refactored as&#8230;.</p>
+
+<figure class='code'><figcaption><span>Refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#plane_features li a&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+</span><span class='line'>    <span class="kd">function</span><span class="p">(){</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_hover&quot;</span><span class="p">);}</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>toggleClass</h3>
+
+<p>Needs to be called on <em>this</em></p>
+
+<p>This is what I had&#8230;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plane_features li a&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_selected&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="c1">//this is wrong... it needs to be THIS</span>
+</span><span class='line'>      <span class="p">};</span> <span class="c1">// missed a closing parens here too</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>The Answer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plane_features li a&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_selected&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>KeyPress</h3>
+
+<p>Put the focus on the entire body, because you aren&#8217;t sure what the focus will be when the key is pressed.</p>
+
+<p>By defining the object with event e.g.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>we get access to the <em>Event Object</em> which helps us with such things as:
+- event.which - has a numeric code for the key which is pressed
+- event has other attributes like pageX, pageY and target.</p>
+
+<h3>If statement</h3>
+
+<figure class='code'><figcaption><span>IF</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">){</span><span class="nx">instructions</span><span class="p">};</span>
+</span><span class='line'><span class="p">}</span> <span class="c1">//why no ; here?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>so&#8230;.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">102</span><span class="p">){</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;fantastic&quot;</span><span class="p">)};</span>
+</span><span class='line'><span class="p">}</span> <span class="c1">//why no ; here?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span> <span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">keydown</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">83</span><span class="p">){</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li:first&#39;</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;feature_selected&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span> <span class="c1">//still not ; here</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>event.stopPropogation</h3>
+
+<p>call .stopPropogation in the handler to prevent the event from bubbling up the DOM tree</p>
+
+<h3>Animation</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#altitude&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">(</span><span class="s2">&quot;slow&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">// takes &quot;slow&quot;, &quot;fast&quot;, and number in milliseconds as a parameter</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This works with hide, the show and toggle functions
+.slideUp(&#8220;slow&#8221;)
+.slideDown()
+.slideToggle()
+.fadeOut()
+.fadeIn()
+.fadeToggle()</p>
+
+<h3>True Ajax</h3>
+
+<p>Sending and receiving information from the server via XMLHttpRequests
+- best way to do that is with the .load() function</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span.number&#39;</span><span class="p">).</span><span class="nx">load</span><span class="p">(</span><span class="err">/flights/824/gate);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This load request will retrieve that address from the server and then inject it into the selected element an it and then the DOM will show that update</p>
+
+<p>Attach a click event listener to the Refresh button that uses ajax to load &#8216;/nearby_flights&#8217; and places the response into the Nearby Flights list. Don&#8217;t forget to prevent the default link behavior.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a#refresh&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;ul#nearby_flights&quot;</span><span class="p">).</span><span class="nx">load</span><span class="p">(</span><span class="s1">&#39;/nearby_flights&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/haw-day11/">HAW-day11</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-15T11:34:00-04:00" pubdate data-updated="true">Aug 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>return false;</h3>
+
+<p>needed to prevent the confirm box cancel from going ahead with the action anyway&#8230;
+I tried <a href="http://stackoverflow.com/questions/1469875/calling-another-jquery-function-if-confirm-is-true">.preventDefault()</a> first but it didn&#8217;t work.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -464,714 +1353,6 @@ So if there is a dynamic variable (like ID&#8211; always indicated with a colon)
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/haw-day6/">HAW-day6</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-08T11:47:00-04:00" pubdate data-updated="true">Aug 8<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Coffee Script
-<a href="http://railscasts.com/episodes/267-coffeescript-basics">Rails Cast</a></p>
-
-<p>ISSUES:
-Ran into problems with a conflict bewtween the .js table sorter and checkbox select all .js
-??Does it have to be loaded before the html table is created?</p>
-
-<p>Checkboxes always use input tags</p>
-
-<h3>Psudo Selectors:</h3>
-
-<p>p:first - first paragrapah
-input:checkbox - all checkboxes
-input:text_field - all text fields
-a:hidden - all hidden links</p>
-
-<p>.attr( attributeName )
-- Returns: String
-- Description: Get the value of an attribute for the first element in the set of matched elements.</p>
-
-<p>jquery token input - when you aren&#8217;t editing the tag
-- when you click in that box we have autocomplete
-- bulk assign -</p>
-
-<ul>
-<li>resolve the error in airbrake from our app</li>
-<li>allow comments</li>
-<li>resolved or fixed button</li>
-</ul>
-
-
-<p>dont allow signal and noise
-capture info on when the last deploy was&#8230;
-if the deploy was more recent than the fixed tag than</p>
-
-<p>refresh error button to import errors &#8211; put notice on success or failure to import
-main errors page a drop down filter based on tag</p>
-
-<p>FEEDBACK:
-button refreshes import immedately
-show tags page&#8230; with edits
-comment field added for each error
-formatting the error message
-fix was deployed with button - shows the fixed errors as repeats after a deploy
-mutually exclusive signal and noise</p>
-
-<p>filters as multi select
-stats on front page
--!total error counts
--!avg errors per day
-last week to this week -snapshot</p>
-
-<p>v2:
-custom tags in bulk
-setting up filters - if front end bug assignment</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jquery/">JQuery</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-07T11:35:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>The DOM:</h3>
-
-<p>the web browser remembers the HTML tags, their attributes, and the order in which they appear in the file—this representation of the page is called the Document Object Model, or DOM for short. (js and jquery the missing manual, p127)</p>
-
-<p><a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Repel</a> -
-read, evaluate, print, loop</p>
-
-<p>everything with remote true should have their submit button hijacked and exectured with ajax
-jquery is to rails what ruby is js</p>
-
-<figure class='code'><figcaption><span>src</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">&quot;URL&quot;</span><span class="nt">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>[XHR](https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest?redirectlocale=en-US&redirectslug=XMLHttpRequest)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//To create an instance of XMLHttpRequest, simply do this:</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>xhr- used to be just xml</p>
-
-<p>READ: <a href="http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications">ajax jesse james garrett</a>
-AJAX = Asynchronous JavaScript + XML
-Ajax incorporates:
-- standards-based presentation using XHTML and CSS;
-- dynamic display and interaction using the Document Object Model;
-- data interchange and manipulation using XML and XSLT;
-- asynchronous data retrieval using XMLHttpRequest;
-- and JavaScript binding everything together.</p>
-
-<p>adaptive path
-elements of user experience</p>
-
-<p>js is all an event model</p>
-
-<p>predictable DOM</p>
-
-<p><a href="http://css-tricks.com/the-difference-between-id-and-class/">###Difference between li/#b and li.b?###</a></p>
-
-<p>/# => ids &#8211;> IDs are unique
-- Each element can have only one ID
-- Each page can have only one element with that ID</p>
-
-<p>dot b => class names &#8211;> are NOT unique
-- You can use the same class on multiple elements.
-- You can use multiple classes on the same element.</p>
-
-<h3>Crazy Selector for our app</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;tr#error_&lt;%error.id %&gt; input:submit[value=&#39;Noise&#39;]&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">confirm</span><span class="p">(</span><span class="s2">&quot;Are you sure?&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="c1">// input:submit[value=&#39;Noise&#39;]&quot; are you kidding me?</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/todo/">TODO</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-07T10:15:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>&lt;newestversionofrubyis.com></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Unbind</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Need</span> <span class="nx">to</span> <span class="nx">understand</span> <span class="nx">unbind</span> <span class="nx">event</span> <span class="mi">6</span><span class="o">:</span><span class="mi">30</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">selectSeat</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.selected&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">selectSeat</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#seatSelected&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;seat&#39;</span><span class="p">));</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#confirm-seat&#39;</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div.seating-chart li a.available&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="nx">selectSeat</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://web.mit.edu/newsoffice/2009/explainer-pnp.html">P = NP</a></li>
-<li>turbo links and push state in rails 4</li>
-<li><a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple made easy</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Design_pattern_(computer_science">Software Design patterns</a>Domain-specific_patterns)</li>
-<li><a href="http://en.wikipedia.org/wiki/Design_Patterns_(book">Design patterns book</a>)</li>
-<li><a href="http://vimeo.com/48106365">Designing tests with sandi metz</a></li>
-<li><a href="http://www.youtube.com/watch?v=VBC-G6hahWA">Symbol to proc</a></li>
-<li><a href="http://www.skorks.com/2010/05/ruby-procs-and-lambdas-and-the-difference-between-them/">lambdas, procs</a></li>
-</ul>
-
-
-<h3>Javascript Lib</h3>
-
-<ul>
-<li><a href="http://harvesthq.github.com/chosen/">choosen</a></li>
-</ul>
-
-
-<h3>jruby</h3>
-
-<ul>
-<li>a java implementation of ruby</li>
-<li>you don&#8217;t need to know java</li>
-<li>One powerful feature of JRuby is its ability to invoke the classes of the Java Platform.</li>
-<li><a href="https://github.com/jruby/jruby/wiki">jruby wiki</a></li>
-</ul>
-
-
-<h3>inject</h3>
-
-<ul>
-<li><a href="http://blog.jayfields.com/2008/03/ruby-inject.html">http://blog.jayfields.com/2008/03/ruby-inject.html</a></li>
-<li><a href="http://teachmetocode.com/screencasts/rubys-enumerable-module-the-inject-method/">http://teachmetocode.com/screencasts/rubys-enumerable-module-the-inject-method/</a></li>
-<li><a href="http://flavorite.tumblr.com/post/33774572841/ruby-inject">http://flavorite.tumblr.com/post/33774572841/ruby-inject</a></li>
-</ul>
-
-
-<h3>Associations:</h3>
-
-<ul>
-<li>make list of common many to many relationships, one to many relationships</li>
-</ul>
-
-
-<p>ActiveRecord and ORMS:
-  - active resource versus active record
-  - active record is an ORM- it wraps the database
-  - active resource wraps the restful web app with Ruby classes and work with them like Active Record models.</p>
-
-<p>mass assignment and the .build(params[:user_name])</p>
-
-<ul>
-<li><p>Coffee script</p></li>
-<li><p><a href="http://www.wibit.net/market/objective-c_programming">Objective-c tutorial</a></p></li>
-</ul>
-
-
-<p>rake db:setup
-I had never seen this&#8230;
-rake db:migrate:redo -> is the combo of rake db:rollback and rake db:migrate</p>
-
-<ul>
-<li>http perf - to test lots of traffic on a site</li>
-</ul>
-
-
-<p>Why should you always provide the second argument to parseInt?
-2nd argument in radix&#8211; should specify
-<a href="http://stackoverflow.com/questions/7318385/problems-with-javascript-parseint">http://stackoverflow.com/questions/7318385/problems-with-javascript-parseint</a></p>
-
-<h3>Basic Vim tutorials</h3>
-
-<ul>
-<li><a href="http://www.openvim.com/tutorial.html">http://www.openvim.com/tutorial.html</a></li>
-<li><a href="http://net.tutsplus.com/articles/web-roundups/25-vim-tutorials-screencasts-and-resources/">http://net.tutsplus.com/articles/web-roundups/25-vim-tutorials-screencasts-and-resources/</a></li>
-<li><a href="http://vim.begin-site.org/">Beginner VIM</a></li>
-</ul>
-
-
-<h3>Screencast/Podcasts</h3>
-
-<ul>
-<li><a href="http://www.yuiblog.com/blog/2010/02/03/video-crockonjs-1/">Doug Crockford&#8217;s epic series</a></li>
-<li><a href="http://screencasts.org/episodes/activerecord-with-sinatra">active record and sinatra</a></li>
-<li>sandi metz - <a href="http://vimeo.com/26330100">Less - the path to better design</a></li>
-<li><a href="https://www.destroyallsoftware.com/screencasts">Destroy all software</a></li>
-<li><a href="http://devblog.avdi.org/rubytapas/">Ruby tapas</a></li>
-<li><a href="http://ruby5.envylabs.com/episodes">Ruby5</a></li>
-<li><a href="http://www.metacasts.tv/">Another subscription screencast site</a></li>
-<li><a href="http://www.igvita.com/2013/01/15/faster-websites-crash-course-on-web-performance/">Life of a web request</a></li>
-<li><a href="http://opensoul.org/blog/archives/2012/05/16/the-plight-of-pinocchio/">Javascript&#8217;s plight to become a real laguage</a></li>
-</ul>
-
-
-<h2>Reading</h2>
-
-<ul>
-<li><a href="http://eimers.blogspot.com/2008/02/reflection-vs-introspection.html">introspection and reflection</a></li>
-<li><a href="http://technosophos.com/content/git-cherry-picking-move-small-code-patches-across-branches">git cherry pick</a></li>
-<li><a href="https://github.com/blog/517-unicorn">unicorn</a></li>
-<li><a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a></li>
-<li><a href="http://www.slideshare.net/jnunemaker/dont-repeat-yourself-repeat-others">reinventing the wheel</a></li>
-<li><a href="http://guides.rubyonrails.org/v2.3.11/form_helpers.html#understanding-parameter-naming-conventions">Understand parameter naming conventions</a></li>
-<li><a href="http://www.oreillynet.com/pub/a/ruby/excerpts/ruby-best-practices/worst-practices.html">worst practices</a></li>
-<li><a href="http://kunststube.net/encoding/">encoding</a></li>
-<li><a href="http://www.slideshare.net/verekia/deep-dive-into-css-preprocessors">preprocessors</a></li>
-<li><a href="https://speakerdeck.com/andrew/em-vs-node">Event Machine vs. Node.js</a></li>
-<li><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html">open struct object</a></li>
-<li><a href="http://home.gna.org/xmpp4r/">xmpp/jabber</a> / <a href="http://prosody.im/">prosody</a></li>
-<li><a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html">eager loading</a></li>
-<li><a href="http://www.dev.gd/20130107-know-your-closures-blocks-procs-and-lambdas.html?utm_source=rubyweekly&amp;utm_medium=email">know your closures</a></li>
-</ul>
-
-
-<h3>Terms to understand</h3>
-
-<ul>
-<li>stubs mocks- not test data but test behavior- always want it to behave the same</li>
-<li>tmux through VIM</li>
-<li>raw_results-</li>
-<li>load-balancer- a server to direct traffic</li>
-<li>singleton objects</li>
-<li>SMTP vs. POP3</li>
-<li>service oriented architecture</li>
-<li><a href="http://stackoverflow.com/questions/3179396/what-does-monolithic-mean">Monolithic user classes</a></li>
-<li>merge method</li>
-<li><a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway&#8217;s game of life</a></li>
-<li>klass in coffeescript</li>
-<li>eval -> eval &#8220;1+1&#8221; => 2</li>
-<li>hash merge</li>
-<li><a href="http://www.justskins.com/forums/star-in-case-statements-65943.html">star in case statement</a></li>
-<li>compass/codekit</li>
-<li>delegation</li>
-<li>SOAP</li>
-<li>Leaky abstraction</li>
-<li>Messaging architecture system</li>
-<li><a href="http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx">hash tables</a></li>
-</ul>
-
-
-<h3>Blog Ideas</h3>
-
-<ul>
-<li>SQL injection</li>
-<li><a href="http://guides.rubyonrails.org/form_helpers.html#understanding-parameter-naming-conventions">mass assignment and parsing the form inputs</a></li>
-<li>debugger</li>
-<li>defensive programming</li>
-<li>inject</li>
-<li>raw_results</li>
-<li>benchmarking</li>
-<li><a href="http://chneukirchen.org/blog/archive/2007/02/introducing-rack.html">rack</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/haw-day5/">HAW-day5</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-06T10:23:00-04:00" pubdate data-updated="true">Aug 6<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>GOALS:
-Refactor code, figure out the jquery ajax checkboxes.
-ship v1 by the end of the day</p>
-
-<p><a href="http://khelll.com/blog/ruby/ruby-dynamic-method-calling/">send method</a>
-<a href="http://philcrissman.com/2009/06/26/rubys-objectsend-can-call-private-and-protected-methods/">send method to call private method</a></p>
-
-<figure class='code'><figcaption><span>Code that finally worked&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
-</span><span class='line'>    <span class="n">client</span> <span class="o">=</span> <span class="ss">AirbrakeAPI</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">errors</span>
-</span><span class='line'>    <span class="n">actions</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="s2">&quot;controller&quot;</span><span class="p">,</span> <span class="ss">:created_at</span> <span class="o">=&gt;</span> <span class="s2">&quot;airbrake_created_at&quot;</span><span class="p">,</span>
-</span><span class='line'>               <span class="ss">:error_class</span> <span class="o">=&gt;</span> <span class="s2">&quot;error_class&quot;</span><span class="p">,</span> <span class="ss">:error_message</span> <span class="o">=&gt;</span> <span class="s2">&quot;error_message&quot;</span><span class="p">,</span> <span class="ss">:file</span> <span class="o">=&gt;</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span>
-</span><span class='line'>               <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">&quot;airbrake_id&quot;</span><span class="p">,</span> <span class="ss">:line_number</span> <span class="o">=&gt;</span> <span class="s2">&quot;line_number&quot;</span><span class="p">,</span>
-</span><span class='line'>               <span class="ss">:most_recent_notice_at</span> <span class="o">=&gt;</span> <span class="s2">&quot;airbrake_most_recent_notice_at&quot;</span><span class="p">,</span>
-</span><span class='line'>               <span class="ss">:notice_hash</span> <span class="o">=&gt;</span> <span class="s2">&quot;notice_hash&quot;</span><span class="p">,</span> <span class="ss">:notices_count</span> <span class="o">=&gt;</span> <span class="s2">&quot;notices_count&quot;</span><span class="p">,</span>
-</span><span class='line'>               <span class="ss">:project_id</span> <span class="o">=&gt;</span> <span class="s2">&quot;project_id&quot;</span><span class="p">,</span> <span class="ss">:rails_env</span> <span class="o">=&gt;</span> <span class="s2">&quot;rails_env&quot;</span><span class="p">,</span> <span class="ss">:resolved</span> <span class="o">=&gt;</span> <span class="s2">&quot;airbrake_resolved&quot;</span><span class="p">,</span>
-</span><span class='line'>               <span class="ss">:search_index_me</span> <span class="o">=&gt;</span> <span class="s2">&quot;search_index_me&quot;</span><span class="p">,</span> <span class="ss">:updated_at</span> <span class="o">=&gt;</span> <span class="s2">&quot;airbrake_updated_at&quot;</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="n">errors</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span> <span class="c1">#each error is a hash</span>
-</span><span class='line'>      <span class="n">airbrake_error</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">new</span> <span class="c1">#this needs to be outside the following loop or it will create a new object during every loop...</span>
-</span><span class='line'>      <span class="n">actions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">airbrake_action</span><span class="p">,</span> <span class="n">our_action</span><span class="o">|</span> <span class="c1">#aa is a sym key, oa is a string value</span>
-</span><span class='line'>       <span class="n">airbrake_error</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">our_action</span><span class="si">}</span><span class="s2">=&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="p">,</span> <span class="n">error</span><span class="o">[</span><span class="n">airbrake_action</span><span class="o">]</span><span class="p">)</span><span class="c1"># SEND method here</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">attribute_updater</span> <span class="c1">#see below</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>Other use of send&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">attribute_updater</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="vi">@airbrake_errors</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">all</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">updater_actions</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;notices_count&quot;</span><span class="p">,</span> <span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;controller&quot;</span><span class="p">,</span> <span class="s2">&quot;error_class&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;line_number&quot;</span><span class="p">,</span>
-</span><span class='line'>                      <span class="s2">&quot;airbrake_most_recent_notice_at&quot;</span><span class="p">,</span> <span class="s2">&quot;notice_hash&quot;</span><span class="p">,</span> <span class="s2">&quot;airbrake_resolved&quot;</span><span class="p">,</span>
-</span><span class='line'>                      <span class="s2">&quot;airbrake_updated_at&quot;</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@airbrake_errors</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">airbrake_id</span><span class="p">:</span> <span class="nb">self</span><span class="o">.</span><span class="n">airbrake_id</span><span class="p">)</span><span class="o">.</span><span class="n">present?</span>
-</span><span class='line'>      <span class="n">original_error</span> <span class="o">=</span> <span class="vi">@airbrake_errors</span><span class="o">.</span><span class="n">find_by</span><span class="p">(</span><span class="n">airbrake_id</span><span class="p">:</span> <span class="nb">self</span><span class="o">.</span><span class="n">airbrake_id</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">updater_actions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">action</span><span class="o">|</span>
-</span><span class='line'>          <span class="n">original_error</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">action</span><span class="si">}</span><span class="s2">=&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="p">,</span> <span class="nb">self</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">action</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>          <span class="n">original_error</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>        <span class="k">end</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>TODO:
-inject method</p>
-
-<p>Per Dave:
--one form that is ignore, one that signal, one that is the tags
--remote true- a flag that going to submit the form via ajax</p>
-
-<p><a href="http://guides.rubyonrails.org/form_helpers.html">Remote True:</a>
-Unlike other forms making an asynchronous file upload form is not as simple as providing form_for with :remote => true. With an Ajax form the serialization is done by JavaScript running inside the browser and since JavaScript cannot read files from your hard drive the file cannot be uploaded. The most common workaround is to use an invisible iframe that serves as the target for the form submission.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/haw-day4/">HAW-day4</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-03T16:17:00-04:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Error:
-&#8220;SystemStackError: stack level too deep&#8221;
-This means that you have entered an infinite loop. e.g. you have called something on itself.</p>
-
-<p>Need to understand inject&#8230;
-http://blog.jayfields.com/2008/03/ruby-inject.html</p>
-
-<p>struggling with this&#8230;</p>
-
-<figure class='code'><figcaption><span>Trying to make this work</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
-</span><span class='line'>    <span class="n">client</span> <span class="o">=</span> <span class="ss">AirbrakeAPI</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">errors</span>
-</span><span class='line'>    <span class="n">actions</span> <span class="o">=</span> <span class="o">[</span><span class="ss">:action</span> <span class="o">=&gt;</span> <span class="n">action</span><span class="p">,</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="n">controller</span><span class="p">,</span> <span class="ss">:created_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_created_at</span><span class="p">,</span>
-</span><span class='line'>              <span class="ss">:error_class</span> <span class="o">=&gt;</span> <span class="n">error_class</span><span class="p">,</span> <span class="ss">:error_message</span> <span class="o">=&gt;</span> <span class="n">error_message</span><span class="p">,</span> <span class="ss">:file</span> <span class="o">=&gt;</span> <span class="n">file</span><span class="p">,</span>
-</span><span class='line'>              <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">airbrake_id</span><span class="p">,</span> <span class="ss">:line_number</span> <span class="o">=&gt;</span> <span class="n">line_number</span><span class="p">,</span>
-</span><span class='line'>              <span class="ss">:most_recent_notice_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_most_recent_notice_at</span><span class="p">,</span>
-</span><span class='line'>              <span class="ss">:notice_hash</span> <span class="o">=&gt;</span> <span class="n">notice_hash</span><span class="p">,</span> <span class="ss">:notices_count</span> <span class="o">=&gt;</span> <span class="n">notices_count</span><span class="p">,</span>
-</span><span class='line'>              <span class="ss">:project_id</span> <span class="o">=&gt;</span> <span class="n">project_id</span><span class="p">,</span> <span class="ss">:rails_env</span> <span class="o">=&gt;</span> <span class="n">rails_env</span><span class="p">,</span> <span class="ss">:resolved</span> <span class="o">=&gt;</span> <span class="n">airbrake_resolved</span><span class="p">,</span>
-</span><span class='line'>              <span class="ss">:search_index_me</span> <span class="o">=&gt;</span> <span class="n">search_index_me</span><span class="p">,</span> <span class="ss">:updated_at</span> <span class="o">=&gt;</span> <span class="n">airbrake_updated_at</span><span class="o">]</span>
-</span><span class='line'>    <span class="n">actions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">airbrake_action</span><span class="p">,</span> <span class="n">our_action</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">errors</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">airbrake_error</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">our_action</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="n">airbrake_action</span><span class="o">]</span>
-</span><span class='line'>        <span class="n">airbrake_error</span><span class="o">.</span><span class="n">attribute_updater</span>
-</span><span class='line'>        <span class="n">airbrake_error</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>This is the original&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">import_from_airbrake</span>
-</span><span class='line'>    <span class="n">client</span> <span class="o">=</span> <span class="ss">AirbrakeAPI</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">errors</span>
-</span><span class='line'>    <span class="n">errors</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">airbrake_error</span> <span class="o">=</span> <span class="no">AirbrakeError</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:action</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">controller</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:controller</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_created_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:created_at</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">error_class</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:error_class</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:error_message</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_id</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">line_number</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:line_number</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_most_recent_notice_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:most_recent_notice_at</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">notice_hash</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:notice_hash</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">notices_count</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:notices_count</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:project_id</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">rails_env</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:rails_env</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_resolved</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:resolved</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">search_index_me</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:search_index_me</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">airbrake_updated_at</span> <span class="o">=</span> <span class="n">error</span><span class="o">[</span><span class="ss">:updated_at</span><span class="o">]</span>
-</span><span class='line'>        <span class="c1"># airbrake.send(&quot;#{key}=&quot;, value)</span>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">attribute_updater</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">airbrake_error</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/25/">&larr; Older</a>
@@ -1189,23 +1370,23 @@ http://blog.jayfields.com/2008/03/ruby-inject.html</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/investing-without-the-anger/">Investing without the anger</a>
+        <a href="/blog/my-take-on-maker-versus-manager/">My take on maker versus manager</a>
       </li>
     
       <li class="post">
-        <a href="/blog/java-basics/">java basics</a>
+        <a href="/blog/computer-science-according-to-spencer/">Computer Science according to Spencer</a>
       </li>
     
       <li class="post">
-        <a href="/blog/gang-of-four-observer-and-mediator-pattern/">Gang of Four - Observer and Mediator Pattern</a>
+        <a href="/blog/quarterlies/">Quarterlies</a>
       </li>
     
       <li class="post">
-        <a href="/blog/react/">react</a>
+        <a href="/blog/when-i-didnt-see-it-in-the-interview/">When I didn&#8217;t see it in the interview</a>
       </li>
     
       <li class="post">
-        <a href="/blog/proxy-and-adapter-pattern/">Gang of Four: Proxy and adapter pattern</a>
+        <a href="/blog/optical-distortion-inc-hbs-case-study/">Optical Distortion, Inc. HBS Case Study</a>
       </li>
     
   </ul>
