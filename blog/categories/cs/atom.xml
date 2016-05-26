@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cs | Hack hack hack...]]></title>
   <link href="http://adamjonas.com/blog/categories/cs/atom.xml" rel="self"/>
   <link href="http://adamjonas.com/"/>
-  <updated>2016-05-03T10:10:40-04:00</updated>
+  <updated>2016-05-26T12:26:52-04:00</updated>
   <id>http://adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -107,7 +107,94 @@ return total_population;
 
 <p>  }</p>
 
-<p>  Order: O(2n)
+<p>  Order: O(2n)</p>
+
+<ol>
+<li><p>int max(array) {
+int max = array[0]; // 1</p>
+
+<p>for(int i = 1; i &lt; array.length; i++) { //n + 1, <a href="http://stackoverflow.com/questions/5872570/is-fixed-array-size-on-or-o1-in-space">cost of determining array length</a>
+  if(array[i] > max) { // n</p>
+
+<pre><code>max = array[i]; // potential n
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>return max; // 1
+}</p></li>
+</ol>
+
+
+<p>  [3n + 3 complexity]</p>
+
+<p>  OR</p>
+
+<p>  int max(array) {</p>
+
+<pre><code>int temp; // 1
+
+// sort the array in ascending order
+for(int i = 0; i &lt; array.length; i++) { // n + 1
+  for(int j = 0; j &lt; array.length - 1; j++) { // (n + 1)(n + 1) -&gt; n^2 + 2n + 2
+    if( array[j] &gt; array[j+1]) { // potentially n(n + 1) -&gt; n^2 + 2n + 2
+      temp = array[j+1]; // 1(n + 1)
+      array[j+1] = array[j]; // potentially n(n + 1) -&gt; n^2 + 2
+      array[j] = temp; // 1(n + 1)
+    }
+  }
+}
+
+return array[array.length-1]; // 1
+</code></pre>
+
+<p>  }</p>
+
+<p>  [3n<sup>2</sup> + 7n + 9 complexity]</p>
+
+<p>  The first is more efficient.</p>
+
+<ol>
+<li>Which algorithm, foo or bar, is faster when when n is 10? 100? 1000?</li>
+</ol>
+
+
+<p>  int foo(n) {</p>
+
+<pre><code>int sum = 0
+
+for(int i = 0; i &lt; n + 500; i++) { // 510, 600, 1500 operations
+  sum++;
+}
+
+return sum;
+</code></pre>
+
+<p>  }</p>
+
+<p>  foo(10) = 130,305
+  foo(100) = 180,300
+  foo(1000) = 1,125,750</p>
+
+<p>  int bar(n) {</p>
+
+<pre><code>int sum = 0
+
+for(int i = 0; i &lt; n; i++) { // 10
+  for(int j = 0; j &lt; n; j++) { // 10
+    sum++; // 1
+  }
+}
+
+return sum;
+</code></pre>
+
+<p>  }</p>
+
+<p>  100, 10,000, 1,000,000</p>
+
+<p>  bar is less work at 10, foo for the others
 ```</p>
 ]]></content>
   </entry>
