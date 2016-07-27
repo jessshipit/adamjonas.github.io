@@ -9,9 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Programmer of the day:
-Alan Kay Object Orientation once you have a user class, you can send it a message
-once you have a class you can teach the &hellip;">
+  <meta name="description" content="Polymorphism Nouns are resources and polymorphism is &#8220;a geeky way of saying that different nouns can have the same verb applied to them.&#8221 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +86,395 @@ once you have a class you can teach the &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/buzz-word-alert-polymorphic/">Buzz Word Alert: Polymorphic</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-20T17:57:00-04:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Polymorphism</h3>
+
+<ul>
+<li>Nouns are resources and polymorphism is &#8220;a geeky way of saying that different nouns can have the same verb applied to them.&#8221; <a href="http://tomayko.com/writings/rest-to-my-wife">(how I explained REST to my wife)</a></li>
+<li>&#8220;is the ability of objects belonging to different types to respond to method calls of the same name, each one according to an appropriate type-specific behaviour.&#8221; (wikipedia)</li>
+<li>is a language feature that allows the same function call to be associated with different definitions during the same execution, by delaying the binding of the call to run-time. <a href="http://cs.calvin.edu/curriculum/cs/214/adams/labs/10/">here</a></li>
+<li>polymorphism  is  the  ability  of  one  method  to  have  different  behavior  depending  on  the  type  of  object  it  is  being  called  on  or  the  type  of  object  being  passed  as  a  parameter. <a href="http://courses.csail.mit.edu/iap/interview/Hacking_a_Google_Interview_Handout_1.pdf">From</a></li>
+</ul>
+
+
+<h3>Some Real Life Examples</h3>
+
+<ul>
+<li>depending on the argument that you send it, it has different behavior
+when you send @mixtape it looks up:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mixtape_path</span><span class="p">(</span><span class="vi">@mixtape</span><span class="p">)</span> <span class="c1">#=&gt; &#39;/mixtapes/1&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>real life e.g.s
+subway slot can accept a metrocard and a credit card&#8211; depending on what you send it, it has differnt behavior
+a vending machine accepts dollar bills and credit card. Depending on what you insert, it has different behavior.</p>
+
+<h3>Polymorphic Associations</h3>
+
+<ul>
+<li>in the <a href="http://guides.rubyonrails.org/association_basics.html#polymorphic-associations">guides</a> it states: &#8220;With polymorphic associations, a model can belong to more than one other model, on a single association.&#8221;</li>
+<li>You can think of a polymorphic belongs_to declaration as setting up an interface that any other model can use.</li>
+</ul>
+
+
+<p>As usual Ryan Bates to the rescue&#8211; <a href="http://railscasts.com/episodes/154-polymorphic-association?view=comments">polymorphic association rails cast.</a></p>
+
+<p>Imagine an event website. We want to add a comments section. How would be do this because comments would belong to either the photo, article, or event.
+Without polymorphic associations we would probably try to create a model for each instance&#8211; a photo comment, an article comment and an event comment. That&#8217;s 3 models with the same data and behavior so we want to combine these into one generic comment model that can belong_to any of these other models.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">generate</span> <span class="n">scaffold</span> <span class="n">comment</span> <span class="ss">content</span><span class="p">:</span><span class="n">text</span> <span class="n">commentable_id</span><span class="ss">:integer</span> <span class="n">commentable_type</span><span class="ss">:string</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A <em>polymorphic association</em> is an association that can belong_to many different models&#8230;</p>
+
+<figure class='code'><figcaption><span>Polymorphic Association</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:commentable</span><span class="p">,</span> <span class="ss">:polymorphic</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The rails docs refer to the :as keyword parameter to has_one and has_many as specifying a “polymorphic interface.”</p>
+
+<p>At the database level, the Comment table will have two columns for the association: commentable_type and commentable_id. <em>A composite foreign key.</em></p>
+
+<p>To set up the other side of the association:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:commentable</span> <span class="c1">#the :as =&gt; :commentable indicates the PolyMorph assoc</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># similar code would be repeated for all of the associations-- in this case event &amp; photo</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So the polymorphic bit means that the type of thing you’re going to get back when you ask a Comment for its commentable data is unknown&#8230; it could be an article or it could be an event or it could be a photo. In dynamic Ruby land, Ruby terms, this means I don’t care what I sort of model I get when I ask a comment for its commentable data, as long as it goes quack I can treat it like it’s a duck.</p>
+
+<p>Enter <em>interfaces</em>. Interfaces specify what I want the returned object to behave like, it could be a duck, or it could be a spaceship or maybe, just maybe, it could be commentable. In fact if you read though the ActiveRecord docs on polymorphic associations, you will find that “interface” is exactly what they call the parameter passed in the :as key of the params hash, and the first parameter to a polymorphic belongs_to association, and even the xxx_type and xxx_id columns in the database. This threw me quite a bit when I first looked at polymorphic associations, you have to declare that the association uses the commentable interface, but you don’t have a commentable model, or a commentable table, or a commentable anything for that matter. To my mind, &#8220;commentable&#8221; is the name of the interface that the comments all have to implement. It could specify that all of them must have a “next_comment” method, which will give me (surprise surprise) the next comment they produce. <a href="http://wildfalcon.com/archives/2008/04/30/polymorphic-associations-and-interfaces-in-rubyrails/">(Read more on this)</a></p>
+
+<p>My comment model does not need to be changed when I add another commentable type. This is important. Very important! As soon as anyone with even a mild case of featuritus gets near your code they are going to want to add stuff, and more often that not, that will mean adding new classes. If adding new classes means adding new branches to all your conditional logic, you are in trouble. <a href="http://wildfalcon.com/archives/2008/04/30/polymorphic-associations-and-interfaces-in-rubyrails/">See here again</a></p>
+
+<p>Once the associations are wired, how can we use this in the controller and views?
+- For the most part, this can be treated like any other has_many association. e.g. can call article.comments to list all the comments of the article.
+- A lot of confusion can arise if you are doing nested resources</p>
+
+<p>Need to change the routes:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">map</span><span class="o">.</span><span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">:has_many</span> <span class="o">=&gt;</span> <span class="ss">:comments</span>
+</span><span class='line'><span class="n">map</span><span class="o">.</span><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">:has_many</span> <span class="o">=&gt;</span> <span class="ss">:comments</span>
+</span><span class='line'><span class="n">map</span><span class="o">.</span><span class="n">resources</span> <span class="ss">:events</span><span class="p">,</span> <span class="ss">:has_many</span> <span class="o">=&gt;</span> <span class="ss">:comments</span>
+</span><span class='line'><span class="c1"># i realize this isn&#39;t Rails 3.2 code...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At the end of the comment controller, Ryan adds the find_commentable method:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">find_commentable</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">name</span> <span class="o">=~</span> <span class="sr">/(.+)_id$/</span>
+</span><span class='line'>      <span class="k">return</span> <span class="vg">$1</span><span class="o">.</span><span class="n">classify</span><span class="o">.</span><span class="n">constantize</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="kp">nil</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Beyond the rails cast</h3>
+
+<p><a href="http://teachmetocode.com/articles/ruby-on-rails-what-are-polymorphic-associations/">Charles Max Wood&#8217;s explanation</a></p>
+
+<p>Polymorphic associations allow us to associate a single attribute of the class to any number of specified classes.
+Charles suggest that you <a href="http://teachmetocode.com/articles/ruby-on-rails-polymorphic-associations-with-mixin-modules/">put your polymorphic associations and related functionality into mixin modules</a>.
+<a href="http://www.youtube.com/watch?v=9NiCx1Lu-DY">Youtube Video</a>-
+Polymorphic means that it can take different forms. A comment can belong_to a page or a post. Most devs name this ___able. e.g. for a comment it would be commentable. This just a convention.</p>
+
+<p>On the has_many side this becomes a little muddy: if commentable can be a page or a post then a comment, it&#8217;s going to go looking for a page ID on the comments table and it&#8217;s not going to find it. So the solution is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">has_many</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:commentable</span>
+</span><span class='line'><span class="c1">#saying: i have many comments and the comments refer to me as commentable</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> If you have a belongs_to :commentable on your comment, you are going to expect it to have a commentable_id on the comments table (which it does!). But is that _id a post.id page.id? This is answers by having a commentable type column as well on the comments table&#8211; it&#8217;s a string column that stores the class name for whatever is associated there (i.e. post or page). So when you invoke joins or includes it has to go looking for the type column of commentable type.</p>
+
+<p>Note: many to many polymorphic associations don&#8217;t seem to work very well
+There is a video on this <a href="http://www.youtube.com/watch?v=vEo6hmHTvS4">here</a>.</p>
+
+<p><a href="http://robots.thoughtbot.com/post/159809241/whats-the-deal-with-rails-polymorphic-associations">The beginning of this is worth a read</a>&#8230; even if it&#8217;s from 2006.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/association-station/">Association Station</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-20T17:30:00-04:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>4.1.2.2 :class_name</p>
+
+<blockquote><p>If the name of the other model cannot be derived from the association name, you can use the :class_name option to supply the model name. For example, if an order belongs to a customer, but the actual name of the model containing customers is Patron, you’d set things up this way:</p></blockquote>
+
+<p><a href="http://guides.rubyonrails.org/association_basics.html">From the assoication guide</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:customer</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Patron&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>One-to-many relationships</h3>
+
+<blockquote><p>The most common relationship used when creating relational databases.  A row in a table in a database can be associated with one or (likely) more rows in another table.  An example of a one-to-many relationship is a single order has many items on that order.  And since relationships work both ways it is not uncommon to hear reference to many-to-one-relationships as well.</p></blockquote>
+
+<ul>
+<li>most common kind
+<a href="http://www.maakal.com/maakalDB/ERD_Examples2.htm">e.g.</a></li>
+</ul>
+
+
+<h3>One-to-one relationship</h3>
+
+<blockquote><p>A row in a table is associated to one and only one row in another table.  An example of a one-to-one relationship is a person can have one social security number and a social security number can only be assigned to one person.</p></blockquote>
+
+<ul>
+<li>In most cases there is no need for a one-to-one relationship as the contents of the two tables can be combined into one table.</li>
+</ul>
+
+
+<p><a href="http://www.maakal.com/maakalDB/ERD_Examples.htm">e.g.</a></p>
+
+<h3>Many-to-many relationships</h3>
+
+<blockquote><p>When one or more rows in a table are associated with one or more rows in another table.  An example of a many-to-many relationship is a table of customers can purchase many products and many customers can purchase a product.</p></blockquote>
+
+<p><a href="http://help.filemaker.com/app/answers/detail/a_id/9922/~/understanding-and-creating-many-to-many-relationships-in-filemaker-pro">Source</a></p>
+
+<h3>Self joins</h3>
+
+<p>In designing a data model, you will sometimes find a model that should have a relation to itself. For example, you may want to store all employees in a single database model, but be able to trace relationships such as between manager and subordinates. This situation can be modeled with self-joining associations:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Employee</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:subordinates</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:foreign_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;manager_id&quot;</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:manager</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With this setup, you can retrieve @employee.subordinates and @employee.manager</p>
+
+<p>There is another rails cast on <a href="http://railscasts.com/episodes/163-self-referential-association">self-referential-association</a>. Ryan Bates is amazing.</p>
+
+<ul>
+<li>Reading:
+<a href="http://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420">patterns of enterprise application architecture</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/twitter-bootstrap/">Twitter Bootstrap</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-19T12:29:00-04:00" pubdate data-updated="true">Jul 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Rails Cast for <a href="http://railscasts.com/episodes/328-twitter-bootstrap-basics">twitter bootstrap:</a></p>
+
+<p><strong>Note</strong>
+During install your can specify whether you want a <a href="https://github.com/seyhunak/twitter-bootstrap-rails#installing-to-app-using-generators">fixed or fluid layout</a></p>
+
+<p>LESS is a CSS precessor
+:  to get LESS working with rails you need the help of some gems</p>
+
+<p>I can download the source <a href="https://github.com/seyhunak/twitter-bootstrap-rails">here</a>. This is the preferred code not, <a href="https://github.com/twitter/bootstrap/">this one</a>.</p>
+
+<p>Change Gemfile</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'therubyracer', :platform =&gt; :ruby
+</span><span class='line'>gem 'twitter-bootstrap-rails'
+</span><span class='line'>gem 'chosen-rails'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Install Twitter Bootstrap</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle
+</span><span class='line'>rails g bootstrap:install
+</span><span class='line'>rails g bootstrap:layout application fixed</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>A file that was generated is: app/assets/stylesheets/bootstrap_and_override.css.less
+This is where I would do the bulk of the customization
+ - including if padding is needed between the body and the nav bar&#8230;</p>
+
+<figure class='code'><figcaption><span>For some padding at the top</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@import</span> <span class="s2">&quot;twitter/bootstrap/bootstrap&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">body</span> <span class="p">{</span> <span class="n">padding</span><span class="o">-</span><span class="ss">top</span><span class="p">:</span> <span class="mi">60</span><span class="n">px</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="vi">@import</span> <span class="s2">&quot;twitter/bootstrap/responsive&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Layout fixed makes it 940px and fluid makes it full screen. Both are responsive though.</p>
+
+<h3>When I generate new resources</h3>
+
+<figure class='code'><figcaption><span>For some padding at the top</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">scaffold</span> <span class="no">Post</span> <span class="ss">title</span><span class="p">:</span><span class="n">string</span> <span class="ss">description</span><span class="p">:</span><span class="n">text</span>
+</span><span class='line'><span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">migrate</span>
+</span><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="ss">bootstrap</span><span class="p">:</span><span class="n">themed</span> <span class="no">Posts</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Without the 3rd line it looks terrible so remember to run it!</p>
+
+<p>Further reading is <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">here.</a></p>
+
+<p>When I&#8217;m ready for it, Bates does a follow up rails cast on more <a href="http://railscasts.com/episodes/329-more-on-twitter-bootstrap">advanced twitter bootstrap</a>.</p>
+
+<p>NOTE: We went over twitter bootstrap in lecture 6 of ROR spring</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -709,290 +1096,6 @@ a symbol is an immutable object</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/octopress-blues/">Octopress Blues</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-16T16:53:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I just spent more than an hour debugging an issue when trying to run</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The error I kept receiving was:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>## Generating Site with Jekyll
-</span><span class='line'>unchanged sass/screen.scss
-</span><span class='line'>Configuration from /Users/Ajonas/octopress/_config.yml
-</span><span class='line'>Building site: source -&gt; public
-</span><span class='line'>/Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/rubypython-0.5.3/lib/rubypython/rubypyproxy.rb:198:in `method_missing': ClassNotFound: no lexer for alias 'Query' found (RubyPython::PythonError)
-</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:135:in `lexer_for'
-</span><span class='line'>  from /Users/Ajonas/.rvm/gems/ruby-1.9.2-p320/gems/pygments.rb-0.2.13/lib/pygments/ffi.rb:91:in `highlight'
-</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:24:in `pygments'
-</span><span class='line'>  from /Users/Ajonas/octopress/plugins/pygments_code.rb:14:in `highlight'</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It goes on much longer from there. Anyways, I googled it and found <a href="http://samrange.com/blog/2012/06/17/octopress-code-highlighting-with-arch-linux/">this</a> which sent me on a wild goose chase to change out the path in the rubypython gem file.</p>
-
-<p>After trying to fix this, I decided to generate some other posts. What I discovered was other posts could be generated and pushed which meant it wasn&#8217;t the gem at all&#8230;</p>
-
-<p>In the end, I hadn&#8217;t named the language of the code snippet so the post couldn&#8217;t be generated.</p>
-
-<p>Ugh.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/lecture-3-july-15/">Lecture 3- July 15</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-16T16:06:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Rails Lecture 3- July 15</h3>
-
-<ul>
-<li>why use &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
-
-<ul>
-<li>bc want to use http verbs to be more specific</li>
-<li>match is more vague, you should generally use specific verbs</li>
-</ul>
-</li>
-</ul>
-
-
-<p><code>rake routes CONTROLLER=SESSIONS</code> will narrow output</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>render :action =&gt; 'under_construction' #=&gt; relative to the current controller
-</span><span class='line'>render :template =&gt; 'shared/under_construction' #=&gt; doesn't assume it is in the current views folder
-</span><span class='line'>#under the class name
-</span><span class='line'>render 'shared/under_construction' #=&gt; these 3 work the same now</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Private Methods###(2:40)</h3>
-
-<ul>
-<li>about what object the receiver is on the method called&#8211; private methods can only be called on implicit receivers</li>
-<li>a way to control scope</li>
-<li><p>anything that is not an action, that isn&#8217;t an endpoint of a route should be private</p></li>
-<li><p>routes: bridge between the browser, specifcially URLs, and the app</p></li>
-</ul>
-
-
-<h3>Polymorphic Interface(2:50)</h3>
-
-<p>The link_to method&#8211;> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
--> if I send it an instance of active record, it&#8217;s behavior will change ==> it will become intelligent and it will understand that it is an instance of active record</p>
-
-<h3>Lecture### (2:55)</h3>
-
-<ul>
-<li><p>anything that starts with an underscore &#8216;_form.erb.html&#8217; for example is a snippet of code that is reused on multiple templates</p></li>
-<li><p>form_for(@song) &#8211;> knows whether the song is new or should be updated&#8230; obviously different verbs are required for those diff actions</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Form Helpers (3:09)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">form_for</span><span class="p">(</span><span class="vi">@song</span><span class="p">)</span>
-</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">textfield</span> <span class="ss">:artist_name</span> <span class="c1">#=&gt; this will break if there is not a artist_name method for the song class in the controller</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>  <span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># this line instantiates a New Song</span>
-</span><span class='line'>  <span class="c1"># collects the data</span>
-</span><span class='line'>  <span class="c1">#assigning the data to the correct attribute</span>
-</span><span class='line'> <span class="c1">#the params[:song] lines does the last two steps</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Params### (3:20)</h3>
-
-<p>params looks and behaves like a hash
-its a nested hash</p>
-
-<figure class='code'><figcaption><span>Assigning a name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@song</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:song</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span> <span class="c1">#but this happens during the following line of code:</span>
-</span><span class='line'>
-</span><span class='line'><span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span> <span class="c1"># this happens using mass assignment!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Manually Assigning the Name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">input</span> <span class="n">type</span> <span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;song[name]&quot;</span> <span class="c1">#this looks like the key of the params hash ==&gt; params[:song][:name]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>(3:50) Nested hash testing</h3>
-
-<figure class='code'><figcaption><span>Query string (3:57)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mldraft</span><span class="o">.</span><span class="n">com?person</span><span class="o">[</span><span class="nb">name</span><span class="o">]=</span><span class="n">adam</span><span class="o">&amp;</span><span class="n">person</span><span class="o">[</span><span class="n">email</span><span class="o">]=</span><span class="n">adam</span><span class="vi">@mldraft</span><span class="o">.</span><span class="n">com</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Can access the params hash in the same way as the form. So params[:person][:name] will equal adam</li>
-</ul>
-
-
-<h3>Mass Assignment Vulnability (4:05)</h3>
-
-<ul>
-<li>attr_accessible is a whitelist approach versus attr_protected which is a black list approach</li>
-<li><p>this has nothing to do with the attr_accessor, reader, or writer</p></li>
-<li><p>Virtual attributes don&#8217;t persist to the database</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/diaspora2/">Diaspora- Day 2</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-11T10:06:00-04:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Postgresql Gem</strong> is killing me. It&#8217;s listed in the Gemfile. It&#8217;s listed in the Gemlock file. I&#8217;ve tried to&#8230;</p>
-
-<p>ok so after 2 hours of running around google I tried commenting out the mysql and sqlite gems:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># database
-</span><span class='line'>
-</span><span class='line'>gem "activerecord-import", "~&gt; 0.2.9"
-</span><span class='line'>gem 'foreigner', '~&gt; 1.1.0'
-</span><span class='line'>#gem 'mysql2', '0.3.11' if ENV['DB'].nil? || ENV['DB'] == 'all' || ENV['DB'] == 'mysql'
-</span><span class='line'>gem 'pg' #if ENV['DB'] == 'all' || ENV['DB'] == 'postgres'
-</span><span class='line'>#gem 'sqlite3' if ENV['DB'] == 'all' || ENV['DB'] == 'sqlite'</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bingo.</p>
-
-<p>I finally got this running by downloading mysql and setting the db to mysql&#8230; victory.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/29/">&larr; Older</a>
@@ -1010,23 +1113,23 @@ its a nested hash</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/linchpin-by-seth-godin-notes/">Linchpin by Seth Godin Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/patterns-of-enterprise-application-architecture/">Patterns of Enterprise Application Architecture</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/growing-object-oriented-software-guided-by-tests/">Growing Object-Oriented Software, Guided By Tests</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
       <li class="post">
         <a href="/blog/transparency/">Transparency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-technology-and-developer-happiness/">New Technology and Developer Happiness</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/goal-setting-for-devs/">Goal Setting for Devs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/peer-mentorship/">Peer Mentorship</a>
       </li>
     
   </ul>

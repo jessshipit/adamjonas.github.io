@@ -9,12 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Google Maps for Rails screencast json viewer 1
-2
-3
-4
-Handhistory.find_each(:batch_size =&gt; 100000) do |hand| bb = hand.gametype.bigblind #etc
-end &hellip;">
+  <meta name="description" content="click around without being authenticated - modal prompt
+upload repo user stories of issues that needs to be fixed as a fixer user story of finding &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +87,386 @@ end &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day37/">FIS Day37</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-30T10:12:00-05:00" pubdate data-updated="true">Nov 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>click around without being authenticated</p>
+
+<h2>- modal prompt</h2></li>
+<li><p>upload repo</p>
+
+<ul>
+<li>user stories of issues that needs to be fixed</li>
+</ul>
+</li>
+<li>as a fixer
+
+<ul>
+<li>user story of finding an issue
+
+<ul>
+<li>sort by popularity/ bounty$</li>
+</ul>
+</li>
+<li>fix an issue
+
+<ul>
+<li>notify bounty issuer</li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+
+
+<p>tech challenges
+  - sidekiq
+  - memcache</p>
+
+<ul>
+<li><code>git reset --hard &lt;tag/branch/commit id&gt;</code></li>
+<li><code>git branch -D bugfix</code></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>None of this worked&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_upvote.icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up icon-circle-arrow-up&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// $(&#39;i#index_downvote.icon-arrow-down&#39;).removeClass().addClass(&#39;icon-arrow-down&#39;);</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_downvote.icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down icon-arrow-down &#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// $(&#39;i#index_upvote.icon-arrow-up&#39;).removeClass().addClass(&#39;icon-arrow-up&#39;);</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;i#index_upvote.icon-arrow-up, i#index_downvote.icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">$parent</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">parent</span><span class="p">(),</span>
+</span><span class='line'>  <span class="nx">up</span> <span class="o">=</span> <span class="nx">$parent</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;i.icon-arrow-down&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;icon-circle-arrow-down icon-arrow-up&quot;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;i.icon-arrow-down&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>This Did It in Vote Js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$upvoteIcon</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;tr#issue_&lt;%= @issue.id %&gt; i#upvote-icon-&lt;%= @issue.id %&gt;&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">$downvoteIcon</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;tr#issue_&lt;%= @issue.id %&gt; i#down-vote-icon-&lt;%= @issue.id %&gt;&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;%</span> <span class="k">if</span> <span class="nx">params</span><span class="p">[</span><span class="o">:</span><span class="nx">direction</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;upvote&quot;</span> <span class="o">%&gt;</span>
+</span><span class='line'>  <span class="nx">$downvoteIcon</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$upvoteIcon</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-up&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;%</span> <span class="nx">elsif</span> <span class="nx">params</span><span class="p">[</span><span class="o">:</span><span class="nx">direction</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;downvote&quot;</span> <span class="o">%&gt;</span>
+</span><span class='line'>  <span class="nx">$downvoteIcon</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-down&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-down&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">$upvoteIcon</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;icon-arrow-up&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;icon-circle-arrow-up&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;%</span> <span class="nx">end</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>CSS IDs</h3>
+
+<ul>
+<li>SO that badge class was overwritten in an attempt to make them bigger. A fix is to simply assign the overwrite to an id and then call it on the element.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>This Did It in Vote Js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">#</span><span class="nx">endorsement</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">code</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">span</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;endorsement&quot;</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;badge badge-success&quot;</span><span class="o">&gt;</span><span class="nx">Endorsed</span><span class="o">&lt;</span><span class="err">/span&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cool.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day36/">FIS Day36</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-29T10:30:00-05:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>$ rake db:migrate:down VERSION=20080930121212</code></p>
+
+<h3>Lessons Learned</h3>
+
+<ul>
+<li>We were having trouble adding styling to the vote button after a click, like on stackoverflow.
+
+<ul>
+<li>the javascript was located in the vote.js file and would only trigger after the second event
+
+<ul>
+<li><em>ANSWER:</em> The vote is only created after the vote button is clicked the first time, thus if we moved it to issue.js it would work fine.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Merging an upstream and updating the gem</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ git fetch upstream
+</span><span class='line'>♕ git merge upstream/master
+</span><span class='line'>#resolve your conflicts
+</span><span class='line'>
+</span><span class='line'>#bundle update gem --source git_user_name
+</span><span class='line'>bundle update octokit --source ajonas04</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>A Simple Click Event</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a.upvote&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://www.w3resource.com/twitter-bootstrap/modals-tutorial.php">Twitter bootstrap modal tutorial</a></li>
+</ul>
+
+
+<p>Data-backdrop:</p>
+
+<blockquote><p>Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn&#8217;t close the modal on click.</p></blockquote>
+
+<h2>Andrew Koch VP of Product Management @ Lot18</h2>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day35/">FIS Day35</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-28T09:13:00-05:00" pubdate data-updated="true">Nov 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>Goal:
+
+<ul>
+<li>if there is a no bounty div</li>
+<li>dont just render the TR for that bounty</li>
+<li>rather render the entire bounty table for that issue and insert that</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//the [0] is to make sure the element has something in it</span>
+</span><span class='line'><span class="c1">//it is the equivalent to a .exists? method</span>
+</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#bounties_table&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]){</span>
+</span><span class='line'><span class="c1">//this adds the tr object defined in the controller</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounties_table tbody&#39;</span><span class="p">).</span><span class="nx">prepend</span><span class="p">(</span><span class="s2">&quot;&lt;%= j render(@bounty) %&gt;&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'><span class="c1">//replace with requires that you pass in the HTML-- not a selector</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#no_bounty&quot;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="s2">&quot;&lt;%= j render &#39;bounties/bounties_table&#39;, :issue =&gt; @bounty.issue %&gt;&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">//the j escape is necessary to render the html</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Comparing the inputs&#8230;.</p>
+
+<figure class='code'><figcaption><span>Pulling out values for two different forms</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;button#pledge&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span>
+</span><span class='line'>    <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">pageValue</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounty_price_page&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">modalValue</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}));</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">modalValue</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#create-bounty&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span>
+</span><span class='line'>    <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">modal</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#bounty_price&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">modal</span><span class="p">)</span><span class="o">!=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">pageValue</span><span class="p">)){</span>
+</span><span class='line'>      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span#error&#39;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="s1">&#39;&lt;span class=&quot;label label-important&quot;&gt;Please Enter The Same Value&lt;/span&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p><a href="http://www.elasticsearch.org/">elastic search</a></p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a></p>
+
+<ul>
+<li><a href="http://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html">rails documentation</a></li>
+<li><a href="http://railscasts.com/episodes/322-rabl?view=asciicast">rabl</a></li>
+<li><p><a href="http://jonathanjulian.com/2010/04/rails-to_json-or-as_json/">to_json</a></p></li>
+<li><p><a href="https://github.com/features/projects/issues">pull request to solve an issue</a></p></li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1141,331 +1517,6 @@ end</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day31/">FIS Day31</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-19T11:51:00-05:00" pubdate data-updated="true">Nov 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>AJAX</h3>
-
-<p><code>&lt;div id="hidden" style="display:none"&gt;</code></p>
-
-<p><code>format.js</code> -> if there is a new js file it will send that back to the form</p>
-
-<p><code>$('#newlink).prepend('&lt;%= j render("form") %&gt;')</code></p>
-
-<h3>Partials</h3>
-
-<p><code>&lt;%= render @mixtape.songs %&gt;</code> this will render this collection of songs</p>
-
-<p><code>&lt;%= render :collection =&gt; @mixtape.songs :partial =&gt; 'songs/song_li' %&gt;</code></p>
-
-<h3>Action Mailer</h3>
-
-<p><code>gem postmark-rails</code></p>
-
-<p>https://github.com/wildbit/postmark-rails</p>
-
-<p><code>rails d mailer mixtapes</code>
-<code>rails g mailer mixtapes</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@mail</span> <span class="o">=</span> <span class="no">MixtapeMailer</span><span class="o">.</span><span class="n">new_song</span><span class="p">(</span><span class="vi">@mixtape</span><span class="o">.</span><span class="n">song</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
-</span><span class='line'><span class="vi">@mail</span><span class="o">.</span><span class="n">deliver</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/dynamic-method-definition/">Dynamic Method Definition</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-16T21:26:00-05:00" pubdate data-updated="true">Nov 16<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>As a beginner, when I run into a problem my first instinct is to power through and simply find a way to get it done&#8211; the brute force method. This means that I am rarely going to write good code during the first attempt. Once it is working however, I of course have the opportunity to return later and make it better. As Kent Beck says,</p>
-
-<blockquote><p>make it work, make it right, make it fast.</p></blockquote>
-
-<p>Refactoring is about making it right by changing the internal structure without changing the external behavior.</p>
-
-<p><em><a href="http://www.amazon.com/Refactoring-Ruby-Jay-Fields/dp/0321603508">Refactoring: Ruby Edition</a></em> has lots of great examples and methods for refactoring code. Inspired by the book, I gave a <a href="https://speakerdeck.com/ajonas04/refactoring-with-examples">presentation on the subject</a> last week. My example of <strong>Dynamic Method Definition</strong> was the clear winner based on the feedback from the audience so I&#8217;ll outline it below&#8230;</p>
-
-<p>One of the most prominent clues that code needs refactoring is duplication&#8230;</p>
-
-<figure class='code'><figcaption><span>Can you spot any repetition?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">name</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">open_issues</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">open_issues</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">watchers</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">watchers</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Enter Metaprogramming&#8230;</h3>
-
-<p>Metaprogramming is:</p>
-
-<blockquote><p>A program which modifies or generates other programs.</p></blockquote>
-
-<p>Instead of writing out each individual method, why don&#8217;t we use the power of <em>Dynamic Method Definition</em> to write these three methods for us?</p>
-
-<figure class='code'><figcaption><span>Dynamic method definition in action</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">repo_params</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">define_method</span> <span class="n">arg</span><span class="o">.</span><span class="n">to_sym</span> <span class="k">do</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>  <span class="n">repo_params</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:open_issues</span><span class="p">,</span> <span class="ss">:watchers</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There is a lot going on here so let&#8217;s take a closer look.</p>
-
-<figure class='code'><figcaption><span>Line by line </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#this is a class method that accepts an </span>
-</span><span class='line'><span class="c1">#arbitrary number of arguments as a splat</span>
-</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">repo_params</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1">#the splat array is then iterated over and</span>
-</span><span class='line'>  <span class="c1">#each of the arguments is yielded as the variable &#39;arg&#39;</span>
-</span><span class='line'>  <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
-</span><span class='line'>    <span class="c1">#the define method accepts a symbol and</span>
-</span><span class='line'>    <span class="c1">#names the argument after that symbol</span>
-</span><span class='line'>    <span class="n">define_method</span> <span class="n">arg</span><span class="o">.</span><span class="n">to_sym</span> <span class="k">do</span>
-</span><span class='line'>      <span class="c1">#that same argument is then called as a method on self.info</span>
-</span><span class='line'>      <span class="c1">#which mimics the patterns of every method in the original</span>
-</span><span class='line'>      <span class="c1">#using dynamic dispatching via the send method</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#repo_parms is then called with as many parameters</span>
-</span><span class='line'><span class="c1">#as you would like to add</span>
-</span><span class='line'>  <span class="n">repo_params</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:open_issues</span><span class="p">,</span> <span class="ss">:watchers</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pretty slick huh?</p>
-
-<p>This use of dynamic dispatching isn&#8217;t about semantics and code clarity (although it improves the code in both areas), use of this method is about maintainability. As we expand our list of attributes, we simply need to add the new parameter to repo_params. Easy peasy.</p>
-
-<p><em><a href="http://www.amazon.com/Refactoring-Ruby-Jay-Fields/dp/0321603508">Refactoring: Ruby Edition</a></em> should be required reading for anyone to graduate from the &#8216;beginner&#8217; stage. Dynamic method definition is one of about 203,234,984 things that the book will teach you. Go read it.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day30/">FIS Day30</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-16T15:51:00-05:00" pubdate data-updated="true">Nov 16<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p><a href="https://www.ruby-toolbox.com/categories/state_machines.html">state machine</a></p>
-
-<ul>
-<li>There&#8217;s a <a href="http://railscasts.com/episodes/392-a-tour-of-state-machines">railscast</a> for that</li>
-</ul>
-</li>
-<li><p>gifsockets</p>
-
-<ul>
-<li>real time communication
-
-<ul>
-<li>pushes text to client frame-by-frame</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">oldTime</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="s1">&#39;&lt;%= @issue.updated_at %&gt;&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;&lt;%= &quot;/#{@issue.repo.owner_name}/#{@issue.repo.name}/issues/#{@issue.git_number}.json&quot; %&gt;&#39;</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">json</span><span class="p">){</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">newTime</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">updated_at</span><span class="p">));</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">newTime</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">oldTime</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">newTime</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;diff&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#seal.seal.pull-right&#39;</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#seal.seal.pull-right&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">});</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'>  <span class="p">},</span> <span class="mi">4000</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://bootswatch.com/">bootswatch</a></li>
-<li><a href="http://subtlepatterns.com/">subtle patterns</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -1483,23 +1534,23 @@ end</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/linchpin-by-seth-godin-notes/">Linchpin by Seth Godin Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/patterns-of-enterprise-application-architecture/">Patterns of Enterprise Application Architecture</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/growing-object-oriented-software-guided-by-tests/">Growing Object-Oriented Software, Guided By Tests</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
       <li class="post">
         <a href="/blog/transparency/">Transparency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-technology-and-developer-happiness/">New Technology and Developer Happiness</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/goal-setting-for-devs/">Goal Setting for Devs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/peer-mentorship/">Peer Mentorship</a>
       </li>
     
   </ul>

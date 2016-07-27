@@ -9,9 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="CA Animation Animation family tree CA Animattion CA Animation Group
-CA Property Animation
-CA Transition CA basic animation is for linear animation &hellip;">
+  <meta name="description" content="CA Animation - Animation family tree - CA Animattion - CA Animation Group - CA Property Animation - CA Transition - CA basic animation is for linear &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -118,117 +116,62 @@ CA Transition CA basic animation is for linear animation &hellip;">
 
 <div class="entry-content"><h3>CA Animation</h3>
 
-<ul>
-<li><p>Animation family tree</p>
+<pre><code>- Animation family tree
+    - CA Animattion
+        - CA Animation Group    
+        - CA Property Animation
+        - CA Transition
+            - CA basic animation is for linear animation
+            - keyanimattion is for more specific or non-linear animation
 
-<ul>
-<li>CA Animattion
 
-<ul>
-<li>CA Animation Group</li>
-<li>CA Property Animation</li>
-<li>CA Transition
+- Animated Properties
+    - CGColorRef -&gt; shadowColor, borderColor
+    - NSNumber (float) -&gt; opactity, shadowRadius
+    - NSVAlue (CGRect) -&gt; bounds, contentsRect
+    - NSValue (CGPoint) -&gt; anchorPoint (is the center point for rotation), position
+    - NSValue (CATransform3D) -&gt; transform
 
-<ul>
-<li>CA basic animation is for linear animation</li>
-<li>keyanimattion is for more specific or non-linear animation</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Animated Properties</p>
+- CATransform3d
+    - CoreGraphics is just in 2 dimensions
+    - Can add a perspective column in the z column -- (as opposed to just x and y planes (the 3rd column is for perspective) -- to create the illusion that it is tilted backs
+    -  
 
-<ul>
-<li>CGColorRef -> shadowColor, borderColor</li>
-<li>NSNumber (float) -> opactity, shadowRadius</li>
-<li>NSVAlue (CGRect) -> bounds, contentsRect</li>
-<li>NSValue (CGPoint) -> anchorPoint (is the center point for rotation), position</li>
-<li>NSValue (CATransform3D) -> transform</li>
-</ul>
-</li>
-<li><p>CATransform3d</p>
-
-<ul>
-<li>CoreGraphics is just in 2 dimensions</li>
-<li>Can add a perspective column in the z column &#8211; (as opposed to just x and y planes (the 3rd column is for perspective) &#8211; to create the illusion that it is tilted back</li>
-</ul>
-</li>
-<li><p>Easing: to control the acceleration or deceleration of the objects in the animation. This is used to simulate real life forces like friction or gravity.</p></li>
-</ul>
-
+- Easing
+&gt;Easing means to control the acceleration or deceleration of the objects in the animation. This is used to simulate real life forces like friction or gravity.
+</code></pre>
 
 <h2>Web Services</h2>
 
-<ul>
-<li>Synchronous URL Fetch (not recommended) -> <em>if you block the main thread, your application will freeze</em>
+<pre><code>- Synchronous URL Fetch (not recommended) -&gt; *if you block the main thread, your application will freeze*
+    - NSURLConnection -(request)-&gt; NSMutableURLRequest -(URL)-&gt; NSURL
+        - NSURLConnection, the class of CocoaTouch to send requests to web services
+-  Asynchronous URL Fetch (the one we are going to use)
 
-<ul>
-<li>NSURLConnection -(request)-> NSMutableURLRequest -(URL)-> NSURL
-
-<ul>
-<li>NSURLConnection, the class of CocoaTouch to send requests to web services</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Asynchronous URL Fetch (the one we are going to use)</p></li>
-<li><p>we can block the whole app execution until the web service responds OR send the request and forget about it, avoiding blocking the app execution. Once the service responds we process the result.</p>
-
-<ul>
-<li>The later option is the right one.</li>
-</ul>
-</li>
-<li>We send and Asynchronous request to the service using a NSOperationQueue. This block of code will be executed in a background Queue defined by the NSOperationQueue.
-
-<ul>
-<li>This block receives three parameters:
-
-<ul>
-<li>response: An object with an instance of NSURLResponse.</li>
-<li>data: The response returned by the service as a NSData object.</li>
-<li>error: An NSError with the error, if any, returned by the service.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
+- we can block the whole app execution until the web service responds OR send the request and forget about it, avoiding blocking the app execution. Once the service responds we process the result.
+    - The later option is the right one.
+- We send and Asynchronous request to the service using a NSOperationQueue. This block of code will be executed in a background Queue defined by the NSOperationQueue.
+        - This block receives three parameters:
+            - response: An object with an instance of NSURLResponse.
+            - data: The response returned by the service as a NSData object.
+            - error: An NSError with the error, if any, returned by the service.
+</code></pre>
 
 <h3>Core Data</h3>
 
-<ul>
-<li>StoreTypes
-
-<ul>
-<li>SQlite, binary file, NOT xml formats (only available in OS10)</li>
-</ul>
-</li>
-<li>Predicates</li>
-<li>NSManagedObject
-
-<ul>
-<li>class capable of storing data for an instance of any entity.</li>
-<li>access properties (attributes, relationships) via key-value coding methods (valueForKey:, setValue:forKey)</li>
-</ul>
-</li>
-<li>Relationships
-
-<ul>
-<li>delete rule: &#8220;if an attempt is made to delete the source object&#8230;&#8221;
-
-<ul>
-<li>nullify (the inverse relationship)</li>
-<li>deny (if any destination relationships)</li>
-<li>cascade (delete any destination relationships, too) -> <em>very dangeous</em></li>
-<li>No action</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
+<pre><code>- StoreTypes
+    - SQlite, binary file, NOT xml formats (only available in OS10)
+- Predicates
+- NSManagedObject
+    - class capable of storing data for an instance of any entity.
+    - access properties (attributes, relationships) via key-value coding methods (valueForKey:, setValue:forKey)
+- Relationships
+    - delete rule: "if an attempt is made to delete the source object..."
+        - nullify (the inverse relationship)
+        - deny (if any destination relationships)
+        - cascade (delete any destination relationships, too) -&gt; *very dangeous*
+        - No action
+</code></pre>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -259,40 +202,28 @@ CA Transition CA basic animation is for linear animation &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-<li>The relationships in Core Data are circular, what these means is that if we want to create a relationship from Movie to Director we also need another one from Director to Movie.</li>
-</ul>
-
+<pre><code>- The relationships in Core Data are circular, what these means is that if we want to create a relationship from Movie to Director we also need another one from Director to Movie.
+</code></pre>
 
 <h3>Debugger</h3>
 
-<ul>
-<li>rake debug=1, backtrace (or bt), fr <number>
-
-<ul>
-<li>n to step to the next line in the file</li>
-<li>quit to quit.</li>
-</ul>
-</li>
-</ul>
-
+<pre><code>- rake debug=1, backtrace (or bt), fr &lt;number&gt;
+    - n to step to the next line in the file
+    - quit to quit.
+</code></pre>
 
 <h3>3rd Party Libs</h3>
 
-<ul>
-<li>CorePlot -> to build graphs</li>
-</ul>
-
+<pre><code>- CorePlot -&gt; to build graphs
+</code></pre>
 
 <h3>Wrappers</h3>
 
-<ul>
-<li>[formotion](https://github.com/clayallsopp/formotion -> to easily create complex forms</li>
-<li><a href="https://github.com/clayallsopp/formotion">walt</a> -> wrapper of core animation</li>
-<li><a href="https://github.com/clayallsopp/formotion">teacup</a> -> pretty much create a stylesheet for the views</li>
-<li><a href="https://github.com/clayallsopp/formotion">sugarcube</a> -> redefining methods to be more semantic</li>
-</ul>
-
+<pre><code>- [formotion](https://github.com/clayallsopp/formotion -&gt; to easily create complex forms
+- [walt](https://github.com/clayallsopp/formotion) -&gt; wrapper of core animation
+-   [teacup](https://github.com/clayallsopp/formotion) -&gt; pretty much create a stylesheet for the views
+- [sugarcube](https://github.com/clayallsopp/formotion) -&gt; redefining methods to be more semantic
+</code></pre>
 </div>
 
 
@@ -360,23 +291,23 @@ CA Transition CA basic animation is for linear animation &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/linchpin-by-seth-godin-notes/">Linchpin by Seth Godin Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/patterns-of-enterprise-application-architecture/">Patterns of Enterprise Application Architecture</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/growing-object-oriented-software-guided-by-tests/">Growing Object-Oriented Software, Guided By Tests</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
       <li class="post">
         <a href="/blog/transparency/">Transparency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-technology-and-developer-happiness/">New Technology and Developer Happiness</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/goal-setting-for-devs/">Goal Setting for Devs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/peer-mentorship/">Peer Mentorship</a>
       </li>
     
   </ul>

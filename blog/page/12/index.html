@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Intro to the product&#8230; present gitbo - show that it is integrated with github - largest open source code sharing platform show how easy it is to &hellip;">
+  <meta name="description" content="Cocoa touch is the high-level Objective C programming API for iOS. What is a framework a collection of classes that are intended to be used together &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,783 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-day-2/">RubyMotion Day 2</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-22T09:41:00-05:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>Cocoa touch is the high-level Objective C programming API for iOS.</li>
+</ul>
+
+
+<h3>What is a framework</h3>
+
+<ul>
+<li>a collection of classes that are intended to be used together. That is, the classes are compiled together into a reusable library of code (static or dynamic).</li>
+<li>The framework can define versions</li>
+</ul>
+
+
+<h3>Other Frameworks</h3>
+
+<ul>
+<li>CoreData</li>
+<li>CoreLocation -> framework that allows you to access the geo location and heading of the device</li>
+<li>MapKit -> provides an interface to embed maps into your applications as well as other advanced functionality such as adding custom annotations, reverse-geocoding lookups, etc.</li>
+<li>CoreGraphics</li>
+<li>GameKit</li>
+</ul>
+
+
+<h3>MVC/MVP</h3>
+
+<ul>
+<li>The presenter is more responsible in RubyMotion than in traditional MVC
+
+<ul>
+<li>model still a good place to abstract logic from the controller</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Callbacks</h2>
+
+<blockquote><p>Callbacks are methods or functions that are invoked when something happens</p>
+
+<pre><code>- Target-action -&gt; send one message to another object
+- Delegates -&gt; send more than one message to another object
+- Notifications -&gt; many to many. Send a message to 10-15 objects. The most flexible, but also the most dangerous.
+</code></pre></blockquote>
+
+<ul>
+<li><p>Target-Action</p>
+
+<ul>
+<li>NSButton sends a target to TimeZoneController
+
+<ul>
+<li>(make sure to include the colon (:) )</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Delegates</p>
+
+<ul>
+<li>NSTableView -> delegate -> MyClass</li>
+</ul>
+</li>
+<li><p>Notifications</p>
+
+<ul>
+<li>NSNotifcationCenter is the class we use when we send or receive notifications
+
+<ul>
+<li>posting -> send a notification</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>UIApplication and AppDelegate</h3>
+
+<ul>
+<li>UIApplicaiton class provides a centralized point of control and coordination for apps running on iOS. Every app must have exactly one instance of UIApplication</li>
+<li>app delegate is an object created at app launch time, usually by the UIApplicatioMAin function. Its primary job is to handle state transitions within the app. e.g. this object is responsible for launch-time initialization.</li>
+</ul>
+
+
+<h3>App Delegate</h3>
+
+<ul>
+<li>the app delegate class are optional
+
+<ul>
+<li>e.g. application:didFinishLaunchingWIthOptions: &amp; applicationDidBecomeActive:</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>nib files</h3>
+
+<ul>
+<li>A nib file is a data archive that essentially contains a set of freeze-dried objects that you want to recreate at runtime. Nib files are used most commonly to store preconfigured windows, views, and other visually oriented objects but they can also store non-visual objects such as controllers.
+
+<ul>
+<li>nib files originate from NeXt</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Initializers</h3>
+
+<ul>
+<li>Objective-C uses init* methods to initialize new instances</li>
+<li>A class can have zero or more initializers</li>
+<li>One initializer is the &#8220;Designated&#8221; -> this does all the heavy work and all other will call this one.</li>
+<li>All initializers in the same class must call the designated initializer</li>
+<li>The designed initializer must call the superclass&#8217;s designed initializer</li>
+</ul>
+
+
+<h3>Overwriting Initializers</h3>
+
+<ul>
+<li>If you override the initializer you need to return self
+
+<ul>
+<li>This is very important</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Alloc and init</h3>
+
+<ul>
+<li>alloc is a static method and init is an instance method</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>connects the UIButton to our controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">sign_in_button</span><span class="o">.</span><span class="n">addTarget</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span>
+</span><span class='line'>                          <span class="ss">action</span><span class="p">:</span><span class="s1">&#39;sign_in:&#39;</span><span class="p">,</span>
+</span><span class='line'>                          <span class="ss">forControlEvents</span><span class="p">:</span><span class="no">UIControlEventTouchUpInside</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Core Location</h2>
+
+<ul>
+<li>CLLocationManager</li>
+<li>CLLocation</li>
+</ul>
+
+
+<h3>iOS Location</h3>
+
+<ul>
+<li><p>an iOS device can use up to 3 ways to determine its location (from best to worst accuracy):</p>
+
+<ul>
+<li>GPS. For devices with that functionality such as iPhones or iPads with GSM/LTE.
+
+<ul>
+<li>for navigation or running apps, but high battery consumption</li>
+</ul>
+</li>
+<li>Cell towers triangulation. For devices with GSM/LTE.</li>
+<li>WiFi hotspots.</li>
+</ul>
+</li>
+<li><p>KCLLocationAccuracyBest -> Drains the battery</p></li>
+<li>KCLLocationAccuracyThreeKilometeres -> doesn&#8217;t check all that often</li>
+</ul>
+
+
+<h3>MKMapView</h3>
+
+<ul>
+<li>MKMapTypeStandard. Displays a street map that shows the position of all roads and some road names.</li>
+<li>MKMapTypeSatellite. Displays satellite imagery of the area.</li>
+<li>MKMapTypeHybrid. Displays a satellite image of the area with road and road name information layered on top.</li>
+</ul>
+
+
+<h3>MapKit</h3>
+
+<ul>
+<li>MapKit uses a special structure called MKCoordinateRegion
+
+<ul>
+<li>has a CLLocationCoordinate2D  a structure which latitude and longitude values</li>
+<li>and a MKCoordinateSpan, that represents the amount of map to display in the vertical and horizontal space. You can see this Span as the zoom that the map will have.</li>
+</ul>
+</li>
+<li><p>To add a pin Annotations in MapKit you need to add an Annotation in Objective-C by creating a class that explicitly implements the MKAnnotation protocol.</p>
+
+<ul>
+<li>In RubyMotion you only need to create a class with the same methods defined in the protocol. These methods are:
+
+<ul>
+<li><em>coordinate</em>. Returns a CLLocationCoordinate</li>
+<li><em>title.</em> NSString with the main title of the Annotation.</li>
+<li><em>subtitle.</em> Optional, returns an NSString with the subtitle of the annotation.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MKAnnotion</p>
+
+<ul>
+<li>is a protocol</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>UIVIEWS</h2>
+
+<ul>
+<li>responsible for how to draw themselves
+
+<ul>
+<li>can use coreGraphics to draw very complicated things</li>
+</ul>
+</li>
+<li>knowing its subviews</li>
+<li><p>accepting interaction</p></li>
+<li><p>if you don&#8217;t specify a view, the system will create one for you.</p></li>
+</ul>
+
+
+<h3>Frames and bounds</h3>
+
+<ul>
+<li>all the dimensions are in points, not pixals (not affected by the definition of the device)</li>
+<li>some APIs need bounds, while others need frames</li>
+</ul>
+
+
+<h3>Lifecycle of a UIView</h3>
+
+<ul>
+<li><p><em>life-cycle of UIView:</em> wait for an event -> touch event goes to a view -> event triggers -> custom method, may flag a view for refactoring -> redraw a view ->  render the view or views -></p></li>
+<li><p>dirty views -> views that need to be redrawn</p></li>
+</ul>
+
+
+<h3>UIScrollView</h3>
+
+<ul>
+<li>provides support for displaying content that is larger than the size of the application&#8217;s window. It enables users to use swipe gestures, and to zoom in and back from portions of the content by making pinching gestures.</li>
+</ul>
+
+
+<h2>Testing</h2>
+
+<ul>
+<li>Bacon</li>
+<li>Spec files</li>
+<li>spec helpers</li>
+<li>context</li>
+<li>device events</li>
+<li>Finding views</li>
+<li><p>UIAutomation</p></li>
+<li><p><a href="http://www.rubymotion.com/developer-center/articles/testing/">See the RubyMotion Testing Docs</a></p></li>
+<li><p><code>rake spec:device</code> will push the code to the device as well as insert a debugger</p></li>
+<li><p>MacBacon, a special flavor of the Ruby tool Bacon prepared to test iOS apps.</p></li>
+</ul>
+
+
+<h3>Playing with the interface builder</h3>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-day-1/">RubyMotion Day 1</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T09:45:00-05:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Course Goals</h3>
+
+<ul>
+<li>Objective-c Conventions</li>
+<li>Using C Libraries</li>
+<li>Platform Idioms</li>
+<li>Key concepts: pointers, memory management, objects, messages</li>
+<li>Fundamental iOS libraries</li>
+<li>Cocoa patterns</li>
+<li>Testing</li>
+</ul>
+
+
+<h3>History of why Objective-C</h3>
+
+<ul>
+<li>NeXt
+
+<ul>
+<li>used objective-c to write the main platform
+
+<ul>
+<li>there was a debate on which was better between objective-c and c++, C++ eventually won</li>
+</ul>
+</li>
+<li>If you wanted to write an application on NeXt you needed to use NeXt builder</li>
+<li>OSX was built next and there are a lot of things in OSX that were inherited from NeXt</li>
+</ul>
+</li>
+<li>iOS is basically a version of OS10</li>
+</ul>
+
+
+<h3>iOS Overview</h3>
+
+<ul>
+<li>The window server and Cocoa send events and messages to each other. It is a two way communication.</li>
+<li><p>each application has its own loop of communication. Responsible for send and receiving events from the window server.</p></li>
+<li><p>For each object in the nib file</p>
+
+<ul>
+<li>Class is sent <code>alloc</code> to create interface</li>
+<li>New instance is sent <code>init</code></li>
+<li>Instance variables are set</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Application States</h3>
+
+<ul>
+<li>Two states: foreground and background
+
+<ul>
+<li>two states for foreground: inactive and active</li>
+<li>in the background: you can do tasks in the background, after it is done it will go to suspended</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Cocoa</h3>
+
+<ul>
+<li>UIkit is the main library that comes with cocoa and certainly the most important.</li>
+</ul>
+
+
+<h3>App delegate</h3>
+
+<ul>
+<li>There are at least two classes. The application class and the application delegate.</li>
+</ul>
+
+
+<h3>Create a new project</h3>
+
+<p><code>motion create &lt;app name&gt;</code></p>
+
+<ul>
+<li>fonts, images, assets all go in the resources folder</li>
+</ul>
+
+
+<h3>Rake</h3>
+
+<ul>
+<li><code>rake -T</code> gives me a list of all the rake tasks
+
+<ul>
+<li>can build for a device or build for the simulator</li>
+</ul>
+</li>
+<li>can create a static library with <code>rake static</code></li>
+<li><code>rake config</code> gives you output on the frameworks, delegate_class, etc.
+
+<ul>
+<li>CoreGraphics lib is what we use for animation</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Deploying the application</h3>
+
+<ul>
+<li>need an apple certificate and developer certificate</li>
+</ul>
+
+
+<h3>To see the UI structure</h3>
+
+<p><code>UIApplication.sharedApplication.keyWindow.recursiveDescription</code> -> this will give you the tree structure of what you have created.</p>
+
+<h3>Changing attributes in the console</h3>
+
+<p><code>self.font = UIFont.fontWithName("Noteworthy-Bold",size:18)</code> will change the font of the label that you have highlighted.</p>
+
+<h2>Object C</h2>
+
+<ul>
+<li>objective-c is an objected oriented flavor of c</li>
+<li>heavily influenced from Smalltalk language</li>
+<li><p>all keywords begin with @</p></li>
+<li><p>RubyMotion adds named parameters similar to Ruby 2.0</p></li>
+<li>Both Ruby and Objective C has the notion of open classes, single inheritance and single message dispatch</li>
+</ul>
+
+
+<p><code>now dateByAddingTimeInterval:1000</code>, structure is the <code>receiver theSelector:argument</code></p>
+
+<ul>
+<li>messages always enclose the receiver and the selector inside a pair of square brackets. These brackets can be nested.</li>
+<li><p><em>id</em> is a pointer to any object type.</p></li>
+<li><p>you can invoke objective-c OR ruby methods against built in classes</p></li>
+<li><code>[1,2,3].send(:objectAtIndex, 1)</code> -> you need the colon or it won&#8217;t find the selector!</li>
+<li>helpful to use short methods and callbacks because the method will not be released until it is terminated.</li>
+</ul>
+
+
+<h3>Objective C Classes</h3>
+
+<ul>
+<li>NSString (similar to when you freeze something in Ruby) v. NSMutableString</li>
+<li>NSSArray v. NSMutableArray</li>
+<li>NSSet v. NSMutableSet</li>
+<li><p>NSDictionary v. NSMutableDictionary</p></li>
+<li><p><code>my_string = "hello"</code> -> this is mutable</p></li>
+<li><code>my_stgring = NSString.alloc.init</code> -> this is immutable</li>
+</ul>
+
+
+<h3>NSArray</h3>
+
+<ul>
+<li>NSArray is immutable. Once you create one it can&#8217;t be modified. NSMutableArray is a mutable subclass of NSArray
+
+<ul>
+<li>need to terminate a <code>NSArray.arrayWithObjects(foo, bar, baz, nil)</code> with a <code>nil</code> or it will crash.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>NSSet</h3>
+
+<ul>
+<li>Sets are collections with no order and objects can be present only once (can only be added once).It is useful when dealing with membership issues.</li>
+<li><code>.unionSet</code>, <code>.intersectSet</code></li>
+</ul>
+
+
+<h3>NSDictionary</h3>
+
+<ul>
+<li>Dictionaries are unordered and associate a key.</li>
+</ul>
+
+
+<h3>Constants</h3>
+
+<ul>
+<li>in objective c -> constants usually start with k -> <code>kItemCode</code></li>
+<li>in Ruby make sure that this is uppercase -> <code>KItemCode</code></li>
+</ul>
+
+
+<h3>Defining a class</h3>
+
+<ul>
+<li>Obj c uses the keyword <code>@interface</code> to define the class</li>
+<li>Obj c only supports <em>single inheritance</em>. You can only inherit from one superclass at a time.</li>
+</ul>
+
+
+<h3>Protocols</h3>
+
+<ul>
+<li>similar to the concept of interfaces in java or C-sharp</li>
+<li>a protocol is a contract. It is a promise to the compiler that a given class will implement a given interface.</li>
+</ul>
+
+
+<h3>Categories</h3>
+
+<ul>
+<li>the way to add methods to an existing class</li>
+</ul>
+
+
+<h3>Structures</h3>
+
+<ul>
+<li>C structures are mapped to classes in RubyMotion. <code>CGPoint</code> is very common.</li>
+<li>It is possible to pass the field views directly to the constructor `pt= CGPoint.new(100,200)</li>
+</ul>
+
+
+<h3>Pointers</h3>
+
+<ul>
+<li>Pointers are basic data types of the C language</li>
+<li>RubyMotion supports the creation o structure pointers, by passing their runtime type accordingly to <code>Pointer.new</code></li>
+</ul>
+
+
+<h3>Blocks</h3>
+
+<ul>
+<li>The caret (<sup>)</sup> character is used to define C blocks</li>
+<li>The Prob object must have the same number of args as the C function pointer or block, otherwise an exception will be raised at runtime</li>
+</ul>
+
+
+<h3>Keyboard doesn&#8217;t toggle by default</h3>
+
+<ul>
+<li>Add this code</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">textFieldShouldReturn</span><span class="p">(</span><span class="n">textfield</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">textfield</span><span class="o">.</span><span class="n">resignFirstResponder</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Setting a title of a button</h3>
+
+<p><code>@instance_var.setTitle("TITLE",forState:UIControlStateNormal)</code></p>
+
+<h3>List of wrappers</h3>
+
+<ul>
+<li><a href="http://rubymotion-wrappers.com/">http://rubymotion-wrappers.com/</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rubymotion-pre-work/">RubyMotion Pre-work</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T19:29:00-05:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>Ruby Motion Tool Chain from the command line with <code>motion</code></li>
+<li><p>create a new project with <code>motion create &lt;app name&gt;</code></p></li>
+<li><p><code>rake -T</code> gives you a list of tasks</p></li>
+<li><p><code>rake</code> builds the application and opens the simulator</p></li>
+<li><p>Cocoa touch is a framework and calls back into our code using the delegate pattern.</p>
+
+<ul>
+<li>there are special callback methods to hook into the lifecycle</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Creating an alert</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">alert</span> <span class="o">=</span> <span class="no">UIAlertView</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello!&quot;</span>
+</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">show</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>What is the frame?</h3>
+
+<ul>
+<li>a rectangle for the window.
+
+<ul>
+<li>it&#8217;s an origin, an X and Y coordinate</li>
+<li>and it&#8217;s also a size</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Making a Yellow Screen</h3>
+
+<figure class='code'><figcaption><span>A Yellow Flashlight!</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">yellowColor</span>
+</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Using the Console</h3>
+
+<p>When the console builds it provides a console. If I hover with the mouse, nothing happens. But if I hold the cmd key, it puts the element in the console and you can assign it to self or a variable.</p>
+
+<p>So <code>#&lt;UIWindow:0x10922060&gt;)&gt; self</code>
+and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.greenColor</code> will change the color right in the console.</p>
+
+<p>Can grab objects, put them in the console and manipulate them interactively.</p>
+
+<h3>Views</h3>
+
+<ul>
+<li>each view that we have sits in a view and is managed by a view controller</li>
+<li><p>Each</p></li>
+</ul>
+
+
+<h3>ViewController</h3>
+
+<ul>
+<li>UIViewController is where all the magic happens</li>
+</ul>
+
+
+<h3>UI Kit</h3>
+
+<ul>
+<li>the x and y coordinate starts in the upper left corner and x goes -> and y goes down.</li>
+</ul>
+
+
+<h3>Gesture Recognition</h3>
+
+<ul>
+<li>when a view is tapped it sends an action to a particaular target.</li>
+</ul>
+
+
+<h3>What is a delegate</h3>
+
+<p>When the user launches our app, the system sets up a bunch of stuff for us. We need to give the operating system an object which can respond to different events during that process; we refer to that object as the &#8220;application delegate&#8221;. It gets callbacks for when the app starts, ends, goes to the background, gets a push notification, etc. <a href="http://rubymotion-tutorial.com/1-hello-motion/">source</a></p>
+
+<h3>Views</h3>
+
+<ul>
+<li>Everything displayed in an app is called a &#8220;view&#8221;.- A view can have many &#8220;subviews&#8221;; when you move a view, you also move its subviews.
+
+<ul>
+<li>Subviews visually stacked on top of each other within their parent.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Resources:</h3>
+
+<ul>
+<li><a href="http://pragmaticstudio.com/screencasts/rubymotion">50 min screencast</a></li>
+<li><a href="http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial">Promotion</a></li>
+<li><a href="http://rubymotion-tutorial.com/">HTML book</a></li>
+<li><a href="http://blog.crowdint.com/2013/01/16/developing-ios-applications-with-ruby.html">tutorial that also lists a bunch of resources</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -818,360 +1595,6 @@ algorithm  takes  <em>O(n)</em>  time.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jan-4-notes/">Jan 4 Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-04T11:30:00-05:00" pubdate data-updated="true">Jan 4<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>Created deploy user or go as root?
-
-<ul>
-<li>scp => ssh copy from home dir to files online</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Goals for payments</h3>
-
-<ul>
-<li>verification is done.
-
-<ul>
-<li>set up payment long form for when a user submits a bounty for the first time.
-
-<ul>
-<li>short form for 2nd payment and beyond?</li>
-</ul>
-</li>
-<li>need to notify the bounty author when a bounty has been claimed &amp;&amp; verified.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Reference Spike&#8217;s resources</h3>
-
-<ul>
-<li><a href="https://github.com/spikegrobstein/flatironschool-deployment_lecture">Github</a></li>
-</ul>
-
-
-<h3>Setting up a staging server</h3>
-
-<ul>
-<li><p>need to configure nginx to handle another environment</p></li>
-<li><p>configured <code>nginx.conf</code></p></li>
-<li><p>copy up or pull down files: <code>scp /fileonmycomp deploy@git.bo:filename</code></p></li>
-<li><p><code>sudo nginx -s stop</code></p></li>
-<li><p><code>sudo nginx</code> -> starts nginx</p></li>
-<li><p>update the DNS so that it points to that IP address</p></li>
-</ul>
-
-
-<h3>Railscast on setting up another env #72</h3>
-
-<ul>
-<li>can make as many environments as you want
-
-<ul>
-<li>add a <code>staging.rb</code></li>
-<li>copy <code>production.rb</code>, but enable debug for the log</li>
-<li>need to create block in the <code>database.yml</code> file as well</li>
-<li><code>rails s -e staging</code> will start the server in that env
-
-<ul>
-<li><code>rails c staging</code> will start the console in that env</li>
-</ul>
-</li>
-<li></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Ruby Gems</h3>
-
-<p><code>gem env</code> shows the paths of your RubyGem Enviroment</p>
-
-<h3>Create Postgres DB</h3>
-
-<ul>
-<li><a href="http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/">Cyberciti</a></li>
-</ul>
-
-
-<h3>Migrate Postgres DB</h3>
-
-<ul>
-<li><code>bundle exec rake db:migrate RAILS_ENV=staging</code></li>
-</ul>
-
-
-<h3>Precompiling locally</h3>
-
-<ul>
-<li><code>bundle exec rake assets:precompile</code></li>
-</ul>
-
-
-<h3>Undoing the last Github commit</h3>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/927358/undo-last-git-commit"><code>git reset --soft HEAD^</code></a></li>
-</ul>
-
-
-<h3>Passenger environment nginx config</h3>
-
-<ul>
-<li></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jan-3-notes/">Jan 3 Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-03T12:12:00-05:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Adding a comma for big numbers</h3>
-
-<p><code>&lt;%= number_with_delimiter(repo.watchers, :delimiter =&gt; ',')</code>
-<a href="http://stackoverflow.com/questions/1078347/is-there-a-rails-trick-to-adding-commas-to-large-numbers">From</a></p>
-
-<h3>UI/UX strategy</h3>
-
-<ul>
-<li>kickstarter- encouraging click through rather than interaction.</li>
-<li>digg, stackoverflow, and reddit are closer to the functionality we want.</li>
-<li>don&#8217;t reinvent the wheel -> move forward.</li>
-</ul>
-
-
-<h3>Bounty Claims</h3>
-
-<ul>
-<li><p>Psuedo code: collect the info from the user (modal)</p></li>
-<li><p>this is sent to verification layer</p>
-
-<ul>
-<li><p>bounty controller?</p></li>
-<li><p>make sure the issue is closed</p></li>
-<li>make sure that an issue has a bounty</li>
-<li>make sure the issue was solved by the bounty claimer</li>
-</ul>
-</li>
-<li><p>if true- send verification to both bounty claimer and bounty author</p>
-
-<ul>
-<li>write the user id for all bounties the claimer solved</li>
-<li>change the badge/trigger payment on the profile pages of the bounty issuer</li>
-<li>tell gitbo admin that this was solved.</li>
-</ul>
-</li>
-<li><p>if false tell them why</p></li>
-</ul>
-
-
-<h3>A modal mess</h3>
-
-<ul>
-<li>We were trying to pass in multiple parameters in the url. But why do that?</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>This is simpler</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;modal-body&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= form_tag(bounty_claim_path) do %&gt;</span>
-</span><span class='line'><span class="sx">  &lt;div class=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;owner_name&quot;</span><span class="o">&gt;</span><span class="no">Repo</span> <span class="no">Owner</span> <span class="no">Name</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
-</span><span class='line'><span class="sr">    &lt;input id=&quot;owner_name&quot; name=&quot;owner_name&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
-</span><span class='line'><span class="sr">  &lt;div class=&quot;field&quot;&gt;</span>
-</span><span class='line'><span class="sr">    &lt;label for=&quot;repo_name&quot;&gt;Repo Name&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="sr">/&gt;</span>
-</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;git_number&quot;</span><span class="o">&gt;</span><span class="no">Github</span> <span class="no">Issue</span> <span class="no">Number</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
-</span><span class='line'><span class="sr">    &lt;input id=&quot;git_number&quot; name=&quot;git_number&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
-</span><span class='line'><span class="sr">  &lt;div class=&quot;modal-footer&quot;&gt;</span>
-</span><span class='line'><span class="sr">    &lt;span id=&quot;error&quot;&gt;&lt;/s</span><span class="n">pan</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s1">&#39;btn btn-success btn-small&#39;</span><span class="o">&gt;</span><span class="no">Submit</span><span class="o">&lt;</span><span class="sr">/button&gt;</span>
-</span><span class='line'><span class="sr">      &lt;button class=&quot;btn btn-danger btn-small&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;Oopsy&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="sr">/div&gt;</span>
-</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
-</span><span class='line'><span class="sx">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Just submit to a static url and pass in the info via params.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/jan-2-notes/">Jan 2 Notes</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-02T13:11:00-05:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Bash Environment Variables</h3>
-
-<p>I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify Gitbo&#8217;s server issue last week. Since <code>issue.js</code> has been compiled into <code>application.js</code>, it is listening twice.</p>
-
-<p>StackOverflow had <a href="http://stackoverflow.com/questions/9641320/rails-assets-dont-get-updated">this to say</a> and this solution <code>bundle exec RAILS_ENV=development rake rails_group=assets assets:clean</code>.</p>
-
-<ol>
-<li>The <code>bundle exec</code> would be needed if the gem file and my system files were different. In Gitbo&#8217;s case, there is no discrepancy. On the server, that can&#8217;t be assumed and <code>bundle exec</code> would be needed.</li>
-<li>The default environment for a rake task is development <strong>except</strong> for assets which obviously have more to do with production.</li>
-<li>Rake tasks are very flexible in terms of how they take <em>bash environment variables</em> (they are sort of like arguments, but they aren&#8217;t). Passing in the rails_environment before the rake task is how I did it, but they could be passed in afterwards and that would be fine because BASH reads the entire line of code before it executes it.</li>
-</ol>
-
-
-<p>Here was the final command I used: <code>RAILS_ENV=development RAILS_GROUP=assets rake assets:clean</code></p>
-
-<h3>Skeleton</h3>
-
-<ul>
-<li>Site is <a href="http://www.getskeleton.com/">here</a></li>
-<li>Installed <a href="https://github.com/helios-technologies/skeleton-rails">skeleton-rails</a></li>
-<li>An alternative to rails</li>
-</ul>
-
-
-<h3>Instance Variables</h3>
-
-<ul>
-<li><p>Show does have an instance variable. The view is attached to an instance of a controller</p></li>
-<li><p>In a partial, this is just crazy&#8230;</p>
-
-<ul>
-<li>a view is not part of the controller, so why should it have access to an instance of a controller.</li>
-</ul>
-</li>
-</ul>
-
-
-<p>Further reading on this: <a href="http://rails-bestpractices.com/posts/27-replace-instance-variable-with-local-variable">Rails Best Practices</a> and <a href="http://programmers.stackexchange.com/questions/127838/why-do-people-suggest-not-to-use-instance-variable-for-views-in-ruby-on-rails">Stack Exchange</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -1189,23 +1612,23 @@ algorithm  takes  <em>O(n)</em>  time.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/linchpin-by-seth-godin-notes/">Linchpin by Seth Godin Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/patterns-of-enterprise-application-architecture/">Patterns of Enterprise Application Architecture</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/growing-object-oriented-software-guided-by-tests/">Growing Object-Oriented Software, Guided By Tests</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
       <li class="post">
         <a href="/blog/transparency/">Transparency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-technology-and-developer-happiness/">New Technology and Developer Happiness</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/goal-setting-for-devs/">Goal Setting for Devs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/peer-mentorship/">Peer Mentorship</a>
       </li>
     
   </ul>
