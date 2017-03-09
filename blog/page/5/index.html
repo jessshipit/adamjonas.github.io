@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="File Search cntl + p => file search Nerd Tree go => preview pane Run the specs \r runs the closest spec
-\R runs the whole spec suite cmd + shift + d &hellip;">
+  <meta name="description" content="Polymorphic association from parent to child So this succinctly summed up my issue. Deprecated conditions in rails 4 Deprecation warning when using &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +86,102 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/polymorphic-brain-hurt/">Polymorphic Brain Hurt</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-21T17:38:00-04:00" pubdate data-updated="true">Aug 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Polymorphic association from parent to child</h2>
+
+<p>So <a href="http://blog.hasmanythrough.com/2006/4/3/polymorphic-through">this</a> succinctly summed up my issue.</p>
+
+<h2>Deprecated conditions in rails 4</h2>
+
+<p><code>Deprecation warning when using has_many :through :uniq in Rails 4</code></p>
+
+<p>Then once I did get it working with:</p>
+
+<figure class='code'><figcaption><span>Conditions Refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># lesson model</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:readmes</span><span class="p">,</span> <span class="ss">:through</span> <span class="o">=&gt;</span> <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:readme</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="s2">&quot;lesson_contents.content_type = &#39;Readme&#39;&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:labs</span><span class="p">,</span> <span class="ss">:through</span> <span class="o">=&gt;</span> <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:lab</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="s2">&quot;lesson_contents.content_type = &#39;Lab&#39;&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># stabby lambda</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:readmes</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;content_type = &#39;Readme&#39;&quot;</span><span class="p">)</span> <span class="p">},</span>
+</span><span class='line'>    <span class="ss">:through</span> <span class="o">=&gt;</span> <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:readme</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:labs</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;content_type = &#39;Lab&#39;&quot;</span><span class="p">)</span> <span class="p">},</span> <span class="ss">:through</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="ss">:lesson_contents</span><span class="p">,</span> <span class="ss">:source</span> <span class="o">=&gt;</span> <span class="ss">:lab</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://stackoverflow.com/a/16702101/1496757">Hat Tip</a></p>
+
+<h2>Polymorphic Migration</h2>
+
+<figure class='code'><figcaption><span>Creating a [polymorphic migration](http://stackoverflow.com/a/5534614/1496757)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AddImageableToProducts</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">up</span>
+</span><span class='line'>    <span class="n">change_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">references</span> <span class="ss">:imageable</span><span class="p">,</span> <span class="ss">:polymorphic</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -779,64 +874,6 @@ layer. So in our case we give a view a <code>LessonPresenter</code> that has a <
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/okrs-for-engineers/">Okrs for Engineers</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-17T18:05:00-04:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Notes</h3>
-
-<ul>
-<li>lead developer&#8217;s OKRs mostly product focused
-
-<ul>
-<li>and their product responsibilites become one piece of their bonus compensation (also would include overall company success (no bonus is the company didn&#8217;t make money)).</li>
-</ul>
-</li>
-<li>break to feature or objective into smaller product pieces for engineers if possible.</li>
-</ul>
-
-
-<p>OKRs for engineers below lead devs are difficult. Goals become more task oriented. E.g.</p>
-
-<ul>
-<li>2 ruby meetups a month</li>
-<li>satisfactory 360 feedback</li>
-<li>biweekly one on ones (address concerns of manager)</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -854,6 +891,10 @@ layer. So in our case we give a view a <code>LessonPresenter</code> that has a <
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/databases-with-brad-urani/">Databases with Brad Urani</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
@@ -867,10 +908,6 @@ layer. So in our case we give a view a <code>LessonPresenter</code> that has a <
     
       <li class="post">
         <a href="/blog/quarterlies/">Quarterlies</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/when-i-didnt-see-it-in-the-interview/">When I didn&#8217;t see it in the interview</a>
       </li>
     
   </ul>

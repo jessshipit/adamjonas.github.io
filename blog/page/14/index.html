@@ -9,11 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Bryan Helmkamp, founder of Code Climate Static Analysis object design issues
-code style
-potential bugs
-security vulnerabilities
-conformance with &hellip;">
+  <meta name="description" content="I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +86,80 @@ conformance with &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/cache-layer/">Cache Layer</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-18T17:02:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was asked today to diagram the cache layer in Gitbo and stammered my way through an answer that was at-best vague and at-worst inaccurate. Our cache layer lives between the Github API and our Octokit Wrapper. We pull in the data on an authenticated user from the API and serialize the data in the user model (which allows us to access the data in multiple views). In a future refactor, we should probably be doing this in the wrapper model or even a memcache manager model.</p>
+
+<p>Given the fact that I didn&#8217;t fully grasp the cache system that I had a heavy hand in designing, I did a little more research on the subject&#8230; The cache storage system in Rails is very modular. It uses the file system to store the cache by default, but can be customized as we did. We used <a href="https://github.com/mperham/dalli">Dalli</a> instead of <code>mem_cache_store</code> because it has support for memcached&#8217;s binary protocol. (I believe Dalli will be the default in Rails 4.)</p>
+
+<h3>Methods</h3>
+
+<p>From the <a href="http://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store">documentation</a>, the main methods to call are <code>read</code>, <code>write</code>, <code>delete</code>, <code>exist?</code>, and <code>fetch</code>. The <code>fetch</code> method accepts a block and will either return an existing value from the cache or write the result to the cache if none exists.</p>
+
+<h3>Page Caching:</h3>
+
+<p>This allows the request for a page to be served by the webserver (nginx in our case), without ever having to hit the Rails stack. Obviously, this is highly performant, but cannot be used across all situations (e.g. where authentication is required or any actions that have before filters).</p>
+
+<h3>Action Caching:</h3>
+
+<p>This is similar to page caching except the incoming web request hits the Rails stack to allow the before-filters to run before the cache is served. This is the best option for when authentication and other restrictions need to be run while still serving the result of the output from a cached copy.</p>
+
+<h3>Fragment Caching:</h3>
+
+<p>This allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in. We tried running this for our indexed table views, but we need to work on bettering our server-side processing before this can be fully implemented.</p>
+
+<h3>SQL Caching:</h3>
+
+<p>This caches the results returned by each query so that if Rails encounters the same query again for that request, it will use the cached result rather than running the query against the database again.</p>
+
+<h3>Need to the look into&#8230;</h3>
+
+<p>In the future, I&#8217;d like to look how we might be better able to use <code>Rack::Cache</code> to better take advantage of HTTP caching regarding freshness (expires, cache-control) and/or validation (last-modified, ETags).</p>
+
+<h3>Further Reading:</h3>
+
+<ul>
+<li><a href="http://code.google.com/p/memcached/wiki/TutorialCachingStory">Memcache Wiki</a></li>
+<li><a href="http://guides.rubyonrails.org/caching_with_rails.html">Rails Guide on Caching</a></li>
+<li><a href="https://github.com/rtomayko/rack-cache">Rack cache</a></li>
+<li><a href="http://nubyonrails.com/articles/memcached-basics-for-rails">Memcached basics for Rails</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -908,54 +978,6 @@ conformance with &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/elastic-search/">Elastic Search</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-02T10:21:00-05:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://github.com/karmi/tire">Ruby API and DSL for the ElasticSearch search engine</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
-</span><span class='line'>Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
-</span><span class='line'>No Java runtime present, requesting install.</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Load: true</code> will load the active record object as opposed to the</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -973,6 +995,10 @@ conformance with &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/databases-with-brad-urani/">Databases with Brad Urani</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
@@ -986,10 +1012,6 @@ conformance with &hellip;">
     
       <li class="post">
         <a href="/blog/quarterlies/">Quarterlies</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/when-i-didnt-see-it-in-the-interview/">When I didn&#8217;t see it in the interview</a>
       </li>
     
   </ul>
