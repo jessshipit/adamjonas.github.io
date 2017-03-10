@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: DNS | Hack hack hack...]]></title>
+  <link href="http://adamjonas.com/blog/categories/dns/atom.xml" rel="self"/>
+  <link href="http://adamjonas.com/"/>
+  <updated>2017-03-10T09:33:24-05:00</updated>
+  <id>http://adamjonas.com/</id>
+  <author>
+    <name><![CDATA[Adam Jonas]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Intro to DNS]]></title>
+    <link href="http://adamjonas.com/blog/intro-to-dns/"/>
+    <updated>2017-03-09T11:00:00-05:00</updated>
+    <id>http://adamjonas.com/blog/intro-to-dns</id>
+    <content type="html"><![CDATA[<p>With Maarten Balliauw</p>
+
+<ul>
+<li>people know should more about DNS and the http level</li>
+</ul>
+
+
+<h2>DNS 101</h2>
+
+<ul>
+<li><p>How the internet works</p>
+
+<ul>
+<li>IPv4 or IPv6</li>
+<li>Check own operating system files to see if the host file has a
+record is known</li>
+<li>will check the DNS cache for the local machine</li>
+<li>OS will ask the router and check its own host file and DNS cache</li>
+<li>same process for the ISP</li>
+<li>the ISP will then go to the root server, address of the
+authoritative server</li>
+<li><p>6 hubs look ups</p></li>
+<li><p><code>nslookup google.com</code></p></li>
+<li><p><code>dig A google.com +trace</code></p></li>
+<li><p>two types of servers</p>
+
+<ul>
+<li>authorative (owns the domain)</li>
+<li>cache (recursor) -> resolves the domain for you</li>
+</ul>
+</li>
+<li>DNS protcol designed in 1983
+
+<ul>
+<li>designed to map a domain name to an IP address</li>
+<li>added TXT records and IPv6</li>
+</ul>
+</li>
+<li>TLD managed by separate organizatons (verisign, canadian internet
+registrartion authority)
+
+<ul>
+<li>all make their own rules e.g. need to be a canadian to be a .ca
+domain name, transfer rules</li>
+</ul>
+</li>
+<li>hierarchical system:
+
+<ul>
+<li>hit <code>.</code> first</li>
+<li>then TLD like <code>org, com, ca</code></li>
+<li>can also create maps within a specific domain and could create
+own hierarchy like google does</li>
+</ul>
+</li>
+<li>caches
+
+<ul>
+<li>TTL -</li>
+<li>cannot clear cache at ISP</li>
+<li>keep the old IP address to maintain both</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DNS zones</p>
+
+<ul>
+<li>UDP protocol</li>
+<li>only 13 root servers across the world</li>
+<li><code>root-servers.org</code></li>
+<li>$100k/yr to get own TLD</li>
+<li><p>? where does the money for those fees go for buying a TLD?</p></li>
+<li><p>a text file and are hierarchical</p></li>
+<li>SOA -> start of authority</li>
+<li><p>Name of authoritive master name server (NA)</p></li>
+<li><p>CNAME - redirect at the DNS record</p></li>
+<li>MX - find mail server at specific address</li>
+<li>TXT - validate domain ownership/spam rules</li>
+<li>SRV - descibes a service type and port (like for in network
+printer)</li>
+<li><p>PTR - reverse DNS</p></li>
+<li><p>zone transfers</p>
+
+<ul>
+<li>most IPs require more than 1 nameserver</li>
+<li>master name server and that will sync with slave nameservers</li>
+<li>no authentication and may expose internal services</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Security</h2>
+
+<ul>
+<li>old protocol</li>
+<li>cache poisoning</li>
+<li>DNSSEC - checks the origin - certificate chain</li>
+<li><p>most modern browsers are checking for DNSSEC records</p></li>
+<li><p>DDoS</p>
+
+<ul>
+<li>lots of open resolvers out there</li>
+<li>DNS amplication for DDos</li>
+<li>disable recursion</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>DNS in application archtecture</h2>
+
+<ul>
+<li>DNS failover and load balancing</li>
+<li>add multiple DNS records -> will be a poor man's load balancer
+because it will return an random record</li>
+<li>intelligence DNS server (CNS)</li>
+<li>configuration in DNS
+
+<ul>
+<li>use DNS as a configuration store</li>
+<li>DNS record could point to a TXT value</li>
+</ul>
+</li>
+<li>service discovery</li>
+</ul>
+
+
+<h2>DNS for fun and profit</h2>
+
+<ul>
+<li><p>Abusing DNS</p>
+
+<ul>
+<li>public hotspots</li>
+<li>proxy server translating HTTP</li>
+</ul>
+</li>
+<li><p>iodine - same HTTP over DNS - tunnel traffic</p>
+
+<ul>
+<li><code>code.kryo.se/iodine</code></li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

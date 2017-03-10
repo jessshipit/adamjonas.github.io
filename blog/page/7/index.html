@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content=".ruby-version &amp; rbenv so rbenv now does support a ruby version file but doesn&#8217;t support fuzzy matching. See. Multipart = true HTML forms &hellip;">
+  <meta name="description" content="I had a bunch of issues getting pow up and running after I upgraded to Mavricks. I ended up not installing via the curl method that the 37signals &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,325 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/pow-config/">Pow Config</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-19T16:01:00-05:00" pubdate data-updated="true">Feb 19<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had a bunch of issues getting pow up and running after I upgraded to Mavricks. I ended up not installing via the <code>curl</code> method that the <a href="http://pow.cx/">37signals suggests</a> as it wasn&#8217;t recognizing my rbenv and was running on my system ruby. So I uninstalled and tried it with <code>homebrew</code>, which required a different path in my <code>.powconfig</code> file. Just like the <a href="https://github.com/basecamp/pow/wiki/Troubleshooting#rbenv">troubleshooter</a> said it would via the <a href="https://github.com/basecamp/pow/issues/202#issuecomment-2640707">github issue</a>, this worked.</p>
+
+<p>Final code: <code>export PATH="/usr/local/opt/rbenv/shims:/usr/local/opt/rbenv/bin:$PATH"</code></p>
+
+<p>Boom! Smack! Pow!</p>
+
+<h2>UPDATE (Summer &#8216;14):</h2>
+
+<p>The new hotness is <a href="https://ngrok.com/">ngrok</a>. An easier way to expose a local web server to the internet. It&#8217;s the jam.</p>
+
+<ul>
+<li>Works with <code>ngrok localhost:3000</code> for a rails app for example.</li>
+<li>Then open it up on the provided url and you&#8217;ve got yourself a stew.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/cucumber-with-scott/">Cucumber With Scott</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-17T15:09:00-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The point of BDD is to build a system form a perspective of a user, rather than just as a developer.</p>
+
+<h2>Login</h2>
+
+<p>As a partner, I need to be able to login, so that I can update my upcoming events.</p>
+
+<p>Need to deliver a story and prove that it works.</p>
+
+<p>An integration test is any test that cross the boundries of a system</p>
+
+<h3>Why cucumber</h3>
+
+<ul>
+<li>Gherkin language for feature files</li>
+<li>rspec for tests</li>
+<li>capybara to drive the browser</li>
+</ul>
+
+
+<p>The tools are the same just when with gherkin thrown on top
+  - cucumber is platform and language agnostic</p>
+
+<p>So a problem I have is when to test built in features of the framework or gem.</p>
+
+<h2>Given, When, Then</h2>
+
+<ul>
+<li><p>same as Arrage, Act, Assert (which is what ALL tests do) in people talk</p></li>
+<li><p>Arrage</p>
+
+<p><code>let(:something) {do_something}</code></p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">arrange_things</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Act, and Assert</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;does something when I do this&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">do_a_thing</span> <span class="c1">#=&gt; act</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">that_thing</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="c1">#=&gt; assert</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Misc</h3>
+
+<ul>
+<li>user regex in the step file if you are going to reuse it</li>
+<li>acceptance tests should be used to test large swatches rather than every permuation</li>
+</ul>
+
+
+<h3>tags</h3>
+
+<ul>
+<li><code>@pause</code> like a binding</li>
+<li><code>@wip</code> won&#8217;t run unless specified to run</li>
+<li>custom tags work too, so even then you&#8217;d run it with <code>cucumber -t @jonas</code></li>
+<li>or you can run multiple tags at one time, e.g. <code>cucumber --tags @billing,@important</code></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/cucumber/">Cucumber</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-17T11:34:00-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Cucumber</h2>
+
+<p>Cucumber is a BDD tool that supports Outside-in development by running plain text features or user stories as acceptance tests.</p>
+
+<ul>
+<li><a href="http://blog.codeship.io/2013/04/30/BDD-With-Cucumber.html">Intro screencast</a></li>
+<li><a href="http://35qk152ejao6mi5pan29erbr9.wpengine.netdna-cdn.com/wp-content/uploads/2011/08/Cucumber-Regular-Expressions-Cheat-Sheet.pdf">cucumber regex cheatsheet</a></li>
+<li><a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">An Introduction to Outside-in Development</a></li>
+</ul>
+
+
+<h3>Features</h3>
+
+<p>Let’s create our first feature. The anatomy of a feature is the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Feature: [feature]
+</span><span class='line'>  In order to [business value]
+</span><span class='line'>  As a [role]
+</span><span class='line'>  I want to [some action]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice how a feature includes who, what and most importantly: <strong><em>why</em></strong>.</p>
+
+<p>For example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Feature: Manage Articles
+</span><span class='line'>  In order to make a blog
+</span><span class='line'>  As an author
+</span><span class='line'>  I want to create and manage articles</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Scenarios</h3>
+
+<p>There will be many scenarios accompanying a feature. Scenarios will follow the four stages of testing: setup, exercise, verify and teardown. A simple scenario looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Given [context]
+</span><span class='line'>When I do [action]
+</span><span class='line'>Then I should see [outcome]</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> The <code>Given</code> step is where you set up the context of your scenario. Every scenario starts with a blank slate, so it is important to create a state in your application for example by creating data in the database, or by navigating to a specific page.</li>
+<li> The <code>When</code> step is where you exercise the application in order to accomplish what needs testing. This is usually where you might fill in forms, press buttons, click links, or otherwise interact with the system in some way.</li>
+<li> The <code>Then</code> step is where you verify the result, and it’s where we check that the correct pages are rendered, that we see a success or error message, or anything that could help us verify that the prior action was successful.</li>
+<li> The teardown, is taken care of by cucumber automatically.</li>
+</ul>
+
+
+<p>For example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: Articles List
+</span><span class='line'>  Given I have articles titled Pizza, Breadsticks
+</span><span class='line'>  When I go to the list of articles
+</span><span class='line'>  Then I should see "Pizza"
+</span><span class='line'>  And I should see "Breadsticks"</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: User signs up with valid data
+</span><span class='line'>  When I go to the sign up page
+</span><span class='line'>  And I fill in "Email" with "email@person.com"
+</span><span class='line'>  And I fill in "Username" with "user"
+</span><span class='line'>  And I fill in "Password" with "password"
+</span><span class='line'>  And I fill in "Confirm password" with "password"
+</span><span class='line'>  And I press "Sign up"
+</span><span class='line'>  Then I should see "instructions for confirming"
+</span><span class='line'>  And a confirmation message should be sent to "email@person.com"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can also test a user attempting to sign up without filling in all the fields:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Scenario: User tries to sign up without a twiddr name
+</span><span class='line'>  When I go to the sign up page
+</span><span class='line'>  And I fill in "Email" with "email@person.com"
+</span><span class='line'>  And I fill in "Password" with "password"
+</span><span class='line'>  And I fill in "Confirm password" with "password"
+</span><span class='line'>  And I press "Sign up"
+</span><span class='line'>  Then the "Username" field should have the "can't be blank" error</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Tags</h3>
+
+<p>  <code>cucumber --tags @billing --tags @important</code> -> Runs the first scenario (Scenarios with @important AND @billing)
+  <code>cucumber --tags @billing,@important</code> -> Runs both scenarios (Scenarios with @important OR @billing)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -570,155 +889,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/rack/">Rack</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-06T12:18:00-05:00" pubdate data-updated="true">Dec 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Config.ru</h2>
-
-<h3>Difference between run and use</h3>
-
-<blockquote><p><strong>Run</strong> - Takes an argument that is an object that responds to call and returns a Rack response.
-<strong>Use</strong> - Specifies middleware to use in a stack.</p></blockquote>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/bash/">Bash</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-05T09:57:00-05:00" pubdate data-updated="true">Dec 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>grant sudo permissions for the local user</h3>
-
-<ul>
-<li><code>sudo chown -R $USER /usr/local</code></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/asynch-js/">Asynch Js</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-04T10:52:00-05:00" pubdate data-updated="true">Dec 4<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Asynch</h3>
-
-<ul>
-<li>Async is a tool for your Javascript utility belt that helps you out with the asynchronous tasks
-
-<ul>
-<li><a href="https://github.com/caolan/async">asynch.js</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Promises</h3>
-
-<ul>
-<li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/wrangle-async-tasks-with-jquery-promises/">Wrangle Async Tasks With JQuery Promises</a></li>
-<li><a href="http://blog.parse.com/2013/01/29/whats-so-great-about-javascript-promises/">What’s so great about JavaScript Promises?</a></li>
-</ul>
-
-
-<h3>Reading</h3>
-
-<ul>
-<li><a href="http://javascriptplayground.com/blog/2013/06/think-async/">think asynch</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -736,23 +906,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/intro-to-dns/">Intro to DNS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/7-righteous-fights/">7 righteous fights</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/databases-with-brad-urani/">Databases with Brad Urani</a>
       </li>
     
       <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-technology-and-developer-happiness/">New Technology and Developer Happiness</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/goal-setting-for-devs/">Goal Setting for Devs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/quarterlies/">Quarterlies</a>
       </li>
     
   </ul>

@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Intro to DNS - Hack hack hack...</title>
+  <meta name="author" content="Adam Jonas">
+
+  
+  <meta name="description" content="With Maarten Balliauw people know should more about DNS and the http level DNS 101 How the internet works IPv4 or IPv6
+Check own operating system &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="bPr3kB-X2beP1o9InhOKH9ci-gljU3a7NLEeap4urfc" />
+
+  
+  <link rel="canonical" href="http://adamjonas.com/blog/intro-to-dns/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hack hack hack..." type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+ <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35486864-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">Adam Jonas</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Hack hack hack...</a></h1>
+  
+    <h2>An open journal-- some of it written for you, but most of it is for me.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adamjonas.com" />
+    <input class="search" type="text" name="q" results="100" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about">About</a></li>
+  <li><a href="/glossary">Glossary</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Intro to DNS</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-03-09T11:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2017</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>With Maarten Balliauw</p>
+
+<ul>
+<li>people know should more about DNS and the http level</li>
+</ul>
+
+
+<h2>DNS 101</h2>
+
+<ul>
+<li><p>How the internet works</p>
+
+<ul>
+<li>IPv4 or IPv6</li>
+<li>Check own operating system files to see if the host file has a
+record is known</li>
+<li>will check the DNS cache for the local machine</li>
+<li>OS will ask the router and check its own host file and DNS cache</li>
+<li>same process for the ISP</li>
+<li>the ISP will then go to the root server, address of the
+authoritative server</li>
+<li><p>6 hubs look ups</p></li>
+<li><p><code>nslookup google.com</code></p></li>
+<li><p><code>dig A google.com +trace</code></p></li>
+<li><p>two types of servers</p>
+
+<ul>
+<li>authorative (owns the domain)</li>
+<li>cache (recursor) -> resolves the domain for you</li>
+</ul>
+</li>
+<li>DNS protcol designed in 1983
+
+<ul>
+<li>designed to map a domain name to an IP address</li>
+<li>added TXT records and IPv6</li>
+</ul>
+</li>
+<li>TLD managed by separate organizatons (verisign, canadian internet
+registrartion authority)
+
+<ul>
+<li>all make their own rules e.g. need to be a canadian to be a .ca
+domain name, transfer rules</li>
+</ul>
+</li>
+<li>hierarchical system:
+
+<ul>
+<li>hit <code>.</code> first</li>
+<li>then TLD like <code>org, com, ca</code></li>
+<li>can also create maps within a specific domain and could create
+own hierarchy like google does</li>
+</ul>
+</li>
+<li>caches
+
+<ul>
+<li>TTL -</li>
+<li>cannot clear cache at ISP</li>
+<li>keep the old IP address to maintain both</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DNS zones</p>
+
+<ul>
+<li>UDP protocol</li>
+<li>only 13 root servers across the world</li>
+<li><code>root-servers.org</code></li>
+<li>$100k/yr to get own TLD</li>
+<li><p>? where does the money for those fees go for buying a TLD?</p></li>
+<li><p>a text file and are hierarchical</p></li>
+<li>SOA -> start of authority</li>
+<li><p>Name of authoritive master name server (NA)</p></li>
+<li><p>CNAME - redirect at the DNS record</p></li>
+<li>MX - find mail server at specific address</li>
+<li>TXT - validate domain ownership/spam rules</li>
+<li>SRV - descibes a service type and port (like for in network
+printer)</li>
+<li><p>PTR - reverse DNS</p></li>
+<li><p>zone transfers</p>
+
+<ul>
+<li>most IPs require more than 1 nameserver</li>
+<li>master name server and that will sync with slave nameservers</li>
+<li>no authentication and may expose internal services</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Security</h2>
+
+<ul>
+<li>old protocol</li>
+<li>cache poisoning</li>
+<li>DNSSEC - checks the origin - certificate chain</li>
+<li><p>most modern browsers are checking for DNSSEC records</p></li>
+<li><p>DDoS</p>
+
+<ul>
+<li>lots of open resolvers out there</li>
+<li>DNS amplication for DDos</li>
+<li>disable recursion</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>DNS in application archtecture</h2>
+
+<ul>
+<li>DNS failover and load balancing</li>
+<li>add multiple DNS records -> will be a poor man&#8217;s load balancer
+because it will return an random record</li>
+<li>intelligence DNS server (CNS)</li>
+<li>configuration in DNS
+
+<ul>
+<li>use DNS as a configuration store</li>
+<li>DNS record could point to a TXT value</li>
+</ul>
+</li>
+<li>service discovery</li>
+</ul>
+
+
+<h2>DNS for fun and profit</h2>
+
+<ul>
+<li><p>Abusing DNS</p>
+
+<ul>
+<li>public hotspots</li>
+<li>proxy server translating HTTP</li>
+</ul>
+</li>
+<li><p>iodine - same HTTP over DNS - tunnel traffic</p>
+
+<ul>
+<li><code>code.kryo.se/iodine</code></li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Jonas</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-03-09T11:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dns/'>DNS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/7-righteous-fights/" title="Previous Post: 7 righteous fights">&laquo; 7 righteous fights</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/the-soul-in-the-machine-developing-for-humans/" title="Next Post: The Soul in The Machine - Developing for Humans">The Soul in The Machine - Developing for Humans &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/intro-to-dns/">Intro to DNS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/7-righteous-fights/">7 righteous fights</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/databases-with-brad-urani/">Databases with Brad Urani</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Adam Jonas -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ajonas';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://adamjonas.com/blog/intro-to-dns/';
+        var disqus_url = 'http://adamjonas.com/blog/intro-to-dns/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

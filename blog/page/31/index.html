@@ -9,8 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Programmer _Why
--We don&#8217;t speak machine. Coders are not translators. We need to teach the machine to speak like us. There shouldn&#8217;t be &hellip;">
+  <meta name="description" content="Strategy&#8230; &#8211;>look for nouns to start
+url- unified resource locator
+map and collect &#8211;> returns the results of the operation&#8211;> &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +88,401 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/lecture-6-ruby-class-methods/">Lecture 6 Ruby- Class Methods</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-25T10:48:00-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Strategy&#8230;</p>
+
+<p>&#8211;>look for nouns to start
+url- unified resource locator
+map and collect &#8211;> returns the results of the operation&#8211;> so it uts it into a new array</p>
+
+<p>select when you are trying to match something, cannot collect things conditionally
+(#) => library.songs.select{|s| s.name ==song_name}</p>
+
+<p>is_a? &#8211;> is this an array, this is a validator</p>
+
+<p><strong><em>HOW TO BUILD CLASS METHODS</em></strong>
+methods that don&#8217;t apply to the instance of the class but the class itself
+you can tell if it&#8217;s a class method if self is the receiver</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">self</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">top_5</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="o">.</span><span class="n">rank</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Another way...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'><span class="vc">@@all</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:artists</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>  <span class="vc">@@all</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="vi">@artists</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#important pattern of observing intialization and making classes intelligent</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">songs</span>
+</span><span class='line'>  <span class="n">artists</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">song</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
+</span><span class='line'>  <span class="vc">@@all</span> <span class="c1">#return all the artists ever created</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3:30 PM
+<strong><em>MODULES</em></strong> - for creating all sort of shared behavior
+- modules don&#8217;t have instances&#8211;> the difference between modules and classes</p>
+
+<p>two keywords to include behavior&#8211;> include and extend
+diff between include and extend &#8211;> trying to describe the scope of the module behavior</p>
+
+<p>extending- makes it a class methods
+include &#8211;> methods in that module are instance methods
+?? how does require fit into this??</p>
+
+<p>3:38
+?? order of attr_accessor and @@all? does it matter?</p>
+
+<p><strong><em>INHERITANCE</em></strong> &#8211; a pattern that we don&#8217;t like as much as modules
+we&#8217;d rather think of things in the builder pattern using include and extend</p>
+
+<p>2nd HALF</p>
+
+<p><strong><em>File Systems:</em></strong>
+Dir documentation (4:10)
+foreach and Dir.entries</p>
+
+<p><strong><em>ERB templates</em></strong> (4:23):
+we care about the result method for templating</p>
+
+<p><strong><em>PRIVATE AND PUBLIC METHODS</em></strong> (4:41)
+->a private method cannot be called with an explicit receiever, only implicit receivers&#8211; means they can only be called in the class</p>
+
+<p><strong><em>GEMS:</em></strong>
+-a pre-built package or functionality
+<a href="http://ruby-toolbox.com">See the Ruby Toolbox</a></p>
+
+<p><strong><em>SINATRA</em></strong> (4:44):
+-based on rack (the first )
+RACK - create a class that responds to a method called &#8216;call&#8217;
+- the response must return 3 three things- a status code, the header, the body of the response</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">rubygems</span> <span class="n">sinatra</span><span class="o">.</span><span class="n">rb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>SCRAPERS:</em></strong>
+nokogiri gem will
+xpath&#8211; path to an element or you can use an CSS adjustment
+nokogiri comes with a method called content
+rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-nokogiri/</p>
+
+<p>httparty-
+<a href="http://railstips.org/blog/archives/2008/07/29/it-s-an-httparty-and-everyone-is-invited/">some reading on httparty</a>
+<a href="http://www.ioncannon.net/programming/91/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">there is more reading here</a></p>
+
+<p>open data:
+<a href="freebase.com">freebase</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/loading-up-a-new-macbook-air/">Loading Up a New Macbook Air</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-19T10:45:00-04:00" pubdate data-updated="true">Jun 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Avi helped me get my new Macbook Air rolling this afternoon&#8230;</p>
+
+<p>Ruby 1.8.7 is the standard version that&#8217;s loaded on the OS X Lion</p>
+
+<p>Some lessons&#8211; Xcode did not come loaded with the GNU Compiler Collection out of the box (AKA out of app store). (-bash: gcc: command not found) <a href="https://github.com/kennethreitz/osx-gcc-installer/">GCC Installer</a></p>
+
+<p>Anyways this had to be loaded to run anything like Homebrew.</p>
+
+<ul>
+<li>All OSs except for window are a NIX: A Unix-like (sometimes referred to as UN<em>X or </em>nix) operating system is one that behaves in a manner similar to a Unix system, while not necessarily conforming to or being certified to any version of the Single UNIX Specification. (http://en.wikipedia.org/wiki/Unix-like)</li>
+</ul>
+
+
+<p>Once it was installed we got the result: i686-apple-darwin11-llvm-gcc-4.2: no input files from the gcc command. (read more about gcc <a href="http://gcc.gnu.org/">here</a>.</p>
+
+<p>Homebrew was installed from <a href="https://github.com/mxcl/homebrew/wiki/installation">here</a>.</p>
+
+<p>-Homebrew replaced the old style of loading software which required configuring the config file since all OSs are customized with different versions. This is frustrating as hell. Jewelry box, RVM, and homebrew are powerful enough to take the grunt work out of the environment set-up, but can&#8217;t the community find a way to wrap this in an app in the app store? Is this feasible?</p>
+
+<ul>
+<li><a href="http://jewelrybox.unfiniti.com/">Jewelry Box was installed</a></li>
+<li><a href="http://ftp.gnu.org/gnu/wget/">wget was installed</a></li>
+<li><a href="http://www.alfredapp.com/">Alfred was installed</a></li>
+</ul>
+
+
+<p>We also modfiied the bash profile or dot files from Avi&#8217;s github repository.</p>
+
+<ul>
+<li>He mentioned that in the future I should choose a user name with all lower case letters rather than the capitalized name that I chose.</li>
+<li>I also needed to create a symbolic link for my sublime text editor so that I can call it from the command line (this is something I never figured out on my Fedora 15 system)</li>
+</ul>
+
+
+<h3>So for those keeping track at home:</h3>
+
+<ul>
+<li> GCC</li>
+<li> Homebrew</li>
+<li> Jewelry box</li>
+<li> RVM</li>
+<li> Ruby Update</li>
+<li> Rails</li>
+</ul>
+
+
+<p>No MySQL or anything like that&#8230; until I need it.</p>
+
+<ul>
+<li><a href="http://tech.xtremelabs.com/how-to-setup-your-mac-for-rails-development/">This is a good post on what to load up&#8230;</a></li>
+<li><a href="https://github.com/joshfng/railsready">rails ready script on github</a>)</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/enumerables-and-oo-class-notes-for-lecture-5/">Enumerables and OO- Class Notes for Lecture 5</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-17T10:40:00-04:00" pubdate data-updated="true">Jun 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>(FROM THE VIDEO)</p>
+
+<p>diff between each and map (map reduce)- 12min:30</p>
+
+<p>while each will only return to you the array
+map will return a modified version of the array&#8217;s element based on the operation&#8211; will save the result in a new array
+each will simply execute the block</p>
+
+<p>another syntax for blocks:
+do / end (better for multi line) as well as curly braces {}- better for single line</p>
+
+<p>how map works with a block 19min:19</p>
+
+<p>Iterators (AKA finder methods) and blocks:
+detect- (also works like find)
+when you want to find the first of something in an enumerable
+after it finds an element that makes the block true is stops iterating</p>
+
+<p>select is like detect but wont stop</p>
+
+<p>reject returns an array for items in self for which the block is NOT TRUE.</p>
+
+<p>all will return true as long as all the element pass what&#8217;s in the block</p>
+
+<p>any- like all but less specific</p>
+
+<p>none is the opposite of all</p>
+
+<p>Sort and Sort By: (34 min)</p>
+
+<p>REG EX PATTERNS- /w+/ - not space characters
+(/a|e|i|o|u/) - vowels</p>
+
+<p>&lt;=> spaceship operator</p>
+
+<p>(42MIN) return values&#8211; it&#8217;s the last expression evaluated
+but there is an explicit return keyword
+?? can the return keyword go on a diferent line rather than the last line?</p>
+
+<p>46 min 30 Object Orientation</p>
+
+<p>prime method 51 min
+completed at 57 min
+Big O notation is used to compare the efficiency of algorithms
+See: http://en.wikipedia.org/wiki/Big_O_notation and
+http://blogs.msdn.com/b/alfredth/archive/2006/08/24/717085.aspx</p>
+
+<p>Ranges:
+a..c &#8211;> a, b, c
+a&#8230;c &#8211;> a, b</p>
+
+<p>equal? method works by comparing object ids</p>
+
+<p>an instance is an occurance, a member of the species</p>
+
+<p>setter methods (1 hr 8 Min)</p>
+
+<p>instance variable (1 hr 10 min)
+local to the instance they are created in</p>
+
+<p>initialization &#8211;> def initialize (1 hr 20min)</p>
+
+<p>Constants - have a more global scope&#8211; either one letter capital or all capitals
+shouldn&#8217;t reassign constants once they have been assigned
+we use upper case letters for class names, because it is a constants
+ALL UPPERCASE are reserved for global variables</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:: Ruby syntax for name spacing</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Global variables begin with $, but you should never use them&#8230; they aren&#8217;t neccessary</p>
+
+<p>For further reading on Variable Scope see:
+<a href="http://www.techotopia.com/index.php/Ruby_Variable_Scope">http://www.techotopia.com/index.php/Ruby_Variable_Scope</a> (1 hr 30 min)</p>
+
+<p>puts- what is the receiver of puts?
+- the implicit receiever of puts is self (1 hr 32 min)</p>
+
+<p>accessor_writer
+accessor_reader
+accessor_attr (1 hr 36)</p>
+
+<p>E.G. teaching dogs how to compare to other dogs (1hr 37)</p>
+
+<p>E.G. can make strings case insensitve (1 hr 39)</p>
+
+<p>Rebuilding the Jukebox (1 hr 40)
+send method (1 hr 46)
+Avi&#8217;s solution (1 hr 49)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -389,23 +785,23 @@ scan &#8211;> scan will return all occurances &#8211;> returns an array of objec
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/intro-to-dns/">Intro to DNS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/7-righteous-fights/">7 righteous fights</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/databases-with-brad-urani/">Databases with Brad Urani</a>
       </li>
     
       <li class="post">
         <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-technology-and-developer-happiness/">New Technology and Developer Happiness</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/goal-setting-for-devs/">Goal Setting for Devs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/quarterlies/">Quarterlies</a>
       </li>
     
   </ul>
