@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="I had a bunch of issues getting pow up and running after I upgraded to Mavricks. I ended up not installing via the curl method that the 37signals &hellip;">
+  <meta name="description" content="Each user story should INVEST I - Independent The user story should be self-contained, in a way that there is no inherent dependency on another user &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,283 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/user-stories/">User Stories</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-14T10:38:00-04:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Each user story should INVEST</p>
+
+<p>I - <strong>Independent</strong> The user story should be self-contained, in a way that there is no inherent dependency on another user story.
+N - <strong>Negotiable</strong>  User stories, up until they are part of an iteration, can always be changed and rewritten.
+V - <strong>Valuable</strong>  A user story must deliver value to the end user.
+E - <strong>Estimable</strong> You must always be able to estimate the size of a user story.
+S - <strong>Sized</strong> appropriately or Small  User stories should not be so big as to become impossible to plan/task/prioritize with a certain level of certainty.
+T - <strong>Testable</strong>  The user story or its related description must provide the necessary information to make test development possible.</p>
+
+<blockquote><p>Iteration 0 -> is foundational work that is performed prior to development starting.</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/feyonce/">Feyonce</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-27T15:43:00-04:00" pubdate data-updated="true">Mar 27<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>cancan&#8217;s bitmask</h2>
+
+<ul>
+<li><p><a href="https://github.com/ryanb/cancan/issues/145">bitmask</a></p></li>
+<li><p>by the way, it appears that cancan has been abandoned. We ended up rolling out our authorization.</p></li>
+</ul>
+
+
+<h2>devise</h2>
+
+<ul>
+<li>You can override the default behaviour by creating an after_sign_in_path_for <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-and-sign-out">via</a></li>
+</ul>
+
+
+<h3>Switch to omniauth</h3>
+
+<ul>
+<li>we made a major overhaul by switching to omniauth rather than using the devise email &amp; password.
+
+<ul>
+<li>As per the <a href="https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview#using-omniauth-without-other-authentications">omniauth wiki</a> I needed to rebuild many of the paths that devise had created for us via the <code>registerable</code> and <code>Database Authenticatable</code> modules and reconfigure the appropriate controllers as well.</li>
+<li>To its credit, the <code>Devise::TestHelpers, type: :controller</code> held up through the transition, which was a big help.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Bundle clean is the jam</h3>
+
+<ul>
+<li><code>bundle clean --force</code></li>
+<li><code>bundle update</code>
+Saved my @ss.</li>
+</ul>
+
+
+<h3>Before block versus let in rspec</h3>
+
+<ul>
+<li>use <code>let</code> to define all of the dependent objects, and to use <code>before do</code> to setup needed configuration or any mocks/stubs needed by the examples. <a href="http://stackoverflow.com/a/5359979/1496757">via the comments section</a></li>
+</ul>
+
+
+<h3>Transient Factory Girl Properties</h3>
+
+<p>I needed a way to pass in some parameters into my factory. Enter transient properties.</p>
+
+<ul>
+<li><a href="http://robots.thoughtbot.com/factory-girl-2-2-your-new-best-friend">This helped</a></li>
+<li><a href="http://stackoverflow.com/a/9693284/1496757">And</a></li>
+<li><a href="http://rubydoc.info/gems/factory_girl/2.3.2/file/GETTING_STARTED.md#Transient_Attributes">And the docs</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>The Eventual Code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">factory</span> <span class="ss">:track_with_lessons</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">ignore</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">lesson_count</span> <span class="mi">3</span>
+</span><span class='line'>    <span class="n">topic_count</span> <span class="mi">2</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">after</span><span class="p">(</span><span class="ss">:create</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">track</span><span class="p">,</span> <span class="n">evaluator</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">evaluator</span><span class="o">.</span><span class="n">topic_count</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="n">track</span><span class="o">.</span><span class="n">add_topic</span><span class="p">(</span><span class="n">create</span><span class="p">(</span><span class="ss">:topic_with_lessons</span><span class="p">,</span> <span class="n">lesson_count</span><span class="p">:</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">lesson_count</span><span class="p">))}</span>
+</span><span class='line'>    <span class="n">track</span><span class="o">.</span><span class="n">save!</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A gotcha: The <a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md#transient-attributes">getting started readme</a> was outdated so I was trying to use <code>transient do</code> which was not working. It appears that this will be fixed in the next release&#8230;</p>
+
+<h3>Capybara within block</h3>
+
+<p>When searching for an element with a div like <code>within('div#first.drawer') do</code> it truly means within, not like this can be the same element you are looking for, it has to be nested inside this element.</p>
+
+<h3>Testing with JSON</h3>
+
+<p><a href="http://kakubei.blogspot.com/2013/05/testing-controller-with-json-data-draft.html">Found this</a> to be a good place to start but I couldn&#8217;t get his method to actually work.</p>
+
+<figure class='code'><figcaption><span>What he did</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;updates empty summary field&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="vi">@incoming_params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@dvd</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="vi">@incoming_params</span><span class="o">[</span><span class="ss">:summary</span><span class="o">]</span> <span class="o">=</span>  <span class="s1">&#39;some summary&#39;</span>
+</span><span class='line'>  <span class="n">post</span> <span class="s1">&#39;entry/update&#39;</span><span class="p">,</span> <span class="vi">@incoming_params</span><span class="o">.</span><span class="n">to_json</span>
+</span><span class='line'>  <span class="vi">@entry</span><span class="o">.</span><span class="n">reload</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="vi">@entry</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="s1">&#39;some summary&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>This is what worked for me</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="s1">&#39;POST #topic_order&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;saves a new topic order&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">sign_in_teacher</span>
+</span><span class='line'>    <span class="n">track</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:track_with_lessons</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">original_order</span> <span class="o">=</span> <span class="n">track</span><span class="o">.</span><span class="n">topic_order</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:topic_order</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;topic_order&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">track</span><span class="o">.</span><span class="n">topic_order</span><span class="o">.</span><span class="n">last</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="n">track</span><span class="o">.</span><span class="n">topic_order</span><span class="o">.</span><span class="n">first</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;track_id&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">track</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="nb">format</span><span class="p">:</span> <span class="ss">:json</span>
+</span><span class='line'>    <span class="n">track</span><span class="o">.</span><span class="n">reload</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">track</span><span class="o">.</span><span class="n">topic_order</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="n">original_order</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/service-objects-versus-concerns/">Service Objects Versus Concerns</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T15:03:00-05:00" pubdate data-updated="true">Feb 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="/blog/service-objects/">I wrote this</a> last May. Obviously, <a href="https://github.com/scottcreynolds">@scottcreynolds</a> doesn&#8217;t think it sunk in.</p>
+
+<p>We were writing a URL sanitizer that stripped the user&#8217;s URL input of <code>http://</code> and <code>www</code> to store in the DB. Because we were using it for multiple models. I had viewed this &#8220;stipper&#8221; method as a behavior and thus had thought it belonged in the the DHH blessed concerns folder.</p>
+
+<p>Scott disagreed:</p>
+
+<blockquote><p>A concern or mixin should describe a <strong>behavior</strong> that is being given to the object. That&#8217;s the &#8220;able&#8221; nomenclature. A behavior is something like &#8220;it can support tags&#8221; or &#8220;it can be authenticated with a devise token&#8221;.</p></blockquote>
+
+<p>What I should have seen was this is a utility method. He writes:</p>
+
+<blockquote><p>What was being created here is a utility or service method, intended to be used across any entity in the system that chooses to sanitize a url. This is not a behavior that the object has. Yes, you could go so far as to say &#8220;this object can sanitize its urls&#8221; but that&#8217;s a bit of semantic gymnastics when what we&#8217;re really describing is a <strong>service object</strong> - something that provides a service to any part of the system that requires it. In this case, scrubbing user input.</p></blockquote>
+
+<p>Something that may have helped me futher understand this was thinking about who was responsible for this sanitization. Is the Event object responsible for url sanitization?</p>
+
+<blockquote><p>It might seem like a fine hair to split, but if we examine further, we see that we weren&#8217;t really adding a common behavior to the <code>event</code> and <code>admin_user</code> classes.</p>
+
+<p>The <code>parseable</code> module as designed only handled the case where the thing it was being mixed into had a field called <code>website</code>. Including it in <code>event</code> would have done absolutely nothing because that field doesn&#8217;t exist. What an <code>event</code> does have, however, is a <code>registration_link</code>. Already, we can see that we haven&#8217;t truly identified a common <em>behavior</em> so much as a common <em>need</em> - hence a service object.</p>
+
+<p>Finally, just in the naming we can tell that we&#8217;re not really describing what we mean. If a class includes a module <code>parseable</code>, that include line, in English, reads <code>an admin user is parseable</code>. To me that means something significantly different than <code>before save, strip some characters out of a field</code>. The module being described didn&#8217;t do what it claimed to do by its name.</p></blockquote>
+
+<p>These things seem small, but they&#8217;re extremely important to care about because code bases grow and all you have in a dynamic language is your tests and your naming to help you understand the system a year from now. I could show you a rails project I just came into where no care was given to naming and structure, and you could spend days following the labyrinth of modules and classes and end up hoping the Minotaur finds you and eats you and spares you the hassle of figuring out what&#8217;s going on.</p>
+
+<p>So in short, use concerns when extracting common behavior (active record finders, authentication, etc). Use service objects when extracting common needs.</p>
+
+<p>Finally, a note on tests. It&#8217;s great we&#8217;re doing the cucumber, and doing it well, but we still need tests at model and controller levels too. If you make a new class/module it should have a test file and some tests.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -720,175 +997,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/node-express-backbone-marionette-sorting-out-the-pieces/">Node, Express, Backbone and Marionette &#8211; Sorting Out the Pieces</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-10T17:47:00-05:00" pubdate data-updated="true">Jan 10<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Express with Node</h3>
-
-<ul>
-<li>Express is a framework that takes Node from a barebones application and turns it into something that behaves more like the web servers we&#8217;re all used to working with.</li>
-<li>Express feels like the <a href="http://www.sinatrarb.com/">sinatra</a> of node.</li>
-</ul>
-
-
-<h3>Bower vs. npm</h3>
-
-<ul>
-<li>It was advised that bower is the front end dependencies package manager, where the npm is for the backend. <a href="https://www.google.com/search?q=npm+of+backend+and+bower+for+the+front+end&amp;oq=npm+of+backend+and+bower+for+the+front+end&amp;aqs=chrome..69i57.8637j0j9&amp;sourceid=chrome&amp;espv=210&amp;es_sm=91&amp;ie=UTF-8#es_sm=91&amp;espv=210&amp;q=npm+for+backend+and+bower+for+the+front+end">see</a></li>
-<li>You specify what dir your want to install the bower packages with a <code>.bowerrc</code> file which goes in the project root. Here are <a href="https://gist.github.com/facultymatt/5482781">some examples</a> of these types of files.
-
-<ul>
-<li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/a-requirejs-backbone-and-bower-starter-template/">This tutorial</a> was helpful to get up and running with require.js and bower</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Mean stack</h3>
-
-<ul>
-<li><a href="http://mean.io/">Mean.io</a></li>
-<li>Really like this <a href="http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/">tutorial here</a></li>
-</ul>
-
-
-<h3>Asynchronous Module Definition</h3>
-
-<ul>
-<li>The AMD format comes from wanting a module format that was better than today&#8217;s &#8220;write a bunch of script tags with implicit dependencies that you have to manually order&#8221; and something that was easy to use directly in the browser. <a href="http://requirejs.org/docs/whyamd.html">further reading</a></li>
-<li>The standard loader is <a href="http://requirejs.org/">RequireJS</a>, but in production you could use a replacement AMD loader called <a href="https://github.com/jrburke/almond">Almond</a>. It is a smaller &#8220;shim&#8221; loader, providing the minimal AMD API footprint that includes loader plugin support. Some developers like to use the AMD API to code modular JavaScript, but after doing an optimized build, they do not want to include a full AMD loader like RequireJS, since they do not need all that functionality. Some use cases, like mobile, are very sensitive to file sizes. By including almond in the built file, there is no need for RequireJS. almond is around 1 kilobyte when minified with Closure Compiler and gzipped.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/require-dot-js/">require.js</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-16T16:04:00-05:00" pubdate data-updated="true">Dec 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>In roots</h3>
-
-<ul>
-<li><code>require ['jquery', 'fitvid', 'modal'], ($) -&gt;</code> is how I might require a non underscored file</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/wearables/">Wearables</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-09T10:18:00-05:00" pubdate data-updated="true">Dec 9<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Dl rather than ul</h3>
-
-<ul>
-<li>for question/answer format <a href="http://www.cssnewbie.com/using-definition-lists-question-answer-formatting/#.UqYh6HJgZKk">this article argues</a> that dl, dt, dd is a more appropriate choice of ul, li.</li>
-<li><a href="http://html5doctor.com/the-dl-element/">More reading</a></li>
-<li><a href="http://css-tricks.com/utilizing-the-underused-but-semantically-awesome-definition-list/">and</a></li>
-<li><a href="http://www.dave-woods.co.uk/creating-faqs-using-a-definition-list/">also</a></li>
-</ul>
-
-
-<h3>IP detection with CloudFlare and nginx</h3>
-
-<ul>
-<li><a href="http://nginxlibrary.com/using-cloudflare-for-country-blocking/">ip detection using CloudFlare</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -906,23 +1014,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/crash-course/">Crash Course DevOps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/elastic-search/">Elastic Search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
       </li>
     
       <li class="post">
         <a href="/blog/intro-to-dns/">Intro to DNS</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/7-righteous-fights/">7 righteous fights</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/databases-with-brad-urani/">Databases with Brad Urani</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
   </ul>

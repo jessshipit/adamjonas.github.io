@@ -9,13 +9,15 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="POTD Jeffery Zeldman
-Dan Benjamin
-Jason Santa Maria
-Simplebits.com Gitbo Popularity index
-sidekiq
-nested issues in repos
-slugs wiht friendly_id Rails &hellip;">
+  <meta name="description" content="JSON link a JSON parser CanCan Rails Cast
+CanCan Source Code
+CanCan Wiki 1
+2
+3
+4
+5
+6
+#If a user.git_nickname == repo.owner_name -&gt; the user is an &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +94,1127 @@ slugs wiht friendly_id Rails &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day29/">FIS Day29</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-15T09:44:00-05:00" pubdate data-updated="true">Nov 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="http://jsonlint.com/">JSON link</a> a JSON parser</li>
+</ul>
+
+
+<h3>CanCan</h3>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/192-authorization-with-cancan">Rails Cast</a></li>
+<li><a href="https://github.com/ryanb/cancan">CanCan Source Code</a></li>
+<li><a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">CanCan Wiki</a></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#If a user.git_nickname == repo.owner_name -&gt; the user is an owner.</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= if can? :put, @issue %&gt; #can only see the links if you authorized</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">#also need to add restrictions in the controller</span>
+</span><span class='line'><span class="sx">load_and_authorize_resource :nested =</span><span class="o">&gt;</span> <span class="ss">:repo</span>
+</span><span class='line'><span class="c1">#this is funky</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>ability.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Ability</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="ss">CanCan</span><span class="p">:</span><span class="ss">:Ability</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span> <span class="c1"># guest user that comes to the site and doesn&#39;t have an acct yet</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">role?</span> <span class="ss">:admin</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:manage</span><span class="p">,</span> <span class="ss">:all</span> <span class="c1">#manage emcompasses every action</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>    <span class="c1">#this is for every day users</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:read</span><span class="p">,</span> <span class="ss">:all</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:create</span><span class="p">,</span> <span class="no">Comment</span>
+</span><span class='line'>      <span class="n">can</span> <span class="ss">:update</span><span class="p">,</span> <span class="no">Comment</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">comment</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="o">==</span> <span class="n">user</span> <span class="o">||</span> <span class="n">user</span><span class="o">.</span><span class="n">role?</span><span class="p">(</span><span class="ss">:moderator</span><span class="p">)</span>
+</span><span class='line'>        <span class="c1">#eqivalent to comment &amp;&amp; comment.user == user</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">role?</span><span class="p">(</span><span class="ss">:author</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">can</span> <span class="ss">:create</span><span class="p">,</span> <span class="no">Article</span>
+</span><span class='line'>        <span class="n">can</span> <span class="ss">:update</span><span class="p">,</span> <span class="no">Article</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span>
+</span><span class='line'>          <span class="n">article</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="o">==</span> <span class="n">user</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rescue_from</span> <span class="ss">CanCan</span><span class="p">:</span><span class="ss">:AccessDenied</span> <span class="k">do</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;Access denied.&quot;</span>
+</span><span class='line'>  <span class="n">redirect_to</span> <span class="n">root_url</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Jquery lecture John</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//hide</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b1&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#p1&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//show</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b2&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#p1&quot;</span><span class="p">).</span><span class="nx">show</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span> <span class="c1">//this makes it look like it is writing it out</span>
+</span><span class='line'>    <span class="c1">//with a longer duration</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//toggle</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b3&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#p1&quot;</span><span class="p">).</span><span class="nx">toggle</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Fade Toggle, fade down, slide up, slide down, slide toggle</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//animate</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#b19&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">height</span><span class="o">:</span><span class="s2">&quot;200px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="s2">&quot;200px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">height</span><span class="o">:</span><span class="s2">&quot;50px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="s2">&quot;50px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="s2">&quot;100px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.box-animate&quot;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="nx">height</span><span class="o">:</span><span class="s2">&quot;100px&quot;</span><span class="p">},</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Fancy Box Example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* LETS USE FUNCTIONS TO MAKE AN INSTANCE OF INTERACTING WITH THE DOM REPEATABLE */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//first I want to fade out all the fruit pictures.</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery img&#39;</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span> <span class="c1">//fadeTo(delay in miliseconds, opacity)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//next I want to create a function that will only run when someone hovers over a fruit image.</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">mouseOn</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//the keyword &#39;this&#39; refers to the element that is calling the function in our case it is the individual image that the user has their mouse over top of.</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//mouse off funtion</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">mouseOff</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//lastly I want to check if the user is hovering their mouse and call the apropriate function.</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery img&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span><span class="nx">mouseOn</span><span class="p">,</span><span class="nx">mouseOff</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//add rel attribute to gallery links to add arrow functionality to fancybox plugin</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery a&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;rel&#39;</span><span class="p">,</span><span class="s1">&#39;fruits&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//apply fancybox plugin</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#gallery a&#39;</span><span class="p">).</span><span class="nx">fancybox</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>When installing a plugin</h3>
+
+<ul>
+<li>does it have css?</li>
+<li>load styleheet above my own, so that it won&#8217;t over-ride my styling</li>
+<li><p>put js sheet BELOW jquery plugin files</p></li>
+<li><p>js fiddle -> minifies</p></li>
+</ul>
+
+
+<h3>Semi Colons</h3>
+
+<ul>
+<li>if, else and function def don&#8217;t requiring a semi-colon</li>
+<li>would never put a semi-colon after a curly brace except for object instantiation
+
+<ul>
+<li>`var myObject = { };</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Jquery Misc</h3>
+
+<ul>
+<li><a href="http://oscarotero.com/jquery/">Jquery cheat sheet</a></li>
+</ul>
+
+
+<p>Content delivery network -> a CDN</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>Best practices from backend devs. What can we do to help you?
+
+<ul>
+<li>semantic use of naming things like IDs</li>
+</ul>
+</li>
+<li>some of your favorite plugins? source for finding really cool plugins
+
+<ul>
+<li><a href="http://fancybox.net/">fancybox.net</a></li>
+<li><a href="http://popcornjs.org/">popcorn.js</a></li>
+<li><a href="http://www.jquery4u.com/">Jquery4u</a></li>
+</ul>
+</li>
+<li>tests in javascript?
+
+<ul>
+<li>some mvc have tests built in like backbone.</li>
+</ul>
+</li>
+<li>debugging in JS?
+
+<ul>
+<li>write code in short snippets, comment out sections</li>
+<li>js lint -> shows errors and styles</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Color Stuff</h3>
+
+<ul>
+<li>Digital color meter
+
+<ul>
+<li>copy with cmd, shift c and you can paste is</li>
+</ul>
+</li>
+<li><a href="https://kuler.adobe.com">color matching</a>
+
+<ul>
+<li>automatically color coordinates</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">each</span>
+</span><span class='line'>  <span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">from_user_name</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">.</span><span class="nx">getJson</span> <span class="c1">//pretty important</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Get JSON from Twitter example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">keywordInput</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#keyword&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">searchButton</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#search&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">displayFeed</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#feed&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">keyword</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//CLEAR</span>
+</span><span class='line'>  <span class="nx">keywordInput</span><span class="p">.</span><span class="nx">focus</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">displayFeed</span><span class="p">.</span><span class="nx">empty</span><span class="p">();</span> <span class="c1">//clears results</span>
+</span><span class='line'>    <span class="nx">keywordInput</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span> <span class="c1">//clears input box when return to type new key words. </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">});</span><span class="c1">//end clear</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//SEARCH &amp; DISPLAY</span>
+</span><span class='line'>  <span class="nx">searchButton</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">keyword</span> <span class="o">=</span> <span class="nx">keywordInput</span><span class="p">.</span><span class="nx">val</span><span class="p">();</span> <span class="c1">//retrieves keyword(s) typed.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">&#39;http://search.twitter.com/search.json?callback=?&amp;q=&#39;</span><span class="o">+</span><span class="nx">keyword</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span> <span class="c1">//display JSON feed using keyword(s) typed</span>
+</span><span class='line'>    <span class="c1">//callback shifts to padded json, which is neccessary for this call</span>
+</span><span class='line'>    <span class="c1">//data is an arbitrary variable that store the info</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">//see if results came in...</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">from_user</span><span class="p">);</span> <span class="c1">//if only there were a way to go into the array results and loop over each element/value and report back the data I want... What about loops?</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">//loop -&gt; for each object result retrieve the data and display</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">value</span><span class="p">){</span>
+</span><span class='line'>      <span class="c1">// tell each what we want to iterate over</span>
+</span><span class='line'>        <span class="c1">//data.results -&gt; is an array within the json</span>
+</span><span class='line'>            <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;p&gt;&lt;a href=&quot;http://twitter.com/&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">from_user</span><span class="o">+</span><span class="s1">&#39;&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">profile_image_url</span><span class="o">+</span><span class="s1">&#39;&quot; alt=&quot;picture of &#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">from_user</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&lt;/a&gt; &amp;quot;&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">text</span><span class="o">+</span><span class="s1">&#39;&amp;quot; -&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">from_user</span><span class="o">+</span><span class="s1">&#39; &lt;span class=&quot;date&quot;&gt;[&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">created_at</span><span class="o">+</span><span class="s1">&#39;]&lt;/span&gt;&lt;/p&gt;&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nx">displayFeed</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span> <span class="c1">//displays each result inside feed area.</span>
+</span><span class='line'>            <span class="c1">//opposite is prepend</span>
+</span><span class='line'>            <span class="nx">displayFeed</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">highlight</span><span class="p">(</span><span class="nx">keyword</span><span class="p">);</span> <span class="c1">//highlight matching terms using highlight plugin.</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="p">});</span><span class="c1">//end each</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">});</span><span class="c1">//end getJSON</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">});</span><span class="c1">//end Search</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span><span class="c1">//end document ready</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>tutsplus-> learn jquery 30 days
+
+<ul>
+<li>30 min videos</li>
+<li>free</li>
+</ul>
+</li>
+<li><h2>backbone tutorial</h2></li>
+<li><a href="http://it-ebooks.info/">http://it-ebooks.info/</a>
+
+<ul>
+<li><a href="http://www.manning.com/bibeault/">jquery in action</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day28/">FIS Day28</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T10:10:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Authentication</h2>
+
+<ul>
+<li>http is stateless</li>
+<li><p>we pass along with the request is our cookie</p>
+
+<ul>
+<li>the cookie lives on the client, which means we can&#8217;t trust it</li>
+</ul>
+</li>
+<li><p>cookie has a lot of raw data</p>
+
+<ul>
+<li>you don&#8217;t really want to put data on the client</li>
+<li>except the token: which is just a primary key for their session on my server</li>
+</ul>
+</li>
+<li><p>session id in the cookie identifies the session</p></li>
+<li><p>cookies on the browser/sessions are on the server</p>
+
+<ul>
+<li>the cookie is used to access the session</li>
+</ul>
+</li>
+<li><p>Form_for requires an ActiveRecord instance -> it needs a model</p>
+
+<ul>
+<li>form_tag(sessions_path)</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Session Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">skip_before_filter</span> <span class="ss">:login_required</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span>
+</span><span class='line'><span class="c1">#this is needed you will need to login before you login. #Need to do this in the user controller as well.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_email</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:email</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="n">user</span>
+</span><span class='line'>    <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="s1">&#39;login failed&#39;</span>
+</span><span class='line'>    <span class="n">redirect</span> <span class="ss">:new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="n">reset_session</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Application Controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Application</span> <span class="no">Controller</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">login_required</span>
+</span><span class='line'>    <span class="k">unless</span> <span class="n">current_user</span>
+</span><span class='line'>      <span class="n">redirect_url</span> <span class="n">login_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s2">&quot;please login&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:current_user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">logged_in?</span>
+</span><span class='line'>    <span class="kp">true</span> <span class="k">if</span> <span class="n">current_user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">helper_method</span> <span class="ss">:logged_in?</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>In user model: <code>has_secure_password</code></p>
+
+<ul>
+<li>bcrypt</li>
+<li>password confirmation is optional with has_secure_password</li>
+<li>if a hacker gains access to your logs and you don&#8217;t have the password field filtered, they can see all the passwords</li>
+</ul>
+</li>
+<li><p><a href="http://www.dshield.org/diary.html?storyid=11110">hashing passwords</a></p></li>
+</ul>
+
+
+<p><code>Order.update(12, :name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<ul>
+<li>is equivalent to</li>
+</ul>
+
+
+<p><code>Order.find(12).update_attributes(:name =&gt; "Barney", :email =&gt; "barney@bedrock.com")</code></p>
+
+<h3>MISC</h3>
+
+<ul>
+<li><a href="http://chrispederick.com/work/web-developer/features/">Web dev tool</a></li>
+<li><a href="https://makandracards.com/makandra/621-git-delete-a-branch-local-or-remote">delete local and remote branches</a></li>
+<li><a href="http://pusher.com/tutorials">pusher</a> better than socket.io
+
+<ul>
+<li><a href="https://github.com/tarnfeld/PusherChat-Rails">pusher chat</a></li>
+</ul>
+</li>
+<li><p><a href="http://socrates.io/">socrates.io</a></p></li>
+<li><p>Throw this at the top for a place for flash notices</p>
+
+<ul>
+<li><code>&lt;%= notice %&gt;</code></li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day27/">FIS Day27</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-13T09:21:00-05:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>POTD Jesse James Garrett</h3>
+
+<ul>
+<li>Author of <a href="http://www.jjg.net/elements/">elements of user experience</a>
+
+<ul>
+<li>elements of style</li>
+</ul>
+</li>
+<li><a href="http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications">Ajax essay</a>
+
+<ul>
+<li>asynchronous model</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Gitbo</h3>
+
+<ul>
+<li><a href="https://github.com/tute/merit">merit</a>/<a href="http://railscasts.com/episodes/364-active-record-reputation-system">reputation</a></li>
+<li><a href="https://github.com/javan/whenever">whenever</a></li>
+</ul>
+
+
+<h2>JS With Justin Moses</h2>
+
+<ul>
+<li><p>learn some Haskell, lisp -> functional programming</p></li>
+<li><p>JS fiddle</p></li>
+<li><p><a href="http://jsbin.com/welcome/1/edit">JS Bin</a></p></li>
+<li><p>span is an inline div</p></li>
+<li><p>when a document is loaded in the browser. it first calls a method on itself called ready.</p>
+
+<ul>
+<li>program events onto these objects</li>
+<li>find objects within the document and add more events to them</li>
+<li>if you try to load it linearly, then you need to wait until the document has full compiled.</li>
+</ul>
+</li>
+<li>think about buttons as button objects and you can bind methods and other objects to that button object</li>
+<li>src=&#8221;//code.jquery.com/&#8221;
+
+<h2>- put the script tags in the head is good form</h2></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;script&gt;
+</span><span class='line'>    function runthis() {
+</span><span class='line'>    alert(this);
+</span><span class='line'>  }
+</span><span class='line'>&lt;/script&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>$ -> jquery shortcut</p>
+
+<p>When the DOM is loaded get going&#8230;.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>  <span class="c1">//alert(this);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.btn&#39;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="s2">&quot;test123&quot;</span><span class="p">));</span>
+</span><span class='line'>  <span class="c1">//matching functions and matching it to all buttons</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>document.querySelectorAll(&#8216;.button&#8217;) -> is the javascript equivalent to $(&#8216;.button&#8217;)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.btn&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;button class=&quot;btn&quot;&gt;my button&lt;/button&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;button class=&quot;btn&quot;&gt;my button&lt;/button&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://api.jquery.com/on/">.on() event</a></li>
+<li>every move, every click these are all reported events
+
+<ul>
+<li>event bubbling -> fire event with that div, in the body, in the window
+
+<ul>
+<li>target -> event clicked on</li>
+<li>event delegation in js -> allows you quickly bind events that don&#8217;t exist yet</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>AJAX</h3>
+
+<p><code>XMLHttpRequest == $.ajax</code></p>
+
+<figure class='code'><figcaption><span>AJAX</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">url</span><span class="o">:</span><span class="s2">&quot;http://jsbin.com/iyijag.js&quot;</span>
+</span><span class='line'>  <span class="p">}).</span>
+</span><span class='line'>  <span class="nx">promise</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">//show user data</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">//alert box with json data</span>
+</span><span class='line'>  <span class="p">}).</span>
+</span><span class='line'>  <span class="nx">promise</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">// on fail</span>
+</span><span class='line'>  <span class="p">}).</span>
+</span><span class='line'>  <span class="nx">promise</span><span class="p">.</span><span class="nx">always</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>  <span class="c1">//always called</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>AJAX by default is get, but
+jquery deferred -> chaining things together without certainty of the event</p>
+
+<h3>Questions</h3>
+
+<ul>
+<li>debugging in your app. single click on line with chrome will drop in a debugger object.
+
+<ul>
+<li>can then see the object in console</li>
+</ul>
+</li>
+<li>if you use it once -> you don&#8217;t need to name the function, if you want to reuse, you probably want to</li>
+</ul>
+
+
+<h3>Other stuff</h3>
+
+<ul>
+<li><a href="http://colorblendy.com/">colorblendy</a></li>
+<li><a href="http://mouapp.com/">markdown editor</a></li>
+<li><a href="http://www.khanacademy.org/cs">khan academy</a></li>
+<li>node inspector for server side</li>
+<li><a href="https://npmjs.org">NPM for node</a>- is like ruby gems - server side modules</li>
+<li>HTML5 and websockets and threads</li>
+</ul>
+
+
+<h2>Avi Rant</h2>
+
+<ul>
+<li>rails works nicely with ember</li>
+<li>javascript provides you</li>
+</ul>
+
+
+<h3>Avi Javascript Lecture</h3>
+
+<ul>
+<li>if you want to do anything to an object, you need to first grab it from the DOM</li>
+<li>document.baseURI</li>
+<li>document - returns the whole window</li>
+<li>{} in javascript is an object</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Building an Object in Javascript</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">o</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'><span class="c1">//instantiating an object</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">first_name</span> <span class="o">=</span> <span class="s2">&quot;avi&quot;</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">last_name</span> <span class="o">=</span> <span class="s2">&quot;flom&quot;</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">full_name</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="k">this</span><span class="p">.</span><span class="nx">first_name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">last_name</span><span class="p">}</span>
+</span><span class='line'><span class="c1">//like self.first_name + &quot; &quot; + self.last_name in ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//can see what this is in the log</span>
+</span><span class='line'><span class="nx">o</span><span class="p">.</span><span class="nx">full_name</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">)};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//could do this, but it isn&#39;t object oriented</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">full_name</span><span class="p">(</span><span class="nx">object</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">object</span><span class="p">.</span><span class="nx">first_name</span> <span class="o">+</span> <span class="nx">object</span><span class="p">.</span><span class="nx">last_name</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>$ sign == jQuery</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">onready</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form a&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">onready</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//This means that when the document is loaded, fire this.</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">alert</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="nx">x</span><span class="p">.</span><span class="nx">clientY</span><span class="s2">&quot;)</span>
+</span><span class='line'><span class="s2">    return false; //stop the normal event -&gt; like following a link</span>
+</span><span class='line'><span class="s2">    //this would work like x.preventDeafult();</span>
+</span><span class='line'><span class="s2">  })</span>
+</span><span class='line'><span class="s2">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">//x is the event in this case</span>
+</span><span class='line'><span class="s2">//$(&quot;</span><span class="nx">form</span> <span class="nx">a</span><span class="err">&quot;</span><span class="p">)</span> <span class="nx">is</span> <span class="nx">almost</span> <span class="nx">like</span> <span class="nx">a</span> <span class="nx">yield</span> <span class="nx">from</span> <span class="nx">a</span> <span class="nx">block</span><span class="p">,</span> <span class="nx">that</span> <span class="nx">you</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">able</span> <span class="nx">to</span> <span class="nx">access</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="c1">// a full blown object that knows about its parent</span>
+</span><span class='line'><span class="k">this</span> <span class="c1">// is just a return of DOM. This doesn&#39;t have much info</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//.attr(&quot;href&quot;) is like accessing an attribute or key of the object</span>
+</span><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="o">+</span><span class="s2">&quot;?source=flatironschool&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>You are hooking into events. You are dependent on the browser and when events are loaded. It&#8217;s not about linear execution. It&#8217;s about the browser API.</li>
+<li>applying a bind to an element will always happen in a ready box</li>
+<li>current target, the thing that was actually clicked</li>
+<li>handleObj - the actual event, event type -> both might be a click event</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//select the object</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//$select = $(&#39;#mixtape_mixtape_songs_attributes_0_song&#39;);</span>
+</span><span class='line'>  <span class="nx">$select</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;form select:last&#39;</span><span class="p">);</span> <span class="c1">//grab the last element with a pseudo selector</span>
+</span><span class='line'>  <span class="c1">//duplicate code</span>
+</span><span class='line'>  <span class="nx">$new_select</span> <span class="o">=</span> <span class="nx">$select</span><span class="p">.</span><span class="nx">clone</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">$new_select</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//edit&#39;s name</span>
+</span><span class='line'>  <span class="nx">$next_name</span> <span class="o">=</span> <span class="nx">$select</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">$next_name</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">next_int</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">next_name</span><span class="p">.</span>
+</span><span class='line'>  <span class="nx">replace</span><span class="p">(</span><span class="s2">&quot;mixtape[mixtape_songs_attribute][&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">).</span>
+</span><span class='line'>  <span class="nx">replace</span><span class="p">(</span><span class="s2">&quot;]song_id&quot;</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">new_select</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nx">next_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">//insert it back into the DOM</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;div.actions&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//can have a document object that hasn&#39;t been inserted into the view yet</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//equal to</span>
+</span><span class='line'><span class="nx">t</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)};</span> <span class="o">-&gt;</span> <span class="k">this</span> <span class="nx">loaded</span> <span class="nx">into</span> <span class="nx">memory</span> <span class="nx">and</span> <span class="nx">run</span> <span class="nx">when</span> <span class="nx">ready</span><span class="p">.</span>
+</span><span class='line'><span class="c1">// t = alert(&quot;test&quot;) -&gt; this is literal and will be called immediately.</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Methods</h3>
+
+<ul>
+<li>key press event</li>
+<li>blur(), change(), click()</li>
+<li>handler() -> the function you want to run when this change occurs</li>
+<li>hover is the combo of focus and blur</li>
+<li>every keypress comes with two events key down and key up</li>
+<li>live -> attaching the event to the body</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>MouseMove</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">)(){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;form&quot;</span><span class="p">).</span><span class="nx">mousemove</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>spyjax</li>
+</ul>
+
+
+<h3>Odemeter</h3>
+
+<p><a href="http://uvumitools.com/odometer.html">http://uvumitools.com/odometer.html</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2040,443 +3163,6 @@ instances describe how objects are different</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/code-smells-and-refactoring/">Code Smells and Refactoring</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-05T15:05:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>decomposition and synthesis</p>
-
-<ul>
-<li><a href="http://www.codinghorror.com/blog/2006/05/code-smells.html">Code smells</a> Jeff Atwood.</li>
-<li><a href="http://www.cs.usfca.edu/~parrt/course/601/lectures/refactoring/refactoring.html">Summary</a></li>
-<li><p>http://c2.com/cgi/wiki?RefactoringImprovingTheDesignOfExistingCode</p></li>
-<li><p>http://en.wikipedia.org/wiki/Code_refactoring</p></li>
-<li><a href="http://martinfowler.com/bliki/EtymologyOfRefactoring.html">etymology of refactoring</a>
-
-<ul>
-<li>The obvious answer comes from the notion of factoring in mathematics. You can take an expressions such as x<sup>2</sup> + 5x + 6 and factor it into (x+2)(x+3). By factoring it you can make a number of mathematical operations much easier. Obviously this is much the same as representing 18 as 2*3<sup>2.</sup></li>
-</ul>
-</li>
-</ul>
-
-
-<p>improve internal structure, but don&#8217;t change the external behavior</p>
-
-<ul>
-<li><p>list of refactors - slide 7 in <a href="http://www.slideshare.net/MarcusDenker/refactoring-1921411">http://www.slideshare.net/MarcusDenker/refactoring-1921411</a></p></li>
-<li><p>code is written once, but read many times.</p></li>
-</ul>
-
-
-<p><a href="http://www.refactoring.com/catalog/index.html">refactoring list from fowler</a></p>
-
-<ul>
-<li><p><a href="http://en.wikipedia.org/wiki/Spaghetti_code">Spaghetti Code</a></p>
-
-<ul>
-<li>Spaghetti code is a pejorative term for source code that has a complex and tangled control structure. It is named such because program flow tends to look like a bowl of spaghetti, i.e. twisted and tangled.</li>
-</ul>
-</li>
-<li><p>Duplicated Code</p></li>
-<li>long method</li>
-<li>large class</li>
-<li>long parameter list</li>
-<li><p>temporary variable assigned more than once, but not a loop or collection</p></li>
-<li><p><a href="http://www.refactoring.com/catalog/extractMethod.html">extract method</a></p>
-
-<ul>
-<li>push logic to the model -> conditional logic belongs in the model</li>
-<li>we&#8217;re going to push the nastiness down into the model. That way it can be tested and, so we can more easily change it in the future.</li>
-</ul>
-</li>
-<li><p>when you refactor, the first test is always create tests</p></li>
-<li><p>good quotes <a href="http://www.slideshare.net/hominhchuc/refactoring-your-code-key-step-to-agility-presentation">http://www.slideshare.net/hominhchuc/refactoring-your-code-key-step-to-agility-presentation</a></p></li>
-</ul>
-
-
-<p>  Martin Fowler : &#8220;a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior“.</p>
-
-<p>  William C. Wake : &#8220;Refactoring is the art of safely improving the design of existing code“.</p>
-
-<p>  The goal of refactoring is NOT to add new functionality.
-  The goal is refactoring is to make code easier to maintain in the future.
-  The process of refactoring involves the removal of duplication, the simplification of complex logic, and the clarification of unclear code.</p>
-
-<p>  refactoring versus rewriting</p>
-
-<p>  lego versus playdoh slide 9 <a href="http://www.slideshare.net/NeilGreen1/the-roi-of-refactoring-lego-vs-playdoh">http://www.slideshare.net/NeilGreen1/the-roi-of-refactoring-lego-vs-playdoh</a></p>
-
-<p>  Everything I need to know about refactoring I learned in kindergarden</p>
-
-<p>   “I&#8217;m not a great programmer; I&#8217;m just a good programmer with great habits.”- Kent Beck</p>
-
-<h3>Law of demeter?</h3>
-
-<p>  Get into this?</p>
-
-<h3>E.g.s</h3>
-
-<ul>
-<li>Inline class- <a href="http://www.refactoring.com/catalog/inlineClass.html">http://www.refactoring.com/catalog/inlineClass.html</a></li>
-<li>Decompost conditional-  <a href="http://www.refactoring.com/catalog/decomposeConditional.html">http://www.refactoring.com/catalog/decomposeConditional.html</a></li>
-<li>Extract Class - <a href="http://www.refactoring.com/catalog/extractClass.html">http://www.refactoring.com/catalog/extractClass.html</a></li>
-<li>Inline Method</li>
-<li>Replace Conditional with Polymorphism</li>
-<li><p>Replace Parameter with Method</p></li>
-<li><p>God class</p></li>
-</ul>
-
-
-<p><a href="http://www.refactoring.com/catalog/">http://www.refactoring.com/catalog/</a></p>
-
-<h3>Code smells</h3>
-
-<p><a href="http://en.wikipedia.org/wiki/Code_smell">http://en.wikipedia.org/wiki/Code_smell</a></p>
-
-<p>extraction pattern- anti-pattern:
-<a href="http://blog.jayfields.com/2007/04/ruby-anti-pattern-extract-module-to.html">http://blog.jayfields.com/2007/04/ruby-anti-pattern-extract-module-to.html</a></p>
-
-<p>Refactoring:
-Even noobs know that refactoring is important. This presentation, inspired by <em>Refactoring: Ruby Edition</em>, will cover the whys, whens, and hows of refactoring using examples.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/anatomy-of-web-requests/">Anatomy of Web Requests</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-05T12:58:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3><a href="http://johndbritton.com/">John Britton</a></h3>
-
-<h3>Requests are like</h3>
-
-<ul>
-<li>driving a car</li>
-<li><p>shipping containers</p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/OSI_model">OSI model</a></p></li>
-</ul>
-
-
-<p>  sounds a lot like mvc- in terms of abstraction</p>
-
-<p>  HTTP: the language that your browser speaks
-  - The webpage is a document</p>
-
-<h3>URI:</h3>
-
-<ul>
-<li><p>Rendering</p>
-
-<ul>
-<li>HTML structure</li>
-<li>CSS style</li>
-<li><p>JS behavior</p></li>
-<li><p>ports are a concept</p></li>
-<li>ftp 21</li>
-<li>ssl 53</li>
-<li>0-1024 -> are assigned</li>
-<li>1024-49151 -> are available</li>
-<li><p>49152+</p></li>
-<li><p>if listening on 80- that means that route every request on port 80 to this program</p></li>
-</ul>
-</li>
-<li><p><a href="http://jsfiddle.net/">JS Fiddle</a></p></li>
-<li><p>HTTP: methods/verbs</p>
-
-<ul>
-<li>GET - grab some stuff and bring it down</li>
-<li>POST - anything you are altering the state of the app with is probably a post request</li>
-<li>PUT</li>
-<li>DELETE</li>
-<li>others: HEAD, PATCH, TRACE, OPTIONS, CONNECT</li>
-</ul>
-</li>
-<li><p>curl- works just like a browser on the command line.</p></li>
-</ul>
-
-
-<h3>Where do those requests go?</h3>
-
-<ul>
-<li>what is the ip address of the resource I am looking for</li>
-<li>if nothing is cached anywhere
-
-<ul>
-<li>13 root nameservers</li>
-<li>TLD nameserver- authoritative for .coms for example</li>
-<li>A record - I found the place to go for github, but I need the actual IP address</li>
-<li><p>IP address</p></li>
-<li><p><a href="http://en.wikipedia.org/wiki/BIND">BIND</a> is the most widely used DNS software on the Internet.</p></li>
-<li><p>TTL- <a href="http://en.wikipedia.org/wiki/Time_to_live">time to live</a></p></li>
-<li><p>Networks: nodes that can talk to each other directly</p></li>
-<li>Interface</li>
-<li><p>Network addresses:</p>
-
-<ul>
-<li>defines all the address that can talk to each other</li>
-<li>a.b.c.d/n (n= network mask /subnet)</li>
-<li>Private (non routable) network
-
-<ul>
-<li>10.0.0.0/8</li>
-<li>172.16.0.0/12 -> identifies which part is</li>
-<li>192.168.0.0/16 -> private networks namespaced for private networks</li>
-</ul>
-
-
-<p>255.255.255.0 -> subnet mask -> 24 bits ->
-192.168.1.N and n can&#8217;t exceed 255 people.</p>
-
-<p>10101100.0001 -> this is the network address -> the first 16 bits, the rest would be the node of the network</p>
-
-<ul>
-<li>you can have a lot more machines on an 8 bit network identifier, than a 16 bit. But you wouldn&#8217;t want to waste a bunch of nodes that aren&#8217;t going to be used.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Maximum number of address minus two</p>
-
-<ul>
-<li>192.168.1.255 -> broadcast address</li>
-</ul>
-</li>
-<li><p>Network Hardware</p>
-
-<ul>
-<li>Hub - dumb -> connects everyone&#8217;s ports to each other -> every machine&#8217;s send is connected to everyone&#8217;s receive -> lowest level</li>
-<li>Switch - smarter -> knows what addresses are connected to what ports - lowers network traffic, sending something once and remembering who responds</li>
-<li>Router - smartest -> connects <a href="http://www.merriam-webster.com/dictionary/disparate">disparate</a> networks. Hub and switch talk to each other, for a router, we go through another point -> knows about disparate networks and IP addresses</li>
-</ul>
-</li>
-</ul>
-
-
-<p>-Network Protocols</p>
-
-<ul>
-<li>Operating system knows about the <strong>transport</strong>.
-
-<ul>
-<li>Something reliable it will write in <strong>TCP</strong>
-
-<ul>
-<li>It has to all get there or the file will be corrupt</li>
-<li>there is a control mechanism. If the packets I&#8217;m not sending</li>
-</ul>
-</li>
-<li><strong>UDP</strong> - don&#8217;t want a reliable transport.
-
-<ul>
-<li>I don&#8217;t care if it all gets there. Deliver it in order.</li>
-<li>You don&#8217;t want a second of video that was sent out of order, you don&#8217;t want to patch it together out of order. Streaming would use UDP.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Routing - my machine doesn&#8217;t know about them.
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Routing_Information_Protocol">RIP</a> -</li>
-<li><a href="http://en.wikipedia.org/wiki/Open_Shortest_Path_First">OSPF</a> - Open Shortest Path First- a concept of links and weight of links. If you have two possible routes, it will go on</li>
-</ul>
-</li>
-<li><p>Network Address Translation</p>
-
-<ul>
-<li>maps traffic coming from an internal network and makes sure the appropriate machine gets the info it requested.</li>
-</ul>
-</li>
-<li><p>traceroute</p></li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>traceroute github.com
-</span><span class='line'>whois adamjonas.com
-</span><span class='line'>ping google.com
-</span><span class='line'>curl google.com</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p>nmap
-brew install nmap
-nmap #map the network</p>
-
-<h1>could run this against port 22 which is all the ssh</h1></li>
-<li><p><a href="http://whatismyipaddress.com/">wireshark</a></p></li>
-<li><p>hazel- rules based apps</p></li>
-<li>cueing in rails</li>
-<li><p><a href="http://progrium.com/localtunnel/">local tunnel</a></p></li>
-<li><p>blobs, tags, branches, commits</p>
-
-<ul>
-<li>blob is just a file -> any data</li>
-<li>git hash-object README</li>
-</ul>
-</li>
-<li><p>tree</p>
-
-<ul>
-<li>brew install tree</li>
-</ul>
-</li>
-<li><p>Divy or breeze: window arranging</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day20/">FIS Day20</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-05T08:55:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>UMLs</h3>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Unified_Modeling_Language">Unified Model Language</a></li>
-<li>Monolithic user classes
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/3179396/what-does-monolithic-mean">definition of monolithic</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>SQL</h3>
-
-<ul>
-<li>A has_many :through type query</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>SELECT * FROM song_genres INNER JOIN genres ON genre.id = genre_id FROM song_genre WHERE song_id = 1</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Avoiding has_and_belongs_to_many</h3>
-
-<ul>
-<li>if you name a column order, connection, attribute, etc., you will run into issues, because those words are reserved</li>
-<li><a href="http://archive.culann.com/2008/03/the-evil-unnecessary-has_and_belongs_to_many">don&#8217;t user HABTM</a></li>
-<li><a href="http://blog.hasmanythrough.com/2006/4/20/many-to-many-dance-off">Jose Susser isn&#8217;t as adamant</a></li>
-</ul>
-
-
-<h3>Lessons Learned</h3>
-
-<ul>
-<li>Parameters in a method HAVE TO BE comma delimited:</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">form_tag</span><span class="p">(</span><span class="n">url_for_options</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>When using build, you just need to save the parent.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/18/">&larr; Older</a>
@@ -2494,23 +3180,23 @@ nmap #map the network</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/crash-course/">Crash Course DevOps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/elastic-search/">Elastic Search</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
       </li>
     
       <li class="post">
         <a href="/blog/intro-to-dns/">Intro to DNS</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/7-righteous-fights/">7 righteous fights</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/databases-with-brad-urani/">Databases with Brad Urani</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/working-to-make-myself-obsolete/">Working to Make Myself Obsolete</a>
       </li>
     
   </ul>

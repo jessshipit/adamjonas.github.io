@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://adamjonas.com/atom.xml" rel="self"/>
   <link href="http://adamjonas.com/"/>
-  <updated>2017-03-10T09:32:51-05:00</updated>
+  <updated>2017-03-24T17:02:30-04:00</updated>
   <id>http://adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,617 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Crash Course DevOps]]></title>
+    <link href="http://adamjonas.com/blog/crash-course/"/>
+    <updated>2017-03-20T11:12:00-04:00</updated>
+    <id>http://adamjonas.com/blog/crash-course</id>
+    <content type="html"><![CDATA[<h2>Wires, cables and WiFi</h2>
+
+<ul>
+<li>Bits sent as light beams, no signal loss
+
+<ul>
+<li>faster than copper</li>
+</ul>
+</li>
+<li>WiFi is radio and then translated into physical bits over the wires</li>
+<li>Bitrate -> bits per second -> how fast it can transmit</li>
+<li>bandwidth -> how much data can you receive over a period of time</li>
+<li><p>latency -> how long it takes, more hops to talk to Seiji than
+Kaitlin in the next room; ping time * distance</p></li>
+<li><p><code>traceroute</code> to see hops</p></li>
+</ul>
+
+
+<h2>IP addresses and DNS</h2>
+
+<ul>
+<li>ISP</li>
+<li>IP is a unique address
+
+<ul>
+<li>IPv4 - 4 billion unique addresses isn&#8217;t enough
+
+<ul>
+<li>32 bits, 8 octets</li>
+<li>32 bits long, 8 bits for each part of each address</li>
+<li>DHCP -> obtaining a lease renewal process on your network.</li>
+<li>to the outside world, Flatiron has the same IP provided
+by ISP</li>
+<li>router provides guests with temporary IP depending on how long
+your lease renewal is set</li>
+<li>renegotiate IP
+?- subnet mask</li>
+<li>255.255.255.255 is the max it could go, based on the octet</li>
+<li>static IP -> unique in the world</li>
+<li>private IP -> re-use private IP addresses behind networks</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p> IPv6 - 128 bits instead of 32</p>
+
+<ul>
+<li>hex representation to prevent us running out of static IPs</li>
+<li><p>DNS servers are split up in TLDs</p>
+
+<ul>
+<li>DNS on a router</li>
+</ul>
+</li>
+<li><p>google&#8217;s DNS will break it up by the TLD and domain</p></li>
+<li><a href="http://www.macworld.com/article/2824564/slow-internet-edit-your-dns-settings.html">google DNS</a> versus open DNS</li>
+<li>?www doesn&#8217;t mean anything any more, just another subdomain</li>
+<li>?CS of how the domain names at the DNS are stored?</li>
+</ul>
+</li>
+<li><p> TTL</p>
+
+<ul>
+<li>this record will expire at X time</li>
+<li>set TTL to an hour, it won&#8217;t have to look it up for an hour</li>
+<li>DNS propagation</li>
+</ul>
+</li>
+<li><p>DNS -> record type</p>
+
+<ul>
+<li>A record -> address</li>
+<li>maps the word name the domain to a physical IP address</li>
+<li>PTR -> pointer -> the reverse, input IP and get the domain</li>
+<li>FQDN -> A fully qualified domain name (<a href="http://stackoverflow.com/questions/19480767/domain-names-with-dots-at-the-end">FQDN</a>) is the complete domain name for a specific computer, or host, on the Internet.
+
+<ul>
+<li>Host name is gmail and .com is the TLD</li>
+</ul>
+</li>
+<li>CNAME -> mail.google.com is a CNAME of googlemail.l.google.com.
+
+<ul>
+<li>A records should be unique</li>
+</ul>
+</li>
+<li>why is there a dot at the end?
+
+<ul>
+<li>it is an absolute as opposed to the relative address</li>
+</ul>
+</li>
+<li>want multiple MX records, redudency strategy</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Packet, routers and reliability</h2>
+
+<ul>
+<li>fault tolerant</li>
+<li>TCP</li>
+<li><p>?How do they determine the route?</p>
+
+<ul>
+<li>routers own the ISP and the companies that own them</li>
+</ul>
+</li>
+<li><p>traceroute domain.com</p></li>
+<li><p>wireshark is a GUI of <a href="https://danielmiessler.com/study/tcpdump/#gs.9p=ZVMQ"><code>tcpdump</code></a></p></li>
+<li><p>IP address can change and it has a serial number or a MAC address
+(hardware address)</p></li>
+</ul>
+
+
+<h2>HTTP &amp; HTML</h2>
+
+<ul>
+<li>SSL and TLS (successor)
+
+<ul>
+<li>http listens on 80 and https listens on 443</li>
+<li>sslv3 has been deprecated</li>
+</ul>
+</li>
+<li>certificate authority vouches for site</li>
+<li>OpenSSL generates keys, authority will sign that</li>
+<li>self-signed certs like for nagios or letsencrypt will work fine</li>
+<li>SSLS
+
+<ul>
+<li>discrete logorithm problem</li>
+</ul>
+</li>
+<li>handshake process -> how to keep box locked and send secret
+
+<ul>
+<li>put treasure in box, lock box, send to friend</li>
+<li>friend puts lock on box, sends it back</li>
+<li>I remove lock from box and send back</li>
+<li>friend unlocks box</li>
+</ul>
+</li>
+<li>SSH
+
+<ul>
+<li>ssh forwarding sends private key along</li>
+<li>asymetric only used for authentication</li>
+<li>symetric is then used for encryption and decryption</li>
+</ul>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Bcrypt">bcrypt</a> is what we use for email</li>
+</ul>
+
+
+<h2>DDoS</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Domain_Name_System#DNS_resolvers">DNS resolvers</a> to amplify attack</li>
+</ul>
+
+
+<h2>DevinOps in review</h2>
+
+<ul>
+<li><a href="https://github.com/thiagopradi/octopus">Octopus gem</a> -> pooling, load balance select statements to read only
+replicas</li>
+<li>DB sharding
+
+<ul>
+<li>complex SQL joins, will put different tables in different DBs</li>
+<li>replication</li>
+</ul>
+</li>
+<li>floating IPs points to the master
+
+<ul>
+<li>static IP never changes</li>
+<li>use floating IPs rather than DNS because of propogation</li>
+</ul>
+</li>
+<li>usernames:
+
+<ul>
+<li>if you have a server on linux it should not be running on root</li>
+<li>if it&#8217;s a system process then it would be ok to run on root</li>
+<li>postgres is run as the postgres user
+
+<ul>
+<li>apache is run by deployer and passenger -> how ruby achieves
+paralellization (a module for apache)</li>
+</ul>
+</li>
+<li>deployer for Ironboard -> easy way to manage keys</li>
+<li>how owns the process, who owns the directory where the config
+files lives</li>
+</ul>
+</li>
+<li><code>etc/passwd</code> -> all the users on the box and who is logged in</li>
+<li>every service that has a port open to the internet it should have
+its own user</li>
+<li>username is usually the service name</li>
+<li><code>/var</code> is usually the log directory</li>
+<li><code>/etc</code> is usually the config directory</li>
+<li>WAL-E
+
+<ul>
+<li>ship our binary logs we sent to s3</li>
+<li><a href="https://en.wikipedia.org/wiki/Write-ahead_logging">write ahead logs</a> -> must be complete before actually modifies the
+DB with a transaction. This is the mechanism for rollbacks.
+
+<ul>
+<li>master just sends the write-ahead logs to the slave which then
+just replays them</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Backups
+
+<ul>
+<li>take a base and then the have these WAL backups and send them off
+and it will apply all the deltas</li>
+<li>can give us point in time restoration</li>
+<li>these logs will fill up our disk</li>
+<li>? how long do we keep WAL-E</li>
+<li>interface for deleting backups, s3 logs</li>
+<li>config of pg is <code>pg_hba.conf</code></li>
+<li>script to switch over primary/replication script turns <code>recovery.conf</code> to <code>recovery.done</code></li>
+<li><code>failover.sh</code> on the other replica as root
+
+<ul>
+<li>breaks replication, now need to configure replication on the new
+replication server</li>
+</ul>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Iptables">iptables</a> -> firewall</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Permissions</h2>
+
+<ul>
+<li>User, Group, World -> multiple users on the same machine, make sure
+processes don&#8217;t do stuff they aren&#8217;t supposed to</li>
+<li>chmod 755, 644</li>
+<li>all directories have to be 7
+
+<ul>
+<li>directories point to other files</li>
+</ul>
+</li>
+<li>cd is a program that takes a directory (file) as an argument and
+executes it</li>
+<li><code>etc/sudoers</code> -> determines who has root permissions; visudo -> creates a backup and prevents brackage</li>
+<li><code>useradd</code> give them a shell and name the user; want to add to the
+chef script</li>
+</ul>
+
+
+<h2>load balancer</h2>
+
+<ul>
+<li>front-end is learn.co, terminating SSL, in the</li>
+<li>backend -></li>
+<li>should be root on</li>
+</ul>
+
+
+<h2>Debugging</h2>
+
+<ul>
+<li><code>passenger-status --show=requests</code></li>
+<li><code>passenger-status</code></li>
+</ul>
+
+
+<h2>Automatic provisioning</h2>
+
+<ul>
+<li><a href="https://github.com/digitalocean/doctl">doctl</a></li>
+<li><a href="https://github.com/petems/tugboat">tugboat</a></li>
+</ul>
+
+
+<h2>cron</h2>
+
+<ul>
+<li>sends mail</li>
+</ul>
+
+
+<h2>IDE backend</h2>
+
+<ul>
+<li>backend application -> IDE umbrella</li>
+<li>main one is learn-ide-server cookbook</li>
+<li>different chef servers</li>
+<li>wombat</li>
+<li>traffic cop</li>
+<li>elixir-build01 -> build elixir on server because linux</li>
+<li>new server needs to be added to <a href="https://github.com/flatiron-labs/students-chef-repo/tree/master/cookbooks/learn-ide-haproxy">HAproxy</a></li>
+<li>lb -> <code>balance url_param token</code> hashing algorithm that determines
+which server the IDE connects to based on their Learn oauth token. (Optimization -> make hashing algo
+more granualar so that if a machine gets taken out the rotation, the
+othere aren&#8217;t rebalanced as well</li>
+<li>Load balance assignment is determined by dynect traffic management
+
+<ul>
+<li>own health monitoring</li>
+</ul>
+</li>
+<li><a href="https://www.gluster.org/">gluster</a> is fancy NFS
+
+<ul>
+<li>RAID -> redundant array of independent disks</li>
+</ul>
+</li>
+<li><a href="https://coreos.com/rkt/">rkt</a></li>
+<li>PTY - psuedoterminal, terminal emulator, connect to an arbitrary shell</li>
+<li>inotify -> FS event watcher</li>
+<li>containerization
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Aufs">aufs</a> loser -> <a href="https://en.wikipedia.org/wiki/UnionFS">unionfs</a> winner that was merged into linux</li>
+</ul>
+</li>
+<li>? do you bump archived tar&#8217;ed files when you archive again</li>
+</ul>
+
+
+<h2>IDE Umbrella</h2>
+
+<ul>
+<li>for adding IDE server (<a href="https://github.com/flatiron-labs/ide_umbrella/blob/master/config/prod.exs">node list</a>)</li>
+<li>dependencies in <code>mix.exs</code>; <a href="https://github.com/ninenines/cowboy">cowboy</a> is the webserver, <a href="https://github.com/devinus/poolboy">poolboy</a></li>
+<li>applications are like slightly fancy supervisors, <a href="https://github.com/bitwalker/distillery">distillery</a> release packaging</li>
+<li><code>mix deps.get</code> -> get dependencies</li>
+<li><code>iex -S mix</code></li>
+<li><code>:cowboy.start</code> -> erlang library, cowboy is lib which is an atom</li>
+<li><code>gen_server</code>, an abstraction on top of processes in general
+
+<ul>
+<li>provides state and a little behavior</li>
+</ul>
+</li>
+<li><code>agent</code> is just for state</li>
+<li>every connection gets its own process</li>
+<li>distillery builds them
+
+<ul>
+<li>release -> full replacement of previous release, must restart</li>
+<li>upgrade -> release plus upgrade instructions, relup file, modify
+the code in memory -> hotswap; preferable to release</li>
+<li><code>mix edeliver version qa</code></li>
+<li><code>mix edeliver version production</code></li>
+<li><code>mix edeliver build release</code></li>
+<li><code>mix edeliver deployer release to qa</code></li>
+<li><code>mix edeliver restart qa</code></li>
+<li><code>bin/ide start</code></li>
+<li><code>bin/ide attach</code> -> quit with ^D, not ^c (will kill process)</li>
+<li><code>bin/ide remote_console</code></li>
+<li><code>mix edeliver build upgrade --with=0.1.0+232424323-hdhfd</code></li>
+<li><code>mix edeliver deploy upgrade to qa</code> -> will prompt for version
+number</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Chef</h2>
+
+<ul>
+<li>server provisioning
+
+<ul>
+<li>consistency, automation</li>
+</ul>
+</li>
+<li>inheritance in the cookbooks, base cookbook -> security</li>
+<li>like ruby base cookbooks</li>
+<li><a href="https://blog.chef.io/2013/12/03/doing-wrapper-cookbooks-right/">wrapper cookbook</a>, like forking a cookbook without modifying it
+
+<ul>
+<li>increasing levels of abstraction</li>
+</ul>
+</li>
+<li>conventions of chef aren&#8217;t very clearly defined</li>
+<li>differences between recipes and cookbooks?</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Elastic Search]]></title>
+    <link href="http://adamjonas.com/blog/elastic-search/"/>
+    <updated>2017-03-10T11:38:00-05:00</updated>
+    <id>http://adamjonas.com/blog/elastic-search</id>
+    <content type="html"><![CDATA[<h2>Intro</h2>
+
+<p>&#8220;elastic search is full text sreach engine, non-relational DB, analytics engine&#8221;</p>
+
+<ul>
+<li>has clustering and managed over REST</li>
+<li><p>Suggest Explicit mapping</p></li>
+<li><p>keywords -> non-analyzed data</p></li>
+<li><p>full text -> analyzed</p></li>
+<li><p>filters -> will need <code>bool</code> then <code>filters</code></p></li>
+</ul>
+
+
+<h2>relevance -> score meta data field for document match</h2>
+
+<ul>
+<li>things are ranked</li>
+<li>filters are faster and don&#8217;t have relevance (so if you don&#8217;t care, go with fiters)</li>
+<li>can boost relevance</li>
+</ul>
+
+
+<h2>multi-index multi-type</h2>
+
+<ul>
+<li>lots of power</li>
+</ul>
+
+
+<h2>Aggregation -> group by on steroids</h2>
+
+<ul>
+<li>SQL: group by the bucket</li>
+<li>aggregator -> can do nested group by and data retrieval</li>
+</ul>
+
+
+<h2>Managing elastic search</h2>
+
+<ul>
+<li>clustering
+
+<ul>
+<li>odd number of nodes bigger than 1
+
+<ul>
+<li>3 shards and replication</li>
+<li>a third node can shuffle the shards and the replicas</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>ELK Stack</h2>
+
+<ul>
+<li>elastic search, logstash, and kubana</li>
+<li>logstash
+
+<ul>
+<li>want to parse and stash log data</li>
+</ul>
+</li>
+<li>kubana
+
+<ul>
+<li>front end visualizer</li>
+</ul>
+</li>
+<li>now beats added -> lightweight, written in go -> for shipping</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Preparing Data for Machine Learning]]></title>
+    <link href="http://adamjonas.com/blog/preparing-data-for-machine-learning/"/>
+    <updated>2017-03-10T10:02:00-05:00</updated>
+    <id>http://adamjonas.com/blog/preparing-data-for-machine-learning</id>
+    <content type="html"><![CDATA[<h2>Why machine learning - you can predict the future</h2>
+
+<ul>
+<li>Explosion of data, more available than ever</li>
+<li>sheer processing power available at a reasonable price point</li>
+</ul>
+
+
+<h2>Data Preparation Tools</h2>
+
+<ul>
+<li>Rstudio -> data prep and execute the machine learning</li>
+<li>jupyter notebooks -> python in the cloud</li>
+<li>excel -> stick with the tools you know</li>
+<li>azure machine learning studio</li>
+<li>scikit learn (competitor to r studio) for python</li>
+<li>relational database tools (SQL queries)</li>
+<li>sed / awk</li>
+<li>python, r, sql most common languages to clean up data</li>
+</ul>
+
+
+<h2>Data Cleaning</h2>
+
+<ul>
+<li>missing values in data or repeating values in data (blanks, null,
+n/a, unknown, 999999)</li>
+<li>what&#8217;s your business goal?
+
+<ul>
+<li>SPCA - can you help us predict what animals won&#8217;t get adopted?</li>
+<li>got enough data to be significant, you can delete rows -> not
+always an option</li>
+</ul>
+</li>
+<li>can substitute a specific value (can go with a worst case
+scenario)</li>
+<li>fill forward and fill backwards based on the last value we read ->
+going to have to write code</li>
+<li>R is.na()</li>
+<li><p>python pandas.fillna(), pandas.isnull()</p></li>
+<li><p>excel tips -></p>
+
+<ul>
+<li>select individual columns, go to special, select blanks (will
+select every blank cell) and you can enter a value</li>
+</ul>
+</li>
+<li><p>repeated values</p>
+
+<ul>
+<li>causes a bias in the data</li>
+<li>duplicate row vs duplicate IDs</li>
+<li>r duplicated()</li>
+<li>python dataframe.drop_duplicates</li>
+<li>SQL DISTINCT or correctlated queries</li>
+<li>correlated subquery -> if the rows are the same but the IDs are different when you find
+two identitical records and delete the one with the lower ID
+number</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Data Transformation</h2>
+
+<ul>
+<li>Decomposition
+
+<ul>
+<li>the more you know about the data, the better</li>
+<li>one column represents two or more values (like addresses lumped
+together and finding the city and state)</li>
+<li>return a 1 or 0 to represented spayed and nuetered</li>
+</ul>
+</li>
+<li><p>Aggregation</p>
+
+<ul>
+<li>how many copies of different books to keep in stock?</li>
+<li>don&#8217;t want the day it was sold, want total number of books sold
+per wk/mon x date</li>
+<li>select count(*) from sales group by (books sold per period)</li>
+</ul>
+</li>
+<li><p>Scaling</p>
+
+<ul>
+<li>predict how long a patient admitted the flu will need to stay in
+the hospital</li>
+<li>because the age has a wider varience in age you don&#8217;t see the
+lower differences like temperatute
+
+<ul>
+<li>create ranges -> normalizing, standardizing</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<ul>
+<li><p>Training data versus test data</p>
+
+<ul>
+<li>subject matter experts become important as they need to undetr</li>
+<li>tumors -> which do you want, one with more false positives and one
+with more false negatives</li>
+</ul>
+</li>
+<li><p>slides at <code>aka.ms/confooml</code></p></li>
+<li>data science and machine learning essentials</li>
+<li>cleaning data with python</li>
+<li>building your first machine learning experiment</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Soul in The Machine - Developing for Humans]]></title>
@@ -1015,215 +1626,6 @@ There’s a technique we’ve used a couple of times now, which is to introduce 
 </span><span class='line'>
 </span><span class='line'>  <span class="n">bar</span> <span class="n">is</span> <span class="n">less</span> <span class="n">work</span> <span class="n">at</span> <span class="mi">10</span><span class="o">,</span> <span class="n">foo</span> <span class="k">for</span> <span class="n">the</span> <span class="n">others</span>
 </span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Optical Distortion, Inc. HBS Case Study]]></title>
-    <link href="http://adamjonas.com/blog/optical-distortion-inc-hbs-case-study/"/>
-    <updated>2016-04-13T16:02:00-04:00</updated>
-    <id>http://adamjonas.com/blog/optical-distortion-inc-hbs-case-study</id>
-    <content type="html"><![CDATA[<h2>ODI Discussion/Analysis Questions</h2>
-
-<p>1)</p>
-
-<ul>
-<li>What characteristics of the ODI lens are likely to make it appealing/unappealing to farmers?
-
-<ul>
-<li><p>Appealing</p>
-
-<ul>
-<li>debeaking causes problems of their own in terms of the trauma it causes hurts short term production (for a full week, only 1 egg lost by 5 months) and in the long term in feed is wasted. Debeaking is not an exact science but reduced cannibalism to 9% from 25%.</li>
-<li>for $2.50/hour could debeak approximately 220 birds per hour.</li>
-<li>actually modifies behavior as opposed to reducing the weapon. Reduces cannibalsim to 4.5% (1/2 of debeaking)
-
-<ul>
-<li>225 birds an hour to put in lense</li>
-</ul>
-</li>
-<li>reduces feed costs from 24.46 pounds to 23.68 lbs per 100 birds
-
-<ul>
-<li>20,000 bird flock could save 156 pounds of feed per day ($12.324/day)</li>
-<li>$158 per ton - $.079/lbs</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>unappealing</p>
-
-<ul>
-<li>more upfront cost</li>
-<li>can cause eye infection/fall out of place</li>
-<li>change from current practice.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<p>2)</p>
-
-<ul>
-<li>What is the value to famers of lenses over debeaking? Can you quantify it? (Hint: Think about savings from cannibalization, egg reduction, feed, and labor)
-
-<ul>
-<li>$.00073 a bird for the debeaking process (which would be unneccessary).</li>
-<li>$.22 per bird feed savings over a hen&#8217;s lifetime</li>
-<li>$.108 in reduction in replacement cost of of $.21 since lenses reduces cannibolism by 1/2.</li>
-<li><p>$.224 of added production in egg production. Hen lays 22 dozen eggs a year. If they lose a week of production from debeaking that is .423 dozen a week (which is 5 eggs a week) and if you assume that is $.53 a dozen that is $.224 cents of lost egg production per bird.</p></li>
-<li><p>adds up to ~$.33 in added value per bird over their lifetime -> for large farms (50,000 birds) that $17,500 in added revenue a year (though it is annual cashflow of $12 million). For a small farm (10k) is it $3,500.</p></li>
-</ul>
-</li>
-</ul>
-
-
-<p>3)</p>
-
-<ul>
-<li>What Pricing policy should ODI adopt and why? What is the savings per bird for farmers at these prices?
-
-<ul>
-<li>need market acceptance</li>
-<li><p>somewhere around $.35 per bird in added value, which would easily cover the $.07 price increase.</p></li>
-<li><p>Skimming Price</p>
-
-<ul>
-<li>For products that represent a drastic departure from accepted ways of performing a service, a policy of relatively high prices coupled with heavy promotional expenditures in the early stages of market development (and lower prices at later stages) has proved successful for many products.</li>
-</ul>
-</li>
-<li>Penetration pricing
-
-<ul>
-<li>This policy is the reverse of the skimming policy in which the price is lowered only as short-run competition forces it.</li>
-</ul>
-</li>
-</ul>
-
-
-<p><a href="https://hbr.org/1976/11/pricing-policies-for-new-products">Pricibg Strategies</a></p></li>
-</ul>
-
-
-<p>4)</p>
-
-<ul>
-<li>Can ODI turn a profit at these prices?
-
-<ul>
-<li>sell at $0.08 per pair</li>
-<li>cost $0.032 per pair + 12k (for first 15 million pairs)</li>
-<li>cost $592,000 to operate</li>
-<li>.048 per pair  in profit</li>
-<li>592,000 / .048 = 12,333,333 lens to break even meaning they need .1% market penetration.</li>
-</ul>
-</li>
-</ul>
-
-
-<p>5)</p>
-
-<ul>
-<li>How would you focus ODI&#8217;s marketing efforts? How would you segment the
-customer base?
-
-<ul>
-<li>345 farms have 20% of america&#8217;s chickens. If they closed 4 of those farms they would be able to able to turn an operating profit.
-
-<ul>
-<li>crowded farms would benefit most from this change and the sales process would be easiest.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Passion without Anger]]></title>
-    <link href="http://adamjonas.com/blog/investing-without-the-anger/"/>
-    <updated>2016-04-01T12:45:00-04:00</updated>
-    <id>http://adamjonas.com/blog/investing-without-the-anger</id>
-    <content type="html"><![CDATA[<p>I am fiery. That&#8217;s euphemistic for being a little man with a short fuse. I&#8217;ve never been the type that can fall asleep in the middle of a movie. If I&#8217;m into it then I&#8217;m into it. I&#8217;m intense. And boy, do I love what I do. I like being a multiplier. My coding skills are middling at best. I wouldn&#8217;t hire me for my team. Not enough raw talent. I like that I can impact the lives of the people on my team on a daily basis. That I can keep them motivated, engaged, fulfilled and happy. I feel like a mechanic that tunes highly customized and specialized machines. I once interviewed with the Yankees as a sports psychologist. Years later I feel like I have a similar, but better job. All that is to say, I take my responsibility to my people very seriously.</p>
-
-<p>My team is filled with a bunch of beginners. More than half of our 12 person team has less than a year of professional coding experience. Everyday I’m humbled by how much they can get done. How fast they develop their skills. Their grit. How they rise to the challenges set in front of them. They find a way time after time.</p>
-
-<p>And so, it is in this setting that I hurt so deeply when others don&#8217;t do their part. I get upset. I&#8217;ve always been impatient by nature. I have extremely (maybe unreasonably) high expectations of others. Given I don&#8217;t often feel that way about my reports, does this mean these emotions are only surfaced when I&#8217;m not in control? Is it trust? What are the limiting factors that enable me to be this understanding, mature, best version of myself?</p>
-
-<p>When someone wrongs me or my people, my blood boils. I can feel my face flush. My chest constricts and breathing shallows. I hope it doesn’t look as bad as it feels, but I&#8217;m sure it must. Superiors, peers, low level employees. I&#8217;m indiscriminate. Forgiveness and empathy exit likely along with a balanced perspective and moderation. When it’s my engineers or a fellow soldier I fight alongside in the trenches, I can see how their misses happened. I can guide them to a better path. A screw up from others is a different story. It triggers a frustration and if done repeatedly, a resentment. How can they hold up their end of the bargain? Do they just not care? My frustration has more than once been interpreted as anger, which is about a worst case scenario. A short angry man in a director role in charge of a 12 person engineering team. How more cliche could I be?</p>
-
-<p>What isn’t clear to me is how I can extend the patience and understanding to others? Empathy, compassion, calmness. I can clearly sort out the problems of my people. Advise them on clear steps forward. And it isn’t like I don’t understand the perspectives of non-technical folks. I’ve only been doing this for three years.</p>
-
-<p>I recently heard that meditation can cause you to change your perspective to see problem situations as less catastrophic events. I think that would be very healthy for me. I tend to obsess on the problems. It tortures me in my sleep. Lack of sleep then alters my mood. Day to day, I shut down around “problem people.” I don’t act myself. I am quiet and withdrawn. This can’t make it better.</p>
-
-<p>So the way forward has to begin with an altered perspective. Working to see the world in a more balanced way. I still want to let my love for what I do bleed through. I think it is my most valuable asset and I believe I have been rewarded for it. But wild swings of mood has never been in high demand and so my path forward is to find a way to take a calm breath and recalibrate when presented with these moments in the future. Maybe it is better self control or maybe given that I keep referring to them as “my people” I can expand who I count in that circle. What I do know is that writing about this early in the morning feeling centered is easy enough. But the real challenge begins as I attempt to self-correct next time the rubber hits the road.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[java basics]]></title>
-    <link href="http://adamjonas.com/blog/java-basics/"/>
-    <updated>2016-03-23T13:49:00-04:00</updated>
-    <id>http://adamjonas.com/blog/java-basics</id>
-    <content type="html"><![CDATA[<h2>Some basics</h2>
-
-<ul>
-<li>Here&#8217;s a basic method signature <code>public static void main(String args[])</code></li>
-<li>The void keyword allows us to create methods which do not return a value. Otherwise in java you need to specific what type the return value must be.</li>
-<li><p><code>public</code> is a Java keyword which declares a member&#8217;s access as public. Public members are visible to all other classes. This means that any other class can access a public field or method. Further, other classes can modify public fields unless the field is declared as final.</p>
-
-<ul>
-<li>A best practice is to give fields <code>private</code> access and reserve <code>public</code> access to only the set of methods and <code>final</code> fields that define the class&#8217; public constants. This helps with encapsulation and information hiding, since it allows you to change the implementation of a class without affecting the consumers who use only the public API of the class.</li>
-</ul>
-</li>
-<li><p>In Java, you need to have a method named <code>main()</code> in at least one class. This method must appear within a class, but it can be any class.</p></li>
-<li><p>ints don&#8217;t evaluate to <code>true</code></p></li>
-</ul>
-
-
-<h2><a href="https://docs.oracle.com/javase/tutorial/java/concepts/interface.html">interfaces</a></h2>
-
-<ul>
-<li>An interface declaration consists of modifiers, the keyword interface, the interface name, a comma-separated list of parent interfaces (if any), and the interface body.</li>
-<li><a href="https://en.wikipedia.org/wiki/Interface-based_programming">Interface programming</a> is an architectural pattern for implementing modular programming at the component level in an object-oriented programming language which does not have a module system.</li>
-<li><p>Implementing an interface allows a class to become more formal about the behavior it promises to provide. Interfaces form a contract between the class and the outside world, and this contract is enforced at build time by the compiler. If your class claims to implement an interface, all methods defined by that interface must appear in its source code before the class will successfully compile.</p></li>
-<li><p><strong>inheritance</strong></p>
-
-<ul>
-<li>A java class cannot extend more than one class at a time so it won&#8217;t provide support for multiple inheritance in classes, but it can extend more than one interface at a time so we java can support multiple inheritances with regard to interfaces.</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>HAS-A relationship</h2>
-
-<ul>
-<li>HAS-A means an instance of one class &#8220;has a&#8221; reference to an instance of another class or another instance of same class.</li>
-<li>It is also known as &#8220;composition&#8221; or &#8220;aggregation&#8221;.</li>
-<li>There is no specific keyword to implement HAS-A relationship but mostly we are depended upon &#8220;new&#8221; keyword.</li>
-<li>Composition:
-
-<ul>
-<li>Without existence of container object, if there is no chance of existence of contained objects then container and contained objects are said to be strongly associated and this strong association is known as composition.</li>
-<li>Eg: A &#8220;university&#8221; has several &#8220;departments&#8221;. Without existence of &#8220;university&#8221; there is no chance for the &#8220;departments&#8221; to exist. Hence &#8220;university&#8221; and &#8220;departments&#8221; are strongly associated and this strong association is known as composition.</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>IS-A Relationship:</h2>
-
-<ul>
-<li>This refers to inheritance or implementation.</li>
-<li>Expressed using keyword &#8220;extends&#8221;.</li>
-<li>Main advantage is code reusability.</li>
-</ul>
 
 ]]></content>
   </entry>
