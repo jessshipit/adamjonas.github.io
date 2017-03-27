@@ -9,24 +9,9 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Gists were redesigned with libgit2 gem with Rugged. 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-#In IRB
-require 'rugged'
-#git init the repo then...
-repo = &hellip;">
+  <meta name="description" content="Git Workflow git workflow Powder pow
+binding.remote_pry in the code to drop into pry. Also need to have pry-remote open in a terminal window.
+powder &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -103,6 +88,229 @@ repo = &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/coil/">Coil</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T10:46:00-05:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Git Workflow</h3>
+
+<ul>
+<li><a href="http://nvie.com/posts/a-successful-git-branching-model/">git workflow</a></li>
+</ul>
+
+
+<h3>Powder</h3>
+
+<ul>
+<li><a href="http://pow.cx/">pow</a></li>
+<li><code>binding.remote_pry</code> in the code to drop into pry. Also need to have <code>pry-remote</code> open in a terminal window.</li>
+<li><code>powder applog</code> -> is like trace for pow</li>
+<li>to output notices to the log <code>logger.debug "message"</code></li>
+</ul>
+
+
+<h3>Hooks</h3>
+
+<ul>
+<li><p><a href="https://help.github.com/articles/post-receive-hooks">post-receive hooks</a></p>
+
+<ul>
+<li><a href="http://developer.github.com/v3/repos/hooks/#pubsubhubbub">Pubsubhubbub</a></li>
+</ul>
+</li>
+<li><p>wrote a rake task to hit the route with <a href="https://github.com/jnunemaker/httparty">httparty</a></p>
+
+<ul>
+<li>This <a href="http://stackoverflow.com/questions/6154176/changing-body-type-to-json-using-httparty">stackoverflow post</a> helped</li>
+</ul>
+</li>
+<li><p>need to <a href="http://guides.rubyonrails.org/layouts_and_rendering.html"><code>render :nothing =&gt; true</code></a> when hitting a controller acton that doesn&#8217;t render a view</p></li>
+<li><p>Ran into an <code>uninitialized constant GitFetch</code> error. I actually remembered to restart my Redis server!!! (after 20 minutes)</p></li>
+</ul>
+
+
+<h3>Redis</h3>
+
+<p>To access the Reds cli and flushall these are the commands&#8230;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>♕ redis-cli
+</span><span class='line'>redis&gt; flushall</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Reg-ex</h3>
+
+<p>reg expressions can kick out multiple match groups. These are accessible with array notion. <code>[0]</code> is always the matching string, <code>[1]</code> would be the first match, and <code>[2]</code> would be the second and so on. <a href="http://rubular.com/">Rubular</a> throws off the match groups for you to access.</p>
+
+<figure class='code'><figcaption><span>e.g. of URL parse</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">github_url</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sr">/https:\/\/github\.com\/.*\/(.*)\.git/</span><span class="p">)</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="nb">p</span><span class="o">.</span><span class="n">repo_owner</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">github_url</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sr">/https:\/\/github\.com\/(.*)\/.*\.git/</span><span class="p">)</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Disable CSRF</h3>
+
+<ul>
+<li>disabled the CSRF verifcation with <code>skip_before_filter :verify_authenticity_token</code> <a href="http://stackoverflow.com/questions/5669322/turn-off-csrf-token-in-rails-3">found at</a></li>
+</ul>
+
+
+<h3>Pubsubhubbub</h3>
+
+<ul>
+<li>think about subscribe or unsubscribe on pubsubhubbub
+
+<ul>
+<li>when to trigger the subscription? in an asynch worker? in the clone method</li>
+<li>because you have have access to the process and the user?</li>
+</ul>
+</li>
+<li>this can be easily called with Octokit (See below)</li>
+</ul>
+
+
+<h3>cURL</h3>
+
+<p>We really shouldn&#8217;t be invoke cURL methods in the model or background job. Octokit allows users to easily subscribe to pubsubhubbub. <a href="https://github.com/pengwynn/octokit/blob/master/lib/octokit/client/pub_sub_hubbub.rb">It&#8217;s all here.</a></p>
+
+<p>I was going to do this&#8230; but it wasn&#8217;t neccessary with octokit</p>
+
+<figure class='code'><figcaption><span>Pubsubhubbub and cURL</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">curl</span> <span class="o">-</span><span class="n">u</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">user</span><span class="o">.</span><span class="n">password</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">-</span><span class="n">i</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">api</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hub</span>
+</span><span class='line'>  <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;hub.mode=subscribe&quot;</span>
+</span><span class='line'>  <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;hub.topic=https://github.com/</span><span class="si">#{</span><span class="n">project</span><span class="o">.</span><span class="n">repo_owner</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">project</span><span class="o">.</span><span class="n">slug</span><span class="si">}</span><span class="s2">/events/push&quot;</span>
+</span><span class='line'>  <span class="o">-</span><span class="n">F</span> <span class="s2">&quot;hub.callback=http://coil.io/hook/</span><span class="si">#{</span><span class="n">project</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Sidekiq best practices</h3>
+
+<ul>
+<li><a href="https://github.com/mperham/sidekiq/wiki/Best-Practices">WIKI</a></li>
+</ul>
+
+
+<h3>Parsing a yaml file of quotes</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">thing</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;some.yml&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">thing</span><span class="o">.</span><span class="n">inspect</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>See <a href="http://stackoverflow.com/questions/3877004/how-do-i-parse-a-yaml-file">here</a></p>
+
+<ul>
+<li><a href="http://api.rubyonrails.org/classes/Hash.html#method-i-symbolize_keys">symbolize_keys()</a></li>
+<li><a href="http://www.yaml.org/YAML_for_ruby.htm">Yaml cookbook was really helpful</a></li>
+</ul>
+
+
+<p>Formatted array of strings in YAML:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">-</span> <span class="s2">&quot;“We build but to tear down. Most of our work and resource is squandered. Our onward march </span>
+</span><span class='line'><span class="s2">is marked by devastation. Everywhere there is an appalling loss of time, effort and life. A </span>
+</span><span class='line'><span class="s2">cheerless view, but true”</span>
+</span><span class='line'><span class="se">\n</span><span class="s2"> - Nikola Tesla, 1910&quot;</span>
+</span><span class='line'><span class="o">-</span> <span class="s2">&quot;“If the genius of invention were to reveal to-morrow the secret of immortality, of eternal </span>
+</span><span class='line'><span class="s2">beauty and youth, for which all humanity is aching, the same inexorable agents which prevent a </span>
+</span><span class='line'><span class="s2">mass from changing suddenly its velocity would likewise resist the force of the new knowledge </span>
+</span><span class='line'><span class="s2">until time gradually modifies human thought.”</span>
+</span><span class='line'><span class="se">\n</span><span class="s2"> - Nikola Tesla, 1907&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yaml is white space sensitive, but not new-line sensitive for strings as long as the new-line is within the the quotes.</p>
+
+<p>I then selected a random element with the <a href="http://stackoverflow.com/questions/3482149/how-do-i-pick-randomly-from-an-array"><code>.sample</code> method</a>. Very cool.</p>
+
+<h3>Slim</h3>
+
+<p>Had to look in the <a href="http://rdoc.info/github/slim-template/slim#Control_code_-">Slim docs</a>. I was looking for output, which is controlled by the = sign. Figured it out after that&#8230;</p>
+
+<h3>Testing</h3>
+
+<ul>
+<li>remember to migrate Test DB <code>rake environment RAILS_ENV=test db:migrate</code></li>
+<li>add <a href="https://github.com/plataformatec/devise">test helpers for devise</a></li>
+</ul>
+
+
+<h3>Factory Girl</h3>
+
+<ul>
+<li>A factory generates test data to pass to the controller method; note the use of Factory Girl’s <code>attributes_for</code> option, which generates a hash of values as opposed to a Ruby object.</li>
+<li>Rewatched the RailsCasts no. 158</li>
+</ul>
+
+
+<h3>Refactoring lessons</h3>
+
+<ul>
+<li>Don&#8217;t pass in more params than you need. It makes the unit testing harder and it isn&#8217;t neccessary.
+
+<ul>
+<li>refer to Sandi Metz&#8217;s comments about passing in a params hash if you are accessing multiple attributes of an object</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Random</h3>
+
+<ul>
+<li><a href="http://www.teslauniverse.com/nikola-tesla-quotes">Tesla quotes</a></li>
+<li><a href="http://www.random.org/strings/">Random String Generator</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1569,173 +1777,6 @@ used by the tableView in order to get info needed to display
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/rubymotion-pre-work/">RubyMotion Pre-work</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-20T19:29:00-05:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>Ruby Motion Tool Chain from the command line with <code>motion</code></li>
-<li><p>create a new project with <code>motion create &lt;app name&gt;</code></p></li>
-<li><p><code>rake -T</code> gives you a list of tasks</p></li>
-<li><p><code>rake</code> builds the application and opens the simulator</p></li>
-<li><p>Cocoa touch is a framework and calls back into our code using the delegate pattern.</p>
-
-<ul>
-<li>there are special callback methods to hook into the lifecycle</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Creating an alert</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">alert</span> <span class="o">=</span> <span class="no">UIAlertView</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello!&quot;</span>
-</span><span class='line'>    <span class="n">alert</span><span class="o">.</span><span class="n">show</span>
-</span><span class='line'>    <span class="kp">true</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>What is the frame?</h3>
-
-<ul>
-<li>a rectangle for the window.
-
-<ul>
-<li>it&#8217;s an origin, an X and Y coordinate</li>
-<li>and it&#8217;s also a size</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Making a Yellow Screen</h3>
-
-<figure class='code'><figcaption><span>A Yellow Flashlight!</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppDelegate</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">yellowColor</span>
-</span><span class='line'>    <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
-</span><span class='line'>    <span class="kp">true</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Using the Console</h3>
-
-<p>When the console builds it provides a console. If I hover with the mouse, nothing happens. But if I hold the cmd key, it puts the element in the console and you can assign it to self or a variable.</p>
-
-<p>So <code>#&lt;UIWindow:0x10922060&gt;)&gt; self</code>
-and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.greenColor</code> will change the color right in the console.</p>
-
-<p>Can grab objects, put them in the console and manipulate them interactively.</p>
-
-<h3>Views</h3>
-
-<ul>
-<li>each view that we have sits in a view and is managed by a view controller</li>
-<li><p>Each</p></li>
-</ul>
-
-
-<h3>ViewController</h3>
-
-<ul>
-<li>UIViewController is where all the magic happens</li>
-</ul>
-
-
-<h3>UI Kit</h3>
-
-<ul>
-<li>the x and y coordinate starts in the upper left corner and x goes -> and y goes down.</li>
-</ul>
-
-
-<h3>Gesture Recognition</h3>
-
-<ul>
-<li>when a view is tapped it sends an action to a particaular target.</li>
-</ul>
-
-
-<h3>What is a delegate</h3>
-
-<p>When the user launches our app, the system sets up a bunch of stuff for us. We need to give the operating system an object which can respond to different events during that process; we refer to that object as the &#8220;application delegate&#8221;. It gets callbacks for when the app starts, ends, goes to the background, gets a push notification, etc. <a href="http://rubymotion-tutorial.com/1-hello-motion/">source</a></p>
-
-<h3>Views</h3>
-
-<ul>
-<li>Everything displayed in an app is called a &#8220;view&#8221;.- A view can have many &#8220;subviews&#8221;; when you move a view, you also move its subviews.
-
-<ul>
-<li>Subviews visually stacked on top of each other within their parent.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Resources:</h3>
-
-<ul>
-<li><a href="http://pragmaticstudio.com/screencasts/rubymotion">50 min screencast</a></li>
-<li><a href="http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial">Promotion</a></li>
-<li><a href="http://rubymotion-tutorial.com/">HTML book</a></li>
-<li><a href="http://blog.crowdint.com/2013/01/16/developing-ios-applications-with-ruby.html">tutorial that also lists a bunch of resources</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -1753,6 +1794,10 @@ and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.green
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/project-aristole/">Project Aristole</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/crash-course/">Crash Course DevOps</a>
       </li>
     
@@ -1766,10 +1811,6 @@ and <code>#&lt;UIWindow:0x10922060&gt;)&gt; self.backgroundColor = UIColor.green
     
       <li class="post">
         <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/intro-to-dns/">Intro to DNS</a>
       </li>
     
   </ul>

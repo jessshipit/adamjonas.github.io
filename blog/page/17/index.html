@@ -9,15 +9,18 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="JSON link a JSON parser CanCan Rails Cast
-CanCan Source Code
-CanCan Wiki 1
+  <meta name="description" content="state machine There&#8217;s a railscast for that gifsockets real time communication pushes text to client frame-by-frame 1
 2
 3
 4
 5
 6
-#If a user.git_nickname == repo.owner_name -&gt; the user is an &hellip;">
+7
+8
+9
+10
+11
+12 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +97,114 @@ CanCan Wiki 1
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day30/">FIS Day30</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-16T15:51:00-05:00" pubdate data-updated="true">Nov 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p><a href="https://www.ruby-toolbox.com/categories/state_machines.html">state machine</a></p>
+
+<ul>
+<li>There&#8217;s a <a href="http://railscasts.com/episodes/392-a-tour-of-state-machines">railscast</a> for that</li>
+</ul>
+</li>
+<li><p>gifsockets</p>
+
+<ul>
+<li>real time communication
+
+<ul>
+<li>pushes text to client frame-by-frame</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">oldTime</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="s1">&#39;&lt;%= @issue.updated_at %&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;&lt;%= &quot;/#{@issue.repo.owner_name}/#{@issue.repo.name}/issues/#{@issue.git_number}.json&quot; %&gt;&#39;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">json</span><span class="p">){</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">newTime</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">updated_at</span><span class="p">));</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">newTime</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">oldTime</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">newTime</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()){</span>
+</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#seal.seal.pull-right&#39;</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div#seal.seal.pull-right&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">},</span> <span class="mi">4000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://bootswatch.com/">bootswatch</a></li>
+<li><a href="http://subtlepatterns.com/">subtle patterns</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2872,297 +2983,6 @@ instances describe how objects are different</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/fis-day21/">FIS Day21</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-06T13:57:00-05:00" pubdate data-updated="true">Nov 6<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong><em>Generate a model that is singular&#8211; ALWAYS</em></strong></p>
-
-<p>&#8216;self&#8217; means the receiver of this method call</p>
-
-<p><a href="http://blog.aviflombaum.com/blog/2012/07/dont-use-accepts-nested-attributes-for-with-belongs-to/"><strong>never ever have a nested attributes for belongs_to ONLY has has_many</strong>
-</a></p>
-
-<figure class='code'><figcaption><span>song.rb Model</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Class</span> <span class="no">Song</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">add_genre</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">genre</span> <span class="o">=</span> <span class="no">Genre</span><span class="o">.</span><span class="n">find_or_create_by_name</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span> <span class="k">if</span> <span class="n">genre</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">song_genres</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:genre</span> <span class="o">=&gt;</span> <span class="n">genre</span><span class="p">)</span><span class="o">.</span><span class="n">genre</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>song_spec.rb Unit Test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;spec_helper&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">describe</span> <span class="no">Song</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">context</span> <span class="s1">&#39;.add_genre&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">let</span><span class="p">(</span><span class="ss">:song</span><span class="p">){</span><span class="no">Song</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Thriller&quot;</span><span class="p">)}</span>
-</span><span class='line'>      <span class="n">let</span><span class="p">(</span><span class="ss">:genre</span><span class="p">){</span><span class="no">Genre</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Pop&quot;</span><span class="p">)}</span> <span class="c1">#this creates the genre method that executes the block that follows it.</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;should add the genre&quot;</span> <span class="k">do</span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">add_genre</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;should return the newly added genre&quot;</span> <span class="k">do</span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">add_genre</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span> <span class="n">should</span> <span class="o">==</span> <span class="n">genre</span> <span class="c1">#this means it won&#39;t return a full array like a push method return</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">it</span> <span class="s1">&#39;should accept an existing genre name do&#39;</span>
-</span><span class='line'>        <span class="n">genre</span> <span class="o">=</span> <span class="no">Genre</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Techno&quot;</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">add_genre</span><span class="p">(</span><span class="s2">&quot;Techno&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="n">genre</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">it</span> <span class="s1">&#39;should accept a genre name&#39;</span> <span class="k">do</span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">add_genre</span><span class="p">(</span><span class="s2">&quot;Pop&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="n">genre</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;should add only unique genres&quot;</span> <span class="k">do</span>
-</span><span class='line'>        <span class="c1">#if I add the same genre twice, it should still </span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">add_genre</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">add_genre</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Rspec runs its tests in isolation, by running each test in a transaction. After each test, it rollbacks all the writes.</p>
-
-<p>LOGS:</p>
-
-<figure class='code'><figcaption><span>song_spec.rb Unit Test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="c1">#open the end of the file and keep it open. </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you are building associated data outside of your model, then you haven&#8217;t encapsulated enough.</p>
-
-<ul>
-<li>Tests Hierarchy in ascending levels of abstraction
-
-<ul>
-<li>unit tests</li>
-<li>controller tests</li>
-<li>integration tests</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Controller Test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;spec_helper&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">describe</span> <span class="no">SongsController</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">describe</span> <span class="s1">&#39;POST /songs&#39;</span> <span class="k">do</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">it</span> <span class="s1">&#39;should create a song with a name do&#39;</span>
-</span><span class='line'>      <span class="n">post</span> <span class="ss">:create</span><span class="p">,</span> <span class="p">{</span><span class="ss">:song</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Thriller&quot;</span><span class="p">}}</span>
-</span><span class='line'>      <span class="c1">#create action in the song controller with post or request parameters that you </span>
-</span><span class='line'>      <span class="c1">#want to send along with it</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="c1"># Song.find_by_name(&quot;Thriller&quot;).should be_true</span>
-</span><span class='line'>     <span class="n">assigns</span><span class="p">(</span><span class="ss">:song</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s2">&quot;Thriller&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">it</span> <span class="s1">&#39;should create a song with an artist name&#39;</span>
-</span><span class='line'>      <span class="n">post</span> <span class="ss">:create</span><span class="p">,</span> <span class="p">{</span><span class="ss">:song</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Thriller&quot;</span><span class="p">,</span> <span class="ss">:artist_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Michael Jackson&quot;</span><span class="p">}}}</span>
-</span><span class='line'>      <span class="c1">#this makes artist_name a first class citizen in the params hash.</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">#we killed this because we are assigning a string, not an artist object--&gt; post :create, {:song =&gt; {:name =&gt; &quot;Thriller&quot;, :artist =&gt; {:name =&gt; &quot;Michael Jackson&quot;}}} </span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">#create action in the song controller with post or request parameters that you </span>
-</span><span class='line'>      <span class="c1">#want to send along with it</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">#Song.find_by_name(&quot;Thriller&quot;).should be_true</span>
-</span><span class='line'>      <span class="n">assigns</span><span class="p">(</span><span class="ss">:song</span><span class="p">)</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s2">&quot;Michael Jackson&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>song_spec.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">context</span> <span class="s1">&#39;.artist_name&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should have an artist_name method&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">song</span><span class="o">.</span><span class="n">should</span> <span class="n">respond_to</span><span class="p">(</span><span class="ss">:artist_name</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">it</span> <span class="s1">&#39;should return a songs artist&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">song</span><span class="o">.</span><span class="n">artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Michael Jackson&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">song</span><span class="o">.</span><span class="n">artst_name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s2">&quot;Michael Jackson&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">context</span> <span class="s1">&#39;.artist_name=&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">it</span> <span class="s2">&quot;should assign the artist via the name&quot;</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">song</span><span class="o">.</span><span class="n">artist_name</span> <span class="o">=</span> <span class="s2">&quot;Michael Jackson&quot;</span>
-</span><span class='line'>      <span class="n">song</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">should</span> <span class="n">be_a</span><span class="p">(</span><span class="no">Artist</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">song</span><span class="o">.</span><span class="n">artist_name</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s2">&quot;Michael Jackson&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Song.rb Model</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">artist_name</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">artist</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">artist_name</span><span class="o">=</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">find_or_create_by_name</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>SOLID</h3>
-
-<p>Procedural code- solutions for very specific problems</p>
-
-<p>dependencies will kill your code, but design will save it</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/18/">&larr; Older</a>
@@ -3180,6 +3000,10 @@ instances describe how objects are different</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/project-aristole/">Project Aristole</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/crash-course/">Crash Course DevOps</a>
       </li>
     
@@ -3193,10 +3017,6 @@ instances describe how objects are different</p>
     
       <li class="post">
         <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/intro-to-dns/">Intro to DNS</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Threads  and  processes: A  computer  will  often  appear  to  be  doing  many  things  simultaneously,  such  as  checking  for  new  e‐mail  &hellip;">
+  <meta name="description" content="Bash Environment Variables I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,81 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/jan-2-notes/">Jan 2 Notes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-02T13:11:00-05:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Bash Environment Variables</h3>
+
+<p>I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify Gitbo&#8217;s server issue last week. Since <code>issue.js</code> has been compiled into <code>application.js</code>, it is listening twice.</p>
+
+<p>StackOverflow had <a href="http://stackoverflow.com/questions/9641320/rails-assets-dont-get-updated">this to say</a> and this solution <code>bundle exec RAILS_ENV=development rake rails_group=assets assets:clean</code>.</p>
+
+<ol>
+<li>The <code>bundle exec</code> would be needed if the gem file and my system files were different. In Gitbo&#8217;s case, there is no discrepancy. On the server, that can&#8217;t be assumed and <code>bundle exec</code> would be needed.</li>
+<li>The default environment for a rake task is development <strong>except</strong> for assets which obviously have more to do with production.</li>
+<li>Rake tasks are very flexible in terms of how they take <em>bash environment variables</em> (they are sort of like arguments, but they aren&#8217;t). Passing in the rails_environment before the rake task is how I did it, but they could be passed in afterwards and that would be fine because BASH reads the entire line of code before it executes it.</li>
+</ol>
+
+
+<p>Here was the final command I used: <code>RAILS_ENV=development RAILS_GROUP=assets rake assets:clean</code></p>
+
+<h3>Skeleton</h3>
+
+<ul>
+<li>Site is <a href="http://www.getskeleton.com/">here</a></li>
+<li>Installed <a href="https://github.com/helios-technologies/skeleton-rails">skeleton-rails</a></li>
+<li>An alternative to rails</li>
+</ul>
+
+
+<h3>Instance Variables</h3>
+
+<ul>
+<li><p>Show does have an instance variable. The view is attached to an instance of a controller</p></li>
+<li><p>In a partial, this is just crazy&#8230;</p>
+
+<ul>
+<li>a view is not part of the controller, so why should it have access to an instance of a controller.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Further reading on this: <a href="http://rails-bestpractices.com/posts/27-replace-instance-variable-with-local-variable">Rails Best Practices</a> and <a href="http://programmers.stackexchange.com/questions/127838/why-do-people-suggest-not-to-use-instance-variable-for-views-in-ruby-on-rails">Stack Exchange</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1093,74 +1168,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/testing-gitbo/">Testing Gitbo</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-11T19:18:00-05:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">Factory Girl</a></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Defining Attributes in FactoryGirl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">provider</span> <span class="s2">&quot;github&quot;</span>
-</span><span class='line'>    <span class="n">uid</span>  <span class="s2">&quot;xxxx5826&quot;</span>
-</span><span class='line'>    <span class="nb">name</span> <span class="s2">&quot;Adam Jonas&quot;</span>
-</span><span class='line'>    <span class="n">nickname</span> <span class="s2">&quot;ajonas04&quot;</span>
-</span><span class='line'>    <span class="n">email</span> <span class="s2">&quot;francestown@gmail.com&quot;</span>
-</span><span class='line'>    <span class="n">image</span> <span class="s2">&quot;string&quot;</span>
-</span><span class='line'>    <span class="n">token</span> <span class="s2">&quot;xxxxx&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>config.include FactoryGirl::Syntax::Methods</code></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1178,6 +1185,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/project-aristole/">Project Aristole</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/crash-course/">Crash Course DevOps</a>
       </li>
     
@@ -1191,10 +1202,6 @@ end
     
       <li class="post">
         <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/intro-to-dns/">Intro to DNS</a>
       </li>
     
   </ul>

@@ -9,7 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Docker API Checkout Relevant Docker Images dokku Pups pups is a small library that allows you to automate the process of creating Unix images &hellip;">
+  <meta name="description" content="Start here: Greg Price’s excellent blog post Strace – The Sysadmin’s Microscope.
+Julia Evans has a lot too. ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/strace/">Strace</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-25T13:04:00-04:00" pubdate data-updated="true">Jul 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Start here:</h3>
+
+<ul>
+<li>Greg Price’s excellent blog post <a href="https://blogs.oracle.com/ksplice/entry/strace_the_sysadmin_s_microscope">Strace – The Sysadmin’s Microscope</a>.</li>
+<li><a href="http://jvns.ca/blog/categories/strace/">Julia Evans</a> has a lot too.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -801,99 +846,6 @@ layer. So in our case we give a view a <code>LessonPresenter</code> that has a <
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/rails-4-csrf-handling/">Rails 4 CSRF Handling</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-01T11:19:00-04:00" pubdate data-updated="true">May 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Setup</h2>
-
-<p>Right now we are building &#8220;Ironboard&#8221; (title is WIP) &#8211; an application that makes makes consuming prework a breeze for students and creating and organizing prework a breeze for teachers. This application is going to fit into a workflow that kicks off when a student pays their deposit. The short version is that another internal app is going to ping an endpoint on Ironboard, which internally will generate an email invitation and enroll that student in course so that the instructor can track their progress.</p>
-
-<h2>CSRF</h2>
-
-<p>I&#8217;ve read the <a href="http://guides.rubyonrails.org/security.html">rails security guide</a>. I searched <a href="http://stackoverflow.com/questions/16258911/rails-4-authenticity-token">stackoverflow</a> and quite frankly the documentation for handling CSRF in rails 4 is sucky. <a href="http://alexcoco.com/forgery-protection-strategy/">Alex Coco</a> seems to have done the most documentation here. Buried in all of this is the <a href="http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/">proper way to handle cross-domain requests</a> in 2011:</p>
-
-<blockquote><p>Users can override this behaviour by overriding <code>handle_unverified_request</code> in their own controllers.</p></blockquote>
-
-<p>Most answers that are out there have to do with disabling the <code>protect_from_forgery</code> method in a specfic controller for a specific action. This hides csrf vulnerability, but I&#8217;m not sure that disabling token authenticity makes things any better. Why use <code>protect_from_forgery except: :ping_from_registrar</code> when we could use the <code>handle_unverified_request</code></p>
-
-<p>We ended up using:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">FooController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">skip_before_action</span> <span class="ss">:authenticate_user!</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">handle_unverified_request</span>
-</span><span class='line'>    <span class="n">authenticate_token</span> <span class="o">||</span> <span class="n">render_unauthorized</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">authenticate_token</span>
-</span><span class='line'>    <span class="n">authenticate_with_http_token</span> <span class="k">do</span> <span class="o">|</span><span class="n">token</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">token</span><span class="o">.</span><span class="n">eql?</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;API_TOKEN&#39;</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">render_unauthorized</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">headers</span><span class="o">[</span><span class="s1">&#39;WWW-Authenticate&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Token realm=&quot;Application&quot;&#39;</span>
-</span><span class='line'>    <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="s1">&#39;Bad credentials&#39;</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="mi">401</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I think this is pretty awesome.</p>
-
-<p><a href="http://stackoverflow.com/questions/12761544/rspec-request-how-to-set-http-authorization-header-for-all-requests">This was helpful</a> as was <a href="http://blog.envylabs.com/post/75521798481/token-based-authentication-in-rails">this</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -911,6 +863,10 @@ layer. So in our case we give a view a <code>LessonPresenter</code> that has a <
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/project-aristole/">Project Aristole</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/crash-course/">Crash Course DevOps</a>
       </li>
     
@@ -924,10 +880,6 @@ layer. So in our case we give a view a <code>LessonPresenter</code> that has a <
     
       <li class="post">
         <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/intro-to-dns/">Intro to DNS</a>
       </li>
     
   </ul>
