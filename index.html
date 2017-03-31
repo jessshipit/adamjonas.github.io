@@ -9,9 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Quest to build the perfect team Reading Notes decentralized control
-manager surveys different mediums to collect feedback no exact patterns
-rapport &hellip;">
+  <meta name="description" content="Network partitioning causing exchange issues on rabbitmq this was after netowrk maintenance
+solution was to delete exchange which then is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +87,74 @@ rapport &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/more-ops-notes/">More Ops Notes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-03-29T16:18:00-04:00" pubdate data-updated="true">Mar 29<span>th</span>, 2017</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Network partitioning causing exchange issues on rabbitmq</h2>
+
+<ul>
+<li>this was after netowrk maintenance</li>
+<li>solution was to delete exchange which then is automatically added
+back <a href="https://github.com/rabbitmq/rabbitmq-server/issues/887#issuecomment-290177962">documented here</a></li>
+</ul>
+
+
+<h2>Ubuntu 16</h2>
+
+<ul>
+<li>ubuntu 16 doesn&#8217;t ship with upstart so sysctld is what we&#8217;ll use to
+control services. <a href="https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units">systemctl commands</a>
+
+<ul>
+<li>can also run from <code>/etc/init.d/service start</code></li>
+</ul>
+</li>
+<li>rsyslog is what we use to get the logs to papertrail</li>
+<li>used the oracle version of Java 8</li>
+</ul>
+
+
+<h2>Digital ocean</h2>
+
+<ul>
+<li>backups (auto) are different than snapshots (not auto) and different
+in pricing as well</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -704,6 +771,38 @@ number</li>
 </ul>
 </li>
 <li>now beats added -> lightweight, written in go -> for shipping</li>
+</ul>
+
+
+<h2>Split Brain issue</h2>
+
+<ul>
+<li><a href="http://blog.trifork.com/2013/10/24/how-to-avoid-the-split-brain-problem-in-elasticsearch/">HOW TO AVOID THE SPLIT-BRAIN PROBLEM IN ELASTICSEARCH</a></li>
+</ul>
+
+
+<h2>Tinc</h2>
+
+<ul>
+<li>VPN -> encrypts traffic between servers</li>
+</ul>
+
+
+<h2>Setting up elastic search</h2>
+
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-elasticsearch-on-ubuntu-16-04">setting up a elasticsearch cluster on ubuntu</a></li>
+<li>used a ruby case statement to set the master versus the replicas up</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/_basic_concepts.html">shards, replicas, documents explained</a></li>
+<li><a href="https://qbox.io/blog/launching-and-scaling-elasticsearch">Thoughts on Launching and Scaling Elasticsearch</a></li>
+<li><a href="https://qbox.io/blog/optimizing-elasticsearch-how-many-shards-per-index">optimizing sharding</a>
+
+<ul>
+<li><code>A good launch point for capacity planning is to allocate shards with a factor of 1.5 to 3 times the number of nodes in your initial configuration. If you're starting with 3 nodes, then we recommend that you specify at most 3 x 3 = 9 shards.</code></li>
+<li><code>We reiterate that shards consume resources and require processing overhead.</code></li>
+</ul>
+</li>
+<li>needed to bump vm.max_map_count according to <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html">these instructions</a></li>
 </ul>
 
 </div>
@@ -1432,48 +1531,6 @@ intermediary</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/new-technology-and-developer-happiness/">New Technology and Developer Happiness</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-11-15T12:24:00-05:00" pubdate data-updated="true">Nov 15<span>th</span>, 2016</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>What is the price worth paying to introduce a new technology into the stack? For our heavily junior team of 13 the price feels high. Our JS weapon of choice has been backbone and marionette. This toolset wasn’t determined by me. It was molded and implemented by a talented dev who might be a little short on leadership experience but has talent and intuition in spades. We’ve made some mistakes along the way, but the architectural choices he has made have served us well. Still about 8 months since its we push our first major feature set with marionette, the entire team has yet to be completely onboarded. We may be getting to the size where we can split our squad into front-end and back-end specialists, but to date that has never been discussed as a group. The fact that we all haven’t got there is a problem. It means that some of us aren’t capable to work on parts of the stack, which affects feature assignments and pairing.</p>
-
-<p>This same dev is now suggesting that we introduce React to one aspect of the stack because of its rising popularity in the community. Our team spends a lot of time focusing on happiness at an individual level with 1 on 1s and <a href="/blog/quarterlies/">quarterlies</a>, but my priority isn’t individual happiness but rather team morale. At the moment, team morale is at an all-time high. Will introducing a new barrier to entry positively affect team morale because of its shiney? Will allowing the two JS leads on the team play with a new toy positively affect team morale? They both claimed in their last quarterly that their work brought them high levels of meaning and purpose and they found it challenging enough.</p>
-
-<p>It is a tough call. I don’t have enough knowledge to know if this is truly a better tool or something new to learn for the sake of something new. How will we go about leveling up newcomers on two JS systems?</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1489,6 +1546,10 @@ intermediary</li>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-ops-notes/">More Ops Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
@@ -1502,10 +1563,6 @@ intermediary</li>
     
       <li class="post">
         <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
       </li>
     
   </ul>

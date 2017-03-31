@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://adamjonas.com/atom.xml" rel="self"/>
   <link href="http://adamjonas.com/"/>
-  <updated>2017-03-27T15:02:50-04:00</updated>
+  <updated>2017-03-31T11:46:07-04:00</updated>
   <id>http://adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[More Ops Notes]]></title>
+    <link href="http://adamjonas.com/blog/more-ops-notes/"/>
+    <updated>2017-03-29T16:18:00-04:00</updated>
+    <id>http://adamjonas.com/blog/more-ops-notes</id>
+    <content type="html"><![CDATA[<h2>Network partitioning causing exchange issues on rabbitmq</h2>
+
+<ul>
+<li>this was after netowrk maintenance</li>
+<li>solution was to delete exchange which then is automatically added
+back <a href="https://github.com/rabbitmq/rabbitmq-server/issues/887#issuecomment-290177962">documented here</a></li>
+</ul>
+
+
+<h2>Ubuntu 16</h2>
+
+<ul>
+<li>ubuntu 16 doesn&#8217;t ship with upstart so sysctld is what we&#8217;ll use to
+control services. <a href="https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units">systemctl commands</a>
+
+<ul>
+<li>can also run from <code>/etc/init.d/service start</code></li>
+</ul>
+</li>
+<li>rsyslog is what we use to get the logs to papertrail</li>
+<li>used the oracle version of Java 8</li>
+</ul>
+
+
+<h2>Digital ocean</h2>
+
+<ul>
+<li>backups (auto) are different than snapshots (not auto) and different
+in pricing as well</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Project Aristole]]></title>
@@ -545,6 +584,38 @@ number</li>
 </ul>
 </li>
 <li>now beats added -> lightweight, written in go -> for shipping</li>
+</ul>
+
+
+<h2>Split Brain issue</h2>
+
+<ul>
+<li><a href="http://blog.trifork.com/2013/10/24/how-to-avoid-the-split-brain-problem-in-elasticsearch/">HOW TO AVOID THE SPLIT-BRAIN PROBLEM IN ELASTICSEARCH</a></li>
+</ul>
+
+
+<h2>Tinc</h2>
+
+<ul>
+<li>VPN -> encrypts traffic between servers</li>
+</ul>
+
+
+<h2>Setting up elastic search</h2>
+
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-elasticsearch-on-ubuntu-16-04">setting up a elasticsearch cluster on ubuntu</a></li>
+<li>used a ruby case statement to set the master versus the replicas up</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/_basic_concepts.html">shards, replicas, documents explained</a></li>
+<li><a href="https://qbox.io/blog/launching-and-scaling-elasticsearch">Thoughts on Launching and Scaling Elasticsearch</a></li>
+<li><a href="https://qbox.io/blog/optimizing-elasticsearch-how-many-shards-per-index">optimizing sharding</a>
+
+<ul>
+<li><code>A good launch point for capacity planning is to allocate shards with a factor of 1.5 to 3 times the number of nodes in your initial configuration. If you're starting with 3 nodes, then we recommend that you specify at most 3 x 3 = 9 shards.</code></li>
+<li><code>We reiterate that shards consume resources and require processing overhead.</code></li>
+</ul>
+</li>
+<li>needed to bump vm.max_map_count according to <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html">these instructions</a></li>
 </ul>
 
 ]]></content>
@@ -1353,49 +1424,6 @@ intermediary</li>
 <blockquote><p>There’s no generally accepted definition of a pattern, but perhaps the best place to start is Christopher Alexander, an inspiration for many pattern enthusi- asts: “Each pattern describes a problem which occurs over and over again in our environment, and then describes the core of the solution to that problem, in such a way that you can use this solution a million times over, without ever doing it the same way twice” [Alexander et al.]. Alexander is an architect, so he was talking about buildings, but the definition works pretty nicely for software as well. The focus of the pattern is a particular solution, one that’s both com- mon and effective in dealing with one or more recurring problems. Another way of looking at it is that a pattern is a chunk of advice and the art of creating patterns is to divide up many pieces of advice into relatively independent chunks so that you can refer to them and discuss them more or less separately. p. 9</p></blockquote>
 
 <h2>Making a choice</h2>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Growing Object-Oriented Software, Guided By Tests]]></title>
-    <link href="http://adamjonas.com/blog/growing-object-oriented-software-guided-by-tests/"/>
-    <updated>2016-05-28T16:51:00-04:00</updated>
-    <id>http://adamjonas.com/blog/growing-object-oriented-software-guided-by-tests</id>
-    <content type="html"><![CDATA[<h2>Object-Oriented Style</h2>
-
-<blockquote><p>We value code that is easy to maintain over code that is easy to write. Implementing a feature in the most direct way can damage the maintainability of the system, for example by making the code difficult to understand or by introducing hidden dependencies between components. Balancing immediate and longer-term concerns is often tricky, but we’ve seen too many teams that can no longer deliver because their system is too brittle. p. 47</p>
-
-<p>Encapsulation and Information Hiding
-  We want to be careful with the distinction between &#8220;encapsulation&#8221; and &#8220;information
-hiding.&#8221; The terms are often used interchangeably but actually refer to two separate,
-and largely orthogonal, qualities:
-  Encapsulation
-  Ensures that the behavior of an object can only be affected through its API.It lets us control how much a change to one object will impact other parts of the system by ensuring that there are no unexpected dependencies between
-unrelated components.</p></blockquote>
-
-<p>  Information hiding
-  Conceals how an object implements its functionality behind the abstraction of its API. It lets us work with higher abstractions by ignoring lower-level details that are unrelated to the task at hand. p. 49</p>
-
-<blockquote><p>Our heuristic is that we should be able to describe what an object does without using any conjunctions (“and,” “or”). If we find ourselves adding clauses to the description, then the object probably should be broken up into collaborating objects, usually one for each clause. p. 52</p></blockquote>
-
-<p>Context Independence</p>
-
-<blockquote><p>While the “composite simpler than the sum of its parts” rule helps us decide whether an object hides enough information, the “context independence” rule helps us decide whether an object hides too much or hides the wrong information. p.54</p></blockquote>
-
-<h2>Achieving Object-Oriented Design</h2>
-
-<blockquote><p>Interface and Protocol
-Steve heard this useful distinction in a conference talk: an interface describes whether two components will fit together, while a protocol describes whether they <strong>will work</strong> together. p. 58</p>
-
-<p>Kernighan and Plauger attribute the idea of pipes to Douglas McIlroy, who wrote a memo in 1964 suggesting the metaphor of data passing through a segmented garden hose. It’s currently available at <a href="ttp://plan9.bell-labs.com/who/dmr/mdmpipe.pdf">http://plan9.bell-labs.com/who/dmr/mdmpipe.pdf</a>. p. 66</p></blockquote>
-
-<h2>The Sniper Makes a Bid</h2>
-
-<blockquote><p>Defer Decisions
-There’s a technique we’ve used a couple of times now, which is to introduce a null implementation of a method (or even a type) to get us through the next step. This helps us focus on the immediate task without getting dragged into thinking about the next significant chunk of functionality. The null Auction, for example, allowed us to plug in a new relationship we’d discovered in a unit test without getting pulled into messaging issues. That, in turn, meant we could stop and think about the dependencies between our objects without the pressure of having a broken compilation. p. 136</p>
-
-<p><strong>When the facts change, I change my mind. What do you do, sir?</strong>
-  —John Maynard Keynes p. 172</p></blockquote>
 ]]></content>
   </entry>
   

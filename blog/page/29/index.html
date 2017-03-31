@@ -9,9 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Rails Cast for twitter bootstrap: Note
-During install your can specify whether you want a fixed or fluid layout LESS is a CSS precessor
-: to get LESS &hellip;">
+  <meta name="description" content="4.1.2.2 :class_name If the name of the other model cannot be derived from the association name, you can use the :class_name option to supply the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +86,111 @@ During install your can specify whether you want a fixed or fluid layout LESS is
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/association-station/">Association Station</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-20T17:30:00-04:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>4.1.2.2 :class_name</p>
+
+<blockquote><p>If the name of the other model cannot be derived from the association name, you can use the :class_name option to supply the model name. For example, if an order belongs to a customer, but the actual name of the model containing customers is Patron, you’d set things up this way:</p></blockquote>
+
+<p><a href="http://guides.rubyonrails.org/association_basics.html">From the assoication guide</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:customer</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Patron&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>One-to-many relationships</h3>
+
+<blockquote><p>The most common relationship used when creating relational databases.  A row in a table in a database can be associated with one or (likely) more rows in another table.  An example of a one-to-many relationship is a single order has many items on that order.  And since relationships work both ways it is not uncommon to hear reference to many-to-one-relationships as well.</p></blockquote>
+
+<ul>
+<li>most common kind
+<a href="http://www.maakal.com/maakalDB/ERD_Examples2.htm">e.g.</a></li>
+</ul>
+
+
+<h3>One-to-one relationship</h3>
+
+<blockquote><p>A row in a table is associated to one and only one row in another table.  An example of a one-to-one relationship is a person can have one social security number and a social security number can only be assigned to one person.</p></blockquote>
+
+<ul>
+<li>In most cases there is no need for a one-to-one relationship as the contents of the two tables can be combined into one table.</li>
+</ul>
+
+
+<p><a href="http://www.maakal.com/maakalDB/ERD_Examples.htm">e.g.</a></p>
+
+<h3>Many-to-many relationships</h3>
+
+<blockquote><p>When one or more rows in a table are associated with one or more rows in another table.  An example of a many-to-many relationship is a table of customers can purchase many products and many customers can purchase a product.</p></blockquote>
+
+<p><a href="http://help.filemaker.com/app/answers/detail/a_id/9922/~/understanding-and-creating-many-to-many-relationships-in-filemaker-pro">Source</a></p>
+
+<h3>Self joins</h3>
+
+<p>In designing a data model, you will sometimes find a model that should have a relation to itself. For example, you may want to store all employees in a single database model, but be able to trace relationships such as between manager and subordinates. This situation can be modeled with self-joining associations:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Employee</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:subordinates</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:foreign_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;manager_id&quot;</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:manager</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With this setup, you can retrieve @employee.subordinates and @employee.manager</p>
+
+<p>There is another rails cast on <a href="http://railscasts.com/episodes/163-self-referential-association">self-referential-association</a>. Ryan Bates is amazing.</p>
+
+<ul>
+<li>Reading:
+<a href="http://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420">patterns of enterprise application architecture</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -883,158 +986,6 @@ a symbol is an immutable object</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/lecture-3-july-15/">Lecture 3- July 15</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-16T16:06:00-04:00" pubdate data-updated="true">Jul 16<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Rails Lecture 3- July 15</h3>
-
-<ul>
-<li>why use &#8216;get&#8217; instead of &#8216;match&#8217; in the routes file?
-
-<ul>
-<li>bc want to use http verbs to be more specific</li>
-<li>match is more vague, you should generally use specific verbs</li>
-</ul>
-</li>
-</ul>
-
-
-<p><code>rake routes CONTROLLER=SESSIONS</code> will narrow output</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>render :action =&gt; 'under_construction' #=&gt; relative to the current controller
-</span><span class='line'>render :template =&gt; 'shared/under_construction' #=&gt; doesn't assume it is in the current views folder
-</span><span class='line'>#under the class name
-</span><span class='line'>render 'shared/under_construction' #=&gt; these 3 work the same now</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Private Methods###(2:40)</h3>
-
-<ul>
-<li>about what object the receiver is on the method called&#8211; private methods can only be called on implicit receivers</li>
-<li>a way to control scope</li>
-<li><p>anything that is not an action, that isn&#8217;t an endpoint of a route should be private</p></li>
-<li><p>routes: bridge between the browser, specifcially URLs, and the app</p></li>
-</ul>
-
-
-<h3>Polymorphic Interface(2:50)</h3>
-
-<p>The link_to method&#8211;> accepts two parameters. the first is the name of the link as a string, the second is the string that it just uses it as a href
--> if I send it an instance of active record, it&#8217;s behavior will change ==> it will become intelligent and it will understand that it is an instance of active record</p>
-
-<h3>Lecture### (2:55)</h3>
-
-<ul>
-<li><p>anything that starts with an underscore &#8216;_form.erb.html&#8217; for example is a snippet of code that is reused on multiple templates</p></li>
-<li><p>form_for(@song) &#8211;> knows whether the song is new or should be updated&#8230; obviously different verbs are required for those diff actions</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Form Helpers (3:09)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">form_for</span><span class="p">(</span><span class="vi">@song</span><span class="p">)</span>
-</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">textfield</span> <span class="ss">:artist_name</span> <span class="c1">#=&gt; this will break if there is not a artist_name method for the song class in the controller</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>  <span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># this line instantiates a New Song</span>
-</span><span class='line'>  <span class="c1"># collects the data</span>
-</span><span class='line'>  <span class="c1">#assigning the data to the correct attribute</span>
-</span><span class='line'> <span class="c1">#the params[:song] lines does the last two steps</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Params### (3:20)</h3>
-
-<p>params looks and behaves like a hash
-its a nested hash</p>
-
-<figure class='code'><figcaption><span>Assigning a name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@song</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:song</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span> <span class="c1">#but this happens during the following line of code:</span>
-</span><span class='line'>
-</span><span class='line'><span class="vi">@song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:song</span><span class="o">]</span><span class="p">)</span> <span class="c1"># this happens using mass assignment!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Manually Assigning the Name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">input</span> <span class="n">type</span> <span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;song[name]&quot;</span> <span class="c1">#this looks like the key of the params hash ==&gt; params[:song][:name]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>(3:50) Nested hash testing</h3>
-
-<figure class='code'><figcaption><span>Query string (3:57)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mldraft</span><span class="o">.</span><span class="n">com?person</span><span class="o">[</span><span class="nb">name</span><span class="o">]=</span><span class="n">adam</span><span class="o">&amp;</span><span class="n">person</span><span class="o">[</span><span class="n">email</span><span class="o">]=</span><span class="n">adam</span><span class="vi">@mldraft</span><span class="o">.</span><span class="n">com</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Can access the params hash in the same way as the form. So params[:person][:name] will equal adam</li>
-</ul>
-
-
-<h3>Mass Assignment Vulnability (4:05)</h3>
-
-<ul>
-<li>attr_accessible is a whitelist approach versus attr_protected which is a black list approach</li>
-<li><p>this has nothing to do with the attr_accessor, reader, or writer</p></li>
-<li><p>Virtual attributes don&#8217;t persist to the database</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/30/">&larr; Older</a>
@@ -1052,6 +1003,10 @@ its a nested hash</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-ops-notes/">More Ops Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
@@ -1065,10 +1020,6 @@ its a nested hash</p>
     
       <li class="post">
         <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
       </li>
     
   </ul>

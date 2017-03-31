@@ -9,7 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Bash Environment Variables I was getting a double render on my bounty form. This was because I had precompiled my assets in an attempt to rectify &hellip;">
+  <meta name="description" content="Adding a comma for big numbers &lt;%= number_with_delimiter(repo.watchers, :delimiter =&gt; ',')
+From UI/UX strategy kickstarter- encouraging click &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,142 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/jan-3-notes/">Jan 3 Notes</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-03T12:12:00-05:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Adding a comma for big numbers</h3>
+
+<p><code>&lt;%= number_with_delimiter(repo.watchers, :delimiter =&gt; ',')</code>
+<a href="http://stackoverflow.com/questions/1078347/is-there-a-rails-trick-to-adding-commas-to-large-numbers">From</a></p>
+
+<h3>UI/UX strategy</h3>
+
+<ul>
+<li>kickstarter- encouraging click through rather than interaction.</li>
+<li>digg, stackoverflow, and reddit are closer to the functionality we want.</li>
+<li>don&#8217;t reinvent the wheel -> move forward.</li>
+</ul>
+
+
+<h3>Bounty Claims</h3>
+
+<ul>
+<li><p>Psuedo code: collect the info from the user (modal)</p></li>
+<li><p>this is sent to verification layer</p>
+
+<ul>
+<li><p>bounty controller?</p></li>
+<li><p>make sure the issue is closed</p></li>
+<li>make sure that an issue has a bounty</li>
+<li>make sure the issue was solved by the bounty claimer</li>
+</ul>
+</li>
+<li><p>if true- send verification to both bounty claimer and bounty author</p>
+
+<ul>
+<li>write the user id for all bounties the claimer solved</li>
+<li>change the badge/trigger payment on the profile pages of the bounty issuer</li>
+<li>tell gitbo admin that this was solved.</li>
+</ul>
+</li>
+<li><p>if false tell them why</p></li>
+</ul>
+
+
+<h3>A modal mess</h3>
+
+<ul>
+<li>We were trying to pass in multiple parameters in the url. But why do that?</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>This is simpler</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;modal-body&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= form_tag(bounty_claim_path) do %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;div class=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;owner_name&quot;</span><span class="o">&gt;</span><span class="no">Repo</span> <span class="no">Owner</span> <span class="no">Name</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
+</span><span class='line'><span class="sr">    &lt;input id=&quot;owner_name&quot; name=&quot;owner_name&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;div class=&quot;field&quot;&gt;</span>
+</span><span class='line'><span class="sr">    &lt;label for=&quot;repo_name&quot;&gt;Repo Name&lt;/</span><span class="n">label</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;repo_name&quot;</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="sr">/&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">label</span> <span class="k">for</span><span class="o">=</span><span class="s2">&quot;git_number&quot;</span><span class="o">&gt;</span><span class="no">Github</span> <span class="no">Issue</span> <span class="no">Number</span><span class="o">&lt;</span><span class="sr">/label&gt;</span>
+</span><span class='line'><span class="sr">    &lt;input id=&quot;git_number&quot; name=&quot;git_number&quot; type=&quot;text&quot; /</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;div class=&quot;modal-footer&quot;&gt;</span>
+</span><span class='line'><span class="sr">    &lt;span id=&quot;error&quot;&gt;&lt;/s</span><span class="n">pan</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="n">button</span> <span class="n">class</span><span class="o">=</span><span class="s1">&#39;btn btn-success btn-small&#39;</span><span class="o">&gt;</span><span class="no">Submit</span><span class="o">&lt;</span><span class="sr">/button&gt;</span>
+</span><span class='line'><span class="sr">      &lt;button class=&quot;btn btn-danger btn-small&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;Oopsy&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="sr">/div&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Just submit to a static url and pass in the info via params.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1120,54 +1257,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/marketing-your-app/">Marketing Your App</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-12T09:48:00-05:00" pubdate data-updated="true">Dec 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Sr. Hacker @ Ordr.in</p>
-
-<ul>
-<li>FakeGirlfriend.co</li>
-<li><p>Co-creator of world of Fourcraft</p></li>
-<li><p><a href="http://blog.rickyrobinett.com/">Ricky&#8217;s Blog</a></p></li>
-<li><a href="http://www.helpareporter.com/">Help a reporter out</a></li>
-<li><a href="http://www.garysguide.com/jobs?region=newyork">Gary&#8217;s Guide</a></li>
-<li><a href="http://hackweekends.com/city-detail.html?city=New%20York">Hack Weekends</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1185,6 +1274,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-ops-notes/">More Ops Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
@@ -1198,10 +1291,6 @@ end
     
       <li class="post">
         <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
       </li>
     
   </ul>

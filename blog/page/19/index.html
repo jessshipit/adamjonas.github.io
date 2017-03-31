@@ -9,8 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="ORM libraries map database tables to classes, rows to objects, and columns to attributes of those objects.
-Class methods are used to perform table- &hellip;">
+  <meta name="description" content="Most of what I needed was here. Facebook does a good job with the documentation overall. The missing piece of the puzzle is how to execute the FQL&# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +86,84 @@ Class methods are used to perform table- &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/foolin-with-the-facebook-api/">Foolin With the Facebook API</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-30T17:08:00-04:00" pubdate data-updated="true">Oct 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Most of what I needed was <a href="https://github.com/arsduo/koala/wiki/Graph-API">here</a>. Facebook does a good job with the documentation overall. The missing piece of the puzzle is how to execute the FQL&#8230;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@graph = Koala::Facebook::API.new
+</span><span class='line'>
+</span><span class='line'>@graph.get_connections("me", "mutualfriends/#{friendsuid}")
+</span><span class='line'>#=&gt; yields all our mutual friends
+</span><span class='line'>
+</span><span class='line'>#can also retrieve many objects at one time...
+</span><span class='line'>@graph.get_objects([1007413,929972])</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&#8217;m not quite sure how to best run the facebook query language(FQL)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>SELECT name,description,geometry,latitude,longitude,checkin_count,display_subtext FROM place WHERE page_id=110506962309835</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Above would give me a hash of all the attributes of Palo Alto, CA. Getting <a href="http://developers.facebook.com/docs/reference/fql/place/">place info via FQL</a> seems rather straight forward. Again, it&#8217;s the integration that I am struggling with.</p>
+
+<p>Gathering a hash of friends&#8217; location wasn&#8217;t a killer, though it did take some trial and error&#8230;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>friends_location = get_connections("me", "friends", :fields =&gt; "name, id, location")</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What I need is a FQL wrapper and to create a lib within my own app that just passes the parameters to the models and emcompasses all the interaction with the external FB open graph.</p>
+
+<h3>Koala</h3>
+
+<ul>
+<li><a href="https://github.com/arsduo/koala/blob/master/lib/koala/api/graph_api.rb">FQL</a></li>
+<li><a href="https://github.com/arsduo/koala/blob/master/lib/koala/http_service.rb">self.make_request</a> line 59</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1516,104 +1593,6 @@ git repo: malkomalko/tweets-i-love</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/minitest-spec/">MiniTest::Spec</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-24T13:30:00-04:00" pubdate data-updated="true">Oct 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span>MiniTest Spec Matchers</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span> <span class="o">-</span> <span class="k">for</span> <span class="n">example</span><span class="p">,</span> <span class="mi">10</span><span class="o">.</span><span class="n">must_be</span> <span class="p">:</span><span class="o">&lt;</span> <span class="p">,</span> <span class="mi">11</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_close_to</span> <span class="o">-</span> <span class="n">the</span> <span class="n">equivalent</span> <span class="n">of</span> <span class="n">assert_in_delta</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_empty</span> <span class="o">-</span> <span class="no">Fails</span> <span class="k">unless</span> <span class="n">obj</span><span class="o">.</span><span class="n">empty?</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_instance_of</span><span class="p">(</span><span class="n">klass</span><span class="p">)</span> <span class="o">-</span> <span class="no">Fails</span> <span class="k">unless</span> <span class="n">obj</span><span class="o">.</span><span class="n">class</span> <span class="o">==</span> <span class="n">klass</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_kind_of</span><span class="p">(</span><span class="n">klass</span><span class="p">)</span> <span class="o">-</span> <span class="no">Fails</span> <span class="k">unless</span> <span class="n">obj</span> <span class="n">is</span> <span class="n">of</span> <span class="k">class</span> <span class="n">klass</span> <span class="ow">or</span> <span class="n">klass</span> <span class="n">is</span> <span class="n">one</span> <span class="n">of</span> <span class="n">its</span> <span class="n">superclasses</span><span class="o">.</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_nil</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_same_as</span> <span class="o">-</span> <span class="n">tests</span> <span class="k">for</span> <span class="kp">true</span> <span class="n">object</span> <span class="n">equality</span>
-</span><span class='line'><span class="nb">lambda</span> <span class="p">{}</span><span class="o">.</span><span class="n">must_be_silent</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_within_delta</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_be_within_epsilon</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_equal</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">-</span> <span class="no">Does</span> <span class="n">a</span> <span class="o">==</span><span class="sr">/eql? comparison between two objects.</span>
-</span><span class='line'><span class="sr">obj.must_include(other)</span>
-</span><span class='line'><span class="sr">obj.must_match(regex) - A regular expression match, e.g. &quot;hello&quot;.must_match /</span><span class="n">w</span><span class="o">+/</span>
-</span><span class='line'><span class="nb">lambda</span> <span class="p">{}</span><span class="o">.</span><span class="n">must_output</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="o">[</span><span class="n">stderr</span><span class="o">.</span><span class="n">.</span><span class="o">]</span><span class="p">)</span> <span class="o">-</span> <span class="no">The</span> <span class="n">block</span> <span class="n">should</span> <span class="n">have</span> <span class="n">certain</span> <span class="n">output</span> <span class="n">on</span> <span class="n">stdout</span> <span class="ow">or</span> <span class="n">stderr</span><span class="o">.</span> <span class="no">Set</span> <span class="n">stdout</span> <span class="n">to</span> <span class="kp">nil</span> <span class="n">just</span> <span class="n">to</span> <span class="n">check</span> <span class="n">stderr</span><span class="o">.</span>
-</span><span class='line'><span class="nb">lambda</span> <span class="p">{}</span><span class="o">.</span><span class="n">must_raise</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_respond_to</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-</span><span class='line'><span class="n">obj</span><span class="o">.</span><span class="n">must_throw</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Negative Matchers too</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">wont_be</span>
-</span><span class='line'><span class="n">wont_be_empty</span>
-</span><span class='line'><span class="n">wont_be_instance_of</span>
-</span><span class='line'><span class="n">wont_be_kind_of</span>
-</span><span class='line'><span class="n">wont_be_nil</span>
-</span><span class='line'><span class="n">wont_be_same_as</span>
-</span><span class='line'><span class="n">wont_equal</span>
-</span><span class='line'><span class="n">wont_include</span>
-</span><span class='line'><span class="n">wont_match</span>
-</span><span class='line'><span class="n">wont_respond_to</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -1631,6 +1610,10 @@ git repo: malkomalko/tweets-i-love</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/more-ops-notes/">More Ops Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
@@ -1644,10 +1627,6 @@ git repo: malkomalko/tweets-i-love</p>
     
       <li class="post">
         <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/the-soul-in-the-machine-developing-for-humans/">The Soul in The Machine - Developing for Humans</a>
       </li>
     
   </ul>
