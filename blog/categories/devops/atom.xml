@@ -4,7 +4,7 @@
   <title><![CDATA[Category: DevOps | Hack hack hack...]]></title>
   <link href="http://adamjonas.com/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://adamjonas.com/"/>
-  <updated>2017-03-31T11:46:07-04:00</updated>
+  <updated>2017-04-05T13:20:37-04:00</updated>
   <id>http://adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How Linux Works: What Every Superuser Should Know]]></title>
+    <link href="http://adamjonas.com/blog/how-linux-works-what-every-superuser-should-know/"/>
+    <updated>2017-04-05T12:13:00-04:00</updated>
+    <id>http://adamjonas.com/blog/how-linux-works-what-every-superuser-should-know</id>
+    <content type="html"><![CDATA[<h2>Posix shell and Utilities</h2>
+
+<ul>
+<li>from <a href="http://shellhaters.org/talk">Shell Hater's handbook with Ryan Tomayko</a></li>
+<li><a href="http://shellhaters.org/">posix docs</a></li>
+</ul>
+
+
+<h2>fork() &amp; exec()</h2>
+
+<ul>
+<li>When running exec() programs, you are forking a shell and running it on that</li>
+<li><a href="https://www.bottomupcs.com/fork_and_exec.xhtml">Fork and exec</a></li>
+<li><a href="http://askubuntu.com/questions/428458/why-do-shells-call-fork">Why do shells call fork?</a>
+
+<ul>
+<li>exec can only run one thing. So shell creates the child shell runs exec and then returns.</li>
+</ul>
+</li>
+<li>fork() clones the current process, creating an identical child. exec() loads a new program into the current process, replacing the existing one. <a href="http://unix.stackexchange.com/questions/179604/how-do-fork-and-exec-work">From</a></li>
+</ul>
+
+
+<h2>Time slice</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Preemption_(computing">time slice</a>#Time_slice) managed by the scheduler of the CPU. Time slices are <a href="https://superuser.com/a/684394">variable</a> -> need this to keep the illusion of concurrency(having multiple processes at the same time) and multi-tasking, but with one core there is no possibility of doing paralellism.</li>
+</ul>
+
+
+<h2>Builtins</h2>
+
+<ul>
+<li>(wikipedia)[https://en.wikipedia.org/wiki/Shell_builtin]
+
+<ul>
+<li>executed directly in the shell itself, instead of an external executable program which the shell would load and execute.</li>
+<li>Shell builtins work significantly faster than external programs, because there is no program loading overhead.</li>
+<li>most notable example is <code>cd</code></li>
+<li><code>cd</code> has to be a builtin because the shell itself needs to change its "cwd" - current working directory - not a sub-process. The goal of "cd" is to change the current working directory of the shell itself, and that can't be accomplished from a child process without a lot of special hackery which would end up being more complex than the builtin. <a href="https://www.quora.com/Unix-Why-is-cd-a-built-in-command-in-the-shell-and-not-an-executable-program-like-the-command-ls">from</a>
+
+<ul>
+<li>great explanation on how it came to be with a quote from <a href="http://unix.stackexchange.com/a/38819">Dennis Ritchie</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Memory Management</h2>
+
+<ul>
+<li>swap -> using the hard disk as RAM</li>
+<li>A <a href="https://en.wikipedia.org/wiki/Page_table">page table</a> is the data structure used by a virtual memory system in a computer operating system to store the mapping between virtual addresses and physical addresses. Virtual addresses are used by the accessing process, while physical addresses are used by the hardware, or more specifically, by the RAM subsystem.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[More Ops Notes]]></title>
@@ -47,6 +112,14 @@ control services. <a href="https://www.digitalocean.com/community/tutorials/how-
 <ul>
 <li>backups (auto) are different than snapshots (not auto) and different
 in pricing as well</li>
+</ul>
+
+
+<h2>Chef</h2>
+
+<ul>
+<li><a href="https://docs.chef.io/ohai.html">ohai</a></li>
+<li><a href="https://docs.chef.io/chef_shell.html"><code>chef-shell</code></a></li>
 </ul>
 
 ]]></content>

@@ -4,7 +4,7 @@
   <title><![CDATA[Hack hack hack...]]></title>
   <link href="http://adamjonas.com/atom.xml" rel="self"/>
   <link href="http://adamjonas.com/"/>
-  <updated>2017-03-31T11:46:07-04:00</updated>
+  <updated>2017-04-05T13:20:37-04:00</updated>
   <id>http://adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How Linux Works: What Every Superuser Should Know]]></title>
+    <link href="http://adamjonas.com/blog/how-linux-works-what-every-superuser-should-know/"/>
+    <updated>2017-04-05T12:13:00-04:00</updated>
+    <id>http://adamjonas.com/blog/how-linux-works-what-every-superuser-should-know</id>
+    <content type="html"><![CDATA[<h2>Posix shell and Utilities</h2>
+
+<ul>
+<li>from <a href="http://shellhaters.org/talk">Shell Hater&#8217;s handbook with Ryan Tomayko</a></li>
+<li><a href="http://shellhaters.org/">posix docs</a></li>
+</ul>
+
+
+<h2>fork() &amp; exec()</h2>
+
+<ul>
+<li>When running exec() programs, you are forking a shell and running it on that</li>
+<li><a href="https://www.bottomupcs.com/fork_and_exec.xhtml">Fork and exec</a></li>
+<li><a href="http://askubuntu.com/questions/428458/why-do-shells-call-fork">Why do shells call fork?</a>
+
+<ul>
+<li>exec can only run one thing. So shell creates the child shell runs exec and then returns.</li>
+</ul>
+</li>
+<li>fork() clones the current process, creating an identical child. exec() loads a new program into the current process, replacing the existing one. <a href="http://unix.stackexchange.com/questions/179604/how-do-fork-and-exec-work">From</a></li>
+</ul>
+
+
+<h2>Time slice</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Preemption_(computing">time slice</a>#Time_slice) managed by the scheduler of the CPU. Time slices are <a href="https://superuser.com/a/684394">variable</a> -> need this to keep the illusion of concurrency(having multiple processes at the same time) and multi-tasking, but with one core there is no possibility of doing paralellism.</li>
+</ul>
+
+
+<h2>Builtins</h2>
+
+<ul>
+<li>(wikipedia)[https://en.wikipedia.org/wiki/Shell_builtin]
+
+<ul>
+<li>executed directly in the shell itself, instead of an external executable program which the shell would load and execute.</li>
+<li>Shell builtins work significantly faster than external programs, because there is no program loading overhead.</li>
+<li>most notable example is <code>cd</code></li>
+<li><code>cd</code> has to be a builtin because the shell itself needs to change its &#8220;cwd&#8221; - current working directory - not a sub-process. The goal of &#8220;cd&#8221; is to change the current working directory of the shell itself, and that can&#8217;t be accomplished from a child process without a lot of special hackery which would end up being more complex than the builtin. <a href="https://www.quora.com/Unix-Why-is-cd-a-built-in-command-in-the-shell-and-not-an-executable-program-like-the-command-ls">from</a>
+
+<ul>
+<li>great explanation on how it came to be with a quote from <a href="http://unix.stackexchange.com/a/38819">Dennis Ritchie</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Memory Management</h2>
+
+<ul>
+<li>swap -> using the hard disk as RAM</li>
+<li>A <a href="https://en.wikipedia.org/wiki/Page_table">page table</a> is the data structure used by a virtual memory system in a computer operating system to store the mapping between virtual addresses and physical addresses. Virtual addresses are used by the accessing process, while physical addresses are used by the hardware, or more specifically, by the RAM subsystem.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vimmin]]></title>
+    <link href="http://adamjonas.com/blog/vimmin/"/>
+    <updated>2017-04-04T15:37:00-04:00</updated>
+    <id>http://adamjonas.com/blog/vimmin</id>
+    <content type="html"><![CDATA[<p>Command-T was killing me. Vim was built against the system ruby while
+the command-t plugin was set to the default. So I had to jump through a
+few hoops described <a href="https://github.com/wincent/command-t/issues/228">here</a>. A pain. Done though.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[More Ops Notes]]></title>
@@ -47,6 +123,14 @@ control services. <a href="https://www.digitalocean.com/community/tutorials/how-
 <ul>
 <li>backups (auto) are different than snapshots (not auto) and different
 in pricing as well</li>
+</ul>
+
+
+<h2>Chef</h2>
+
+<ul>
+<li><a href="https://docs.chef.io/ohai.html">ohai</a></li>
+<li><a href="https://docs.chef.io/chef_shell.html"><code>chef-shell</code></a></li>
 </ul>
 
 ]]></content>
@@ -616,6 +700,7 @@ number</li>
 </ul>
 </li>
 <li>needed to bump vm.max_map_count according to <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html">these instructions</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04">UFW</a> -> wasn&#8217;t needed in the end</li>
 </ul>
 
 ]]></content>
@@ -1342,88 +1427,6 @@ intermediary</li>
 <p>There isn’t anything all that novel here. I think giving a new hire a lot of attention and making sure they don’t flounder too much is the basic goal (a little flopping around is OK). Even if they are working on a project, allowing for an orientation period takes the pressure off and allows them to explore the code. This is time well spent. For a new junior hire, I’ve made the mistake of putting deadlines around that first project with disastrous results.</p>
 
 <p>Ramping up not only helps a new hire feel productive and competent, it also affects our team dynamic. We need all of our team members to participate in our difficult discussions and if a new hire lacks confidence in their code contributions they also sideline themselves in our team dynamics. Poor onboading is an opportunity lost to build rapport and establish confidence while good onboarding usually leads to individual comfort and immediate buy-in. So while it can be very time intensive, for me it has been worth the investment.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Linchpin by Seth Godin Notes]]></title>
-    <link href="http://adamjonas.com/blog/linchpin-by-seth-godin-notes/"/>
-    <updated>2016-07-27T11:36:00-04:00</updated>
-    <id>http://adamjonas.com/blog/linchpin-by-seth-godin-notes</id>
-    <content type="html"><![CDATA[<ul>
-<li>Notes:
-
-<ul>
-<li>Obedience is no longer rewarded - 4</li>
-<li>We weren&#8217;t born to be cogs, we were trained to be cogs - 6</li>
-<li>schools should teach: how to solve interesting problems, how to lead - 47</li>
-<li><em>Emotional labor</em> - 57</li>
-<li>Jean baptist Colbert - 63: did he write down any of his thoughts?</li>
-<li>Acknowledge fear, then proceeds - 65</li>
-<li>Tom peters - 83</li>
-<li>No one cares how hard you work- 95</li>
-<li>Someone can do your job better and cheaper, not your art - 97</li>
-<li>Artists are optimists- 98</li>
-<li>Creativity is the instinct to produce - 102</li>
-<li>Shipping -101-103</li>
-<li>Steve McConnell - poorly timed thrashing 104</li>
-<li>Elizabeth Gilbert Ted talk - 106</li>
-<li>War of art, Steve pressfield- 107</li>
-<li>Bio of lizard brain -109</li>
-<li>You are a winner because you learn from losing - 115</li>
-<li>3 biological factors that drive job performance: social intelligence, fear response, and perception - public speaking brings together all 3 - 124</li>
-<li>Fear is the most important emotion we have - it kept our ancestors alive. It dominates all other emotions. 124</li>
-<li>Symptoms of lizard brain - 127</li>
-<li>Leo babauta zen habits - 135</li>
-<li>Shenpa: Tibetan word that roughly means scratching the itch - 138</li>
-<li>Planing with the index card technique  146</li>
-<li>Permission marketing? - 148</li>
-<li>Pizzeria owner made shirts with bad Yelp reviews - 152</li>
-<li>Damaging business book - Robert ringer - looking out for number one 153</li>
-<li>Linus will never need to worry about finding work because he gave away Linux - 162</li>
-<li>Sunny bates - 166</li>
-<li>Clay shirky, Dan rushkoff - 169</li>
-<li>Richard Branson - chartering a plane - 180</li>
-<li>Can&#8217;t get attached to the objects of your attention -184</li>
-<li>Art is defined by the fact I can&#8217;t tell you how to do it - 188</li>
-<li>Your product should match your marketing, not the other way round -201</li>
-<li>Deanna Vogt, Corp coach -202</li>
-<li>Resilience, Ralph Waldo Emerson - 208</li>
-<li>5 elements of a personality: openness, conscientiousness, extraversion, agreeableness, and emotional stability - 210</li>
-<li>Honest signals, book - 214</li>
-<li>Dale Carnegie - 217</li>
-<li>Creative -</li>
-<li>Personal, original, unexpected, useful.</li>
-<li>Unique creative - domain knowledge, position of trust, generosity to contribute back - 219</li>
-<li>Org obey newton&#8217;s laws: a team at rest stays at rest - 221</li>
-<li>Lester Wunderman: invented direct marketing - 222</li>
-<li>Focus on making change down not up. Interacting with customers and employees is easier than bosses and investors - 229</li>
-<li>Pranja - see the world objectively - 235</li>
-</ul>
-</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Patterns of Enterprise Application Architecture]]></title>
-    <link href="http://adamjonas.com/blog/patterns-of-enterprise-application-architecture/"/>
-    <updated>2016-05-30T17:08:00-04:00</updated>
-    <id>http://adamjonas.com/blog/patterns-of-enterprise-application-architecture</id>
-    <content type="html"><![CDATA[<h2>Introduction:</h2>
-
-<blockquote><p>“Architecture” is a term that lots of people try to define, with little agree- ment. There are two common elements: One is the highest-level breakdown of a system into its parts; the other, decisions that are hard to change. It’s also increasingly realized that there isn’t just one way to state a system’s architec- ture; rather, there are multiple architectures in a system, and the view of what is architecturally significant is one that can change over a system’s lifetime. p. 1.</p>
-
-<p>The subjectivity comes in here as well because, if you find that something is easier to change than you once thought, then it’s no longer architectural. In the end architecture boils down to the important stuff—whatever that is. p. 2</p>
-
-<p><em>Responsiveness</em> is about how quickly the system acknowledges a request as opposed to processing it. This is important in many systems because users may become frustrated if a system has low responsiveness, even if its response time is good. If your system waits during the whole request, then your responsiveness and response time are the same. However, if you indicate that you’ve received the request before you complete, then your responsiveness is better. Providing a progress bar during a file copy improves the responsiveness of your user inter- face, even though it doesn’t improve response time. p. 7</p></blockquote>
-
-<h3>Patterns</h3>
-
-<blockquote><p>There’s no generally accepted definition of a pattern, but perhaps the best place to start is Christopher Alexander, an inspiration for many pattern enthusi- asts: “Each pattern describes a problem which occurs over and over again in our environment, and then describes the core of the solution to that problem, in such a way that you can use this solution a million times over, without ever doing it the same way twice” [Alexander et al.]. Alexander is an architect, so he was talking about buildings, but the definition works pretty nicely for software as well. The focus of the pattern is a particular solution, one that’s both com- mon and effective in dealing with one or more recurring problems. Another way of looking at it is that a pattern is a chunk of advice and the art of creating patterns is to divide up many pieces of advice into relatively independent chunks so that you can refer to them and discuss them more or less separately. p. 9</p></blockquote>
-
-<h2>Making a choice</h2>
 ]]></content>
   </entry>
   

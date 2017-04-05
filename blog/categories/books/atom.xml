@@ -4,7 +4,7 @@
   <title><![CDATA[Category: books | Hack hack hack...]]></title>
   <link href="http://adamjonas.com/blog/categories/books/atom.xml" rel="self"/>
   <link href="http://adamjonas.com/"/>
-  <updated>2017-03-31T11:46:07-04:00</updated>
+  <updated>2017-04-05T13:20:37-04:00</updated>
   <id>http://adamjonas.com/</id>
   <author>
     <name><![CDATA[Adam Jonas]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How Linux Works: What Every Superuser Should Know]]></title>
+    <link href="http://adamjonas.com/blog/how-linux-works-what-every-superuser-should-know/"/>
+    <updated>2017-04-05T12:13:00-04:00</updated>
+    <id>http://adamjonas.com/blog/how-linux-works-what-every-superuser-should-know</id>
+    <content type="html"><![CDATA[<h2>Posix shell and Utilities</h2>
+
+<ul>
+<li>from <a href="http://shellhaters.org/talk">Shell Hater's handbook with Ryan Tomayko</a></li>
+<li><a href="http://shellhaters.org/">posix docs</a></li>
+</ul>
+
+
+<h2>fork() &amp; exec()</h2>
+
+<ul>
+<li>When running exec() programs, you are forking a shell and running it on that</li>
+<li><a href="https://www.bottomupcs.com/fork_and_exec.xhtml">Fork and exec</a></li>
+<li><a href="http://askubuntu.com/questions/428458/why-do-shells-call-fork">Why do shells call fork?</a>
+
+<ul>
+<li>exec can only run one thing. So shell creates the child shell runs exec and then returns.</li>
+</ul>
+</li>
+<li>fork() clones the current process, creating an identical child. exec() loads a new program into the current process, replacing the existing one. <a href="http://unix.stackexchange.com/questions/179604/how-do-fork-and-exec-work">From</a></li>
+</ul>
+
+
+<h2>Time slice</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Preemption_(computing">time slice</a>#Time_slice) managed by the scheduler of the CPU. Time slices are <a href="https://superuser.com/a/684394">variable</a> -> need this to keep the illusion of concurrency(having multiple processes at the same time) and multi-tasking, but with one core there is no possibility of doing paralellism.</li>
+</ul>
+
+
+<h2>Builtins</h2>
+
+<ul>
+<li>(wikipedia)[https://en.wikipedia.org/wiki/Shell_builtin]
+
+<ul>
+<li>executed directly in the shell itself, instead of an external executable program which the shell would load and execute.</li>
+<li>Shell builtins work significantly faster than external programs, because there is no program loading overhead.</li>
+<li>most notable example is <code>cd</code></li>
+<li><code>cd</code> has to be a builtin because the shell itself needs to change its "cwd" - current working directory - not a sub-process. The goal of "cd" is to change the current working directory of the shell itself, and that can't be accomplished from a child process without a lot of special hackery which would end up being more complex than the builtin. <a href="https://www.quora.com/Unix-Why-is-cd-a-built-in-command-in-the-shell-and-not-an-executable-program-like-the-command-ls">from</a>
+
+<ul>
+<li>great explanation on how it came to be with a quote from <a href="http://unix.stackexchange.com/a/38819">Dennis Ritchie</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Memory Management</h2>
+
+<ul>
+<li>swap -> using the hard disk as RAM</li>
+<li>A <a href="https://en.wikipedia.org/wiki/Page_table">page table</a> is the data structure used by a virtual memory system in a computer operating system to store the mapping between virtual addresses and physical addresses. Virtual addresses are used by the accessing process, while physical addresses are used by the hardware, or more specifically, by the RAM subsystem.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Patterns of Enterprise Application Architecture]]></title>
@@ -151,49 +216,6 @@ There’s a technique we’ve used a couple of times now, which is to introduce 
 <li>Adapter focuses on resolving incompatibilities between two existing interfaces. Bridge, on the other hand, bridges an abstraction and its (potentially numerous) implementations.</li>
 </ul>
 </li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Gang of Four: Builder pattern and Singletons]]></title>
-    <link href="http://adamjonas.com/blog/gang-of-four-builder-pattern-and-singletons/"/>
-    <updated>2016-03-02T12:07:00-05:00</updated>
-    <id>http://adamjonas.com/blog/gang-of-four-builder-pattern-and-singletons</id>
-    <content type="html"><![CDATA[<h2>Builder</h2>
-
-<ul>
-<li>Concrete builders: <code>html to markdown</code> and <code>html to json</code>?</li>
-<li>Could we think of a complex cart like this? Like line items of a educational program might compose a composite object by the cart which is the director.
-
-<ul>
-<li>doesn't quite match up with subbing in different builders</li>
-</ul>
-</li>
-<li>like strategy pattern, but the way it differs is that it creates a composite object at the end</li>
-<li>but this book is more about the abstract factory, the way this differs is that it the director gives you finer control of the order.</li>
-<li><p>separating out <strong>how</strong> the object is built</p></li>
-<li><p>e.g. Creating enrollments with one time purchases vs recurring subscriptions</p>
-
-<ul>
-<li>client == browser</li>
-<li>director == model ShoppingCart</li>
-<li>builder1 == JobGuaranteeSubscription</li>
-<li>builder2 == NonJobGuaranteeSubscription</li>
-<li><p>result == subscription</p></li>
-<li><p>Build part: slack group, google group, batch</p></li>
-</ul>
-</li>
-</ul>
-
-
-<h2>Singleton</h2>
-
-<ul>
-<li>there is only one instance and so if another part of the code changes it, then you will have shot yourself in the foot</li>
-<li>publishers, which are all singletons, don't need more than one, but they could have been classes instead</li>
-<li>dependency injection makes tests way easier</li>
 </ul>
 
 ]]></content>

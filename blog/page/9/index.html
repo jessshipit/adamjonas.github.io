@@ -9,7 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="A Promise is an object that represents a one-time event, typically the outcome of an async task like an AJAX call. started here ">
+  <meta name="description" content="Bind and fat arrow result in something similar but with different implementations. fn = -&gt; console.log @
+ctx = {foo: 'bar', fn: -&gt; console.log &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,123 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/context-and-functions-in-javascript/">Context and Functions in Javascript</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-19T17:55:00-05:00" pubdate data-updated="true">Nov 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Bind and fat arrow result in something similar but with different implementations.</p>
+
+<pre><code>fn = -&gt; console.log @
+ctx = {foo: 'bar', fn: -&gt; console.log(@)}
+pusher.execute('event_name', ctx.fn.bind(ctx))
+</code></pre>
+
+<p>In most cases, the context of the function (also known as <code>@</code>) is based on the receiver. In this contrived example, to execute the function on the pusher object, we might pass in the function name and then the callback function. When we call a function to an outside source, we have no idea in what context it might be executed. In our case, <code>ctx.fn</code> and <code>@fn</code> might be the exact same &#8211; these are just references to how to call the function, but an important takeaway is that these do not pass determine the context. To ensure the context, one must specify it with the bind function. <code>pusher.execute('event_name', ctx.fn.bind(ctx))</code> is essentially equal to <code>pusher.execute('event_name', @fn.bind(ctx))</code>. The receiver in this case doesn&#8217;t matter.</p>
+
+<p>JS OOP isn&#8217;t a joy ride. Oh well.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/backbone-beginners-basics/">Backbone Beginner&#8217;s Basics</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-19T17:02:00-05:00" pubdate data-updated="true">Nov 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Validations</h3>
+
+<p>  This is a neat little <a href="https://github.com/thedersen/backbone.validation">validation plugin</a> that passes back error objects.</p>
+
+<h3>Form serialization</h3>
+
+<ul>
+<li>Used <a href="https://github.com/derickbailey/backbone.syphon/blob/master/apidoc.md">syphon</a> built by Derick Bailey.</li>
+</ul>
+
+
+<h3>onBeforeRender versus onRender</h3>
+
+<ul>
+<li>Was trying to call a function <code>onBeforeRender</code> but it wouldn&#8217;t execute until it was changed to <code>onRender</code>.</li>
+</ul>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li>code school backbone.js class</li>
+<li>watch this for <a href="http://vimeo.com/59431658">explanation for backbone.js to marionette</a></li>
+</ul>
+
+
+<h3>Google Analytics on Backbone</h3>
+
+<ul>
+<li>this was a <a href="https://gist.github.com/daveaugustine/1771986">good guide</a> though it did not include the fact that</li>
+<li>used <code>universal.js</code> so had to use the <code>ga('create', 'UA-XXXX-Y', 'auto');</code> syntax</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -933,92 +1051,6 @@ this ensures the method compiler checks.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/git-cheatsheet/">Git Cheatsheet</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-28T18:31:00-04:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><code>git clean -f -d</code> removes all untracked files. <code>git reset --hard HEAD</code> won&#8217;t remove untracked files.</li>
-<li><code>git checkout &lt;filename&gt;</code> untracks a file and returns it to its original state.</li>
-<li><code>git push -u origin my_branch</code> sets upstream. Here is a <a href="http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time">good explanation</a>.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/imagemagick-ummm-dot-dot-dot-magic/">ImageMagick Ummm&#8230; Magic</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-27T16:41:00-04:00" pubdate data-updated="true">Aug 27<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>entension conversion</h3>
-
-<ul>
-<li>discovered <a href="http://www.imagemagick.org/script/mogrify.php">mogrify</a> which does bulk actions. I really need to convert .svgs to .pngs and this was a life saver.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -1036,6 +1068,14 @@ this ensures the method compiler checks.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/how-linux-works-what-every-superuser-should-know/">How Linux Works: What Every Superuser Should Know</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/vimmin/">Vimmin</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/more-ops-notes/">More Ops Notes</a>
       </li>
     
@@ -1045,14 +1085,6 @@ this ensures the method compiler checks.
     
       <li class="post">
         <a href="/blog/crash-course/">Crash Course DevOps</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/elastic-search/">Elastic Search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
       </li>
     
   </ul>

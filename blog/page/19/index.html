@@ -9,7 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Most of what I needed was here. Facebook does a good job with the documentation overall. The missing piece of the puzzle is how to execute the FQL&# &hellip;">
+  <meta name="description" content="Geocoder This gem is amazing. I can calucalate the latitude and longitude of anywhere by an address and so much more. Not surprisingly there is a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,147 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day17andahalf/">FIS Day17andahalf</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-31T18:40:00-04:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3><a href="http://www.rubygeocoder.com/">Geocoder</a></h3>
+
+<p>This gem is amazing. I can calucalate the latitude and longitude of anywhere by an address and so much more. Not surprisingly there is a great <a href="http://railscasts.com/episodes/273-geocoder">railscast</a> on the subject.</p>
+
+<ul>
+<li>Ryan Bates also suggested that I look at <a href="https://github.com/apneadiving/Google-Maps-for-Rails">Google-Maps-for-Rails</a></li>
+</ul>
+
+
+<h3>Authentication</h3>
+
+<p>I had broken the authentication system in my <a href="http://gearshare.herokuapp.com/">gearshare app</a>. <a href="http://railscasts.com/episodes/241-simple-omniauth">Ryan Bates</a> to the rescue once again.</p>
+
+<h3>Sessions Issues</h3>
+
+<p>I was having some trouble killing the session. Avi added this code in the sessions_controller.</p>
+
+<figure class='code'><figcaption><span>In the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="n">reset_session</span> <span class="c1">#this was the key....</span>
+</span><span class='line'>  <span class="n">redirect_to</span> <span class="n">root_url</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s2">&quot;Signed out!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Git Rebase</h3>
+
+<p>I also rebased a branch using the following command&#8230;</p>
+
+<figure class='code'><figcaption><span>In the sessions controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">git</span> <span class="n">rebase</span> <span class="n">master</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This rebased the up-to-date master underneath my branch that was ahead by a few commits, but had a broken authentication system. There is a complete explanation of this and more in the <a href="http://git-scm.com/book/en/Git-Branching-Rebasing">git book</a>.</p>
+
+<h3>Stripe</h3>
+
+<p>Met Richard who walked me through the <a href="https://stripe.com/">stripe</a> that makes payments silly easy. Very exciting to integrate this into the bounty open-source idea&#8230;</p>
+
+<h3>Podcast</h3>
+
+<p>I should start listening to this&#8230; Peter Cooper and Jason Seifer&#8211; it&#8217;s got to be pretty solid.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/accepts-nested-attributes-for/">Accepts Nested Attributes For</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-31T16:14:00-04:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So accepts nested attributes is really about writing to an attribute of a class.</p>
+
+<p>In my case a location belongs_to a user. I was then trying to set the location.street1 through the user, but it wouldn&#8217;t write. This is because it needs the accepts_nested_attributes method in the model.</p>
+
+<figure class='code'><figcaption><span>If I want to manage questions through my surveys forms&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Survey</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:questions</span><span class="p">,</span> <span class="ss">:dependent</span> <span class="o">=&gt;</span> <span class="ss">:destroy</span>
+</span><span class='line'>  <span class="n">accepts_nested_attributes_for</span> <span class="ss">:questions</span><span class="p">,</span> <span class="n">allow_destroy</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://railscasts.com/episodes/196-nested-model-form-revised">Railscast</a>
+  - min 6 javascript</p>
+
+<p>destroy -> allow_destroy: true</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1405,194 +1546,6 @@ DB- postgres</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ruby-motion/">Ruby Motion</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-24T19:16:00-04:00" pubdate data-updated="true">Oct 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>ios simulator app
-git repo: malkomalko/tweets-i-love</p>
-
-<ul>
-<li><p>File structure:</p>
-
-<ul>
-<li>controller</li>
-<li>extensions</li>
-<li>models</li>
-<li>styles</li>
-<li>views</li>
-<li>build</li>
-<li>resources</li>
-<li>spec</li>
-<li>tasks</li>
-<li>vendor</li>
-<li>Gemfile</li>
-</ul>
-</li>
-<li><p>Use Xcode for storyboards</p></li>
-</ul>
-
-
-<p><a href="https://github.com/CocoaPods/CocoaPods">Cocoapods</a></p>
-
-<p>more or less -> every screen of data is bound to a view controller</p>
-
-<p>??delegates ~> look it up</p>
-
-<p><a href="http://iconoclastlabs.com/cms/blog/posts/starting-with-rubymotion-delegates-and-messages">read</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>@collection = [*"a".."z"] ~&gt; explode a range in the view</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/interview-questions/">Interview Questions</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-24T15:47:00-04:00" pubdate data-updated="true">Oct 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><a href="http://codegolf.com/tower-of-hanoi">Towers of Hanoi</a></li>
-<li><a href="http://en.literateprograms.org/Fibonacci_numbers_(Ruby">Fibonacci Sequence</a>) <a href="http://vimeo.com/45768714">(Fib in video)</a></li>
-<li><a href="https://github.com/darcyclarke/Front-end-Developer-Interview-Questions">front-end interview questions</a></li>
-</ul>
-
-
-<h3>For employers:</h3>
-
-<ol>
-<li>What are you looking for in a junior developer?</li>
-<li>What are your technology needs and goals?</li>
-<li>Do you think I can help you reach those goals?</li>
-</ol>
-
-
-<h3>Expect from employers</h3>
-
-<ol>
-<li>What&#8217;s your biggest weakness and/or tell me about a time you had a conflict in a team</li>
-</ol>
-
-
-<h3>Reading</h3>
-
-<ul>
-<li><p><a href="http://hugomelo.com/post/35533342698/becoming-an-apprentice">Appacademy.io</a></p></li>
-<li><p>What devs want:</p>
-
-<ul>
-<li>room for growth and skills development</li>
-<li>high caliber team</li>
-<li>positive org structure</li>
-<li>opporunity to learn</li>
-<li>control over own work</li>
-<li>excitement about company&#8217;s products</li>
-<li>convenient commute</li>
-<li>high base compensation -> would take 10% less if the company meets the other criteria</li>
-</ul>
-</li>
-<li><p><a href="http://puzzlenode.com/">Puzzle Node</a></p></li>
-<li><a href="https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions">phone screen</a></li>
-<li><a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">get that job at google</a></li>
-</ul>
-
-
-<h3>questions to ask:</h3>
-
-<ul>
-<li><p>genuine questions:</p>
-
-<ul>
-<li>what % do you spend coding</li>
-<li>how much time do you spend in meetings</li>
-</ul>
-</li>
-<li><p>passion questions</p>
-
-<ul>
-<li>Ive been primarily working in rails, but what should I study to get up to speed?</li>
-</ul>
-</li>
-<li><p>insightful questions</p>
-
-<ul>
-<li>you are using tech x, so how do you handle problem y</li>
-<li>e.g. scaling or payment processing</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Worth reading</h3>
-
-<ul>
-<li><a href="http://dandreamsofcoding.com/2012/11/25/how-to-prepare-for-technical-interviews/">Prepping for a technical interview</a></li>
-<li><a href="http://www.joelonsoftware.com/articles/GuerrillaInterviewing3.html">Joel Spolsky&#8217;s guide to interviewing</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -1610,6 +1563,14 @@ git repo: malkomalko/tweets-i-love</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/how-linux-works-what-every-superuser-should-know/">How Linux Works: What Every Superuser Should Know</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/vimmin/">Vimmin</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/more-ops-notes/">More Ops Notes</a>
       </li>
     
@@ -1619,14 +1580,6 @@ git repo: malkomalko/tweets-i-love</p>
     
       <li class="post">
         <a href="/blog/crash-course/">Crash Course DevOps</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/elastic-search/">Elastic Search</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/preparing-data-for-machine-learning/">Preparing Data for Machine Learning</a>
       </li>
     
   </ul>
