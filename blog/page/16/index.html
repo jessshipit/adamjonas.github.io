@@ -9,11 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Ruby API and DSL for the ElasticSearch search engine 1
-2
-3
-elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
-Unable &hellip;">
+  <meta name="description" content="Solid Object Oriented Design Video of Sandi Metz Less the path to better design Video Code needs to work today just once, but needs to be easy to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +86,148 @@ Unable &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/object-oriented-design-sandi-metz/">Object Oriented Design Sandi Metz</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-07T12:31:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Solid Object Oriented Design</h3>
+
+<p><a href="http://vimeo.com/12350535">Video of Sandi Metz</a></p>
+
+<h3>Less the path to better design</h3>
+
+<p><a href="http://vimeo.com/26330100">Video</a></p>
+
+<ul>
+<li><p>Code needs to work today just once, but needs to be easy to change forever</p>
+
+<ul>
+<li>purpose of design is reduce the cost of change</li>
+</ul>
+</li>
+<li><p>Patterns are prescriptions</p>
+
+<ul>
+<li>patterns work at the correct dosage</li>
+</ul>
+</li>
+<li><p>principles</p>
+
+<ul>
+<li>SOLID</li>
+<li>Demeter</li>
+</ul>
+</li>
+<li><p>Need diagnostics</p>
+
+<ul>
+<li>need simple ways to judge the goodness of code (the inverse of Bob Martin&#8217;s list of ailments)</li>
+</ul>
+</li>
+<li><p>4 Diagnostics : True</p>
+
+<ol>
+<li>Code should be <em>transparent</em></li>
+<li><em>Reasonable</em>: cost of making any change should be to proportional to its value</li>
+<li>Code should be <em>useable</em> -> if you wrote the code, you should be able to reuse it</li>
+<li><em>Exemplary</em> -> more code like this would be good for your app</li>
+</ol>
+</li>
+<li><p>These principles tell you when to quit</p></li>
+<li><p>Don&#8217;t be a know-it-all</p></li>
+<li><p>Code is more stable when the objects communicate less</p>
+
+<ul>
+<li>For example, all the work that goes into building and curating bounties belongs in the bounty class and not in the issue class, even though bounties belong to issues
+
+<blockquote><p>managing dependencies is at the center of design. Depend on things that are more stable than you are.</p></blockquote></li>
+<li>early on in an app, you actually don&#8217;t know which is more stable
+
+<ul>
+<li>embrace uncertainty. If two objects must collaborate and you don&#8217;t know who is more uncertain. Then you need to make them know as a little of each other as possible. <em>A directive to decouple.</em></li>
+</ul>
+</li>
+<li>Don&#8217;t have to guess what changes will come. Loosen the coupling so that when a change came (and we didn&#8217;t know what the change was) it would be ok.</li>
+</ul>
+</li>
+<li><p>It&#8217;s Ducks all the way down</p></li>
+<li>identify the underlying abstractions, from trip&#8217;s point of view it just wants to be prepared</li>
+<li>preparer is an agreement about the public interface of an idea -> it&#8217;s a <em>duck type</em></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">preparer</span><span class="p">(</span><span class="n">preparers</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">preparers</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">preparer</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">preparer</span><span class="o">.</span><span class="n">prepare_trip</span><span class="p">(</span><span class="nb">self</span><span class="p">)}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1">#then each class has it&#39;s own prepare_trip(trip) method which sends back a prepared trip.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Abstractions are more stable than concretions. It is the duck type.
+
+<ul>
+<li>You can trade the unpredictability for the constancy for what you want.</li>
+<li>We share no code, there are no modules</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Trip expects preparers and prepares trust that they can pass the object to that called them</h3>
+
+<ul>
+<li><p>Trustworthy objects</p>
+
+<ul>
+<li>Understand more about themselves and what they want and know less about what others do</li>
+<li>Depend less on concretions and more on abstractions</li>
+</ul>
+</li>
+<li><p>The space between objects</p></li>
+<li>When objects have space around them they have room to move</li>
+<li>Design allows you to put off design decision until you know more about the application</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -934,588 +1072,6 @@ end</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/caching/">Caching</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-20T11:11:00-05:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><a href="http://www.mnot.net/cache_docs/">Caching tutorial</a></li>
-<li><a href="http://tomayko.com/writings/things-caches-do">Things caches do</a></li>
-</ul>
-
-
-<h1>Fragment Caching- RailsCast 90</h1>
-
-<p><strong>Fragment caching is done at the the view level</strong></p>
-
-<ul>
-<li>Change dev environment file to:
-
-<ul>
-<li><code>config.action_controller.perform_caching = true</code></li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Wrap the div with cache tag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="s2">&quot;recent_articles&quot;</span> <span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">&lt;div id=&quot;recent_articles&quot;&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="no">Recent</span> <span class="no">Articles</span><span class="o">&lt;</span><span class="sr">/h3&gt;</span>
-</span><span class='line'><span class="sr">  #more code</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>cache will change in every url</li>
-</ul>
-
-
-<h3>Expiring fragment cache</h3>
-
-<p>in the articles controller#show</p>
-
-<ul>
-<li>in the controller
-
-<ul>
-<li>expire_fragment(&#8220;recent_articles&#8221;)
-
-<ul>
-<li>move into a sweeper like in episode 89</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<p>auto-expiring fragment cache</p>
-
-<figure class='code'><figcaption><span>Wrap the div you want to cache with cache tags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="vi">@article</span> <span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">#behind the scenes this is going to call .cache_key on the model</span>
-</span><span class='line'><span class="sx">  #see below for cache_key explanation</span>
-</span><span class='line'><span class="sx">#powerful way to auto-expire by loading an object</span>
-</span><span class='line'><span class="sx">&lt;div id=&quot;article&quot;&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;&lt;</span><span class="sx">%= @article.name %&gt;&lt;/h1&gt;</span>
-</span><span class='line'><span class="sx">  &lt;%=</span> <span class="vi">@article</span><span class="o">.</span><span class="n">content</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;p&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="sx">%= link_to &quot;Edit&quot;, edit_article_path %&gt; |</span>
-</span><span class='line'><span class="sx">    &lt;%=</span> <span class="n">link_to</span> <span class="s2">&quot;Browse Articles&quot;</span><span class="p">,</span> <span class="n">articles_path</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;/p&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/div&gt;</span>
-</span><span class='line'><span class="sr">&lt;% end %&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Cache_key</h3>
-
-<figure class='code'><figcaption><span>Wrap the div you want to cache with cache tags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="no">Article</span><span class="o">.</span><span class="n">first</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">cache_key</span> <span class="c1">#=&gt; articles/1-2012083083433 </span>
-</span><span class='line'><span class="c1">#-&gt; name of the model, id of the model, and updated timestamp</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">touch</span> <span class="c1">#now it will have different cache key</span>
-</span><span class='line'><span class="c1">#because it is looking for a cache with a different name</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Don&#8217;t need to litter expire_cache all over the model</p>
-
-<figure class='code'><figcaption><span>The Touch Option expires the cache if it&#8217;s changed</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:article</span><span class="p">,</span> <span class="ss">touch</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This means it will update the article when a commment is changed.</p>
-
-<h3>Caching a fragment when you aren&#8217;t passing in an object</h3>
-
-<figure class='code'><figcaption><span>This is cached as recent_articles</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% cache </span><span class="s2">&quot;recent_articles&quot;</span> <span class="k">do</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">&lt;div id=&quot;recent_articles&quot;&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="no">Recent</span> <span class="no">Articles</span><span class="o">&lt;</span><span class="sr">/h3&gt;</span>
-</span><span class='line'><span class="sr">  &lt;ul&gt;</span>
-</span><span class='line'><span class="sr">  &lt;% @recent_articles.each do |article| %&gt;</span>
-</span><span class='line'><span class="sr">    &lt;% cache [&quot;recent&quot;, article] do %&gt;</span>
-</span><span class='line'><span class="sr">#can cache here as well!</span>
-</span><span class='line'><span class="sr">#namespaced with &quot;recent&quot;, but passing in the article object</span>
-</span><span class='line'><span class="sr">#creates a unique key based on the elements passed into the array</span>
-</span><span class='line'><span class="sr">      &lt;li&gt;&lt;%= link_to article.name, article %&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="sx">% end %&gt;</span>
-</span><span class='line'><span class="sx">  &lt;% end %&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sr">/ul&gt;</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>When the &#8220;recent_articles&#8221; cache is generated, it will generate a cache for each object in the list in addition to the full &#8220;recent_articles&#8221; cache.
-
-<ul>
-<li>normal behavior will just read the recent articles cache</li>
-<li>but editing behavior of the objects will expire the cache.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>How frag caches are stored</h3>
-
-<ul>
-<li>Rails comes with a built in centralized caching mechnism called rails.cache
-
-<ul>
-<li>can read and write from
-
-<ul>
-<li>`Rails.cache.read(&#8216;views/recent_articles&#8217;)</li>
-<li>default is memory store, but want to use redis or memcahce
-
-<ul>
-<li>config is done in the env/production</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h1>Memcached Dalli- RailsCast 380</h1>
-
-<ul>
-<li><a href="http://code.google.com/p/memcached/wiki/NewStart">Memcache wiki</a></li>
-<li>Use dalli, don&#8217;t use memcache_store</li>
-</ul>
-
-
-<p><code>brew install memcached</code></p>
-
-<p><code>gem dalli</code></p>
-
-<ul>
-<li><p>enable caching in the dev environment -></p>
-
-<ul>
-<li>change to: <code>perform_caching = true</code></li>
-<li>config.cache_store = :dalli_store
-
-<ul>
-<li>should do this in production as well.
-
-<ul>
-<li>Rails.cache will show that this is now a dalli store</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code>Rails.cache.fetch(:bar) { sleep 1; 2}</code></p>
-
-<ul>
-<li>fetch a cache or execute the block</li>
-</ul>
-</li>
-<li><code>Rails.cache.read_multi(:bar, :foo)</code> -> can fetch multiple requests once, instead of going individually.</li>
-<li><p><code>Rails.cache.stats</code> -> shows the amt of info store, number of times it reached it&#8217;s limit, etc.</p></li>
-<li><p><strong>Memcached is not a persistance store.</strong> If you stop the process you lose it.</p></li>
-<li><p><code>Rails.cache.write(:bar, 1, expires_in: 5.seconds)</code></p>
-
-<ul>
-<li>will expire in 5 seconds</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>product.category.name to product.category_name</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">category_name</span>
-</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="o">[</span><span class="ss">:category</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="ss">:name</span><span class="o">]</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">:</span> <span class="mi">5</span><span class="o">.</span><span class="n">minutes</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">category</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>If you want a cache to expire on update</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Category</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:name</span>
-</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:products</span>
-</span><span class='line'>  <span class="n">after_update</span> <span class="ss">:flush_name_cache</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">flush_name_cache</span>
-</span><span class='line'>    <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">[</span><span class="ss">:category</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="ss">:name</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="n">name_changed?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Need to add memcached on the server side as well</li>
-</ul>
-
-
-<h1>HTTP Caching</h1>
-
-<h1>Etag</h1>
-
-<ul>
-<li>Etag: unique string based on the content in the response body
-
-<ul>
-<li>etag changes based on the csrf token</li>
-</ul>
-</li>
-<li>When the browser caches the response it will assign the etag to it
-
-<ul>
-<li>get a 304 not modified, not a 200 ok
-
-<ul>
-<li>request will be the same speed on the server side</li>
-</ul>
-</li>
-<li>Can speed up the server side by customizing how an etag is generated</li>
-</ul>
-</li>
-<li></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Customize how an etag is generated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">expires_in</span> <span class="mi">5</span><span class="o">.</span><span class="n">minutes</span>
-</span><span class='line'>  <span class="n">fresh_when</span> <span class="vi">@product</span><span class="p">,</span> <span class="kp">public</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>fresh_when
-
-<ul>
-<li>checks whether the etag passed into the request matches the etag for the product and of it does it gives a 304 not modified</li>
-<li>otherwise it will show the render template with the full action</li>
-</ul>
-</li>
-<li>this technique isn&#8217;t going to work well if there is a respond_to block</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Etag and a repond_to block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">stale?</span> <span class="ss">etag</span><span class="p">:</span> <span class="vi">@product</span>
-</span><span class='line'>    <span class="n">repond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>    <span class="c1">#.....</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Etag can accept multiple objects</p>
-
-<figure class='code'><figcaption><span>Customize how an etag is generated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">fresh_when</span> <span class="o">[</span><span class="vi">@product</span><span class="p">,</span> <span class="n">current_user</span><span class="o">]</span>
-</span><span class='line'>  <span class="c1">#passing in multiple </span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Last_modified</h3>
-
-<figure class='code'><figcaption><span>Customize how an etag is generated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">fresh_when</span> <span class="vi">@product</span><span class="p">,</span> <span class="n">last_modified</span><span class="p">:</span> <span class="vi">@product</span><span class="o">.</span><span class="n">updated_at</span>
-</span><span class='line'>  <span class="c1">#this includes a timestamp in the header of last modified</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="c1">#from this</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
-</span><span class='line'>    <span class="vi">@products</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">all</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="c1">#this runs the db query before it is neccessary</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#this waits until we are sure it is needed</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
-</span><span class='line'>    <span class="vi">@products</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">scoped</span>
-</span><span class='line'>  <span class="c1">#this waits until we are sure the all command is needed</span>
-</span><span class='line'>    <span class="n">fresh_when</span> <span class="n">last_modified</span><span class="p">:</span> <span class="vi">@products</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="ss">:updated_at</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1">#only fetching one values to determine if the cache is up to date</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="c1">#which means that it doesn&#39;t have to render the whole view template</span>
-</span><span class='line'><span class="c1">#and doesn&#39;t have to end up fetching all the products from the DB</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><strong>Should benchmark to see if you get a big performance boost</strong></li>
-</ul>
-
-
-<h3>Cache-Control</h3>
-
-<ul>
-<li>Set options on how caching should behave
-
-<ul>
-<li>validation</li>
-<li>max-age</li>
-<li>private
-
-<ul>
-<li>cache only stored for one user usually in the web browser and not a shared store like a proxy</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>Max-age</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">expires_in</span> <span class="mi">5</span><span class="o">.</span><span class="n">minutes</span>
-</span><span class='line'><span class="c1">#this sets the max-age </span>
-</span><span class='line'>  <span class="n">fresh_when</span> <span class="vi">@product</span><span class="p">,</span> <span class="kp">public</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'><span class="c1">#this public: true makes it available to multiple users</span>
-</span><span class='line'><span class="c1">#through a proxy</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p><a href="https://github.com/rtomayko/rack-cache">rack-cache</a> -></p>
-
-<ul>
-<li>sits on your server between a user requests and a rails app backend</li>
-<li>rack cache has to be enabled in the dev environment and restart the server</li>
-</ul>
-</li>
-<li><p>warning public to true because this given request is stored for every user.</p>
-
-<ul>
-<li><code>&lt;%= csrf_meta_tag unless response.cache_control[:public] %&gt;</code></li>
-<li>should do for flash messages too</li>
-</ul>
-</li>
-<li><p>avoid premature optimization, figure out what you need to cache</p></li>
-<li>only set public to true only if you don&#8217;t have sensitive info on the page.</li>
-</ul>
-
-
-<h2>In the wild</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#sessions controller</span>
-</span><span class='line'><span class="n">client</span> <span class="o">=</span> <span class="ss">Octokit</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:oauth_token</span> <span class="o">=&gt;</span> <span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
-</span><span class='line'><span class="n">user</span><span class="o">.</span><span class="n">load_cache_info</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#user model</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">#this is the cache writter. Fetch is like a find_or_create</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">load_cache_info</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="o">.</span><span class="n">to_sym</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">:</span> <span class="mi">24</span><span class="o">.</span><span class="n">hours</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'>    <span class="p">{</span> <span class="ss">:repos</span> <span class="o">=&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">repo</span><span class="o">|</span> <span class="n">repo</span><span class="o">.</span><span class="n">name</span> <span class="p">},</span>
-</span><span class='line'>      <span class="ss">:following</span> <span class="o">=&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">following</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">login</span> <span class="p">},</span>
-</span><span class='line'>      <span class="ss">:starred</span> <span class="o">=&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">starred</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">nickname</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">repo</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">repo</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">login</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">repo</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#this reads the cache which looks like a big hash</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">user_cache</span>
-</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">nickname</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">cached_starred</span>
-</span><span class='line'>  <span class="n">user_cache</span><span class="o">[</span><span class="ss">:starred</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">cached_following</span>
-</span><span class='line'>  <span class="n">user_cache</span><span class="o">[</span><span class="ss">:following</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">cached_repos</span>
-</span><span class='line'>  <span class="n">user_cache</span><span class="o">[</span><span class="ss">:repos</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/17/">&larr; Older</a>
@@ -1533,6 +1089,10 @@ end</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/intro-to-react/">Intro to React</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/how-linux-works-what-every-superuser-should-know/">How Linux Works: What Every Superuser Should Know</a>
       </li>
     
@@ -1546,10 +1106,6 @@ end</p>
     
       <li class="post">
         <a href="/blog/project-aristole/">Project Aristole</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/crash-course/">Crash Course DevOps</a>
       </li>
     
   </ul>
