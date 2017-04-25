@@ -9,7 +9,8 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="So RubyMotion is great. I can create an app in a few minutes by leveraging resources like Bubblewrap and styling becomes pretty straight-forward with &hellip;">
+  <meta name="description" content="Asset Trouble Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn&#8217;t compiling.
+This inspired us to roll back to 1.9. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,171 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/rum-fun/">Rum Fun</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-16T16:02:00-04:00" pubdate data-updated="true">Sep 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Asset Trouble</h3>
+
+<ul>
+<li>Rails 3.1.3 legacy app The images were coming through, but the JS and css wasn&#8217;t compiling.</li>
+<li><a href="http://stackoverflow.com/questions/15811889/my-rails-javascript-manifest-file-doesnt-compile-nor-include-any-required-files">This</a> inspired us to roll back to 1.9.3, which worked.</li>
+</ul>
+
+
+<h3>Coffeescript hashes</h3>
+
+<ul>
+<li><p>this one took me a hot second -> <code>delete obj[key]</code></p>
+
+<ul>
+<li>courtesy of <a href="http://coffeescript.org/documentation/docs/helpers.html">the docs</a></li>
+</ul>
+</li>
+<li><p>counting the keys in an object was pretty close to javascript <code>Object.keys(obj).length</code> <a href="http://stackoverflow.com/questions/15629799/count-number-of-keys-in-object-with-coffeescript">from</a>.</p></li>
+</ul>
+
+
+<h3>Thought process on adding a friend</h3>
+
+<ul>
+<li>page loads
+
+<ul>
+<li><p>checks to see if local storage has values</p>
+
+<ul>
+<li>if not it assigns empty array</li>
+<li>if so it assigns to local array which contains a hash of both the name, the uid, and its input position
+
+<ul>
+<li>names are loaded into the input field</li>
+<li>names and uid(pic) are loaded with the appropriate number of beach passes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>if when a name is removed from the input field, it is removed from the local array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>when a name is selected by the autocomplete, it assigns pushes the new record of name, uid and position into the array</p>
+
+<ul>
+<li>a listener on the array updates the proper number of beach passes</li>
+</ul>
+</li>
+<li><p>a validator prevents the user from continuing without having at least one friend OR checking the &#8216;alone&#8217; checkbox</p></li>
+<li><p>upon hitting the continue btn, the local array is assigned to local storage</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Devise sign out</h3>
+
+<ul>
+<li>In the <code>devise.rb</code> initializer -> The default HTTP method used to sign out a resource. Default is :delete.
+
+<ul>
+<li><code>config.sign_out_via = :get</code> will allow me to use a regular link</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>PG setup</h3>
+
+<ul>
+<li>this is the <a href="https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups">process prelaunch</a></li>
+<li>otherwise you want to use a follower method</li>
+</ul>
+
+
+<h3>IP Spoof</h3>
+
+<ul>
+<li>had a client on a plane that triggered a <code>ActionDispatch::RemoteIp::IpSpoofAttackError: IP spoofing attack?!</code> error.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>To turn off ip spoof</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">IpSpoof</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">_strip_ip_spoofable_headers</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">env</span><span class="o">.</span><span class="n">reject</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">key</span><span class="o">.</span><span class="n">upcase</span> <span class="o">==</span> <span class="s1">&#39;HTTP_CLIENT_IP&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<ul>
+<li>this needed to be inserted before the rack middleware <code>ActionDispatch::RemoteIp</code> so used <code>config.middleware.insert_before ActionDispatch::RemoteIp, IpSpoof</code> as suggested in <a href="http://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack">rails guide</a>. Pretty cool.</li>
+</ul>
+
+
+<h3>Location Tracking</h3>
+
+<ul>
+<li>after many protests, I was forced to include a tracking script that pilled down users&#8217; lat and long coordinates. Not sure I believe it is right to pull down location info without providing the user with some benefit.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1143,263 +1309,6 @@ config.include FactoryGirl::Syntax::Methods
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ugc-aka-david/">Ugc Aka David</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-06T12:07:00-04:00" pubdate data-updated="true">May 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It is common to create apps that heavily depend on user generated content. David is an attempt to build the prototypical user generated content app. One that we will be able to reuse in the future.</p>
-
-<p>The structure on creating such an app was challenging for me to conceptualize. I would anticipate that we will use David most of the time for image submissions only, but juggling multiple MIME type submission is the real challenge and therefore would be the greatest benefit to solve. Given this, how should this application be structured? Should the individual types (images, videos, text, audio, etc) inherit from a centralized submission class? Should that centralized class be a module that is included in each of the individual classes? Where would one build out the features for a custom app?</p>
-
-<p>After discussing with Kyle for a while, he decided that it was probably safest to build an add-on to CarrierWave that would accomplish this for us. This would leave the uploaders available for customization, while keeping the classes more pristine.</p>
-
-<p>There are a whole mess of add-ons <a href="https://github.com/jnicklas/carrierwave/wiki">listed</a>.</p>
-
-<p>Next, deciding on where this add-on would live. Should this be a gem or live in the lib folder?</p>
-
-<h3>Mixed context processor uploading</h3>
-
-<ul>
-<li><a href="https://github.com/jnicklas/carrierwave/wiki/How-to%3A-Do-conditional-processing">how to do conditional processing</a></li>
-<li><a href="https://gist.github.com/ahamid/995663">a gist</a></li>
-</ul>
-
-
-<h3>Adding Versions</h3>
-
-<ul>
-<li><a href="https://github.com/jnicklas/carrierwave#adding-versions">Adding versions straight from the horses mouth</a></li>
-</ul>
-
-
-<h3>FB SDK</h3>
-
-<ul>
-<li>so I jumped right into trying to call SDK methods without understanding how the SDK was initialized.
-
-<ul>
-<li><a href="https://developers.facebook.com/docs/reference/javascript/#loading">the documentation</a> is pretty clear, but I had just been able to call on the SDK in previous projects, so I didn&#8217;t understand what was different. Carrot-facebook had taken care of this under the hood.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Javascript Event Listeners</h3>
-
-<ul>
-<li>excellent explanation of the difference between</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">someFunction</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">code</span>
-</span><span class='line'>    <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>and</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span> <span class="nx">someFunction</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>which is REALLY different from:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#db-chooser&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DbxChooserSuccess&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">someFunction</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;this doesn&#39;t work&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I don&#8217;t have a firm handle on event listeners, but this is a good lesson to get my feet wet.</p>
-
-<h3>Asset Path</h3>
-
-<ul>
-<li>stupid problem. I loaded a library to the vendor folder, but it wasn&#8217;t loading. I tried specifying the route even though I know that the asset pipeline picks up everything in the vendor folder.
-
-<ul>
-<li>ended up being the .min extension. Once I explicitly specified the extension (.min.js), it found it.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Instagram</h3>
-
-<ul>
-<li>there is a <a href="https://github.com/Instagram/instagram-ruby-gem">instagram ruby gem</a> that looks very similar the <a href="https://github.com/pengwynn/">Pengwynn</a> style ruby wrappers</li>
-<li>for David, I&#8217;ll be using <a href="http://mikefowler.me/instajam/">instajam</a> by Mike Fowler so that I can load the photo via javascript</li>
-</ul>
-
-
-<h3>Factory Girl</h3>
-
-<ul>
-<li><a href="http://robots.thoughtbot.com/post/9713995255/factorygirl-2-1-0-brings-the-heat">factory girl hooks</a></li>
-<li><a href="http://icelab.com.au/articles/factorygirl-and-has-many-associations/">factory girl associations</a></li>
-</ul>
-
-
-<h3>Rating system</h3>
-
-<ul>
-<li><a href="http://railscasts.com/episodes/364-active-record-reputation-system">active record reputation system</a></li>
-</ul>
-
-
-<h3>Responds with</h3>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/6118639/rails-respond-with-how-does-it-work">solid responds with explanation</a></li>
-</ul>
-
-
-<h3>Pagination</h3>
-
-<ul>
-<li><a href="https://github.com/amatsuda/kaminari">kaminari</a> -> uses several partials to render the different options, need to override partials to customize the behavior. Because of this technique, Kaminari might be a wee bit slower than will_paginate. ActiveAdmin uses Kaminari.</li>
-<li><a href="https://github.com/mislav/will_paginate">will_paginate</a> -> uses Ruby options to customize.</li>
-</ul>
-
-
-<h3>Integration Tests</h3>
-
-<ul>
-<li>with rspec
-
-<ul>
-<li>install rspec
-
-<ul>
-<li><code>rails g integration_test modelname</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Copy to clipboard</h3>
-
-<ul>
-<li>it appears that the most dependable implementation is with flash. See <a href="http://www.jquery4u.com/plugins/jquery-copy-clipboard-4-options/">4 different ways</a> and ZeroClipboard(https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md) which I eventually settled on. There is a nice step-by-step tutorial by <a href="http://davidwalsh.name/clipboard">David Walsh</a>.</li>
-<li>put the flash file in the public folder rather than the asset path since it will remain untouched rather than serve dynamic content.</li>
-</ul>
-
-
-<h3>completed</h3>
-
-<ul>
-<li>one central controller with meta programmed methods to redirect to the proper path using service</li>
-<li>models that inherit from a specific media type</li>
-<li>override file column on submissions model -> just made it optional for text, can I make that only the case for text?</li>
-<li>do for images and video what I did for text</li>
-<li><p>create a whitelist of acceptable uploads per type / identify the type by the extension?</p></li>
-<li><p>Facebook</p>
-
-<ul>
-<li>create credentials table with type, uid, access token, and user_id from Omniauth</li>
-<li>pull photos with javascript like in oakley</li>
-<li>authenticate with button and pull up a gallery of FB photos
-
-<ul>
-<li>select which one you want and store the URL</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>instagram gallery of photos</li>
-</ul>
-
-
-<p>  -testing
-  - once photos selected, they need to be saved to DB under UrlSubmission
-  - reassigning the token for FB auth</p>
-
-<h3>Goals</h3>
-
-<ul>
-<li><p>understand how version works</p></li>
-<li><p>testing js with jasmine</p></li>
-<li><p>gallery (what&#8217;s been submitted and saved to DB)</p>
-
-<ul>
-<li>highest rated (rating system)</li>
-<li>/most recent (reverse time)</li>
-<li>/pagination</li>
-<li><p>see friend&#8217;s photos (hold off)</p></li>
-<li><p>copy url from submission show page functionality</p>
-
-<ul>
-<li>https://github.com/jonrohan/ZeroClipboard</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>rating system</p>
-
-<ul>
-<li>limit frequency</li>
-<li>time gate</li>
-</ul>
-</li>
-<li><p>winner selection lib (maybe in the end, randomly, highest rated?)</p></li>
-</ul>
-
-
-<h3>Deficiencies</h3>
-
-<ul>
-<li>no photo resizing thus far</li>
-<li>lacks integration/JS/Ajax. limited unit tests.</li>
-<li>distinguish types by white labeling extensions per type, just one white labeling group right now for all types</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -1417,6 +1326,10 @@ config.include FactoryGirl::Syntax::Methods
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/a-technically-inexperienced-manager/">A Technically Inexperienced Manager</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/intro-to-react/">Intro to React</a>
       </li>
     
@@ -1430,10 +1343,6 @@ config.include FactoryGirl::Syntax::Methods
     
       <li class="post">
         <a href="/blog/more-ops-notes/">More Ops Notes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
   </ul>

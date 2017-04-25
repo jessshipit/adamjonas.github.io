@@ -9,7 +9,10 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="MIT lecture on Intro to Algorithms Analysis of algorithms: the theoretical study of computer program performance and resource usage What is more &hellip;">
+  <meta name="description" content="How to write a recursive method
+Step one- write &#8216;if&#8217;
+a. There must be two cases: a recursive case (where the method calls itself)
+b. and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +89,82 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/recursion/">Recursion</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-11T22:04:00-05:00" pubdate data-updated="true">Jan 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p><a href="http://www.youtube.com/watch?v=MyzFdthuUcA">How to write a recursive method</a></p></li>
+<li><p>Step one- write &#8216;if&#8217;
+a. There must be two cases: a recursive case (where the method calls itself)
+b. and a base case (where the method does not)</p></li>
+<li>Handle the simplest case(s).
+a. Simplest = no recursive call needed (no looping)</li>
+<li>Write the recurisve call(s)
+a. On the next simplest input/state</li>
+<li>Assume the recursive call works (maybe store the result in a variable)
+a. Ask yourself, what does it do?
+b. How does it help?</li>
+</ul>
+
+
+<p>9! = <code>9*8*7*6..</code>
+10! = <code>10*9!</code>
+n! = n * (n - 1)! -> a recursive definition of factorial</p>
+
+<p>&#8220;`ruby
+def factorial(n)
+  if n == 0</p>
+
+<pre><code>return 1
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>result = factorial(n - 1) #computes n-1 factorial
+result * n
+</code></pre>
+
+<p>  end
+end</p>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=ozmE8G6YKww">How recursion works</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1400,103 +1479,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/ruby-bits-2/">Ruby Bits 2</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-20T12:39:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span>Multiple Lambdas</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">exec_game</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">error_handler</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">game</span> <span class="o">=</span> <span class="n">games</span><span class="o">.</span><span class="n">detect</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="n">game</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">name</span> <span class="p">}</span>
-</span><span class='line'>    <span class="k">begin</span>
-</span><span class='line'>      <span class="n">action</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">rescue</span>
-</span><span class='line'>      <span class="n">error_handler</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Lambda or Proc to Block</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">library</span> <span class="o">=</span> <span class="no">Library</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">GAMES</span><span class="p">)</span>
-</span><span class='line'><span class="n">printer</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">) - </span><span class="si">#{</span><span class="n">game</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
-</span><span class='line'><span class="n">library</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">printer</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>Calling a method with &amp; in front of a parameter</em>
-<code>tweets.each(&amp;printer)</code></p>
-
-<p><em>Defining a method with &amp; in front of a parameter</em>
-<code>def each(&amp;block)</code></p>
-
-<figure class='code'><figcaption><span>Passing blocks around&#8230;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">each</span>
-</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">game</span><span class="o">|</span>
-</span><span class='line'>      <span class="k">yield</span> <span class="n">game</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#refactored as</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">games</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1514,6 +1496,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/a-technically-inexperienced-manager/">A Technically Inexperienced Manager</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/intro-to-react/">Intro to React</a>
       </li>
     
@@ -1527,10 +1513,6 @@ end
     
       <li class="post">
         <a href="/blog/more-ops-notes/">More Ops Notes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
   </ul>

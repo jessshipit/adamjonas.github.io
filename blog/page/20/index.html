@@ -9,13 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="POTD Linus Torvalds Rails rails assigns attr_accessors Active Record Queries1
-2
-3
-4
-5
-song.limit(2).last #=&gt; this is the second to last song
-Song. &hellip;">
+  <meta name="description" content="POTD Roy Fielding HTTP- it&#8217;s all about representations of data, not the data itself urls are to represent a resouce. They should be stateless &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +86,228 @@ Song. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/fis-day17/">FIS Day17</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-26T09:37:00-04:00" pubdate data-updated="true">Oct 26<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>POTD</h3>
+
+<p>Roy Fielding</p>
+
+<p>HTTP- it&#8217;s all about representations of data, not the data itself</p>
+
+<p>urls are to represent a resouce. They should be stateless and you should get multiple representations of it (different data types for example).</p>
+
+<p><a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a> is &#8220;like knocking on your neighbors&#8217; door and ask them to send a message to a guy down the street.&#8221;</p>
+
+<h3>Blogs</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span> <span class="c1">#=&gt; you want to return an empty array so that you can run an iteration on it.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">assign_artist</span><span class="p">(</span><span class="n">artist_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">select</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">artist_name</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">if</span>  <span class="n">artist</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>      <span class="n">artist</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="no">Artist</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">tap</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">artist_name</span><span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#can be refactored as</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">assign_artist</span><span class="p">(</span><span class="n">artist_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Artist</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">select</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">artist_name</span><span class="p">}</span> <span class="o">||</span>
+</span><span class='line'>  <span class="no">Artist</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">tap</span><span class="p">{</span><span class="o">|</span><span class="n">artist</span><span class="o">|</span> <span class="n">artist</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">artist_name</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Spinning Up My First Server</h2>
+
+<p>??swap disk space</p>
+
+<ul>
+<li><p><strong>Passenger</strong> knows how to run your app, <strong>nginx</strong> does not</p>
+
+<ul>
+<li>nginx sends your request to a Passenger instance
+
+<ul>
+<li>nginx is managing the load to Passenger</li>
+<li>Passenger is actually running the application ~> managing starting up your app and serving it
+
+<ul>
+<li>it could run up to 20 instances of the app on a single server (the default is 5)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>nginx</strong> is the actual webserver. It&#8217;s a piece of software that speaks HTTP, is very high performance and sits between your application and the internet.</p></li>
+<li><p>The tutorial is very detailed</p>
+
+<ul>
+<li>Not on the tutorial- <a href="https://help.github.com/articles/generating-ssh-keys">adding the SSH key from the server</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Lessons Learned From the Server Work</h3>
+
+<ul>
+<li>Problem: So I couldn&#8217;t deploy for hours&#8230; I went and reconfigured like 3 times. Renamed the name of the application and going through the nginx config file on the server. It sucked.</li>
+<li>Answer: I had my database in my .gitignore file, which meant that it was in the deploy from the github. AHHHH!!! I never would have gotten that one.</li>
+</ul>
+
+
+<h2>Ruby</h2>
+
+<ul>
+<li><p>Opposites</p>
+
+<ul>
+<li>Enumerable#reject
+
+<ul>
+<li>Returns an array for all elements of enum for which block is false (see alsoEnumerable#find_all).</li>
+</ul>
+</li>
+<li>Enumerable#select
+
+<ul>
+<li>Returns an array containing all elements of enum for which block is not false (see alsoEnumerable#reject).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Equivalent, different order for pipes</p>
+
+<ul>
+<li>Enumerable#each_with_object
+
+<ul>
+<li>Iterates the given block for each element with an arbitrary object given, and returns the initially given object.
+
+<ul>
+<li>[1, 2, 3, 4].each_with_object([]) { |element, result| result &lt;&lt; element }</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Enumerable#inject</p>
+
+<ul>
+<li>Combines all elements of enum by applying a binary operation, specified by a block or a symbol that names a method or operator.
+
+<ul>
+<li>[1, 2, 3, 4].inject([]) { |result, element| result &lt;&lt; element }</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Rails</h3>
+
+<ul>
+<li>link_to is a great example of a polymorphic interface
+
+<ul>
+<li>if it receives an object (an instance of active record), it can create the correct link</li>
+<li>if it receives a string it can create the correct link out of that</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Routes Shortcuts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s1">&#39;/about/:action&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;about&#39;</span> <span class="c1"># the action would map directly to the action in the about controller</span>
+</span><span class='line'><span class="c1">#this is dangerous but only on the controller level so it would need to be controlled for there...</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">get</span> <span class="s1">&#39;/about/:action(/:company)&#39;</span> <span class="c1"># this means that the company part of the url is optional</span>
+</span><span class='line'>  <span class="ss">:company</span> <span class="o">=&gt;</span> <span class="s2">&quot;whatever&quot;</span> <span class="c1"># this additional means that &quot;whatever&quot; will be default value</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>urls that have parameters in them like songs/:genre ~> you need to pass a paramter so that it can match it ~> songs/:genre/:year needs two parameters</p>
+
+<figure class='code'><figcaption><span>In the view</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% link_to </span><span class="s1">&#39;Avi&#39;</span><span class="p">,</span> <span class="n">avi_path</span><span class="p">(</span><span class="s2">&quot;flombaum&quot;</span><span class="p">,</span> <span class="s2">&quot;flatiron&quot;</span><span class="p">,</span> <span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="s2">&quot;baz&quot;</span><span class="p">)</span> <span class="o">%&gt;</span> <span class="c1">#will add parameter</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Mass Assignment</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Song</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;call me maybe&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">#intialize the song with this default attribute</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1424,49 +1640,6 @@ Since my Dad first popped in that AOL floppy disk around 1995, I have been a con
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/personal-design-patterns/">Personal Design Patterns and Gotchas</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-22T09:47:00-04:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>For when I get in trouble?</p>
-
-<ul>
-<li>Do I want to be accessing an attribute of an object or the object itself?</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -1484,6 +1657,10 @@ Since my Dad first popped in that AOL floppy disk around 1995, I have been a con
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/a-technically-inexperienced-manager/">A Technically Inexperienced Manager</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/intro-to-react/">Intro to React</a>
       </li>
     
@@ -1497,10 +1674,6 @@ Since my Dad first popped in that AOL floppy disk around 1995, I have been a con
     
       <li class="post">
         <a href="/blog/more-ops-notes/">More Ops Notes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
   </ul>
