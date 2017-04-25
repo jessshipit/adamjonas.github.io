@@ -9,15 +9,7 @@
   <meta name="author" content="Adam Jonas">
 
   
-  <meta name="description" content="Lecture 2 BASH 1
-2
-3
-4
-cd .. # change to up a directory
-cd . # change to current directory
-ls # list
-cd ~ #home directory Resources
-- the thing you &hellip;">
+  <meta name="description" content="In Ruby we create an anonymous chunk of code call Proc.new. We call this using the .call method. Proc: Think of proc as a &#8220;saved&#8221; block: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,188 +86,6 @@ cd ~ #home directory Resources
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/lecture-2-rails/">Lecture 2 Rails</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-08T14:21:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong><em>Lecture 2</em></strong></p>
-
-<p>BASH</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd .. # change to up a directory
-</span><span class='line'>cd . # change to current directory
-</span><span class='line'>ls # list
-</span><span class='line'>cd ~ #home directory</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong><em>Resources</em></strong>
-- the thing you want to let users manipulate</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rails generate resource Mixtape nae:string</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Rake-
-a ruby language for running scripts</p>
-
-<p>Models-
-main component of your application, they represent the resources of your application
-every model is just a ruby class definition located in the model</p>
-
-<p>so the mixtape model defines a class Mixtape that is the object that will allow our app to CRUD mixtapes</p>
-
-<p>If we a Users model we have a users table</p>
-
-<p>Goal for today is to understand the request cycle</p>
-
-<p><strong><em>Routes</em></strong></p>
-
-<p><strong><em>DSL- Domain Specific Language</em></strong> (3:08PM)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">match</span> <span class="s1">&#39;/foo&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs#foo&#39;</span> <span class="c1"># this needs to be sent to a controller</span>
-</span><span class='line'><span class="c1"># a songs controller with the foo action</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>we need to find something that can handle the route&#8211;> we want to send it to a waiter, like ordering an A7 at a chinese resturant</p>
-
-<p><strong>an ACTION is just a method defined in the class!!</strong>
-a Controller is just a class &#8211;> a grouping that relates to songs</p>
-
-<p>if it can&#8217;t find a page it is 404</p>
-
-<p>every action in the app needs to be defined</p>
-
-<p>5 keywords available&#8230;
-MATCH
-GET
-POST
-PUT
-DELETE</p>
-
-<p>cmd T &#8211;> opens a window for you to access files</p>
-
-<p><strong><em>rake routes:</em></strong>
-first column is the request
-second is http verb
-third is url or pattern
-fourth is the contoller#action</p>
-
-<p>resources macro- defines all the restful actions for the resource</p>
-
-<p>?? so what was the main problem with the post request?</p>
-
-<p><strong><em>Controllers &amp; #actions </em></strong></p>
-
-<figure class='code'><figcaption><span>e.g. of actions in the Songs controller</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">name</span>
-</span><span class='line'>  <span class="n">render</span> <span class="ss">:template</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs/name&#39;</span> <span class="c1">#explicit template rendering</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># exactly the same as this...</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">name</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Renders</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">render</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s2">&quot;name&quot;</span> <span class="c1"># in the views folder named after the controller</span>
-</span><span class='line'><span class="n">render</span> <span class="ss">:template</span> <span class="o">=&gt;</span> <span class="s1">&#39;songs/name&#39;</span> <span class="c1"># need to specify the full path</span>
-</span><span class='line'><span class="n">render</span> <span class="ss">:xml</span>
-</span><span class='line'><span class="n">render</span> <span class="ss">:json</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Video 2 starts 4PM
-diff between &lt;% and =&lt;%
-&lt;% will get executed, but will not show in the html
-&lt;%= will get executed and will also show in the html</p>
-
-<p><strong><em> Instance variables </em></strong>
-Instance variables are the only thing passed from the controller to the views
-??? do class variables get passed as well?</p>
-
-<p><strong>link_to</strong></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s1">&#39;Search&#39;</span><span class="p">,</span> <span class="s1">&#39;http://google.com&#39;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>we have two methods <em>path and </em>url</p>
-
-<figure class='code'><figcaption><span>e.g. of link_to</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s1">&#39;Show&#39;</span><span class="p">,</span> <span class="s1">&#39;song&#39;</span> <span class="o">%&gt;</span> <span class="c1">#polymorphic interface </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>3 pars of rails (4:10 PM)
-ORM- active record
-Action controller
-Action view</p>
-
-<p>LEARN MORE: there are lots of polymorphic interfaces play nicely with active record</p>
-
-<figure class='code'><figcaption><span>automatic routing with namespacing with_options</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">with_options</span> <span class="ss">:controller</span> <span class="o">=&gt;</span> <span class="s1">&#39;site&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">get</span> <span class="s1">&#39;about&#39;</span>
-</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">get</span> <span class="s1">&#39;home&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1464,6 +1274,96 @@ rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/loading-up-a-new-macbook-air/">Loading Up a New Macbook Air</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-19T10:45:00-04:00" pubdate data-updated="true">Jun 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Avi helped me get my new Macbook Air rolling this afternoon&#8230;</p>
+
+<p>Ruby 1.8.7 is the standard version that&#8217;s loaded on the OS X Lion</p>
+
+<p>Some lessons&#8211; Xcode did not come loaded with the GNU Compiler Collection out of the box (AKA out of app store). (-bash: gcc: command not found) <a href="https://github.com/kennethreitz/osx-gcc-installer/">GCC Installer</a></p>
+
+<p>Anyways this had to be loaded to run anything like Homebrew.</p>
+
+<ul>
+<li>All OSs except for window are a NIX: A Unix-like (sometimes referred to as UN<em>X or </em>nix) operating system is one that behaves in a manner similar to a Unix system, while not necessarily conforming to or being certified to any version of the Single UNIX Specification. (http://en.wikipedia.org/wiki/Unix-like)</li>
+</ul>
+
+
+<p>Once it was installed we got the result: i686-apple-darwin11-llvm-gcc-4.2: no input files from the gcc command. (read more about gcc <a href="http://gcc.gnu.org/">here</a>.</p>
+
+<p>Homebrew was installed from <a href="https://github.com/mxcl/homebrew/wiki/installation">here</a>.</p>
+
+<p>-Homebrew replaced the old style of loading software which required configuring the config file since all OSs are customized with different versions. This is frustrating as hell. Jewelry box, RVM, and homebrew are powerful enough to take the grunt work out of the environment set-up, but can&#8217;t the community find a way to wrap this in an app in the app store? Is this feasible?</p>
+
+<ul>
+<li><a href="http://jewelrybox.unfiniti.com/">Jewelry Box was installed</a></li>
+<li><a href="http://ftp.gnu.org/gnu/wget/">wget was installed</a></li>
+<li><a href="http://www.alfredapp.com/">Alfred was installed</a></li>
+</ul>
+
+
+<p>We also modfiied the bash profile or dot files from Avi&#8217;s github repository.</p>
+
+<ul>
+<li>He mentioned that in the future I should choose a user name with all lower case letters rather than the capitalized name that I chose.</li>
+<li>I also needed to create a symbolic link for my sublime text editor so that I can call it from the command line (this is something I never figured out on my Fedora 15 system)</li>
+</ul>
+
+
+<h3>So for those keeping track at home:</h3>
+
+<ul>
+<li> GCC</li>
+<li> Homebrew</li>
+<li> Jewelry box</li>
+<li> RVM</li>
+<li> Ruby Update</li>
+<li> Rails</li>
+</ul>
+
+
+<p>No MySQL or anything like that&#8230; until I need it.</p>
+
+<ul>
+<li><a href="http://tech.xtremelabs.com/how-to-setup-your-mac-for-rails-development/">This is a good post on what to load up&#8230;</a></li>
+<li><a href="https://github.com/joshfng/railsready">rails ready script on github</a>)</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/32/">&larr; Older</a>
@@ -1481,10 +1381,6 @@ rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/a-technically-inexperienced-manager/">A Technically Inexperienced Manager</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/intro-to-react/">Intro to React</a>
       </li>
     
@@ -1498,6 +1394,10 @@ rails cast on nokogiri: http://railscasts.com/episodes/190-screen-scraping-with-
     
       <li class="post">
         <a href="/blog/more-ops-notes/">More Ops Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/project-aristole/">Project Aristole</a>
       </li>
     
   </ul>
